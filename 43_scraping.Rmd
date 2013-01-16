@@ -1,0 +1,9 @@
+<style>@import url(style.css);</style>
+
+# 2.3. Scraping
+
+For our purposes, scraping is the idea of taking information from online sources and to process it into a dataset. [Zarino Zappia](https://scraperwiki.com/profiles/zarino/), the creator of the ScraperWiki website, has written great examples of such scrapers in the Python programming language, as with his [scraper of Occupy protest locations](https://scraperwiki.com/scrapers/occupy_protest_locations/) (using Wikipedia sources; see also the [chronological map](https://views.scraperwiki.com/run/occupy_protest_locations_1/) based on the data).
+
+Let's replicate one of his examples and scrape the [life expectancy index](http://hdrstats.undp.org/en/indicators/72206.html) calculated by the United Nations. The [Python scraper](https://scraperwiki.com/scrapers/un_life_expectancy_scores/) can be emulated in R at low programming cost.
+
+Examples: scraping [RealClearPolitics](http://is-r.tumblr.com/post/36059986744/gathering-realclearpolitics-polling-trends-with-xml) and [Wikipedia](http://is-r.tumblr.com/post/36945206190/using-xml-to-grab-tables-from-the-web) with `XML`. Read on how scraping and [data APIs](http://stats.stackexchange.com/questions/12670/data-apis-feeds-available-as-packages-in-r) makes [data sociology](http://quanti.hypotheses.org/647/) possible.

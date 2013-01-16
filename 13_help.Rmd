@@ -1,0 +1,18 @@
+<style>@import url(style.css);</style>
+
+# 1.3. Help
+
+Type in `help()` to access documentation pages in R. If you are looking for help on a specific command, like `setwd` (which sets the working directory), then type `help(setwd)` or even quicker: `?setwd`. If you are looking for a keyword, e.g. how to plot a heatmap, then type `help.search("heatmap")` or even quicker: `??heatmap`. Here is how it looks like in practice:
+  
+  ```{r help-examples, eval=FALSE, include=TRUE}
+# Command search.
+?setwd
+# Keyword search.
+??heatmap
+# Package search.
+help(package="ggplot2")
+```
+
+You might want to try out `?library` and `?c` to learn about the commands used in a previous example. Documentation pages in R contain precise instructions on the syntax of each command: read the 'Description', 'Usage' and 'Arguments' sections first, then turn to 'Details' (not always needed) and always check out the 'Examples' section.
+
+Do not get afraid by the documentation: *everyone* finds it difficult to read, and *everyone* has reasons to complain about the lack of examples or low clarity. For more lively illustrations of how things work, turn to your handbooks and tutorials, and to the applications and exercises covered in class.

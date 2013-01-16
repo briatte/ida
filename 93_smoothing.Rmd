@@ -1,0 +1,7 @@
+<style>@import url(style.css);</style>
+
+# Smoothing
+
+Looking at [smoothed splines](http://www.johnmarquess.com/?p=111). Applications to [assault deaths in Europe and the United States](https://github.com/kjhealy/assault-deaths/blob/master/assault-2010.r) and [intentional homicide rates in South America](http://www.quantumforest.com/2012/02/revisiting-homicide-rates/).
+
+> Next: .

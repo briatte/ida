@@ -1,0 +1,13 @@
+<style>@import url(style.css);</style>
+
+# Setup
+
+## GitHub
+
+For this course, you will need to download a pack of code and data files from a GitHub repository.
+
+## Gist
+
+GitHub also offers Gist, a handy way to share code. We will use it in class.
+
+Create an account and join the `ida13` organization.

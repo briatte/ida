@@ -1,0 +1,16 @@
+<style>@import url(style.css);</style>
+
+# Linear models
+
+For starters, let's try to predict some things.
+
+- Let's start with the [2012 Olympics](http://badhessian.org/amazing-prediction-of-100m-mens-final-within-0-05s/).
+- Let's continue with the [2012 U.S. presidential election](http://www.douglas-hibbs.com), using a model that was [highly effective](http://lanekenworthy.net/2008/02/03/bread-peace-and-the-2008-election/) for past elections.
+
+Some of the general ideas that emerge at that stage are:
+
+1. The logic of "ordinary least squares" makes visual as well as statistical sense. The visual idea of OLS is that we are trying to find a way to get a straight line that goes through the data points by coming as close to possible to all of them on average.
+2. The extended logic behind that is to make all data points on a scatterplot form a horizontal straight line by using a mathematical transformation of the *y*-axis into a function of the *x*-axis. That is basically what a model does from a visual perspective.
+3. Finally, the logic of minimizing the distance between the line and the data points implies that the true result of a model is never the model on its own, but the combination of the line and the data points.
+
+So you can see that a lot about statistical modelling can be translated into visual terms without deviating too much from canonical terminology. Let's take a look at R code to run linear regression models.

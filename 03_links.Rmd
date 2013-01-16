@@ -1,0 +1,28 @@
+<style>@import url(style.css);</style>
+  
+# Links
+
+There's tons of tutorials out there. [Here's a good one](https://files.nyu.edu/dm141/public/tutdoc/R_intro/html/Introduction%20to%20R.xhtml#magicparlabel-1311). [Here's another good one](http://compdiag.molgen.mpg.de/ngfn/docs/2003/jan/R-intro.pdf).
+
+In addition to R tutorials, there are [blogs](http://www.r-bloggers.com/) and [online communities](http://stats.stackexchange.com/) where R users can share [questions and answers](http://stackoverflow.com/questions/tagged/r) about the software. Most of the examples that we will see in class were first found [online](http://www.statsblogs.com/) on stats blogs often run by R enthusiasts.
+
+The visualization component of the course can be explored through [Alberto Cairo's selection of resources](http://www.thefunctionalart.com/2012/10/recommended-readings-for-infographics.html) in that area, which branches with infographics and computer science. The most passionate are also referred to John P. Boyd's teaching notes on [Scientific Visualization and Information Architecture](http://www-personal.umich.edu/~jpboyd/ENG503.html).
+
+The [SRQM](http://srqm.tumblr.com/) blog, created for another course, does its best to deliver a regular amount of illustrated links on statistical analysis for the social sciences as well as on data visualization and other related themes.
+
+## Tutorials
+
+> These will teach you something new you take the time to read them.
+
+- Winston Chang, [Cookbook for R](http://wiki.stdout.org/rcookbook/)
+- Robert Kabacoff, [Quick-R](http://www.statmethods.net/)
+- Chi Yau, [R-Tutor](http://www.r-tutor.com/)
+- [GM-RAM tutorials](http://www.wekaleamstudios.co.uk/supplementary-material/) (includes videos)
+- [UCLA statistical guides](http://www.ats.ucla.edu/stat/r/)
+
+## Tools
+
+- [Google Documents](http://docs.google.com/) · take notes
+- [RPubs](http://www.rpubs.com/) · publish reports
+
+If you find useful online resources for this course, please share them on the [course blog](http://srqm.tumblr.com/), using the "[Suggestions](http://srqm.tumblr.com/submit)" link to let the author know about your find. Your submission will be reviewed and published if relevant.

@@ -1,0 +1,19 @@
+<style>@import url(style.css);</style>
+  
+# Basic R objects
+
+In R, everything is an object. The list of objects in memory `ls()` is an object itself, as shown in the example below, which wipes all objects from the workspace:
+  
+```{r clear-workspace, eval=FALSE}
+rm(list=ls());
+```
+
+We're going to use data from the Small Arms Survey on civilian firearms. The data are based on [various sources](http://www.smallarmssurvey.org/fileadmin/docs/H-Research_Notes/SAS-Research-Note-9.pdf) that illustrate how careful we should generally be about the reliability of our data.
+
+- get the matrix
+- extract a vector
+- inspect numbers
+- inspect strings
+- factorize
+- convert to data frame
+- export

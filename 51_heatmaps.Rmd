@@ -1,0 +1,7 @@
+<style>@import url(style.css);</style>
+
+# 5.1. Heatmaps
+
+As a means of introduction to looking at multidimensional data, let's start with heatmaps, [the quick and easy way](http://flowingdata.com/2010/01/21/how-to-make-a-heatmap-a-quick-and-easy-solution/).
+
+> Next: [Principal components](52_pca.html).

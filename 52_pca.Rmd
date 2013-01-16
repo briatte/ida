@@ -1,0 +1,135 @@
+<style>@import url(style.css);</style>
+
+# 5.2. Principal components
+
+Our first statistical method will be principal components analysis (PCA), which consists in finding linear combinations within a set of variables. These combinations form linear equations that can predict some amount of variance in the data. Each equation provides a *principal component*, ranked by the amount of variance that each component predicts.
+
+There's many refinements to this method, as shown by the contents of the [FactoMineR](http://factominer.free.fr/) package. 
+
+```{r pca-additional-plot, echo=FALSE}
+library(ggplot2)
+library(grid)
+
+PCbiplot <- function(PC, x="PC1", y="PC2") {
+    # PC being a prcomp object
+    data <- data.frame(obsnames=row.names(PC$x), PC$x)
+    plot <- ggplot(data, aes_string(x=x, y=y)) + geom_text(alpha=.4, size=3, aes(label=obsnames))
+    plot <- plot + geom_hline(aes(0), size=.2) + geom_vline(aes(0), size=.2)
+    datapc <- data.frame(varnames=rownames(PC$rotation), PC$rotation)
+    mult <- min(
+        (max(data[,y]) - min(data[,y])/(max(datapc[,y])-min(datapc[,y]))),
+        (max(data[,x]) - min(data[,x])/(max(datapc[,x])-min(datapc[,x])))
+        )
+    datapc <- transform(datapc,
+            v1 = .7 * mult * (get(x)),
+            v2 = .7 * mult * (get(y))
+            )
+    plot <- plot + coord_equal() + geom_text(data=datapc, aes(x=v1, y=v2, label=varnames), size = 5, vjust=1, color="red")
+    plot <- plot + geom_segment(data=datapc, aes(x=0, y=0, xend=v1, yend=v2), arrow=arrow(length=unit(0.2,"cm")), alpha=0.75, color="red")
+    plot
+}
+```
+
+```{r multiple-plots, echo=FALSE}
+## Next block from:
+## http://wiki.stdout.org/rcookbook/Graphs/Multiple%20graphs%20on%20one%20page%20(ggplot2)/
+
+# Multiple plot function
+#
+# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
+# - cols:   Number of columns in layout
+# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
+#
+# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+# then plot 1 will go in the upper left, 2 will go in the upper right, and
+# 3 will go all the way across the bottom.
+#
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  require(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+```
+
+Hi.
+
+```{r pca1}
+dat <- USArrests
+# sort by murder rate
+dat <- dat[order(-dat$Murder),]
+# plots
+l0 <- ggplot(dat,aes(y=Murder,x=row.names(dat))) + geom_bar(stat="identity") + coord_flip()
+l1 <- ggplot(dat, aes(x=Assault, y=Murder)) + geom_point()
+l2 <- ggplot(dat, aes(x=UrbanPop, y=Murder)) + geom_point()
+# combine
+multiplot(l0, l1, l2, layout=matrix(c(1,1,2,3), nrow=2, byrow=TRUE))
+```
+
+Stop here.
+
+```{r pca2}
+# pca
+prin <- princomp(dat[-1], cor = TRUE)
+# screeplot
+screeplot(prin, type = "l")
+# biplot
+fit <- prcomp(USArrests, scale=TRUE)
+PCbiplot(fit)
+```
+
+Let's now print the *loadings* of the components. The term "loadings" comes from factor analysis, which is assimilated to PCA in the social science literature. The "loading" of a component shows how much variance it predicts in the data, and from which combination of variables. This is where you might be able to detect some of the most obvious relationships in your data.
+
+```{r pca3}
+loadings(prin)
+```
+
+```{r pca4}
+dat_pca <- as.data.frame(prin$scores)
+dat_pca$y <- dat$Murder
+
+plot(y ~ Comp.1, data = dat_pca)
+```
+
+## Going further: MCA
+
+[MCA plots](https://gastonsanchez.wordpress.com/2012/10/13/5-functions-to-do-multiple-correspondence-analysis-in-r/), using [Joël's function](https://github.com/joelgombin/ggplot.acm).
+
+Example with credit scoring, [by Gaston Sanchez](https://github.com/gastonstat/CreditScoring).
+
+## Limitations
+
+PCA is a non-parametric approach, which means that the accuracy of the procedure is not parametrically proportional to the number of observations in the data. In other words, the method of identifying clusters with PCA is not statistically robust so to speak: the reliability of the results does not scale up with *N*.
+
+Furthermore, [even random data](http://machine-master.blogspot.ca/2012/08/pca-or-polluting-your-clever-analysis.html) can express some degree of linearity, so the degree of accuracy of PCA is not even strictly proportional to the number of variables. Therefore, when you find relationships with PCA, make sure to specify them further and run additional diagnostics on the clusters, as shown in the next section.
+
+> Next: [*k*-means](53_kmeans.html).

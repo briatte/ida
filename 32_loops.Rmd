@@ -1,0 +1,15 @@
+<style>@import url(style.css);</style>
+
+# 3.2. Loops
+
+Suppose you want to remove a letter from a column of data. Now, suppose that you want to remove a letter from 9,000 columns of data. You are going to need a system to do the same thing over and over: you are going to need a loop.
+
+## `for` and `while`
+
+R understands `for` and `while` loops like many other programming languages.
+
+## `apply` functions
+
+Loops are fantastic but can become memory-intensive. R also offers [`apply` functions](http://badhessian.org/loops-matrices-and-apply-functions/) that can usually do what you might want to do with a loop.
+
+> Next: [Probability](33_proba.html).

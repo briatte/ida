@@ -1,0 +1,63 @@
+<style>@import url(style.css);</style>
+  
+# 2.2 Vectors and matrices
+
+Vectors are just lists of numerical values. Let's store a fictional set of student grades in memory under the name `grades`. The resulting object is a vector of values. Then, let's compute the mean, the median, and finally a whole bunch of summary statistics. Note that we will usually import the data rather than generate it manually in later exercises.
+
+```{r grades}
+grade1 <- c(7.5,13,19,8,12)
+mean(grade1)
+median(grade1)
+summary(grade1)
+```
+
+Note that R uses a precise taxonomy of objects, and that even though we just used the word "list" to describe a vector, a *list* is not the same as a *vector*. If you test the `grades` object with the `is.vector` command, the result will be `TRUE`, but it will be `FALSE` if you ask whether `grades` is a list. You can turn `grades` into a list with the `as.list` command.
+
+```{r grades-object}
+is.vector(grade1)
+is.list(grade1)
+as.list(grade1)
+```
+
+We will come back to lists and other object types in a minute. For now, let's concentrate on vectors. If we want to organize some data into a "row by column" structure, we need to use a matrix--a table of numerical values, if you prefer. The `as.matrix` command, which works in the same fashion as the `as.list` command listed above, will turn `grades` into a matrix.
+
+```{r grades-matrix}
+(grades <- as.matrix(grade1))
+```
+
+The extra brackets around the command have printed its results to the Console. This trick saves you from writing `print` commands (or just object names) everywhere in your code, just so that you can check that your commands are working as expected. In this example, we get to see what the `grades` object looks after becoming `grades_matrix`. Let's add something to it:
+  
+  ```{r grades-pass}
+pass1 <- ifelse(grades[,1] >= 10, "Pass", "Fail"); pass1
+grades <- cbind(grade1,pass1); grades
+```
+
+The example uses a semicolon to execute two commands on the same line. The `ifelse` command works pretty much like the `IF` command in spreadsheet editors. The `cbind` commands adds a column to the matrix, using the existing `grades` matrix and the newly created `pass` vector. We will routinely build datasets with such operations.
+
+Let's continue by adding a unique identifier to each row, in case we later shuffle the data.
+
+```{r grades-id}
+(id <- c(1:nrow(grades)))          # create a numbered sequence 1, 2, 3, ...
+(grades <- cbind(id,grades))       # add to the matrix
+grades # final result
+```
+
+Note how the parts that start with a hash are not command but *comments*. We will need a *lot* of comments in our code to document what we do: here, the `c(1:k)` command creates a sequence of numbers in the form of a vector of length `k`, where `k` is the number of rows in the `grades` matrix. The `seq(1:5)` command would provide the same result.
+
+```{r grades-explore}
+grades[1,2]  # first row, second cell
+grades[1,]   # first row
+grades[1:2,] # first two rows
+grades[,3]   # third column
+```
+
+Let's finally add a column of random grades, compute the average for every row, and sort the data by ascending average. This ends our quick tour of how vectors and matrices work (together), but the lab session for this week goes into more detail. *Please make sure that you practice at home on the weekly lab session!* You will need that practice to become familiar with R.
+
+```{r grades-mean}
+grade2 <- round(20*runif(9),1) # random vector of length 9
+grades <- cbind(grades, grade2); grades 
+grades[,4] <- NULL
+grades <- as.data.frame(grades); grades # convert to data frame
+```
+
+[Cheat sheet of matrix operations](https://gastonsanchez.wordpress.com/2012/08/30/cheat-sheet-of-matrix-operations-in-r/).

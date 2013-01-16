@@ -1,0 +1,11 @@
+<style>@import url(style.css);</style>
+
+# Google Maps
+
+The techniques described below require a [Google account](http://www.google.com/accounts/).
+
+Google has a ton of useful tools for mapping stuff. The easiest tool is probably the [intensity map](http://www.gastonsanchez.com/projects/crunching-data/intensity-map), which takes less than five minutes to produce, using a Google Fusion Table.
+
+[Quick maps from Google Charts data](http://spatialanalysis.co.uk/2011/02/using-r-to-map-with-google-chart-tools/) and [Google Maps API control](http://andy.egge.rs/research.html). Examples of maps [with ggplot2](http://is-r.tumblr.com/post/37708137014/us-state-maps-using-map-data).
+
+> Next: .

@@ -1,0 +1,19 @@
+<style>@import url(style.css);</style>
+  
+# Readings
+
+There are three sources of documentation for this course: handbooks, online pages, and internal R documentation. Handbook chapters are assigned weekly to provide students with a learning baseline, and independent study of online material is greatly encouraged. Do not expect to become an expert (we are not): just learn as much as you can.
+
+## Course handbooks
+
+> Handbook chapters should be read *before* each course session.
+
+- Robert Kabacoff, *[R in Action](http://www.manning.com/kabacoff/)* (Manning, 2011)
+- Paul Teetor, *[R Cookbook](http://shop.oreilly.com/product/9780596809164.do)* (O'Reilly, 2011)
+
+## Additional readings
+
+> These books go further than what we will explore, but serve as good examples of what you can learn to do with more advanced computing and visualization skills.
+
+- Norman Matloff, *[The Art of R Programming](http://nostarch.com/artofr.htm)* (No Starch Press, 2011)
+- Nathan Yau, *[Visualize This](http://book.flowingdata.com/)* (Wiley 2011)

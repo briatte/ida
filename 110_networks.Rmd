@@ -1,0 +1,7 @@
+<style>@import url(style.css);</style>
+
+# 11. Networks
+
+Networks are a common aspect of your daily life, and since you have been logging your network of friends and colleagues on services like Facebook or [LinkedIn](http://inmaps.linkedinlabs.com/), there are tons of data available. There is also a large amount of research on networks with [tough questions](http://masi.cscs.lsa.umich.edu/~crshalizi/weblog/773.html), such as the analytical difference between homophily (connecting to those like us) and contagion (becoming like our connections). We will stick to description and simple measures of influence.
+
+There are several software options for network analysis, like [Gephi](https://gephi.org/), [Pajek](http://quanti.hypotheses.org/512/) or [VOSON](http://voson.anu.edu.au/) (for hyperlink networks). We will stay in R and use the `sna` and `igraph` libraries, which use [different but compatible formats](http://groupefmr.hypotheses.org/363) to store network data. Some examples will be taken from [Baptiste Coulmont's graphs](http://coulmont.com/index.php?s=igraph) of small cliques.

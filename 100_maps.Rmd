@@ -1,0 +1,18 @@
+<style>@import url(style.css);</style>
+
+# Maps
+
+Spatial visualization
+
+<!-- require(maps)
+require(ggplot2)
+eu <- map_data("world")
+feu <- eu$region %in% c("USA","Russia","China","India")
+eu <- eu[feu,]
+qplot(long, lat, data=eu, geom="polygon", fill=region, group=group) -->
+
+<!-- choropleth and proportional circles
+http://quanti.hypotheses.org/795/
+-->
+
+> Next: .
