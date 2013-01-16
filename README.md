@@ -12,7 +12,7 @@ __You need to run the `.Rprofile`__ contained in the directory to define some of
 
 Not even alpha. I would be surprised if anything works so far.
 
-Veeery open to suggestions.
+I am *very* open to suggestions at that stage, especially since I could not get the CSS file to be automatically included in the HTML rendering.
 
 ## TODO
 
