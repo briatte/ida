@@ -3,40 +3,85 @@
 
 # 1.1. R
 
-[R](http://www.r-project.org/) is a software that uses a specific language to manipulate statistical objects. Researchers and statisticians are [increasingly](http://r4stats.com/articles/popularity/) adopting R as their software of choice, and the R user base goes well beyond academia. There is a lively R [blogging scene](http://www.r-bloggers.com/), tons of support on websites such as [StackOverflow](http://stackoverflow.com/questions/tagged/r), and many [R User Groups](http://www.r-bloggers.com/RUG/) exist on a [worldwide scale](http://blog.revolutionanalytics.com/local-r-groups.html).
+[R](http://www.r-project.org/) is a software that uses a specific language to manipulate statistical objects. Researchers and statisticians are [increasingly](http://r4stats.com/articles/popularity/) adopting R as their software of choice, and the R user base goes well beyond academia. Many [R User Groups](http://www.r-bloggers.com/RUG/) exist on a [worldwide scale](http://blog.revolutionanalytics.com/local-r-groups.html).
 
-The R language has its roots in the S language developed by AT&T, which also developed the C language. It is not the only possible language for statistical analysis: there are [quite a few software options](http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/) for data analysis. R is as free as it is powerful, but it comes with [some drawbacks](http://badhessian.org/seven-reasons-to-use-r-for-social-network-analysis-and-three-reasons-against/#more-446), and the major disadvantage here is that its learning curve is pretty steep. Do not panic: we'll see as many examples as we need to make it work.
+Some people *really* like R. This very enthusiastic user is [Anthony Damico](https://github.com/ajdamico), a [prolific](http://www.ajdamico.com/p/work.html) and [proficient](http://www.asdfree.com/) analyst of U.S. survey data working at the Kaiser Family Foundation. His video mentions other programming and statistical languages:
 
-Install the latest version of R. You will need admin privileges on your computer to do so, and if you need help, turn to a video tutorial [for Mac](http://www.youtube.com/watch?v=ffG6jwM-8NQ) or [for Windows](http://www.youtube.com/watch?v=3zEbzZ9PqBo). Then open R and identify the __working directory__, which is R will look if you try to open or save stuff. This directory needs to point to course folder so that it can load the course material from there.
+<iframe src="http://player.vimeo.com/video/52999628?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+The R language has its roots in the S language developed by AT&T, which also developed the C language. It is not the only language available for statistical analysis: there are [quite a few options](http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/), and you might also hear about Python, SAS, SPSS or Stata (which we also teach).
+
+R is as free as it is powerful, but it comes with [some drawbacks](http://badhessian.org/seven-reasons-to-use-r-for-social-network-analysis-and-three-reasons-against/#more-446). Its major disadvantage is that its learning curve is pretty steep. Do not worry: we will review as many examples as we need to make it work, and we will give you code to help creating your own.
+
+## Installation
+
+Now, download  and install the latest version of R. You will need admin privileges on your computer (i.e. the user login and password) to do so. R is free and available for all platforms.
+
+The R development team maintains [a website](http://www.r-project.org/), but you will download R from a different source, based in Wien, Austria. The download link depends on your operating system:
+
+- __For Mac OS X__, [download from this link](http://cran.at.r-project.org/bin/macosx/), double-click it, say "OK" to all installation steps. You can also watch this [excellent video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) by Gordon Davis, which also covers RStudio.
+- __For Windows__, [download from this link](http://cran.at.r-project.org/bin/windows/base/), which also has a few help pages. [This video tutorial](https://www.youtube.com/watch?v=ZoPJGmpYJzw&list=UUGNPKRpfVnngmcsC3a3brrg&index=11) can help with the installation and shows a few more things.
+
+__Do not panic__ if you do not manage to install R and RStudio on your own, just bring your laptop and we will guide you through it in class.
 
 ## Commands
 
-The next step is to locate the console, where you will type commands and read their results. The following example shows how to store a text object and a numerical object, and how to print them as a vector that ends with a missing value, which are coded as `NA` in R:
+Open R and locate the blinking cursor preceded by a `>` at the bottom of the Console window. This is where you will type commands and read their results. Type the following examples to print some text and numeric results:
 
-```{r hello}
-txt <- "Hello World!"
-num <- (8^2)/5
-print(c(txt,num,NA))
+```{r very-first-commands, results='hide'}
+"hello world"
+1 + 2
 ```
 
-Let's go through all parts of this example. The basic `<-` operator performs an **allocation** of value `"Hello World!"` to the object `txt`. Text objects are called strings. The same operation is repeated with a numerical result to the `num` object. We then bind these objects together with the `c()` command that creates a **vector** with the `txt` and `num` values, followed by a missing value. The result is specifically shown on screen with the `print()` command, but this command can also be omitted.
+The Console window should now look something like this (with icons at the top in your case):
 
-In class, we will show how to use common mathematical functions in R, and how to manipulate simple objects like sequences, vectors and matrixes. Our practice session will be used to setup all laptops and to introduce the software interface.
+![R, very first commands](images/r-very-first-commands.png)
+
+Now type each command below in this order; skip the comments that start with a `#` hash. When you finish typing a line, press `Enter` to execute, or 'run', its command. If you get an error message, press `UpArrow`, check your typing against the original, correct it and try again.
+
+```{r hello}
+# Create a text object, called 'txt'.
+txt <- "Hello World!"
+# Create a numeric object, called 'num'.
+num <- (8^2)/5
+# Combine both objects into a vector, called 'msg'.
+msg <- c(txt,num)
+# Print the vector object 'msg' on screen.
+print(msg)
+# More simply, just type its name and press Enter.
+msg
+```
+
+Let's go through all parts of this example. The basic _operator_ `<-` _assigns_ the _value_ `"Hello World!"` to the _object_ `txt`. Text objects are called _strings_. The same operation is repeated with a numerical result to the `num` object.
+
+We then bind these objects together with the `c()` command that creates a _vector_ with the `txt` and `num` values. The result is shown on screen with the `print()` command, but this command can also be omitted by just typing the name of the object.
+
+## Scripts
+
+Code is impossible to remember, and you want to save as well as share your work. Let's see how to run a R script. Press &#8984;-N (Mac) or `Ctrl-N` (Win) to open a blank R document, called a script, then [click this link](https://gist.github.com/4555856) and click again the top-right `<>` icon:
+
+![Gist, view raw code](images/gist-raw.png)
+
+Select all code and copy it, either by clicking as explained above, or by [clicking this link](https://gist.github.com/raw/4555856/489abfb6b0de6d7d8d303e5504bdec4d6f69cbe5/hello.r) to view the raw source directly. Now paste that into your blank R script window. Finally, select all lines with &#8984;-A (Mac) or `Ctrl-A` (Win) and press &#8984;-Enter (Mac) or `Ctrl-Enter` (Win) to run.
+
+You have just executed your first R script. You will get used to all these operations pretty soon, as you get familiar with R syntax and learn to use R scripts, which are just plain text files that end with the `.r` extension.
 
 ## Packages
                                                                                                                                                                                                                                                                                                                                                                                                                  
-Some particular commands need to be installed into R to work. This might be done through compressed archives of packages, or through the online [CRAN](http://cran.r-project.org/) central repository. This makes the software modular and has encouraged the development of packages for statistics and visualization by a wide audience of R programmers.
+Some particular commands need to be installed into R to work. This might be done through compressed archives of packages, or through the online [CRAN](http://cran.r-project.org/) central repository. This makes the software modular and has encouraged the development of thousands of R packages.
 
 ```{r default-packages}
 # The default packages.
 getOption("defaultPackages")
 ```
 
+The command above requires that the `O` in `getOption` is typed in uppercase. R is case-sensitive: we will come back to that next week when we review command syntax in more detail.
+
 Let's install a few packages from a short list, and precede that with a comment on a separate line, which needs to start by `#` to be recognized as such by R:
 
 ```{r installing, eval=FALSE, include=TRUE}
 # Install additional packages.
-list <- c("ggplot2","knitr")
+list <- c("ggplot2", "knitr")
 install.packages(list)
 ```
 
@@ -48,5 +93,13 @@ library(knitr)
 ```
 
 If we ever need to update these packages, we will simply type `update.packages()` and then agree to the updates that it suggests by comparing local versions of the packages with their online CRAN repository version.
+
+## Post-scriptum
+
+R can do a lot of things, including waiting for you to make coffee:
+
+<iframe src="http://player.vimeo.com/video/43305640?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+More seriously, a big drawback of R is its barebones interface. We can fix that by installing a software that 'pilots' R through better menus and windows.
 
 > Next: [RStudio](12_rstudio.html).

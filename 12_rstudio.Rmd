@@ -3,13 +3,20 @@
 
 # 1.2. RStudio
 
-Packages and other aspects of R are easier to handle in [RStudio](http://rstudio.org/), a programming environment for R that adds many useful features to R, including dynamic report generation with [Markdown](http://daringfireball.net/projects/markdown/), which we will cover later. A work session in RStudio that takes advantage of all these capabilities will look like this (click to zoom):
+Packages and other aspects of R are easier to handle in [RStudio](http://rstudio.org/), a software interface for R that adds many useful features to R. A work session in RStudio that takes advantage of all these capabilities will look like this (click to zoom):
   
 [![An example work session in RStudio.](images/rstudio-screenshot.png)](images/rstudio-screenshot.png)
 
 The top-left quadrant contains one file, `syllabus.Rmd`, which is the original version of this document. It contains code, comments and even text--all of which are weaved together by a package called [knitr](http://yihui.name/knitr/) that offers a way to go from coding to publishing HTML pages with syntax-coloured code chunks. RStudio helps by connecting that interface to [RPubs](http://www.rpubs.com/), which enables anyone to publish code and results in a few clicks.
 
-The bottom-left quadrant is the console, where most results are printed out. The right-hand-side panels show the objects, files, plots and help pages in current use. There are many customizations and shortcuts in the software: for a brief overview, see Ricardo Pietrobon's [video introduction](http://www.youtube.com/watch?v=eL8qFKnTS6I). In class, we will start with a much simpler workflow and then upgrade it to dynamic report generation.
+The bottom-left quadrant is the console, where most results are printed out. The right-hand-side panels show the objects, files, plots and help pages in current use. There are many customizations and shortcuts in the software: for a brief overview, see Ricardo Pietrobon's [video introduction](http://www.youtube.com/watch?v=eL8qFKnTS6I). In class, we will start with a much simpler workflow and then perhaps do some dynamic report generation.
+
+## Installation
+
+Use [this link](http://www.rstudio.com/ide/download/desktop) to download RStudio.
+
+- __For Mac OS X__, [Gordon Davis' video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) covers quite a lot of basic ground with RStudio.
+- 
 
 ## Interface
 
@@ -52,7 +59,9 @@ You might want to upgrade your version of RStudio to make sure that you keep the
 
 ## Troubleshooting
 
-There's a few [known issues](http://support.rstudio.org/help/kb/troubleshooting/troubleshooting-guide-using-rstudio) with RStudio. When the problem concerns code execution, you should [start by running the code in R](http://support.rstudio.org/help/kb/troubleshooting/r-code-is-not-working) to see if the problem replicates. Other known issues can affect, for instance, [package installation](http://support.rstudio.org/help/kb/troubleshooting/problem-installing-packages), in which case the easiest workaround is usually to try another CRAN repository.
+There's a few [known issues](http://support.rstudio.org/help/kb/troubleshooting/troubleshooting-guide-using-rstudio) with RStudio. For instance, Mac OS X users with older 32-bit processors from circa 2009 will have to use an old version that is not available any more (but we have a copy).
+
+When the problem concerns code execution, you should [start by running the code in R](http://support.rstudio.org/help/kb/troubleshooting/r-code-is-not-working) to see if the problem replicates. Other known issues can affect, for instance, [package installation](http://support.rstudio.org/help/kb/troubleshooting/problem-installing-packages), in which case the easiest workaround is usually to try another CRAN repository.
 
 A deeper issue arises if you want to use the `View()` command in RStudio on Mac OS X. For the command to work, you will have to install [XQuartz](http://xquartz.macosforge.org/landing/) yourself, as it is not bundled anymore with the rest of the OS by default. Alternately, use `rstudio::viewData(whatever_dataset)` by double-clicking the data in your Workspace.
 

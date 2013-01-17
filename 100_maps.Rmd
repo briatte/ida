@@ -3,7 +3,7 @@
 
 # Maps
 
-Spatial visualization
+Spatial visualization can be [pretty complex](http://youtu.be/XU6-krsDviY), because you have to learn new measures that apply in geographic contexts. We will stick to simply viewing the data on a map.
 
 <!-- require(maps)
 require(ggplot2)

@@ -3,7 +3,7 @@
 
 # Links
 
-This courses uses the R software, and you will find a lot of links in these pages. That is because the course heavily relies on [examples posted online](http://www.statsblogs.com/) by R enthusiasts, many of whom are professionals from all horizons, from academia to finance to government.
+This courses uses the R software, and you will find a lot of 'R links' in these pages. That is because the course heavily relies on [examples posted online](http://www.statsblogs.com/) by R enthusiasts, many of whom are professionals from all horizons, from academia to finance to government.
 
 ## Tutorials
 
@@ -14,10 +14,16 @@ These tutorials will teach you something new you take the time to read them:
 - Winston Chang, [Cookbook for R](http://wiki.stdout.org/rcookbook/) (very good on graphics)
 - Robert Kabacoff, [Quick-R](http://www.statmethods.net/) (our favourite reference)
 - Chi Yau, [R-Tutor](http://www.r-tutor.com/) (includes basic and more complex techniques)
-- [GM-RAM tutorials](http://www.wekaleamstudios.co.uk/supplementary-material/) (includes videos)
-- [UCLA statistical guides](http://www.ats.ucla.edu/stat/r/) (more statistically demanding)
+- UCLA, [Resources to help you learn and use R](http://www.ats.ucla.edu/stat/r/) (stats and more)
 
 You can see from the links above that R is being taught a bit everywhere in the United States and increasingly in Europe. There are a few initiatives in France, including courses at Sciences Po and a [user group](https://fltaur.wordpress.com/) run by [Ensae](http://www.ensae.fr/) and [Insee](http://www.insee.fr/fr/) users.
+
+If you like video tutorials, we will link to a few of them, and in particular:
+
+- [Anthony Damico](http://www.twotorials.com/) (the "fast and furious" approach)
+- [GM-RAM staff](http://www.wekaleamstudios.co.uk/supplementary-material/) (covers base graphics well)
+- [Gordon Davis](https://www.youtube.com/playlist?list=PL8BE0E317807A9A21) (covers data operations well)
+- [User Tutorlol](https://www.youtube.com/playlist?list=PL69A9CCD816A5F3A5) (covers a bit of everything)
 
 ## Blogs
 

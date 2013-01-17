@@ -112,6 +112,8 @@ install.packages("randomNames")
 read.csv("data/grades.csv")
 ```
 
-
-
 [Cheat sheet of matrix operations](https://gastonsanchez.wordpress.com/2012/08/30/cheat-sheet-of-matrix-operations-in-r/).
+
+## Getting started with graphs
+
+Let's produce [a few plots](http://flowingdata.com/2012/12/17/getting-started-with-charts-in-r/) from fake data vectors.

@@ -3,12 +3,44 @@
 
 # Setup
 
-## GitHub
+As mentioned in the introductory pages, this course uses R, a free and open source software used by data analysts in many different contexts. The first fifteen minutes of this Google TechTalk by [Hadley Wickham](http://had.co.nz/) explains why use R for data analysis:
 
-For this course, you will need to download a pack of code and data files from a GitHub repository.
+<iframe width="800" height="450" src="https://www.youtube.com/embed/TaxJwC_MP9Q?rel=0" frameborder="0" allowfullscreen></iframe>
 
-## Gist
+In the next pages, we explain how to set up R and RStudio for the course. Before we do that, let's review the other tools that you will need to use in this class.
 
-GitHub also offers Gist, a handy way to share code. We will use it in class.
+## Computer equipment
 
-Create an account and join the `ida13` organization.
+You will need to bring a fairly recent laptop to class. Do not forget to bring your battery charger, as well as a USB stick in case the wifi fails us or if we have to share large files.
+
+We can offer support for Mac OS X and Windows computers, as well as standard Linux distributions. It should be possible to run the course on all these platforms.
+
+Recent computers run 64-bit processors, but it should also be possible to run the course on a 32-bit processor. More details when we install RStudio.
+
+It is recommended that you use a laptop with a decent amount of disk space and memory. 'Mini' laptops can unfortunately be fairly restrictive in these regards.
+
+## Internet browsers
+
+The course requires that you use a modern and secure browser like [Apple Safari](https://www.apple.com/safari/), [Google Chrome](http://www.google.com/chrome) or [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/). Everything but Microsoft Internet Explorer should do.
+
+Some browsers modify the names of the files that you download when their extension is unrecognized. If your browser adds `.txt` at the end of `.r` script files, rename them to just `.r`.
+
+## Course material
+
+Some of the files for this course will reach you through [ENTG group 58101](http://entg.sciences-po.fr/nui/virtualoffice.jsp#tool=docs&folderoid=11529888), so make sure that you have ENTG access and check the course emails for what to download from there.
+
+By the end of the course, you will be able to download the final version of all the course pages from [its GitHub repository](https://github.com/briatte/ida). [GitHub](https://github.com/) is a code hosting platform.
+
+## Gist and RPubs
+
+GitHub also offers [Gist](https://gist.github.com/), a handy way to share code. We will use it in class to share code "snippets" -- short bits of code to prepare data or draw a plot.
+
+You can use Gist anonymously, or create an account and join the [`ida13`](https://github.com/ida13) organization. [Creating a GitHub account](https://github.com/signup?return_to=gist) is free and makes finding your code much easier than if you do not register.
+
+Finally, we might play a bit with [RPubs](http://rpubs.com/) if we get to the point of publishing projects. RPubs is a straightforward publishing platform that can be operated [directly from RStudio](http://youtu.be/XqzHnYLr5BE). Maybe later…
+
+## Google accounts
+
+Finally, if you have a [Google account](https://www.google.com/accounts/), this will be useful to use tools like [Google Documents](https://docs.google.com/) or [Google Fusion Tables](http://www.google.com/fusiontables).
+
+> Next: [setting up R](11_r.html).

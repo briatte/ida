@@ -29,7 +29,7 @@ file.remove(dir(pattern="[0-9]+(.*)\\.md"))
 # get files
 all <- dir(pattern="[0-9]+(.*).Rmd")
 # subset pages (temporary)
-all <- all[1:3]
+all <- all[c(1:4,8,13,15)]
 # knitr setup
 opts_knit$set(header="foobar")
 opts_chunk$set(fig.path = "plots")
