@@ -1,4 +1,5 @@
 <style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
 
 # Probability density functions
 

@@ -1,5 +1,6 @@
 <style>@import url(style.css);</style>
-  
+<small>[Introduction to Data Analysis](index.html)</small>
+
 # 2.1. Command syntax
 
 R is a programming environment in which you can submit instructions for the software to execute, or "run". To type a command, move your cursor to the Console with `Ctrl-1` in RStudio, type in some command, and press `Enter`. Do not worry if you get an error, it will not break anything.
@@ -12,7 +13,7 @@ R will generally print results without you asking through the `print` command. N
 
 There is often more than one way to get what you want from R:
   
-  ```{r cat}
+```{r cat}
 cat("Hello World! Today is",date())
 ```
 

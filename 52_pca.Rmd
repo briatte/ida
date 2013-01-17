@@ -1,8 +1,15 @@
 <style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
 
 # 5.2. Principal components
 
 Our first statistical method will be principal components analysis (PCA), which consists in finding linear combinations within a set of variables. These combinations form linear equations that can predict some amount of variance in the data. Each equation provides a *principal component*, ranked by the amount of variance that each component predicts.
+
+## Clusters
+
+[Correlation as a distance in markets](https://systematicinvestor.wordpress.com/2013/01/12/examples-of-current-major-market-clusters/).
+
+## PCA
 
 There's many refinements to this method, as shown by the contents of the [FactoMineR](http://factominer.free.fr/) package. 
 

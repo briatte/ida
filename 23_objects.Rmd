@@ -1,5 +1,6 @@
 <style>@import url(style.css);</style>
-  
+<small>[Introduction to Data Analysis](index.html)</small>
+
 # Basic R objects
 
 In R, everything is an object. The list of objects in memory `ls()` is an object itself, as shown in the example below, which wipes all objects from the workspace:

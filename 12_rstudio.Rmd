@@ -1,4 +1,5 @@
 <style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
 
 # 1.2. RStudio
 
@@ -17,6 +18,8 @@ The RStudio interface has several panels and functions that you will not need, b
 ### Setting the working directory
 
 Use the `setwd()` command to set the working directory to a given folder path, or use the 'Tools > Set working directory > Choose...' menu item (shortcut: Cmmd-Shift-K on Mac OS X). You can also browse the 'Files' panel and use the 'Set as working directory' item in the 'More' menu.
+
+<!-- http://blog.echen.me/2012/01/17/quick-introduction-to-ggplot2/ -->
 
 ### Viewing and running code
 

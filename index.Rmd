@@ -19,7 +19,7 @@ if(!file.exists("code")) dir.create("code")
 if(!file.exists("data")) dir.create("data")
 ```
 
-```{r run-course, echo=FALSE, results='hide', message=FALSE, eval=FALSE}
+```{r run-course, echo=FALSE, results='hide', message=FALSE, eval=TRUE}
 library(foreach)
 library(knitr)
 # clean up
@@ -28,7 +28,10 @@ file.remove(dir(pattern="[0-9]+(.*)\\.html"))
 file.remove(dir(pattern="[0-9]+(.*)\\.md"))
 # get files
 all <- dir(pattern="[0-9]+(.*).Rmd")
+# subset pages (temporary)
+all <- all[1:3]
 # knitr setup
+opts_knit$set(header="foobar")
 opts_chunk$set(fig.path = "plots")
 # full monty!
 foreach(i=1:length(all)) %do% knit2html(all[i])
@@ -47,21 +50,21 @@ Absolutely. Start reading below.
 
 - [Introduction](01_intro.html)
 - [Readings](02_readings.html)
-- [More links](03_links.html)
+- [Links](03_links.html)
 
 ## 1. [Setup](10_setup.html)
 
-> __Readings:__ Kabacoff, ch. 1 and Teetor, ch. 1 and 3.
+__Readings:__ Kabacoff, ch. 1 and Teetor, ch. 1 and 3.
 
 - [Installing R](11_r.html)
 - [Installing RStudio](12_rstudio.html)
-- [Reading help pages](13_help.html)
+- [Help pages](13_help.html)
 
 * * *
 
 ## 2. [Basic R operators](20_rbasics.html)
 
-> __Readings:__ Teetor, ch. 2 and 5.
+__Readings:__ Teetor, ch. 2 and 5.
 
 - [Command syntax](21_syntax.html)
 - [Vectors and matrices](22_vectors.html)
@@ -71,7 +74,7 @@ Absolutely. Start reading below.
 
 ## 3. [Basic math operators](30_math.html)
 
-> __Readings:__ Kabacoff, ch. 5, and Teetor, ch. 8. We will also use content from Matloff, ch. 8.
+__Readings:__ Kabacoff, ch. 5, and Teetor, ch. 8. We will also use content from Matloff, ch. 8.
 
 - [Functions](31_functions.html)
 - [Loops](32_loops.html)
@@ -81,7 +84,7 @@ Absolutely. Start reading below.
 
 ## 4. [Basic data operators](40_data.html)
 
-> __Readings:__ Kabacoff, ch. 4, and Teetor, ch. 4 and 6. For additional manipulations with text strings and dates, see Teetor, ch. 7.
+__Readings:__ Kabacoff, ch. 4, and Teetor, ch. 4 and 6. For additional manipulations with text strings and dates, see Teetor, ch. 7.
 
 - [Import/Export](41_dataio.html)
 - [Reshaping](42_reshaping.html)
@@ -91,7 +94,7 @@ Absolutely. Start reading below.
 
 ## 5. [Clusters](50_clusters.html)
 
-> __Readings:__ Kabacoff, ch. 14, and Teetor, ch. 13.4, 13.6 and 13.9.
+__Readings:__ Kabacoff, ch. 14, and Teetor, ch. 13.4, 13.6 and 13.9.
 
 - [Heatmaps](51_heatmaps.html)
 - [Principal components](52_pca.html)
@@ -101,7 +104,7 @@ Absolutely. Start reading below.
 
 ## 6. [Distributions](60_distributions.html)
 
-> __Readings:__ Kabacoff, ch. 6, and Teetor, ch. 10.
+__Readings:__ Kabacoff, ch. 6, and Teetor, ch. 10.
 
 - [Descriptive statistics](61_descr.html)
 - [Probability density functions](62_pdf.html)
@@ -111,7 +114,7 @@ Absolutely. Start reading below.
 
 ## 7. [Hypothesis tests](70_hyptests.html)
 
-> __Readings:__ Kabacoff, ch. 7, and Teetor, ch. 9.
+__Readings:__ Kabacoff, ch. 7, and Teetor, ch. 9.
 
 - [Confidence intervals](71_ci.html)
 - [Comparison of means](72_ttest.html)
@@ -119,9 +122,9 @@ Absolutely. Start reading below.
 
 * * *
 
-## 8. [Linear models](80_lm.html)
+## 8. [Linear models](80_lin.html)
 
-> __Readings:__ Kabacoff, ch. 8 and 11, and Teetor, ch. 11. Skip ANOVA to focus on OLS.
+__Readings:__ Kabacoff, ch. 8 and 11, and Teetor, ch. 11. Skim ANOVA to focus on OLS.
 
 - [Correlation and scatterplots](81_scatterplots.html)
 - [Linear regression](82_regression.html)
@@ -131,7 +134,7 @@ Absolutely. Start reading below.
 
 ## 9. [Visualization in time: Time series](90_ts.html)
 
-> __Readings:__ Teetor, ch. 14. We will skip vector autoregression, so you can gently neglect Sections 14.18-*sq.* on ARIMA models.
+__Readings:__ Teetor, ch. 14. ARIMA models are highly relevant for finance students.
 
 - [Annotating time series](91_tsnotes.html)
 - [Autocorrelation](92_corrgram.html)
@@ -141,7 +144,7 @@ Absolutely. Start reading below.
 
 ## 10. [Visualization in space: Maps](100_maps.html)
 
-> __Readings:__ .
+__Readings:__ none. Online material will be provided instead.
 
 - [Electoral maps](101_emaps.html)
 - [Google Maps](102_gmaps.html)
@@ -150,7 +153,7 @@ Absolutely. Start reading below.
 
 ## 11. [Networks](110_networks.html)
 
-> __Readings:__ .
+__Readings:__ .
 
 - [Network visualization](111_networks.html)
 - [Measures of influence](112_influence.html)
@@ -172,4 +175,4 @@ Special thanks to the Sciences Po Reims staff for indefectible support.
 
 __Inspired by__ [Christopher Adolph](http://faculty.washington.edu/cadolph/index.php?page=22), [Dave Armstrong](http://quantoid.net/ICPSRR.html), [Christopher Gangrud](https://github.com/christophergandrud/Introduction_to_Statistics_and_Data_Analysis_Yonsei/), [Andrew Gelman](http://andrewgelman.com/2012/12/textbook-for-data-visualization/), [Rebecca Nugent](http://www.stat.cmu.edu/~rnugent/teaching/introR/), [Gaston Sanchez](https://gastonsanchez.wordpress.com/), [David Sparks](http://is-r.tumblr.com/), [Hadley Wickham](http://had.co.nz/ggplot2/).
 
-This course has its own [GitHub repository](/); fork at will.
+This course has its own [GitHub repository](https://github.com/briatte/ida); fork at will.

@@ -1,63 +1,81 @@
 <style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
 
 # Introduction
 
-This is a course on data analysis. We think that you will like this course if you enjoy facts, graphics and being able to make things by yourself.
+This is an introductory-level course on data analysis. We think that you will like this course if you enjoy facts, graphics and being able to make things by yourself. You will also need to enjoy computing and statistics to some extent: do not be afraid, neither bite.
 
 ## How we got there
 
-(Skip to where it says "tl;dr" if you are already bored.)
-
 We had four different ideas before we launched the course in its current form.
 
-__The first idea__ was that this optional course should pick you up where your first-semester mathematics and economics courses left you. Since both courses brushed upon linear models as part of their programme on empirical methods, we thought: "Let's write an introductory stats course that builds around linear models, with some background and extensions."
+__Our first idea__ was to offer an optional course that would pick you up where your first-semester mathematics and economics courses left you. Since both courses brushed upon linear models as part of their programme on empirical methods, we thought: "Let's write an introductory stats course that builds around linear models, with some background and extensions."
 
-(Linear models are a class of statistical techniques usually referred to as "linear regression".)
+(Linear models are a class of statistical techniques usually referred to as "linear regression". We come back to [linear models](80_lin.html) during the course.)
 
-__The second idea__ was that this course should be a practice module, a workshop if you like, where you would learn to actually compute some of the stuff that you saw in slides and handbooks during your first term. Since the course is new, we thought: "Let's write an introductory stats course using a free, open source product that students can keep using their whole lives."
+__Our second idea__ was that this course should function as a workshop where you would learn to produce some of the analysis that you saw in slides and handbooks during your first term. Since the course is new, we thought: "Let's write an introductory stats course using a free software that students can keep using their whole lives."
 
-At that stage, we decided to write the course with R, the software that we will talk about more in later sections.
+At that stage, we decided to write the course with R, a software that we will present at more length in [a later section](10_r.html). R is taught at several universities around the world.
 
-__The third idea__ derived from the complexity of R, which is less a "stats software" than a *statistical computing* software. You can reach pretty deep into programming with R, and this shows up in the way that you need to operate it to make things happen. Since this could also appeal to some, we thought: "Let's write an introductory stat computing course."
+__Our third idea__ derived from the complexity of R, which is less a "stats software" than a statistical *computing* software. You can reach pretty deep into programming with R, and this shows up in the way that you need to operate it to make things happen. Since this could also appeal to some, we thought: "Let's write an introductory stat computing course."
 
-(Statistical computing means using your computer to analyze data. [Here's what it looks like](http://www.stat.cmu.edu/~cshalizi/statcomp/) for people your age who study statistics.)
+(Statistical computing means using your computer to analyze data. [Here's what it looks like](http://www.stat.cmu.edu/~cshalizi/statcomp/) for people your age who study statistics at Carnegie Mellon University.)
 
 __The fourth idea__ came from the quick realisation that we were riding several horses at once: statistics, computing, visualization and social science. So we thought: "Let's write a (whatever) course with R, and give it a name later on." That name ended up being "data analysis".
 
 You'll see that the course still tastes a bit like all of the ideas above: there's a bit of math, lots of stats, tons of computing, and, we hope, even more graphs. But fundamentally, we want to make it a course about data analysis, and have you learn a set of skills in this area.
 
-__tl;dr:__ ... So, what is data analysis? Here's Jeff Leek's take on it.
+__So, what is data analysis?__
 
+Here's [a video](https://www.youtube.com/watch?v=4gIzG-tB22o) by Jeff Leek, an assistant professor in the Biostatistics Department of the Johns Hopkins Bloomberg School of Public Health. The video explains how data analysis relates to other study topics.
 
+<iframe width="800" height="600" src="https://www.youtube.com/embed/4gIzG-tB22o?rel=0" frameborder="0" allowfullscreen></iframe>
 
-We'll pursue the following teaching goals:
+Jeff Leek blogs at [Simply Statistics](http://simplystatistics.org/), where his fellow biostatistician Rafael Irizarry has recently explained [why statistics is not mathematics](http://simplystatistics.org/2013/01/11/nsf-should-understand-that-statistics-in-not-mathematics/), On that topic, see also the [links posted by Jerzy Wieczorek](http://civilstat.com/?p=1165), a statistician working at the U.S. Census Bureau.
 
-1. __The primary aim of the course__ is to provide you with some skills to understand how statistical computing can contribute to the visualization and analysis of real-world data.
-2. __The secondary aim of the course__ is to show you how a healthy dose of programming can help taking into account large amounts of evidence about the economy, politics and society.
+Here's another 20-minute video by Hans Rosling that will teach you some amazing vital statistics, and also explain how "liberating data" matters for development and organizations like the United Nations, the World Bank, NGOs and national or local governments:
+
+<iframe width="800" height="600" src="https://www.youtube.com/embed/hVimVzgtD6w?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Hans Rosling and his son developed [Gapminder](http://www.gapminder.org/), a fantastic tool to animate data. Rosling is the main protagonist in the BBC documentary *[The Joy of Stats](https://www.youtube.com/watch?v=jbkSRLYSojo)*. He says: "I kid you not, statistics is now the sexiest subject on the planet". [The *New York Times* agrees](http://www.nytimes.com/2009/08/06/technology/06stats.html).
+
+And last, here's an hour-long video of [Andrew Gelman](http://andrewgelman.com/), a professor of statistics and political science at Columbia University, talking at Google about his book *[Rich State Blue State: Why Americans Vote the Way They Do](http://press.princeton.edu/titles/9030.html)* from 2009:
+
+<iframe width="800" height="450" src="https://www.youtube.com/embed/5JYiJwDob1w?rel=0" frameborder="0" allowfullscreen></iframe>
+
+These videos give you a taste of how data, statistics and visualization are affecting the teaching and use of these tools in academia, but also in many other professions. These developments are relevant to all social sciences, whether it be public health, political science, economics…
+
+Finally, this course is very influenced by the development of data visualization. To get a taste of it, see [this selection of "dataviz" methods](http://selection.datavisualization.ch/), read some articles from [Robert Kosara's blog](http://eagereyes.org/) on computational graphics, and see [Simon Jackman's neat graphs](http://jackman.stanford.edu/blog/?p=2620) of Barack Obama's electoral victory in 2012.
 
 ## Who is this for
 
-The course will explain how visualization feeds into current trends in data journalism, open government and reproducible science.
+This course aims at showing how data analysis and visualization works in practice, and how it feeds into current trends in data journalism, open government and reproducible science.
 
-To get a taste of it, see [this selection of dataviz methods](http://selection.datavisualization.ch/), read some articles from [Robert Kosara's blog](http://eagereyes.org/) on computational graphics, and read [Drew Conway's article](http://www.drewconway.com/zia/?p=2378) on how old and new skills collide over data visualization.
+Within that general perspective, we pursue the following teaching goals:
 
-You will find the course challenging because you will learn some statistical and visual syntax to produce plots out of data.
+1. __The primary aim of the course__ is to provide you with some skills to understand how statistical computing can contribute to the analysis and visualization of real-world data.
+2. __The secondary aim of the course__ is to show you how a healthy dose of programming can help taking into account large amounts of evidence about the economy, politics and society.
+3. __Third and last__, this course intends to provide you with a practical skill that will make you a strong applicant at universities that require quantitative methods training.
 
-You will end up telling us what *you* actually like and dislike about this course because it will run as a teaching experiment.
+The skills outlined above reach beyond your substantive expertise in the social sciences to mix it with computer and quantitative skills. This diagram by [Drew Conway](http://www.drewconway.com/zia/?p=2378) shows how all these skills collide around data analysis, or "data science":
 
-__Below is an example__ that shows the U.S. presidential election result as a function of state-level voting characteristics. To produce such a graph on your own, you would need to get some data, select which dimensions to analyze, and finally plot the results. This course will introduce you to all three procedures, which refer to different skills.
+[![The Data Science Venn Diagram](images/Conway-Data_Science_VD.png)](http://www.drewconway.com/zia/?p=2378)
 
-[![U.S. 2008-2012 Electoral Swing, by Simon Jackman](images/swingAgainst08.png)](http://jackman.stanford.edu/blog/?p=2620)
+__You will find the course challenging__ because you will learn a lot of things at the same time, including some computer programming, a topic that is probably new to you. We assume *zero* previous knowledge and will proceed slowly, in a step-by-step fashion.
+
+__You will have to tell us what *you* think__ about this course. We are  running it for the first time as some kind of teaching experiment. Your preferences in terms of topics will have an influence on the contents of its sessions.
 
 ## Outline
 
-The breakup goes roughly as follows:
+The breakup of our twelve sessions together goes roughly as follows:
 
-1. The course starts with the basics (Sessions 1--4). We'll cover R syntax, objects and data operators, plus a bit of math.
-2. The course continues with a bunch of statistical methods (Sessions 5--8). We'll cover clusters, distributions, hypothesis tests and linear models.
-3. The course ends on slightly more advanced visualization techniques (Sessions 9--12). We'll cover time series, networks, maps, and conclude on data science.
+1. The course starts with the __R software basics__ (Sessions 1--4). We'll cover R syntax, objects and data operators, plus a bit of math.
+2. The course continues with a bunch of __statistical methods__ (Sessions 5--8). We'll cover clusters, distributions, hypothesis tests and linear models.
+3. The course ends on slightly more advanced __visualization techniques__ (Sessions 9--12). We'll cover time series, networks and maps.
 
-The list of topics is tentative at best.
+The class will conclude on the professional democratization of data science, possibly with one or more guest speakers who use data in their daily work routines.
+
+The list of topics is tentative at best, and all course sessions are still in the works.
 
 ## Requirements
 
@@ -65,18 +83,18 @@ __To follow and complete this course__, you will need a laptop with Internet acc
 
 __The course requires that you focus on learning by trial-and-error__ instead of focusing on getting it "right" immediately: take this course to work on your skills at problem-solving. In order to complete the course, you will also have to search for documentation, examples and tutorials from various sources: prepare to [Google responsibly](http://agbeat.com/real-estate-technology-new-media/google-cheat-sheet-every-trick-you-need-to-master-search/)!
 
-__Grades are not a crucial element of the course__: you will be assessed mainly through your level of engagement with the coursework, which will consist in forming a small-scale student data team to publish short projects. The precise content of the projects will be decided in class, following each team's research interests.
+__Exams are not a crucial element of the course__: you will be assessed mainly through your level of engagement with the coursework, which will consist in forming a small-scale student data team to publish short projects. The precise content of the projects will be decided in class, following each team's research interests.
 
-__Feedback is a crucial element of the course__: you will be assessed in part through the level of feedback (either positive or negative) that you provide on an assigned session. You will be required to tell us whether you find the method exposed in the session useful, what applications you can imagine for it, and whether we managed to make you understand how it works (and if not, why).
+__Feedback is a crucial element of the course__: you will be assessed in part through the level of feedback--either positive or negative--that you provide inc lass. You will be required to tell us whether you find the methods we teach useful, what applications you can imagine for them, and whether we managed to make you understand how it works (and if not, why).
 
-__Graphics are a crucial element of the course__: [bad graphics](http://andrewgelman.com/2011/09/worst-graph-of-the-year/) have dire consequences on how we learn about events, so we will focus a lot of our attention to the construction and examination of graphics. Data visualization will be complemented with essential statistical analysis along the way.
+__Graphics are a crucial element of the course__: [junk charts](http://junkcharts.typepad.com/) have [dire consequences](http://andrewgelman.com/2011/09/worst-graph-of-the-year/) on how we learn about events, so we will focus a lot of our attention to the construction and examination of graphics. Data visualization will be complemented with essential statistical analysis along the way.
 
-## It's a teaching experiment
+## Disclosure
 
-This course is a teaching experiment: we really, *really* need your feedback to make it work. Specifically, we'd like you to tell us what you want to do with the skills that we will teach you, so that we can help you get there.
+__This course is a teaching experiment__: we really, *really* need your feedback to make it work. Specifically, we'd like you to tell us what you want to do with the skills that we will teach you, so that we can help you get there.
 
 We'll suggest exercises like drawing plots to illustrate your student newspaper, or building small-scale datasets out of student networks. But we are very open to all suggestions: tell us what you want to achieve, and we'll do our best to make it happen if it's reasonable.
 
-We hope to present the results of this course in [other](http://r2013-lyon.sciencesconf.org/) [venues](http://ecprnet.eu/Events/PanelList.aspx?EventID=5&SectionID=52), in order to report how well (or how badly) the experiment ran.
+We hope to present the results of this course at the [R 2013](http://r2013-lyon.sciencesconf.org/) and [ECPR Bordeaux](http://ecprnet.eu/Events/PanelList.aspx?EventID=5&SectionID=52) conference, in order to report on how well (or how badly!) the experiment ran. Your identity will *never* be disclosed, but we will take notes on your feedback during class and use it to write our report.
 
 Next: [Readings](02_readings.html)
