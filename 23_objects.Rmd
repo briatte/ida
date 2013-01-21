@@ -9,14 +9,6 @@ In R, everything is an object. The list of objects in memory `ls()` is an object
 rm(list=ls());
 ```
 
-We're going to use data from the Small Arms Survey on civilian firearms. The data are based on [various sources](http://www.smallarmssurvey.org/fileadmin/docs/H-Research_Notes/SAS-Research-Note-9.pdf) that illustrate how careful we should generally be about the reliability of our data.
-
-- get the matrix
-- extract a vector
-- inspect numbers
-- inspect strings
-- factorize
-- convert to data frame
-- export
+<!-- We're going to use data from the Small Arms Survey on civilian firearms. The data are based on [various sources](http://www.smallarmssurvey.org/fileadmin/docs/H-Research_Notes/SAS-Research-Note-9.pdf) that illustrate how careful we should generally be about the reliability of our data. -->
 
 > __Next week__: [Basic math operators](30_math.html)

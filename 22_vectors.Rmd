@@ -3,9 +3,48 @@
 
 # 2.2. Vectors and matrices
 
+In R, everything is a *vector*. If it's not a vector, it's a special kind of vector.
+
+What is a vector? A vector is an ordered list of $k$ things. The first thing is item #1 of the vector, the second thing is item #2 and so on. Here's a sequence of $k = 4$ integer values:
+
+```{r seq}
+# A sequence.
+1:4
+```
+
+We are going to store the sequence into an object called `x` and verify that it is indeed a vector. And of course it is. It's a vector of dimension 4.
+
+```{r vector-check}
+# Store it.
+x <- 1:4
+# Is it a vector?
+is.vector(x)
+```
+
+The examples below are also vectors:
+
+```{r vectors-everywhere}
+# Also a vector.
+y <- "This is a vector."
+# Check.
+is.vector(y)
+# Also a vector.
+z <- 1
+# Check.
+is.vector(z)
+# What about...
+m <- cbind(1:3,4:6)
+```
+
+Okay, that's a *matrix*. A vector is a $1 \times k$ unidimensional matrix. 
+
+So in fact, in R, everything is a matrix, or some special kind of a matrix.
+
+Welcome to R.
+
 ## A simple student grades example
 
-Vectors are just lists of numerical values. Let's store a fictional set of student grades in memory under the name `grades`. The resulting object is a vector of values. Then, let's compute the mean, the median, and finally a whole bunch of summary statistics. Note that we will usually import the data rather than generate it manually in later exercises.
+Vectors are just lists of stuff. Let's combine a fictional set of student grades into a vector called `grades`. Let's compute the mean, the median, and finally a whole bunch of summary statistics about the resulting object.
 
 ```{r grades}
 # Create vector of random grades.
@@ -20,25 +59,23 @@ median(grades)
 summary(grades)
 ```
 
-We will come back to summary statistics. Note that there is another way to create a variable and then check the result by enclosing the command in brackets.
-
-```{r some-grades}
-# Create vector of five elements.
-(grades <- c(12, 9, 16, 4.5, 7))
-# Save backup copy in object g.
-g <- grades
-```
-Note that R uses a precise taxonomy of objects, and that even though we just used the word "list" to describe a vector, a *list* is not the same as a *vector*. If you test the `grades` object with the `is.vector` command, the result will be `TRUE`, but it will be `FALSE` if you ask whether `grades` is a list. You can turn `grades` into a list with the `as.list` command.
+Note that R uses a precise taxonomy of objects, and that even though we just used the word "list" to describe a vector, a *list* is not the same as a *vector*. If you test the `grades` object with the `is.vector` command, the result will be `TRUE`, but it will be `FALSE` if you ask whether `grades` is a list.
 
 ```{r grades-object}
-# The grades object is a vector.
+# Recall the grades object.
+grades
+# It's a vector.
 is.vector(grades)
-# You can select any of its element.
+# Select its first element.
 grades[1]
-# You can select more than one element by listing which values you want.
+# Select more than one element by listing which values you want.
 grades[1:3]
-# You can provide a continuous sequence, as above, or a vector of values.
-grades[c(1,3,5)]
+# Select a vector of values.
+grades[c(1:3,5)]
+# Vectors can be logical.
+grades > 10
+# Select a logical vector of values.
+grades[grades >= 10]
 ```
 
 What is shown here is important: in R, everything is an object. Here, `grades` is an object, just like the list of values that you want to show. This logic is everywhere in R. It is harder to learn than less flexible syntaxes, but it provides a lot of power to the user.
@@ -52,9 +89,7 @@ is.matrix(grades)
 as.matrix(grades)
 ```
 
-We use the extra brackets around the command to print its results to the Console, in order to check that your commands are working as expected. In this example, we get to see what the `grades` object looks after becoming `grades_matrix`.
-
-Let's continue by adding a unique identifier to each row, in case we later shuffle the data.
+Let's continue by adding a unique identifier to each row, in case we later shuffle the data. The `cbind` command will form a single matrix object out of several vector ones.
 
 ```{r grades-id}
 # Show length of grades vector.
@@ -69,58 +104,124 @@ grades.data <- cbind(id, grades)
 grades.data
 ```
 
-Now let's code if the student passes or fails the test. The `ifelse` command works pretty much like the `IF` command in spreadsheet editors. The `cbind` commands adds a column to the matrix, using the existing `grades` matrix and the newly created `pass` vector. We will routinely build datasets with such operations.
+Now let's code if the student passes or fails the test. The `ifelse` command works pretty much like the `IF` command in spreadsheet editors. The `cbind` commands adds a column to the matrix, using the existing `grades` matrix and the newly created `pass` vector.
 
 ```{r grades-pass}
-#
+# Create a text object based on a logical condition.
 pass <- ifelse(grades >= 10, "Pass", "Fail")
-#
-cbind(grades.data, pass)
-#
-cbind(grades.data, pass = factor(pass))
-#
-grades.data <- cbind(grades.data,pass = factor(pass))
 # Check result.
-grades.data
+pass
+# This is what it would look like when added to the grades data.
+# Find the issue with that operation.
+cbind(grades.data, pass)
+# This solves the issue: convert the text column to numeric values.
+cbind(grades.data, pass = factor(pass))
+# Understand what happens when you factor a string (text) variable.
+factor(pass)
+# Rename grades vector.
+grades1 <- grades
+# Final conversion, with renaming of grades column.
+grades.data <- cbind(id, grades1, pass = factor(pass))
+# Check first five rows of result.
+head(grades.data)
 ```
-
-Here, the `c(1:k)` command creates a sequence of numbers in the form of a vector of length `k`, where `k` is the number of rows in the `grades` matrix. The `seq(1:5)` command, or just `1:5`, would provide the same result.
 
 ```{r grades-explore}
-grades.data[1,2]  # first row, second cell
-grades.data[1,]   # first row
-grades.data[1:2,] # first two rows
-grades.data[,3]   # third column
+# First row, second cell.
+grades.data[1,2]
+# First row.
+grades.data[1,]
+# First two rows.
+grades.data[1:2,]
+# Third column.
+grades.data[,3]
 ```
 
-Let's finally add a column of random grades, compute the average for every row, and sort the data by ascending average. This ends our quick tour of how vectors and matrices work (together), but the lab session for this week goes into more detail. *Please make sure that you practice at home on the weekly lab session!* You will need that practice to become familiar with R.
+Let's finally add a column of random grades, compute the average for every row, and sort the data by ascending average.
 
 ```{r grades-mean}
 # Create random vector of length 5.
 grades2 <- round(20*runif(5),1)
 # Check result.
-grades2
+head(grades2)
 # Add to matrix.
 grades.data <- cbind(grades.data, grades2)
 # Check result.
 grades.data
 ```
 
+This ends our quick tour of how vectors and matrices work, but please make sure that you practice at home! You will need that practice to become familiar with R. And for the matrix-savvy, here's a [cheat sheet of matrix operations in R](https://gastonsanchez.wordpress.com/2012/08/30/cheat-sheet-of-matrix-operations-in-r/).
+
 ## More complex student grades
 
 Let's use some real, anonymized data from Autumn 2012. These are the grades from my three mathematics classes in first year. I have removed any student identification, so you have to trust me that these are the real grades. We will use a package to create fake names in replacement.
 
 ```{r mygrades-import}
-# Install randomNames package. Remember that R is case-sensitive.
+# Install and load randomNames package. Remember that R is case-sensitive.
 install.packages("randomNames")
-# Import the data from CSV format.
-read.csv("data/grades.csv")
+library(randomNames)
+# Install and load RCurl package.
+install.packages("RCurl")
+library(RCurl)
+# Download the data.
+grades <- getURL("https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdG9oR2Y3T3U1Y3I5YlgzUmNBSVFrRUE&single=true&gid=0&output=csv")
+# Make the data readable.
+grades <- textConnection(grades)
+# Convert the data from CSV format.
+grades <- read.csv(grades)
+# Check result.
+head(grades)
+# How many rows of data do we have?
+nrow(grades)
+# Let's generate that many random names.
+names <- randomNames(86)
+# Let's finally stick them to the matrix.
+grades <- cbind(grades, names)
+# Check result.
+head(grades)
 ```
 
-[Cheat sheet of matrix operations](https://gastonsanchez.wordpress.com/2012/08/30/cheat-sheet-of-matrix-operations-in-r/).
+## Live session!
 
-## Getting started with graphs
+<!-- Let's produce [a few plots](http://flowingdata.com/2012/12/17/getting-started-with-charts-in-r/) from fake data vectors. -->
 
-Let's produce [a few plots](http://flowingdata.com/2012/12/17/getting-started-with-charts-in-r/) from fake data vectors.
+Let's show a final type of object: the data frame.
+
+```{r df}
+# Convert to data frame.
+grades <- as.data.frame(grades)
+# Check result.
+head(grades)
+# Check structure of a data frame.
+str(grades)
+```
+
+```{r melt}
+# Install and load reshape package.
+install.packages("reshape")
+library(reshape)
+# Reshape data from 'wide' (lots of columns) to 'long' (lots of rows).
+grades <- melt(grades, id.vars = "names")
+# Check result.
+head(grades)
+```
+
+```{r grades-plots}
+# Install and load ggplot2 package.
+install.packages("ggplot2")
+library(ggplot2)
+# Plot all three exams.
+qplot(data = grades, x = value, group = variable, geom = "density")
+# Add color.
+qplot(data = grades, x = value, group = variable, color = variable, fill = variable, alpha = I(.3), geom = "density")
+```
+
+Now use the code on this page to:
+
+1. download [this data](https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdF91SmhLcV8wMjRtZ3FraGQyVUt2V3c&output=csv)
+2. load the data in R
+3. compute the Body Mass Index
+4. plot the results
+5. tell us what `var1` and `var2` are!
 
 > __Next__: [Other R objects](23_objects.html).

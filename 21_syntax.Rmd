@@ -3,22 +3,58 @@
 
 # 2.1. Command syntax
 
-R is a programming environment in which you can submit instructions for the software to execute, or "run". To type a command, move your cursor to the Console with `Ctrl-1` in RStudio, type in some command, and press `Enter`. Do not worry if you get an error, it will not break anything.
+Before we go further into manipulating objects, here's a quick tour of R syntax. You will inevitably make mistakes when writing R commands, which is fine -- nothing (bad) happens when you do. To correct a mistake, simply press `UpArrow` (&uarr;) to go back into your last console input and fix it.
 
-```{r hello-world}
-print("Hello World!")
+```{r broken-hello-world, eval=FALSE}
+# This will break.
+print(Hello World!)
+# Press UpArrow, select text, add double quotes.
+# This will now run fine.
+print("Hello World")
 ```
 
-R will generally print results without you asking through the `print` command. Notice how the command follows a strict syntax: the command above will not work if you omit the brackets or quotes, or if you make a typo in `print`. To correct a mistake, simply press `UpArrow` to go back into your console input and fix the issue.
+R syntax can be a bit strange. For some (probably good) reason, the `install.packages` command takes quotes, whereas the `library` command does not.
 
-There is often more than one way to get what you want from R:
-  
+```{r quotes-strangeness, eval=FALSE}
+# This needs quotes.
+install.packages("ggplot2")
+# This does not.
+library(ggplot2)
+```
+
+Note that brackets are omnipresent in R syntax: every *function* (or command) will require them. The bits written inside the brackets and separated by commas are called *arguments*. The `cat` command, for instance, accepts any number of arguments.
+
 ```{r cat}
-cat("Hello World! Today is",date())
+# Print some text, the full date and some text again, with no separators.
+cat("Hello World! Today is ", date(), ".", sep = "")
 ```
 
-__The syntax of each command requires a bit of memorization, and lots of practice.__ I have never seen anyone type straight working code in R: everyone goes through cycles of trial-and-error with it, because the R language is based on rather old languages like Fortran and S that make its syntax often counter-intuitive (more on that with loops later on).
+A very important aspect of R syntax is *assignment*. To put some values into an object, you need two things, separated by a right-left arrow (or by a single equal sign if you prefer). The example below creates an object that holds my Body Mass Index. I can then call the object at a later stage.
 
-We should start by learning to manipulate simple things in R.
+```{r my-bmi}
+bmi <- round(703*134/(70^2),1)
+cat("My BMI is approximately", bmi, "(which is barely normal).")
+```
+
+In fact, it would make more sense to write a Body Mass Index *function*, which is not very difficult if you can survive the additional brackets. We will come back shortly to writing functions next week.
+
+```{r bmi-function}
+# A simple Body Mass Index function.
+bmi <- function(weight, height, digits = 2) {
+  round(weight*703/(height^2), digits)
+}
+# Check result: an object called 'bmi' now appears in your Workspace.
+bmi
+# This object is a function.
+mode(bmi)
+# Example, with default argument of 2 digits.
+bmi(weight = 134, height = 70)
+# Another example, this time with digits.
+bmi(weight = 134, height = 70, digits = 0)
+```
+
+The syntax of each command requires a bit of memorization, and lots of practice. Nobody types functional code in R without going through cycles of trial-and-error with it. Programming requires some discipline, some logic and a lot of patience.
+
+Let's now turn to manipulating simple things in R.
 
 > __Next__: [Vectors and matrices](22_vectors.html).

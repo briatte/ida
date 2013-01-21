@@ -3,6 +3,53 @@
 
 # 2. Basic R operators
 
-Coming.
+Let's now take a look at the most essential R operators. These operators consist in two sets of commands. The first set deals with basic computation and works pretty much like the commands on a scientific calculator, or on [Wolfram Alpha](https://www.wolframalpha.com/). Here are a few examples:
+
+```{r calc, results='hide'}
+# Addition.
+1 + 2
+# Brackets.
+(1 + 2) / 3
+# Exponentiation.
+7^2
+```
+
+Train yourself by computing, for instance, $3^3 - 4$ and $e^2$. You can find how to type an exponential in R by looking for help with `??logarithm`. Note finally, that you can ask R to "confirm" a given calculation by submitting a logical expression:
+
+```{r logical, results='hide'}
+# A simple logical test with the natural logarithm.
+log(1) > 0
+# Guess why this result differs from the one above.
+log(1) >= 0
+# Note that equality requires two equal signs.
+log(1) == 0
+# A more complex example with scientific notation.
+1 + log10(1e7) == 8*exp(1)^0
+```
+
+## Objects
+
+The second set of basic operators in R concerns the writing of objects, that is, ways to store values for use into functions. The example below defines a simple sequence of integer values $(1, 2, 3)$, computes its sum and product, and compares them:
+
+```{r calc-vector, results='hide'}
+# Define a sequence of integers.
+x <- c(1:3)
+# Show object x.
+x
+# Compute its sum.
+sum(x)
+# Compute its product.
+prod(x)
+# Compare both on the fly.
+sum(1:3) == prod(1:3)
+```
+
+The object `x` defined above is called a numeric vector. It shows up in your Workspace, along with an indication that it contains integer values and has a dimension of 3. The rest of this session will train you at manipulating such objects.
+
+## Reminder
+
+Remember that a lot of what we cover here, especially with regards to the basic functioning of R, is also covered in many other tutorials. If you enjoy video tutorials, those by Anthony Damico are short and efficient. Here's his 2-minute approach to arithmetic in R:
+
+<iframe src="http://www.screenr.com/embed/hyT8" width="800" height="487" frameborder="0"></iframe>
 
 > __Next__: [Command syntax](21_syntax.html).
