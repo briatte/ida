@@ -1,7 +1,9 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 2.2. Data manipulation
+# 4.2. Reshaping
+
+Datasets do not always come in the exact form in which we want to analyze them: there is often some manipulation to do. Most people do this by hand, which is error-prone and time-consuming. This section covers a few ways to reshape a dataset.
 
 Collapse, merge, [reshape](http://is-r.tumblr.com/post/34556058683/ggtutorial-day-1-using-reshape), etc. Illustrations with  of how , and help [identify patterns](http://is-r.tumblr.com/post/34288940225/congressional-ideology-by-state) in large datasets.
 
@@ -133,3 +135,14 @@ sm$City=droplevels(sm$City)
 ```
 
 Job's done.
+
+## Atrociously brilliant reshaping stuff that we will spare you
+
+Reshaping can become pretty complex once you go into its deeper mechanics:
+
+![Split-Apply-Combine, by Hadley Wickham](http://25.media.tumblr.com/tumblr_m15p7oNIuj1qktnb8o1_500.png)
+
+Hadley Wickham's `plyr` package contains a command called `ddply` that is simply brilliant. It implements a technique called "[The Split-Apply-Combine Strategy for Data
+Analysis](http://www.jstatsoft.org/v40/i01/paper)". Unfortunately, we won't have the time to go into the details of how it works, but we might end up using it occasionally.
+
+> __Next__: [Scraping](43_scraping.html).

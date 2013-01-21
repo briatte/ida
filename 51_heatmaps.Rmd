@@ -3,6 +3,6 @@
 
 # 5.1. Heatmaps
 
-As a means of introduction to looking at multidimensional data, let's start with heatmaps, [the quick and easy way](http://flowingdata.com/2010/01/21/how-to-make-a-heatmap-a-quick-and-easy-solution/).
+As a means of introduction to looking at multidimensional data, let's start with heatmaps, [the quick and easy way](http://flowingdata.com/2010/01/21/how-to-make-a-heatmap-a-quick-and-easy-solution/). We'll [do it in ggplot2](https://learnr.wordpress.com/2010/01/26/ggplot2-quick-heatmap-plotting/) for consistency.
 
-> Next: [Principal components](52_pca.html).
+> __Next__: [Principal components](52_pca.html).

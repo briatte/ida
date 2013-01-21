@@ -1,4 +1,8 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# Influence
+# 2. Basic R operators
+
+Coming.
+
+> __Next__: [Command syntax](21_syntax.html).

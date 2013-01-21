@@ -1,0 +1,34 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 3.1. Functions
+
+Suppose that you find yourself doing the same computation over and over again. You do not want to type the whole calculations every time you need: you want to program a function that does the job for you.
+
+Take a basic example: the `sum` command adds a vector of numbers together.
+
+```{r sum}
+# Create a vector of 99 random [0,1] values.
+x <- runif(9)
+# Check result: show first 5 values.
+head(x)
+# Add them up.
+sum(x)
+```
+
+```{r add-function}
+add <- function(x,y) {
+  x + y
+}
+
+sum(2,4)
+```
+
+
+## Basic examples
+
+## `apply` functions
+
+Loops are fantastic but can become memory-intensive. R also offers [`apply` functions](http://badhessian.org/loops-matrices-and-apply-functions/) that can usually do what you might want to do with a loop.
+
+> __Next___: [Loops](32_loops.html).

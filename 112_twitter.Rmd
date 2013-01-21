@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# Mining Twitter
+# 11.2. Mining an online network
 
 ```{r tweets}
 library(twitteR)
@@ -18,3 +18,5 @@ Let's rip everything from [Gaston Sanchez's repo](https://github.com/gastonstat/
 ...
 
 Now let's [make the graphs pretty](http://is-r.tumblr.com/post/38240018815/making-prettier-network-graphs-with-sna-and-igraph), or even [real pretty](http://is-r.tumblr.com/post/38459242505/beautiful-network-diagrams-with-ggplot2).
+
+> __Next week__: [Data-driven advances](120_data.html).

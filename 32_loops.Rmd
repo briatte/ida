@@ -13,4 +13,4 @@ R understands `for` and `while` loops like many other programming languages.
 
 Loops are fantastic but can become memory-intensive. R also offers [`apply` functions](http://badhessian.org/loops-matrices-and-apply-functions/) that can usually do what you might want to do with a loop.
 
-> Next: [Probability](33_proba.html).
+> __Next__: [Probability](33_proba.html).

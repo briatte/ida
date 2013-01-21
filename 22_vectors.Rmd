@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 2.2 Vectors and matrices
+# 2.2. Vectors and matrices
 
 ## A simple student grades example
 
@@ -43,24 +43,13 @@ grades[c(1,3,5)]
 
 What is shown here is important: in R, everything is an object. Here, `grades` is an object, just like the list of values that you want to show. This logic is everywhere in R. It is harder to learn than less flexible syntaxes, but it provides a lot of power to the user.
 
-Let's see what a different object looks like.
+Let's see what a different object looks like. If we want to organize some data into a "row by column" structure, we need to use a matrix--a table of numerical values, if you prefer. The `as.matrix` command will turn `grades` into a matrix.
 
-```{r grades-as-lists}
-# The grades object is not a list.
-is.list(grades)
-# If you make it into a list, every value becomes a list of single values.
-as.list(grades)
-# This changes how you should access each item.
-as.list(grades)[[1]]
-```
-
-We will come back to lists and other object types in a minute. For now, let's concentrate on vectors.
-
-If we want to organize some data into a "row by column" structure, we need to use a matrix--a table of numerical values, if you prefer. The `as.matrix` command, which works in the same fashion as the `as.list` command listed above, will turn `grades` into a matrix.
-
-```{r grades-matrix}
-# Transform the grades object to a matrix.
-(grades <- as.matrix(grades))
+```{r grades-as-a-matrix}
+# The grades object is not a matrix.
+is.matrix(grades)
+# If you make it into a matrix, the vector becomes a column of values.
+as.matrix(grades)
 ```
 
 We use the extra brackets around the command to print its results to the Console, in order to check that your commands are working as expected. In this example, we get to see what the `grades` object looks after becoming `grades_matrix`.
@@ -68,37 +57,53 @@ We use the extra brackets around the command to print its results to the Console
 Let's continue by adding a unique identifier to each row, in case we later shuffle the data.
 
 ```{r grades-id}
-# create a numbered sequence 1, 2, 3, ...
-(id <- c(1:nrow(grades)))
-# add to the matrix
-(grades.data <- cbind(id, grades))       
+# Show length of grades vector.
+length(grades)
+# Create a numbered sequence 1, 2, 3, ...
+id <- c(1:length(grades))
+# Check result.
+id
+# Add to the matrix under a new name.
+grades.data <- cbind(id, grades)
+# Check result.
+grades.data
 ```
 
 Now let's code if the student passes or fails the test. The `ifelse` command works pretty much like the `IF` command in spreadsheet editors. The `cbind` commands adds a column to the matrix, using the existing `grades` matrix and the newly created `pass` vector. We will routinely build datasets with such operations.
 
 ```{r grades-pass}
+#
 pass <- ifelse(grades >= 10, "Pass", "Fail")
+#
 cbind(grades.data, pass)
+#
 cbind(grades.data, pass = factor(pass))
-(grades.data <- cbind(grades.data,pass = factor(pass)))
+#
+grades.data <- cbind(grades.data,pass = factor(pass))
+# Check result.
+grades.data
 ```
 
 Here, the `c(1:k)` command creates a sequence of numbers in the form of a vector of length `k`, where `k` is the number of rows in the `grades` matrix. The `seq(1:5)` command, or just `1:5`, would provide the same result.
 
 ```{r grades-explore}
-grades[1,2]  # first row, second cell
-grades[1,]   # first row
-grades[1:2,] # first two rows
-grades[,3]   # third column
+grades.data[1,2]  # first row, second cell
+grades.data[1,]   # first row
+grades.data[1:2,] # first two rows
+grades.data[,3]   # third column
 ```
 
 Let's finally add a column of random grades, compute the average for every row, and sort the data by ascending average. This ends our quick tour of how vectors and matrices work (together), but the lab session for this week goes into more detail. *Please make sure that you practice at home on the weekly lab session!* You will need that practice to become familiar with R.
 
 ```{r grades-mean}
-grade2 <- round(20*runif(9),1) # random vector of length 9
-grades <- cbind(grades, grade2); grades 
-grades[,4] <- NULL
-grades <- as.data.frame(grades); grades # convert to data frame
+# Create random vector of length 5.
+grades2 <- round(20*runif(5),1)
+# Check result.
+grades2
+# Add to matrix.
+grades.data <- cbind(grades.data, grades2)
+# Check result.
+grades.data
 ```
 
 ## More complex student grades
@@ -117,3 +122,5 @@ read.csv("data/grades.csv")
 ## Getting started with graphs
 
 Let's produce [a few plots](http://flowingdata.com/2012/12/17/getting-started-with-charts-in-r/) from fake data vectors.
+
+> __Next__: [Other R objects](23_objects.html).

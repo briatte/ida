@@ -43,3 +43,5 @@ __Tables__ with Chi-squared tests and odds ratios.
 __Bar plots__: beurk… except for [mosaic bars](https://learnr.wordpress.com/2009/04/02/ggplot2-marimekko-replacement-overlapping-bars/), perhaps.
 
 __Mosaic plots__: yay! See examples [here](https://learnr.wordpress.com/2009/03/29/ggplot2_marimekko_mosaic_chart/) and [there](http://is-r.tumblr.com/post/33290921643/simple-marimekko-mosaic-plots)). Definitely more appropriate to speak of modal groups, frequencies and fractions of a population.
+
+> __Next__: [71_ttest.html]().

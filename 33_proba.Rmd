@@ -3,5 +3,12 @@
 
 # 3.3. Probability
 
-Let's go through the [explosive roommate combinations](http://www.econometricsbysimulation.com/2012/10/explosive-roommate-combinations.html), by Francis Smart, which was already used as an example in the math workshops. Let's play with it and compute the probabilities ourselves.
+## Random number generation
 
+## Probability distributions
+
+## Explosive roommate combinations
+
+Let's go through the [explosive roommate combinations](http://www.econometricsbysimulation.com/2012/10/explosive-roommate-combinations.html), by Francis Smart, which is also used as an example in the "maths and stats" workshops. Let's play with it and compute the probabilities ourselves.
+
+> __Next week__: [Basic data operators](40_data.html).

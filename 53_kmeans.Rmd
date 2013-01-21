@@ -7,4 +7,4 @@ Brief overview [simple examples](http://www.r-chart.com/2010/09/bot-botany-k-mea
 
 [Tons of ways to plot dendograms](https://gastonsanchez.wordpress.com/2012/10/03/7-ways-to-plot-dendrograms-in-r/).
 
-> Next: [Distributions](60_distributions.html).
+> __Next week__: [Distributions](60_distributions.html).

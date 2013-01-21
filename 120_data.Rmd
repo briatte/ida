@@ -1,0 +1,37 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 12. Data-driven advances
+
+For our final session(s), we'll have a [journalist](#), a [political scientist](#) and a member of the [Open Knowledge Foundation](http://okfn.org/) come and talk to us about what they do with data, how they do it, and why this concerns you. Below are a few more links on the topic.
+
+## Links to data-driven journalism
+
+The general principles of 'DDJ' are well embodied in Geoff McGhee's video presentation of the topic, called "[Journalism in the Age of Data](http://datajournalism.stanford.edu/)". The video covers the work done at the *New York Times*, which published a great recap of its "[Year in Graphics](http://www.nytimes.com/interactive/2012/12/30/multimedia/2012-the-year-in-graphics.html)" at the end of 2012.
+
+If you wish to reuse some of the data put together by data-driven journalists, the [Guardian Data Blog](http://www.guardian.co.uk/data), a leading DDJ initiative, has published an impressive list of [all its datasets so far](http://www.guardian.co.uk/news/datablog/interactive/2013/jan/14/all-our-datasets-index). The data are accessible as Google Spreadsheets that are easily [importable in R](41_dataio.html).
+
+## Links to open data initiatives
+
+There are many more initiatives listed at [Blog about Stats](https://blogstats.wordpress.com/) by Armin Grossenbacher, who works at Statistics Switzerland as Head of the Dissemination and Publication unit. For background reading, see the [seminar on open data](http://crookedtimber.org/2012/07/17/open-data-seminar-2/) published by the *Crooked Timber* academic blog.
+
+### Initiatives by non-profit groups
+
+- [Regards Citoyens](http://www.regardscitoyens.org/open-data-en-france/) (France)
+- [Sunlight Foundation](http://sunlightfoundation.com/) (USA)
+
+### Initiatives by international organizations
+
+- [Open Data Hub of the European Union](http://open-data.europa.eu/open-data/home)
+- [Open UNDP](https://blogstats.wordpress.com/2012/12/01/working-in-the-open/)
+- [Open Data Catalog at the World Bank](http://data.worldbank.org/)
+
+### Initiatives by governments
+
+- [data.gouv.fr](http://www.data.gouv.fr/)
+- [data.gov](http://data.gov)
+- [data.gov.uk](http://data.gov.uk/)
+
+Note, to finish, that there is a larger galaxy of 'open access', 'open science' and '[access to knowledge](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1323525)' (A2K) movements at the moment. It is hard to summarize any of them efficiently here, but we will discuss some aspects of reproducible science in class.
+
+> __That's it!__ Go back to the bottom of the [index page](index.html) to read a few final words on the course.

@@ -1,6 +1,8 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# Probability density functions
+# 6.2. Probability density functions
 
 The normal distribution, and others.
+
+> __Next__: [Empirical cumulative density functions](63_ecdf.html).

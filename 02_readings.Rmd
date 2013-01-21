@@ -37,4 +37,4 @@ Finally, these books go further than what we will explore, but serve as good exa
 - Edward Tufte, *[The Visual Display of Quantitative Information](http://www.edwardtufte.com/tufte/books_vdqi)* (Graphics Press 2001)
 - Hadley Wickham, [ggplot2. Elegant Graphics for Data Analysis](http://ggplot2.org/book/) (Springer 2009)
 
-> Next: [Links](03_links.html).
+> __Next__: [Links](03_links.html).

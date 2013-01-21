@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# Google Maps
+# 10.2. Google Maps
 
 The techniques described below require a [Google account](http://www.google.com/accounts/).
 
@@ -9,4 +9,12 @@ Google has a ton of useful tools for mapping stuff. The easiest tool is probably
 
 [Quick maps from Google Charts data](http://spatialanalysis.co.uk/2011/02/using-r-to-map-with-google-chart-tools/) and [Google Maps API control](http://andy.egge.rs/research.html). Examples of maps [with ggplot2](http://is-r.tumblr.com/post/37708137014/us-state-maps-using-map-data).
 
-> Next: .
+## Information-rich maps
+
+- From [Gapminder](http://www.gapminder.org/)...
+- ... to [Google Motion Charts](https://developers.google.com/chart/interactive/docs/gallery/motionchart) ...
+- ... to [Google Motion Charts in R](https://code.google.com/p/google-motion-charts-with-r/).
+
+An example with [life expectancy](http://lamages.blogspot.fr/2012/03/change-in-life-expectancy-animated-with.html). Note: you have to allow your browser to load 'insecure' Flash content to see the results. In Google Chrome, click the shield icon shown in the right segment of your address bar.
+
+> __Next week__: [Networks](110_networks.html).

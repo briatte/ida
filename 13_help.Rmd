@@ -1,9 +1,15 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 1.3. Help
+# 1.3. Help pages
 
-Type in `help()` to access documentation pages in R. If you are looking for help on a specific command, like `setwd` (which sets the working directory), then type `help(setwd)` or even quicker: `?setwd`. If you are looking for a keyword, e.g. how to plot a heatmap, then type `help.search("heatmap")` or even quicker: `??heatmap`. Here is how it looks like in practice:
+Type in `help.start()` to access documentation pages in R.
+
+## Help for commands
+
+If you are looking for help on a specific command, like `setwd` (which sets the working directory), then type `?setwd`. If you are looking for a keyword, e.g. how to plot a heatmap, type `??heatmap` to perform a fuzzy search.
+
+Here is how it looks like in practice:
 
     ?setwd
     ??heatmap
@@ -12,6 +18,38 @@ Finally, this command will bring up help for a whole package.
 
     help(package="ggplot2")
 
-You might want to try out `?library` and `?c` to learn about the commands used in a previous example. Documentation pages in R contain precise instructions on the syntax of each command: read the 'Description', 'Usage' and 'Arguments' sections first, then turn to 'Details' (not always needed) and always check out the 'Examples' section.
+The help pages open in the bottom-right corner of RStudio; you can customize that in the application's preferences. You might want to try out `?library` and `?c` to learn about the commands used in previous examples. 
 
-Do not hate the documentation! _Everyone_ finds it difficult to read, and everyone has reasons to complain about the lack of examples or low clarity. For more lively illustrations of how things work, turn to your handbooks and tutorials, and to the applications and exercises covered in class.
+Documentation pages in R contain precise instructions on the syntax of each command: read the 'Description', 'Usage' and 'Arguments' sections first, then turn to 'Details' (not always needed) and always check out the 'Examples' section.
+
+Do not hate the documentation! _Everyone_ finds it difficult to read, and there are good reasons why the technical documentation is written how it is. Turn to your handbooks, to tutorials and to the class material when the documentation does not help.
+
+## Help for functions
+
+You can type a command without its final brackets to see its internal workings:
+
+```{r help-functions}
+# Core mechanics of sum().
+sum
+# Core mechanics of median().
+median
+```
+
+For a much more complex illustration, try this:
+
+```{r help-functions-2, results='hide'}
+# Core mechanics of ls().
+ls
+```
+
+Admittedly, the output of doing this won't be that helpful in most cases.
+
+## Finding help
+
+R is difficult. [Even professional programmers](http://www.johndcook.com/R_language_for_programmers.html) know that it takes some time to make sense out of it. The upside is, once you make sense out of R, it means that you have learnt a lot. A bit, perhaps, like learning German grammar or Spanish tenses.
+
+Take some regular time with the software. Use R two hours per week, and fiddle with the examples given here: try out your own, even if it means modifying them just slightly. Do not neglect fishing for [other tutorials](03_links.html) online, there's tons of them.
+
+If you enjoy video tutorials, the [two-minute screencasts](http://www.twotorials.com/) by Anthony Damico are particularly recommendable: make sure to bookmark that page. More generally, make sure to set up a simple bookmarking system to collect and consult your own selection of help resources.
+
+> __Next week__: [Basic R operators](20_basics.html).

@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# Basic R objects
+# 2.3. Other R objects
 
 In R, everything is an object. The list of objects in memory `ls()` is an object itself, as shown in the example below, which wipes all objects from the workspace:
   
@@ -18,3 +18,5 @@ We're going to use data from the Small Arms Survey on civilian firearms. The dat
 - factorize
 - convert to data frame
 - export
+
+> __Next week__: [Basic math operators](30_math.html)

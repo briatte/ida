@@ -97,4 +97,4 @@ We'll suggest exercises like drawing plots to illustrate your student newspaper,
 
 We hope to present the results of this course at the [R 2013](http://r2013-lyon.sciencesconf.org/) and [ECPR Bordeaux](http://ecprnet.eu/Events/PanelList.aspx?EventID=5&SectionID=52) conference, in order to report on how well (or how badly!) the experiment ran. Your identity will *never* be disclosed, but we will take notes on your feedback during class and use it to write our report.
 
-Next: [Readings](02_readings.html)
+__Next__: [Readings](02_readings.html)

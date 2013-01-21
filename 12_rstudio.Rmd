@@ -1,68 +1,94 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 1.2. RStudio
+# 1.2. Installing RStudio
 
 Packages and other aspects of R are easier to handle in [RStudio](http://rstudio.org/), a software interface for R that adds many useful features to R. A work session in RStudio that takes advantage of all these capabilities will look like this (click to zoom):
   
 [![An example work session in RStudio.](images/rstudio-screenshot.png)](images/rstudio-screenshot.png)
 
-The top-left quadrant contains one file, `syllabus.Rmd`, which is the original version of this document. It contains code, comments and even text--all of which are weaved together by a package called [knitr](http://yihui.name/knitr/) that offers a way to go from coding to publishing HTML pages with syntax-coloured code chunks. RStudio helps by connecting that interface to [RPubs](http://www.rpubs.com/), which enables anyone to publish code and results in a few clicks.
-
-The bottom-left quadrant is the console, where most results are printed out. The right-hand-side panels show the objects, files, plots and help pages in current use. There are many customizations and shortcuts in the software: for a brief overview, see Ricardo Pietrobon's [video introduction](http://www.youtube.com/watch?v=eL8qFKnTS6I). In class, we will start with a much simpler workflow and then perhaps do some dynamic report generation.
+RStudio is very quickly developing into a powerhouse for R users, with [more features](http://www.rstudio.com/ide/) than we will be able to show. One of the most recent developments allows to [build web applications](http://www.rstudio.com/shiny/) on top of R code, directly from RStudio.
 
 ## Installation
 
-Use [this link](http://www.rstudio.com/ide/download/desktop) to download RStudio.
+Use [this link](http://www.rstudio.com/ide/download/desktop) to download RStudio. Installation should then be pretty straightforward.
 
-- __For Mac OS X__, [Gordon Davis' video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) covers quite a lot of basic ground with RStudio.
-- 
+We previously mentioned [Gordon Davis' video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) for Mac OS X users. It shows how to install R and RStudio, and also showcases some of its customizable features, starting at timestamp 6:18. Give it a try, regardless of your operating system:
 
-## Interface
+<iframe width="800" height="450" src="https://www.youtube.com/embed/WJDrYUqNrHg#t=6m18s" frameborder="0" allowfullscreen></iframe>
 
-The RStudio interface has several panels and functions that you will not need, but you *will* need the tab in the bottom-right quadrant called "Files" to access stuff for this course. The default place on your computer where R looks for stuff is called the **working directory**, and it can be set by default in RStudio's preferences. It is strongly recommended that you create a folder right now and set it as the working directory for the rest of the course.
+RStudio comes with [excellent documentation](http://www.rstudio.com/ide/docs/) available through the Help menu. The same menu will also show you [keyboard shortcuts](http://www.rstudio.com/ide/docs/using/keyboard_shortcuts), which will quickly come in handy. The sections below cover only the essentials, which should be enough to get started.
 
-### Setting the working directory
+## A quick tour of the interface
 
-Use the `setwd()` command to set the working directory to a given folder path, or use the 'Tools > Set working directory > Choose...' menu item (shortcut: Cmmd-Shift-K on Mac OS X). You can also browse the 'Files' panel and use the 'Set as working directory' item in the 'More' menu.
+When you open RStudio for the first time, you see something like the screenshot below.
 
-<!-- http://blog.echen.me/2012/01/17/quick-introduction-to-ggplot2/ -->
+[![RStudio interface.](images/rstudio-interface-1.png)](images/rstudio-interface-1.png)
 
-### Viewing and running code
+The red circle designates the Console window, where you get to type commands and see their results. The blue circle designates the Workspace, where your objects appear. The purple circle designates a bunch of other windows for files, plots, packages and help.
 
-- open the demo code; switch between Console and code
-- select a few lines
-- run with Cmmd-Enter or 'run'
+Most of the time, you will actually have one more window open on the left side of the screen to view and execute R scripts. Press &#8984;-&#8679;-N (Mac) or `Ctrl-Shift-N` (Win) to open a blank R script, or use the icon shortcut:
 
-### Viewing data
+![RStudio new script.](images/rstudio-new-script.png)
 
-- click the demo dataset
-- manipulate quickly with a few commands (`head`, `str`)
+Now copy-paste [this code](https://gist.github.com/4555856) into the blank R script, select it all, and run. You will see results get printed out (in black) in the Console, along with the code (in blue). Objects will also appear in the Workspace, and a help page will open in the bottom-right quadrant.
 
-### Exporting plots
+## Setting the working directory
 
-- run the demo code
-- view the plot in the 'Plots' panel
-- export to PDF
+Let's now save the script. Click the tab in the bottom-right quadrant called "Files". Choose the folder where you want to store files for this course -- create it if necessary. Then, set it as the working directory through the "More" menu, as shown below:
 
-### Exporting documents
+![RStudio new script.](images/rstudio-setwd.png)
 
-- open the `syllabus.Rmd` file
-- click 'Knit HTML' or Cmmd-Shift-H
-- preview in your Web browser
+The working directory is the default location on your computer where R looks for stuff. RStudio copied that location to the Console when you completed the step described above, as if you had run the `setwd` command, which sets the working directory to a given folder path.
+
+```{r setwd, eval=FALSE}
+setwd("~/Documents/Teaching/IDA")
+```
+
+You can now save your script: focus on it by clicking anywhere in its window, press &#8984;-S (Mac) or `Ctrl-S` (Win), and RStudio will offer to save it in your course folder.  Finally, set your course folder as the default working directory in RStudio's preferences.
+
+## Drawing and saving plots
+
+One last functionality that we want to show as part of the RStudio interface has to do with plots. Let's take inspiration from a [basic ggplot2 tutorial](http://blog.echen.me/2012/01/17/quick-introduction-to-ggplot2/) (`ggplot2` is a graphics package that you might have [previously](11_r.html) installed when trying out package installation in R).
+
+```{r ggplot2-1, eval=FALSE}
+# In case you have not yet installed ggplot2, run this.
+install.packages("ggplot2")
+```
+
+We are going to take a quick look at some example data that is part of the R software. The data describes a set of fifty flowers studied by famous statistician Ronald Fisher in an article published in 1936. The data itself were collected by Edgar Anderson and published one year before.
+
+```{r ggplot2-2}
+# Load ggplot2 package.
+library(ggplot2)
+# Look at a default dataset.
+head(iris)
+# Quick plot.
+qplot(data = iris, x = Sepal.Length, y = Petal.Length)
+```
+
+We will come back to how `ggplot2` works in due time; for the moment, let's simply improve the plot by adding a bunch of options that will add some color, sizing and transparency effects to the plot that opened in the bottom-right quadrant.
+
+```{r ggplot2-3}
+qplot(data = iris, x = Sepal.Length, y = Petal.Length, color = Species, size = Petal.Width, alpha = I(0.7))
+```
+
+This plot can be saved to PNG (a [bitmap](https://en.wikipedia.org/wiki/Raster_graphics) format) or PDF (a [vector](https://en.wikipedia.org/wiki/Vector_graphics) format) from the "Export" menu. You will want to use PNG if you are saving the plot for screen viewing, e.g. posting on a Web page. Otherwise, you will prefer to export the plot as PDF, as shown below.
+
+![RStudio export plot.](images/rstudio-save-plot.png)
+
+RStudio will open a window to ask you for a few details, such as the filename for the exported graphic. The default saving location will be your working directory. After the plot is exported, it will open in your default PDF viewer, so that you can check everything went well.
 
 ## Updates
 
-The first course email that circulated asked you to install RStudio 0.97.248, but there was a funny coincidence: RStudio was updated to version 0.97.306 on the day we started the class!
+RStudio is frequently improved, and you might want to upgrade your version to make sure that you keep the software on its latest version. On Mac OS X, the "Check for updates" item is located in the "Help" menu.
 
-You might want to upgrade your version of RStudio to make sure that you keep the software on its latest version. On Mac OS X, there is a "Check for updates" item in the "Help" menu of RStudio.
+The first course email that circulated asked you to install RStudio 0.97.248, but there was a funny coincidence: RStudio was updated on the day we started the class. You can stick with the version of RStudio that you installed: it should not have any impact on the course.
 
 ## Troubleshooting
 
-There's a few [known issues](http://support.rstudio.org/help/kb/troubleshooting/troubleshooting-guide-using-rstudio) with RStudio. For instance, Mac OS X users with older 32-bit processors from circa 2009 will have to use an old version that is not available any more (but we have a copy).
-
-When the problem concerns code execution, you should [start by running the code in R](http://support.rstudio.org/help/kb/troubleshooting/r-code-is-not-working) to see if the problem replicates. Other known issues can affect, for instance, [package installation](http://support.rstudio.org/help/kb/troubleshooting/problem-installing-packages), in which case the easiest workaround is usually to try another CRAN repository.
-
-A deeper issue arises if you want to use the `View()` command in RStudio on Mac OS X. For the command to work, you will have to install [XQuartz](http://xquartz.macosforge.org/landing/) yourself, as it is not bundled anymore with the rest of the OS by default. Alternately, use `rstudio::viewData(whatever_dataset)` by double-clicking the data in your Workspace.
+There's a few [known issues](http://support.rstudio.org/help/kb/troubleshooting/troubleshooting-guide-using-rstudio) with RStudio. For instance, Mac OS X users with older 32-bit processors from circa 2009 will have to use an old version that is not available any more: ask us for a copy of it.
 
 There might be more issues floating around, but our experience with RStudio has been mostly bug-free, so let's keep the picture rosy for now.
+
+> __Next__: [Help pages](13_help.html).

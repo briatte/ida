@@ -1,9 +1,9 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# Setup
+# 1. Setup
 
-As mentioned in the introductory pages, this course uses R, a free and open source software used by data analysts in many different contexts. The first fifteen minutes of this Google TechTalk by [Hadley Wickham](http://had.co.nz/) explains why use R for data analysis:
+As mentioned in the introductory pages, this course uses R, a free and open source software used by data analysts in many different contexts. The first fifteen minutes of this Google Tech Talk by [Hadley Wickham](http://had.co.nz/) explains why use R for data analysis:
 
 <iframe width="800" height="450" src="https://www.youtube.com/embed/TaxJwC_MP9Q?rel=0" frameborder="0" allowfullscreen></iframe>
 
@@ -43,4 +43,4 @@ Finally, we might play a bit with [RPubs](http://rpubs.com/) if we get to the po
 
 Finally, if you have a [Google account](https://www.google.com/accounts/), this will be useful to use tools like [Google Documents](https://docs.google.com/) or [Google Fusion Tables](http://www.google.com/fusiontables).
 
-> Next: [setting up R](11_r.html).
+> __Next__: [Installing R](11_r.html).

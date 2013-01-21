@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# Linear models
+# 8.2. Linear regression
 
 For starters, let's try to predict some things.
 
@@ -15,3 +15,5 @@ Some of the general ideas that emerge at that stage are:
 3. Finally, the logic of minimizing the distance between the line and the data points implies that the true result of a model is never the model on its own, but the combination of the line and the data points.
 
 So you can see that a lot about statistical modelling can be translated into visual terms without deviating too much from canonical terminology. Let's take a look at R code to run linear regression models.
+
+> __Next__: [Visually weighted regression](83_vwreg.html)

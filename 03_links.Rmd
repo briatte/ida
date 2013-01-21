@@ -45,4 +45,4 @@ This course uses these tools: it is developed in RStudio with R Markdown, and is
 
 If you find useful online resources for this course, please share them on the [course blog](http://srqm.tumblr.com/), using the "[Suggestions](http://srqm.tumblr.com/submit)" link to let the author know about your find. Your submission will be checked before publication.
 
-> Next: [Setup](10_setup.html).
+> __Next__: [Setup](10_setup.html).

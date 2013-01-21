@@ -20,3 +20,5 @@ cat("Hello World! Today is",date())
 __The syntax of each command requires a bit of memorization, and lots of practice.__ I have never seen anyone type straight working code in R: everyone goes through cycles of trial-and-error with it, because the R language is based on rather old languages like Fortran and S that make its syntax often counter-intuitive (more on that with loops later on).
 
 We should start by learning to manipulate simple things in R.
+
+> __Next__: [Vectors and matrices](22_vectors.html).

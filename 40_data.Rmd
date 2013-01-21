@@ -5,8 +5,12 @@
   
 There is a growing number of online interfaces for data repositories. Have a look, for instance, at [CKAN](http://ckan.org/) and [Data Market](http://datamarket.com/). A very successful interface is the [Gapminder](http://factbased.blogspot.fr/2012/07/convenient-access-to-gapminder-datasets.html) project, which relies on UN data and motion (animated) charts.
 
-Let's have a  look at [World Bank](https://github.com/vincentarelbundock/WDI) datasets (see their [methodology](http://data.worldbank.org/about/data-overview/methodologies) of measurement).
+Let's open the QOG Basic dataset.
 
-## Atrociously brilliant reshaping stuff that we will spare you
+Let's now have a  look at [World Bank](https://github.com/vincentarelbundock/WDI) datasets (see their [methodology](http://data.worldbank.org/about/data-overview/methodologies) of measurement).
 
-The `plyr` package contains a command called `ddply` that is simply brilliant. [Have a look at what you are missing](http://srqm.tumblr.com/post/19598648238/plyr).
+Finally, let's merge QOG and WDI data.
+
+Use the `countrycode` package if you need more country code classifications.
+
+> Next: [Import/Export](41_dataio.html).

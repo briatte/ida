@@ -1,8 +1,0 @@
-<style>@import url(style.css);</style>
-<small>[Introduction to Data Analysis](index.html)</small>
-
-# Autocorrelation and lagged values
-
-Correlograms, marginal change, detrending and differencing, applied to [income inequality in the United States](http://www.perdomocore.com/2012/will-inequality-continue-to-get-worse-r-to-the-rescue/).
-
-> Next: [smoothing](93_smoothing.html).

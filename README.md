@@ -4,17 +4,25 @@ This is meant to turn into a course during spring 2013. [The syllabus is here](i
 
 ## HOWTO
 
-For `knitr` geeks: the course is meant to fly as HTML. Compile by running `index.Rmd` after changing the `run-course` chunk to `EVAL=TRUE`, then open `index.html` locally in any decent browser. [The result is here](http://f.briatte.org/teaching/ida/).
+* `knitr` geeks: the course is meant to fly as HTML. Compile by running `index.Rmd`. [The result is here](http://f.briatte.org/teaching/ida/), frequently updated.
+* `.Rprofile` nerds: [check the code](https://github.com/briatte/ida/blob/master/.Rprofile). I hope to help students with installing the packages used in the course.
 
-You need to run the `.Rprofile` contained in the directory to define some of the functions found in the rest of the material. The course also uses files from the `code/` and `data/` folder.
+The course also uses a few files from the `code/` and `data/` folder.
 
 ## VERSION
 
-Not even alpha. I would be surprised if anything works so far.
+Not even alpha. You can barely browse the draft pages so far, and I'm not even sure I have the best `knitr` routine to put it all together.
 
-I am *very* open to suggestions at that stage, especially since I could not get the CSS file to be automatically included in the HTML rendering.
+I am *very* open to suggestions.
+
+## DONE
+
+- Pages: introduction; sessions 1--2.
+- Navigation: all files have been chained to each other.
+- Startup: `.Rprofile` contains a package installer/loader utility.
 
 ## TODO
 
-- Write a proper `.Rprofile` to assist student with package installation.
-- Finish the whole damn thing and publish online with some versioning.
+- Code: send `code/` files to `source_gist`. Acknowledge authors.
+- Code: finish the whole damn thing.
+- Course: set up homework (exercises, assignments, grading scheme).

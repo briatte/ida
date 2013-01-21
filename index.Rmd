@@ -26,13 +26,11 @@ library(knitr)
 rm(list = ls())
 file.remove(dir(pattern="[0-9]+(.*)\\.html"))
 file.remove(dir(pattern="[0-9]+(.*)\\.md"))
-# get files
-all <- dir(pattern="[0-9]+(.*).Rmd")
-# subset pages (temporary)
-all <- all[c(1:4,8,13,15)]
+# get files; currently: intro, sessions 1-2
+(all <- dir(pattern="[0-9]+(.*).Rmd")) #[c(1:4,8,12,14,15:18)])
 # knitr setup
 opts_knit$set(header="foobar")
-opts_chunk$set(fig.path = "plots")
+opts_chunk$set(fig.path = "plots/")
 # full monty!
 foreach(i=1:length(all)) %do% knit2html(all[i])
 ```
@@ -62,7 +60,7 @@ __Readings:__ Kabacoff, ch. 1 and Teetor, ch. 1 and 3.
 
 * * *
 
-## 2. [Basic R operators](20_rbasics.html)
+## 2. [Basic R operators](20_basics.html)
 
 __Readings:__ Teetor, ch. 2 and 5.
 
@@ -74,7 +72,9 @@ __Readings:__ Teetor, ch. 2 and 5.
 
 ## 3. [Basic math operators](30_math.html)
 
-__Readings:__ Kabacoff, ch. 5, and Teetor, ch. 8. We will also use content from Matloff, ch. 8.
+__Readings:__ Kabacoff, ch. 5, and Teetor, ch. 8.
+
+<!-- Matloff, ch. 8. -->
 
 - [Functions](31_functions.html)
 - [Loops](32_loops.html)
@@ -84,7 +84,9 @@ __Readings:__ Kabacoff, ch. 5, and Teetor, ch. 8. We will also use content from 
 
 ## 4. [Basic data operators](40_data.html)
 
-__Readings:__ Kabacoff, ch. 4, and Teetor, ch. 4 and 6. For additional manipulations with text strings and dates, see Teetor, ch. 7.
+__Readings:__ Kabacoff, ch. 4, and Teetor, ch. 4 and 6.
+
+<!-- additional manipulations with strings and dates: Teetor, ch. 7 -->
 
 - [Import/Export](41_dataio.html)
 - [Reshaping](42_reshaping.html)
@@ -108,7 +110,7 @@ __Readings:__ Kabacoff, ch. 6, and Teetor, ch. 10.
 
 - [Descriptive statistics](61_descr.html)
 - [Probability density functions](62_pdf.html)
-- [Empirical CDFs](63_ecdf.html)
+- [Empirical cumulative density functions](63_ecdf.html)
 
 * * *
 
@@ -134,36 +136,41 @@ __Readings:__ Kabacoff, ch. 8 and 11, and Teetor, ch. 11. Skim ANOVA to focus on
 
 ## 9. [Visualization in time: Time series](90_ts.html)
 
-__Readings:__ Teetor, ch. 14. ARIMA models are highly relevant for finance students.
+__Reading:__ Teetor, ch. 14. We'll try to add ARIMA models to the course content, as they are highly relevant for finance students.
 
-- [Annotating time series](91_tsnotes.html)
-- [Autocorrelation](92_corrgram.html)
-- [Smoothing](93_smoothing.html)
+- [Autocorrelation](91_lags.html)
+- [Smoothing](92_smoothing.html)
+- ARIMA (perhaps)
 
 * * *
 
 ## 10. [Visualization in space: Maps](100_maps.html)
 
-__Readings:__ none. Online material will be provided instead.
+__Reading:__ B. Sue Bell *et al.*, "[Current practices in spatial analysis of cancer data mapping health statistics to inform policymakers and the public](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1647272/)", 2006.
 
-- [Electoral maps](101_emaps.html)
-- [Google Maps](102_gmaps.html)
+- [Choropleth maps](101_choropleth.html)
+- [Google-powered maps](102_gmaps.html)
+- Shiny-powered maps (perhaps)
 
 * * *
 
 ## 11. [Networks](110_networks.html)
 
-__Readings:__ .
+__Reading:__ David Siegel, "[Social Networks in Comparative Perspective](http://opensiuc.lib.siu.edu/cgi/viewcontent.cgi?article=1045&context=pn_wp)", 2011.
 
-- [Network visualization](111_networks.html)
-- [Measures of influence](112_influence.html)
-- [Mining online networks](113_online.html)
+- [Measures of influence](111_influence.html)
+- [Mining an online network](112_twitter.html)
+- Plotting interactive networks (perhaps)
 
 * * *
 
-## 12. [Data-driven advances](120_dataaa.html)
+## 12. [Data-driven advances](120_data.html)
 
-Special session with guests (if everything goes well).
+__Special session__ with guests (if everything goes well):
+
+- What is data-driven journalism?
+- What is open data/government?
+- What is reproducible science?
 
 * * *
 
@@ -171,7 +178,7 @@ We're done!
 
 __Thanks to__ [Baptiste Coulmont](http://coulmont.com/), [Joël Gombin ](http://joelgombin.fr/) and [Timothée Poisot](https://github.com/tpoisot/RCourse2012) for very valuable advice and comments, to [GitHub](http://github.com/) for hosting and to users at [StackExchange](http://stackexchange.com/) for coding assistance.
 
-Special thanks to the Sciences Po Reims staff for indefectible support.
+Special thanks to the Sciences Po Reims staff and students for indefectible support.
 
 __Inspired by__ [Christopher Adolph](http://faculty.washington.edu/cadolph/index.php?page=22), [Dave Armstrong](http://quantoid.net/ICPSRR.html), [Christopher Gangrud](https://github.com/christophergandrud/Introduction_to_Statistics_and_Data_Analysis_Yonsei/), [Andrew Gelman](http://andrewgelman.com/2012/12/textbook-for-data-visualization/), [Rebecca Nugent](http://www.stat.cmu.edu/~rnugent/teaching/introR/), [Gaston Sanchez](https://gastonsanchez.wordpress.com/), [David Sparks](http://is-r.tumblr.com/), [Hadley Wickham](http://had.co.nz/ggplot2/).
 

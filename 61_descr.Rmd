@@ -1,7 +1,9 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# Descriptive statistics
+# 6.1. Descriptive statistics
+
+Central tendency, dispersion (spread).
 
 ## Extracting a mean over several observations
 
@@ -57,3 +59,5 @@ dk_state$color <- ifelse(dk_state$V1 > 50, "blue", "red")
 # Add a new layer of colored dots.
 p + geom_point(colour=dk_state$color)
 ```
+
+> __Next___: [Probability density functions](62_pdf.html)

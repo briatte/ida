@@ -1,9 +1,9 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 2.1. Import/Export
+# 4.1. Import/Export
 
-This section covers a few ways to read/write `CSV` and `TXT` data, as well as common proprietary formats.
+This section introduces data import and export (or "I/O", for "input/output") with R. covers a few ways to read/write `CSV` and `TXT` data, as well as common proprietary formats.
 
 ## Opening a CSV file
 
@@ -43,6 +43,27 @@ We finally inspect the result by looking at the structure of the dataset with `s
 str(dk_data)
 # List the first data rows.
 head(dk_data)
+```
+
+## The Quality of Government dataset
+
+Here's the code to download a dataset that we will use in future classes.
+
+```{r qog-basic-dl, results='hide'}
+if(!file.exists("data/qog_basic_cs.csv")) {
+  if(!file.exists("data")) {
+   dir.create("data")
+  }
+  if(!require(RCurl)) {
+    install.packages("RCurl")
+    library(RCurl)
+  }
+  url <- "http://www.qog.pol.gu.se/digitalAssets/1373/1373417_qog_basic_cs_csv_120608.csv"
+  qog <- getURL(url)
+  qog <- textConnection(qog)
+  qog <- read.csv(qog)
+  write.csv(qog, file = "data/qog_basic_cs.csv")
+}
 ```
 
 ## Other formats
@@ -102,3 +123,4 @@ Finally, since the series seems to increase exponentially, let's have a look at 
 qplot(year,medinc,data=infl,geom="line",log="y")
 ```
 
+> __Next___: [Reshaping](42_reshaping.html).

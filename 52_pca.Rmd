@@ -139,4 +139,4 @@ PCA is a non-parametric approach, which means that the accuracy of the procedure
 
 Furthermore, [even random data](http://machine-master.blogspot.ca/2012/08/pca-or-polluting-your-clever-analysis.html) can express some degree of linearity, so the degree of accuracy of PCA is not even strictly proportional to the number of variables. Therefore, when you find relationships with PCA, make sure to specify them further and run additional diagnostics on the clusters, as shown in the next section.
 
-> Next: [*k*-means](53_kmeans.html).
+> __Next__: [*k*-means](53_kmeans.html).

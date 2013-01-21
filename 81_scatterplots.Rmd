@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# Scatterplots
+# 8.1. Correlation and scatterplots
 
 Linear bivariate relationships.
 
@@ -13,3 +13,5 @@ Correlation coefficients and scatterplots, illustrated with the [OECD Better Lif
 library(GGally)
 # ggpairs
 ```
+
+> __Next__: [Linear regression](82_regression.html)

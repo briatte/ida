@@ -1,19 +1,21 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# Maps
+# 10. Visualization in space: Maps
 
-Spatial visualization can be [pretty complex](http://youtu.be/XU6-krsDviY), because you have to learn new measures that apply in geographic contexts. We will stick to simply viewing the data on a map.
+Spatial visualization can be [pretty complex](http://youtu.be/XU6-krsDviY), because you have to learn new measures that apply in geographic contexts. We will stick to simply [viewing some data on a map](http://is-r.tumblr.com/post/35200999886/make-your-own-electoral-map).
 
-<!-- require(maps)
-require(ggplot2)
+Here's a quick method:
+
+```{r easy-map}
+library(maps)
+library(ggplot2)
 eu <- map_data("world")
 feu <- eu$region %in% c("USA","Russia","China","India")
 eu <- eu[feu,]
-qplot(long, lat, data=eu, geom="polygon", fill=region, group=group) -->
+qplot(long, lat, data=eu, geom="polygon", fill=region, group=group)
+```
 
-<!-- choropleth and proportional circles
-http://quanti.hypotheses.org/795/
--->
+Most of the work can be [done with ggmap](http://www.milanor.net/blog/?p=534). Let's plot [airport traffic](http://www.milanor.net/blog/?p=594).
 
-> Next: .
+> __Next__: [Choropleth maps](101_choropleth.html).

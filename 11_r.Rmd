@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 1.1. R
+# 1.1. Installing R
 
 [R](http://www.r-project.org/) is a software that uses a specific language to manipulate statistical objects. Researchers and statisticians are [increasingly](http://r4stats.com/articles/popularity/) adopting R as their software of choice, and the R user base goes well beyond academia. Many [R User Groups](http://www.r-bloggers.com/RUG/) exist on a [worldwide scale](http://blog.revolutionanalytics.com/local-r-groups.html).
 
@@ -9,9 +9,9 @@ Some people *really* like R. This very enthusiastic user is [Anthony Damico](htt
 
 <iframe src="http://player.vimeo.com/video/52999628?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
-The R language has its roots in the S language developed by AT&T, which also developed the C language. It is not the only language available for statistical analysis: there are [quite a few options](http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/), and you might also hear about Python, SAS, SPSS or Stata (which we also teach).
+The R language has its roots in the S language developed by AT&T, which also developed the C language. It is not the only language available for statistical analysis: there are [many others](http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/), and you might also hear about SAS, SPSS or Stata, or even Matlab and Python.
 
-R is as free as it is powerful, but it comes with [some drawbacks](http://badhessian.org/seven-reasons-to-use-r-for-social-network-analysis-and-three-reasons-against/#more-446). Its major disadvantage is that its learning curve is pretty steep. Do not worry: we will review as many examples as we need to make it work, and we will give you code to help creating your own.
+R is as free as it is powerful, but it comes with [some drawbacks](http://badhessian.org/seven-reasons-to-use-r-for-social-network-analysis-and-three-reasons-against/). Its major disadvantage is that its learning curve is pretty steep. Do not worry: we will review as many examples as we need to make it work, and we will give you code to help creating your own.
 
 ## Installation
 
@@ -20,7 +20,7 @@ Now, download  and install the latest version of R. You will need admin privileg
 The R development team maintains [a website](http://www.r-project.org/), but you will download R from a different source, based in Wien, Austria. The download link depends on your operating system:
 
 - __For Mac OS X__, [download from this link](http://cran.at.r-project.org/bin/macosx/), double-click it, say "OK" to all installation steps. You can also watch this [excellent video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) by Gordon Davis, which also covers RStudio.
-- __For Windows__, [download from this link](http://cran.at.r-project.org/bin/windows/base/), which also has a few help pages. [This video tutorial](https://www.youtube.com/watch?v=ZoPJGmpYJzw&list=UUGNPKRpfVnngmcsC3a3brrg&index=11) can help with the installation and shows a few more things.
+- __For Windows__, [download from this link](http://cran.at.r-project.org/bin/windows/base/), which also has a few help pages. [This video tutorial](https://www.youtube.com/watch?v=ZoPJGmpYJzw&list=UUGNPKRpfVnngmcsC3a3brrg&index=11) can help with the installation and shows a few more things. If you are in a hurry, [this one](http://www.screenr.com/kzT8) is quicker.
 
 __Do not panic__ if you do not manage to install R and RStudio on your own, just bring your laptop and we will guide you through it in class.
 
@@ -56,6 +56,8 @@ Let's go through all parts of this example. The basic _operator_ `<-` _assigns_ 
 
 We then bind these objects together with the `c()` command that creates a _vector_ with the `txt` and `num` values. The result is shown on screen with the `print()` command, but this command can also be omitted by just typing the name of the object.
 
+Note, finally, that the lines of code starting with a hash (`#`) are comments. They do not have any result: if you pass them to R, they are simply ignored. Commenting your code is the most important good programming practice.
+
 ## Scripts
 
 Code is impossible to remember, and you want to save as well as share your work. Let's see how to run a R script. Press &#8984;-N (Mac) or `Ctrl-N` (Win) to open a blank R document, called a script, then [click this link](https://gist.github.com/4555856) and click again the top-right `<>` icon:
@@ -77,29 +79,34 @@ getOption("defaultPackages")
 
 The command above requires that the `O` in `getOption` is typed in uppercase. R is case-sensitive: we will come back to that next week when we review command syntax in more detail.
 
-Let's install a few packages from a short list, and precede that with a comment on a separate line, which needs to start by `#` to be recognized as such by R:
+Let's install a few packages from a short list. Be careful with the capital letters in `RCurl`. To minimize hassle, your best option is simply to copy-paste the code into R (you can include the comments; they will be ignored at execution).
 
 ```{r installing, eval=FALSE, include=TRUE}
-# Install additional packages.
-list <- c("ggplot2", "knitr")
-install.packages(list)
+# Create list of packages. 
+list <- c("foreach", "ggplot2", "knitr", "RCurl")
+# Install packages.
+install.packages(list, repos = "http://cran.us.r-project.org")
 ```
 
-Once installed, the additional packages need to be loaded in memory with the `library()` command:
+Once installed, the additional packages can be loaded (initialized) with the `library` command. The `ggplot2` package is used for [plotting neat graphics](http://ggplot2.org/). The `RCurl` package is used to download data from online sources.
 
 ```{r loading, eval=FALSE, include=TRUE}
+# Load ggplot2 package.
 library(ggplot2)
-library(knitr)
+# Load RCurl package.
+library(RCurl)
 ```
 
 If we ever need to update these packages, we will simply type `update.packages()` and then agree to the updates that it suggests by comparing local versions of the packages with their online CRAN repository version.
 
-## Post-scriptum
+## Exit
 
-R can do a lot of things, including waiting for you to make coffee:
+You can quit R like any other application or by typing `q()`. You will be asked whether you want to save unsaved documents, and whether you want to save the R session, or workspace. You do not need to save anything for now.
+
+This concludes our very quick introduction to the R software. R can do a lot of things, including waiting for you to make coffee:
 
 <iframe src="http://player.vimeo.com/video/43305640?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
 More seriously, a big drawback of R is its barebones interface. We can fix that by installing a software that 'pilots' R through better menus and windows.
 
-> Next: [RStudio](12_rstudio.html).
+> __Next__: [Installing RStudio](12_rstudio.html).
