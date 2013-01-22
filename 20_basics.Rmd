@@ -3,7 +3,7 @@
 
 # 2. Basic R operators
 
-Let's now take a look at the most essential R operators. These operators consist in two sets of commands. The first set deals with basic computation and works pretty much like the commands on a scientific calculator, or on [Wolfram Alpha](https://www.wolframalpha.com/). Here are a few examples:
+Let's take a look at the most essential R operators. These operators consist in two sets of commands. The first set deals with basic computation and works pretty much like the commands on a scientific calculator, or on [Wolfram Alpha](https://www.wolframalpha.com/). Here are a few examples:
 
 ```{r calc, results='hide'}
 # Addition.

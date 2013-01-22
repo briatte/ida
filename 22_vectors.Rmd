@@ -42,13 +42,26 @@ So in fact, in R, everything is a matrix, or some special kind of a matrix.
 
 Welcome to R.
 
+## What goes into a vector
+
+Vectors are just lists of stuff. That stuff must be of the same type: you cannot mix numbers and text, for instance. If you do, R will convert all items of the vector to a single type. You can see the different types in the Workspace.
+
+```{r vector-items}
+# A vector of numbers.
+x <- c(4, 6, 8)
+# A vector of strings, i.e. characters, i.e. text.
+y <- c("alea", "jacta", "est")
+# A 'mixed' vector will be automatically converted.
+z <- c(4, "a")
+```
+
 ## A simple student grades example
 
-Vectors are just lists of stuff. Let's combine a fictional set of student grades into a vector called `grades`. Let's compute the mean, the median, and finally a whole bunch of summary statistics about the resulting object.
+Let's combine a fictional set of student grades into a vector called `grades`. Let's compute the mean, the median, and finally a whole bunch of summary statistics about the resulting object.
 
 ```{r grades}
 # Create vector of random grades.
-grades <- c(7.5,13,19,8,12)
+grades <- c(7, 13, 19, 8, 12)
 # Check result.
 grades
 # Compute mean of grades vector.
@@ -70,8 +83,10 @@ is.vector(grades)
 grades[1]
 # Select more than one element by listing which values you want.
 grades[1:3]
-# Select a vector of values.
+# Select a vector of values: 1, 2, 3 and 5.
 grades[c(1:3,5)]
+# As a student rightly noted, it makes more sense to ask this instead.
+grades[-4]
 # Vectors can be logical.
 grades > 10
 # Select a logical vector of values.
@@ -151,77 +166,5 @@ grades.data
 ```
 
 This ends our quick tour of how vectors and matrices work, but please make sure that you practice at home! You will need that practice to become familiar with R. And for the matrix-savvy, here's a [cheat sheet of matrix operations in R](https://gastonsanchez.wordpress.com/2012/08/30/cheat-sheet-of-matrix-operations-in-r/).
-
-## More complex student grades
-
-Let's use some real, anonymized data from Autumn 2012. These are the grades from my three mathematics classes in first year. I have removed any student identification, so you have to trust me that these are the real grades. We will use a package to create fake names in replacement.
-
-```{r mygrades-import}
-# Install and load randomNames package. Remember that R is case-sensitive.
-install.packages("randomNames")
-library(randomNames)
-# Install and load RCurl package.
-install.packages("RCurl")
-library(RCurl)
-# Download the data.
-grades <- getURL("https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdG9oR2Y3T3U1Y3I5YlgzUmNBSVFrRUE&single=true&gid=0&output=csv")
-# Make the data readable.
-grades <- textConnection(grades)
-# Convert the data from CSV format.
-grades <- read.csv(grades)
-# Check result.
-head(grades)
-# How many rows of data do we have?
-nrow(grades)
-# Let's generate that many random names.
-names <- randomNames(86)
-# Let's finally stick them to the matrix.
-grades <- cbind(grades, names)
-# Check result.
-head(grades)
-```
-
-## Live session!
-
-<!-- Let's produce [a few plots](http://flowingdata.com/2012/12/17/getting-started-with-charts-in-r/) from fake data vectors. -->
-
-Let's show a final type of object: the data frame.
-
-```{r df}
-# Convert to data frame.
-grades <- as.data.frame(grades)
-# Check result.
-head(grades)
-# Check structure of a data frame.
-str(grades)
-```
-
-```{r melt}
-# Install and load reshape package.
-install.packages("reshape")
-library(reshape)
-# Reshape data from 'wide' (lots of columns) to 'long' (lots of rows).
-grades <- melt(grades, id.vars = "names")
-# Check result.
-head(grades)
-```
-
-```{r grades-plots}
-# Install and load ggplot2 package.
-install.packages("ggplot2")
-library(ggplot2)
-# Plot all three exams.
-qplot(data = grades, x = value, group = variable, geom = "density")
-# Add color.
-qplot(data = grades, x = value, group = variable, color = variable, fill = variable, alpha = I(.3), geom = "density")
-```
-
-Now use the code on this page to:
-
-1. download [this data](https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdF91SmhLcV8wMjRtZ3FraGQyVUt2V3c&output=csv)
-2. load the data in R
-3. compute the Body Mass Index
-4. plot the results
-5. tell us what `var1` and `var2` are!
 
 > __Next__: [Other R objects](23_objects.html).

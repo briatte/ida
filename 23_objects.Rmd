@@ -11,4 +11,84 @@ rm(list=ls());
 
 <!-- We're going to use data from the Small Arms Survey on civilian firearms. The data are based on [various sources](http://www.smallarmssurvey.org/fileadmin/docs/H-Research_Notes/SAS-Research-Note-9.pdf) that illustrate how careful we should generally be about the reliability of our data. -->
 
+Let's use some real, anonymized data from Autumn 2012. These are the grades from my three mathematics classes in first year. I have removed any student identification, so you have to trust me that these are the real grades. We will use a package to create fake names in replacement.
+
+```{r mygrades-import}
+grades <- read.table("data/grades.txt", header = TRUE)
+
+# Install and load randomNames package. Remember that R is case-sensitive.
+install.packages("randomNames")
+library(randomNames)
+# Install and load RCurl package.
+install.packages("RCurl")
+library(RCurl)
+# Download the data.
+grades <- getURL("https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdG9oR2Y3T3U1Y3I5YlgzUmNBSVFrRUE&single=true&gid=0&output=csv")
+# Make the data readable.
+grades <- textConnection(grades)
+# Convert the data from CSV format.
+grades <- read.csv(grades)
+# Check result.
+head(grades)
+```
+
+```{r grades-with-random-names}
+# How many rows of data do we have?
+nrow(grades)
+# Let's generate that many random names.
+names <- randomNames(86)
+# Let's finally stick them to the matrix.
+grades <- cbind(grades, names)
+# Check result.
+head(grades)
+```
+
+## Live session!
+
+<!-- Let's produce [a few plots](http://flowingdata.com/2012/12/17/getting-started-with-charts-in-r/) from fake data vectors. -->
+
+Let's show a final type of object: the data frame.
+
+```{r df}
+# Convert to data frame.
+grades <- as.data.frame(grades)
+# Check result.
+head(grades)
+# Check structure of a data frame.
+str(grades)
+```
+
+```{r melt}
+# Install and load reshape package.
+install.packages("reshape")
+library(reshape)
+# Reshape data from 'wide' (lots of columns) to 'long' (lots of rows).
+grades <- melt(grades, id.vars = "names")
+# Check result.
+head(grades)
+```
+
+```{r grades-plots}
+# Install and load ggplot2 package.
+install.packages("ggplot2")
+library(ggplot2)
+# Plot all three exams.
+qplot(data = grades, x = value, group = variable, geom = "density")
+# Add color.
+qplot(data = grades, x = value, color = variable, fill = variable, alpha = I(.3), geom = "density")
+# Another way.
+ggplot(grades) + 
+  geom_density(aes(calc), color="red") + 
+  geom_density(aes(proba), color="blue") + 
+  geom_density(aes(stats))
+```
+
+Now use the code on this page to:
+
+1. download [this data](https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdF91SmhLcV8wMjRtZ3FraGQyVUt2V3c&output=csv)
+2. load the data in R
+3. compute the Body Mass Index
+4. plot the results
+5. tell us what `var1` and `var2` are!
+
 > __Next week__: [Basic math operators](30_math.html)

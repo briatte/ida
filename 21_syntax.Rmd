@@ -29,11 +29,17 @@ Note that brackets are omnipresent in R syntax: every *function* (or command) wi
 cat("Hello World! Today is ", date(), ".", sep = "")
 ```
 
-A very important aspect of R syntax is *assignment*. To put some values into an object, you need two things, separated by a right-left arrow (or by a single equal sign if you prefer). The example below creates an object that holds my Body Mass Index. I can then call the object at a later stage.
+A very important aspect of R syntax is *assignment*. To put some values into an object, you need two things, separated by a right-left arrow (or by a single equal sign if you prefer). The example below creates an object that holds my Body Mass Index, and then evaluates its normality.
 
 ```{r my-bmi}
+# Compute my Body Mass Index.
 bmi <- round(703*134/(70^2),1)
-cat("My BMI is approximately", bmi, "(which is barely normal).")
+# Create a text object (called a string).
+assessment <- "normal"
+# Modify the assessment statement if BMI is below 18 or above 25.
+if(bmi < 18) assessment <- "below normal"
+if(bmi > 25) assessment <- "above normal"
+cat("My BMI is approximately", bmi, ", which is", assessment)
 ```
 
 In fact, it would make more sense to write a Body Mass Index *function*, which is not very difficult if you can survive the additional brackets. We will come back shortly to writing functions next week.
@@ -52,6 +58,8 @@ bmi(weight = 134, height = 70)
 # Another example, this time with digits.
 bmi(weight = 134, height = 70, digits = 0)
 ```
+
+As a very quick exercise, create the `bmi.quetelet` function that computes the BMI in its [original metric units](https://en.wikipedia.org/wiki/Body_mass_index), and compute your own figure.
 
 The syntax of each command requires a bit of memorization, and lots of practice. Nobody types functional code in R without going through cycles of trial-and-error with it. Programming requires some discipline, some logic and a lot of patience.
 
