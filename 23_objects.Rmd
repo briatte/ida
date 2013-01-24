@@ -14,25 +14,32 @@ rm(list=ls());
 Let's use some real, anonymized data from Autumn 2012. These are the grades from my three mathematics classes in first year. I have removed any student identification, so you have to trust me that these are the real grades. We will use a package to create fake names in replacement.
 
 ```{r mygrades-import}
-grades <- read.table("data/grades.txt", header = TRUE)
-
-# Install and load randomNames package. Remember that R is case-sensitive.
-install.packages("randomNames")
-library(randomNames)
-# Install and load RCurl package.
-install.packages("RCurl")
-library(RCurl)
-# Download the data.
-grades <- getURL("https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdG9oR2Y3T3U1Y3I5YlgzUmNBSVFrRUE&single=true&gid=0&output=csv")
-# Make the data readable.
-grades <- textConnection(grades)
-# Convert the data from CSV format.
-grades <- read.csv(grades)
+# Download the data if needed.
+if (!file.exists("data/grades.txt")) {
+  # Install RCurl package. Remember that R is case-sensitive.
+  install.packages("RCurl")
+  # Load RCurl package.
+  library(RCurl)
+  # Locate the data.
+  grades <- "https://raw.github.com/briatte/ida/master/data/grades.txt"
+  # Download the data.
+  grades <- getURL(grades)
+  # Make the data readable.
+  grades <- textConnection(grades)
+}
+# Load the data.
+grades <- read.table("data/grades.txt", header = TRUE, )
 # Check result.
 head(grades)
 ```
 
+Let's add random names.
+
 ```{r grades-with-random-names}
+# Install randomNames package. Remember that R is case-sensitive.
+install.packages("randomNames")
+# Load randomNames package.
+library(randomNames)
 # How many rows of data do we have?
 nrow(grades)
 # Let's generate that many random names.
@@ -91,4 +98,4 @@ Now use the code on this page to:
 4. plot the results
 5. tell us what `var1` and `var2` are!
 
-> __Next week__: [Basic math operators](30_math.html)
+> __Next week__: [Basic math operators](30_math.html).

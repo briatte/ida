@@ -3,7 +3,7 @@
 
 # 2.2. Vectors and matrices
 
-In R, everything is a *vector*. If it's not a vector, it's a special kind of vector.
+In R, almost everything is a *vector*. If it's not a vector, it might be a special kind of vector. When something is not a vector, then it's not data and is probably some form of *function*.
 
 What is a vector? A vector is an ordered list of $k$ things. The first thing is item #1 of the vector, the second thing is item #2 and so on. Here's a sequence of $k = 4$ integer values:
 
@@ -12,39 +12,16 @@ What is a vector? A vector is an ordered list of $k$ things. The first thing is 
 1:4
 ```
 
-We are going to store the sequence into an object called `x` and verify that it is indeed a vector. And of course it is. It's a vector of dimension 4.
+We are going to store the sequence into an object called `x` and verify that it is indeed a vector. And of course it is. It's a vector of dimension 4: it has four items.
 
 ```{r vector-check}
 # Store it.
-x <- 1:4
+x <- c(1:4)
 # Is it a vector?
 is.vector(x)
 ```
 
-The examples below are also vectors:
-
-```{r vectors-everywhere}
-# Also a vector.
-y <- "This is a vector."
-# Check.
-is.vector(y)
-# Also a vector.
-z <- 1
-# Check.
-is.vector(z)
-# What about...
-m <- cbind(1:3,4:6)
-```
-
-Okay, that's a *matrix*. A vector is a $1 \times k$ unidimensional matrix. 
-
-So in fact, in R, everything is a matrix, or some special kind of a matrix.
-
-Welcome to R.
-
-## What goes into a vector
-
-Vectors are just lists of stuff. That stuff must be of the same type: you cannot mix numbers and text, for instance. If you do, R will convert all items of the vector to a single type. You can see the different types in the Workspace.
+So vectors are just lists of values. The values must be of the same type: you cannot mix numbers and text, for instance. If you do, R will convert all items of the vector to a single type (which R calls "mode).
 
 ```{r vector-items}
 # A vector of numbers.
@@ -55,116 +32,184 @@ y <- c("alea", "jacta", "est")
 z <- c(4, "a")
 ```
 
-## A simple student grades example
+You can see the different types of your objects in the Workspace.
+
+The examples below are also vectors:
+
+```{r vector-ubiquity}
+# Also a vector.
+y <- "This is a vector."
+# Check.
+is.vector(y)
+# Also a vector.
+z <- 1
+# Check.
+is.vector(z)
+# What about...
+m <- cbind(1:3,4:6)
+# What type (or class) is that?
+class(m)
+```
+
+Okay, that's a *matrix*. A vector is a $1 \times k$ unidimensional matrix. 
+
+So in fact, in R, everything is a matrix, or some special kind of a matrix.
+
+Welcome to R.
+
+Before we move on, also note something: we are going to introduce a lot of terminology below, but we will be relatively liberal in how we use it. This is not a scientific computing class, and we are not computer scientists. We just need to make sure that we grasp the essentials.
+
+## Working with vectors
 
 Let's combine a fictional set of student grades into a vector called `grades`. Let's compute the mean, the median, and finally a whole bunch of summary statistics about the resulting object.
 
-```{r grades}
-# Create vector of random grades.
-grades <- c(7, 13, 19, 8, 12)
+```{r exam}
+# Create vector of random exam grades.
+exam <- c(7, 13, 19, 8, 12)
 # Check result.
-grades
-# Compute mean of grades vector.
-mean(grades)
-# Compute median of grades vector.
-median(grades)
-# Summarize grades vector.
-summary(grades)
+exam
+# Compute mean of exam vector.
+mean(exam)
+# Compute median of exam vector.
+median(exam)
+# Descriptive statistics for exam vector.
+summary(exam)
 ```
 
-Note that R uses a precise taxonomy of objects, and that even though we just used the word "list" to describe a vector, a *list* is not the same as a *vector*. If you test the `grades` object with the `is.vector` command, the result will be `TRUE`, but it will be `FALSE` if you ask whether `grades` is a list.
+Note that R uses a precise taxonomy of objects, and that even though we just used the word "list" to describe a vector, a *list* is not the same as a *vector*. If you ask R if the `exam` object is a vector, the result will be `TRUE`, but not if you ask whether `exam` is a list.
 
-```{r grades-object}
-# Recall the grades object.
-grades
+```{r exam-vector-object}
+# Recall the exam object.
+exam
 # It's a vector.
-is.vector(grades)
-# Select its first element.
-grades[1]
-# Select more than one element by listing which values you want.
-grades[1:3]
-# Select a vector of values: 1, 2, 3 and 5.
-grades[c(1:3,5)]
-# As a student rightly noted, it makes more sense to ask this instead.
-grades[-4]
-# Vectors can be logical.
-grades > 10
-# Select a logical vector of values.
-grades[grades >= 10]
+is.vector(exam)
+# Not a very long one.
+length(exam)
 ```
 
-What is shown here is important: in R, everything is an object. Here, `grades` is an object, just like the list of values that you want to show. This logic is everywhere in R. It is harder to learn than less flexible syntaxes, but it provides a lot of power to the user.
+Select from a vector by adding item numbers in square brackets to its name. The item numbers also form a vector.
+
+```{r exam-vector-item-selection}
+# Select its first element; in context: show grade of first student.
+exam[1]
+# Select more than one element by listing which values you want.
+exam[1:3]
+# Select a vector of values: show grades of students no. 1, 2, 3 and 5.
+exam[c(1:3,5)]
+# In context, it makes more sense to simply hide student no. 4's grade.
+# Thanks to the student who brought up that point in class!
+exam[-4]
+# Vectors can be logical.
+exam >= 10
+# Select a logical vector of values.
+exam[exam >= 10]
+```
+
+What is shown here is important: in R, everything is an object. Here, `exam` is an object, just like the list of values that you want to show from it. This logic is everywhere in R. It is harder to learn than less flexible syntaxes, but it provides a lot of power to the user.
+
+## Working with matrixes
 
 Let's see what a different object looks like. If we want to organize some data into a "row by column" structure, we need to use a matrix--a table of numerical values, if you prefer. The `as.matrix` command will turn `grades` into a matrix.
 
-```{r grades-as-a-matrix}
-# The grades object is not a matrix.
-is.matrix(grades)
+```{r exam-as-a-matrix}
+# The exam object is not a matrix.
+is.matrix(exam)
 # If you make it into a matrix, the vector becomes a column of values.
-as.matrix(grades)
+as.matrix(exam)
 ```
 
-Let's continue by adding a unique identifier to each row, in case we later shuffle the data. The `cbind` command will form a single matrix object out of several vector ones.
+Let's keep that mind and create five more imaginary student essay grades that we are going to combine with the exam grades, using the `cbind` command to form a single matrix out of vector objects. The 'c' in `cbind` means that the combination is done 'vertically', by forming columns out of the vectors.
 
-```{r grades-id}
+```{r exam-essay-matrix}
 # Show length of grades vector.
-length(grades)
-# Create a numbered sequence 1, 2, 3, ...
-id <- c(1:length(grades))
+length(exam)
+# Create a random grades vector of same length.
+essay <- as.integer(20 * runif(5))
+# Check result.
+essay
+# Form a matrix.
+grades <- cbind(exam, essay)
+# Check result.
+grades
+```
+
+Let's finally compute the average for every student (rows), and read the average for exams and essays (columns).
+
+```{r }
+# Compute student average.
+final <- rowMeans(grades)
+# Combine to grades matrix.
+grades <- cbind(grades, final)
+# Check result.
+grades
+# Compute mean exam and essay grades.
+colMeans(grades)
+```
+
+You can further explore the matrix by inspecting its dimensions and providing names to its rows and columns. These operations are covered in Gaston Sanchez's [cheat sheet of matrix operations](https://gastonsanchez.wordpress.com/2012/08/30/cheat-sheet-of-matrix-operations-in-r/), which you can add to your course bookmarks.
+
+```{r matrix-dimensions}
+# How many rows?
+nrow(grades)
+# How many columns?
+ncol(grades)
+# Do they have names?
+dimnames(grades)
+# Create a student id sequence 1, 2, 3, ...
+id <- c(1:nrow(grades))
 # Check result.
 id
-# Add to the matrix under a new name.
-grades.data <- cbind(id, grades)
+# Assign it to row names.
+rownames(grades) <- id
 # Check result.
-grades.data
+grades
 ```
 
-Now let's code if the student passes or fails the test. The `ifelse` command works pretty much like the `IF` command in spreadsheet editors. The `cbind` commands adds a column to the matrix, using the existing `grades` matrix and the newly created `pass` vector.
+Let's now select elements from the matrix: as with vectors, you have to use square brackets, but since there two dimensions, you have to specify at least one of them. The syntax is "r x c" by convention: the first value specifies rows, the second columns.
+
+```{r matrix-exploration}
+# First row, second cell.
+grades[1,2]
+# First row.
+grades[1, ]
+# First two rows.
+grades[1:2, ]
+# Third column.
+grades[, 3]
+# Descriptive statistics for final grades.
+summary(grades[, 3])
+# Descriptive statistics for all matrix columns.
+summary(grades)
+```
+
+## Encoding vectors as factors
+
+Let's anticipate on an issue that will come up often when we explore larger datasets. To illustrate the issue, let's code if the student passes or fails the test. The `ifelse` command works pretty much like the `IF` command in spreadsheet editors.
 
 ```{r grades-pass}
 # Create a text object based on a logical condition.
-pass <- ifelse(grades >= 10, "Pass", "Fail")
+pass <- ifelse(grades[, 3] >= 10, "Pass", "Fail")
 # Check result.
 pass
-# This is what it would look like when added to the grades data.
-# Find the issue with that operation.
-cbind(grades.data, pass)
-# This solves the issue: convert the text column to numeric values.
-cbind(grades.data, pass = factor(pass))
+```
+
+The `pass` vector contains text items (strings). Try to combine it to the numeric `grades` matrix to see what happens, and find the issue with that operation ("hint").
+
+```{r cbind-mixed-types, eval=FALSE}
+cbind(grades, pass)
+```
+
+To solve the issue, you are going to convert the text column to numeric values, while keeping the textual information as 'captions' or 'labels' for the numbers. R calls that operation *factor encoding*, and the 'labels' are called 'levels'.
+
+```{r factor}
 # Understand what happens when you factor a string (text) variable.
 factor(pass)
-# Rename grades vector.
-grades1 <- grades
-# Final conversion, with renaming of grades column.
-grades.data <- cbind(id, grades1, pass = factor(pass))
-# Check first five rows of result.
-head(grades.data)
+# The numeric matrix is preserved if 'pass' is added as a factor.
+cbind(grades, factor(pass))
+# Final operation. The '=' assignment gives a name to the column.
+grades <- cbind(grades, pass = factor(pass))
+# Marvel at your work.
+grades
 ```
-
-```{r grades-explore}
-# First row, second cell.
-grades.data[1,2]
-# First row.
-grades.data[1,]
-# First two rows.
-grades.data[1:2,]
-# Third column.
-grades.data[,3]
-```
-
-Let's finally add a column of random grades, compute the average for every row, and sort the data by ascending average.
-
-```{r grades-mean}
-# Create random vector of length 5.
-grades2 <- round(20*runif(5),1)
-# Check result.
-head(grades2)
-# Add to matrix.
-grades.data <- cbind(grades.data, grades2)
-# Check result.
-grades.data
-```
-
-This ends our quick tour of how vectors and matrices work, but please make sure that you practice at home! You will need that practice to become familiar with R. And for the matrix-savvy, here's a [cheat sheet of matrix operations in R](https://gastonsanchez.wordpress.com/2012/08/30/cheat-sheet-of-matrix-operations-in-r/).
 
 > __Next__: [Other R objects](23_objects.html).

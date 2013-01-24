@@ -11,38 +11,38 @@ This section introduces data import and export (or "I/O", for "input/output") wi
 
 We are going to use the [Daily Kos Elections' presidential results by congressional district for the 2012 and 2008 elections](http://www.dailykos.com/story/2012/11/19/1163009/-Daily-Kos-Elections-presidential-results-by-congressional-district-for-the-2012-2008-elections?detail=hide), for which the data is accessible as a [Google spreadsheet](https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&single=true&gid=0&output=html). The [Google Docs API documentation](http://code.google.com/apis/spreadsheets/) tells us that we can get the data in CSV format through a URL request that includes the identifier key of the spreadsheet and the format specification `output=csv`.
 
-```{r dk_get1, message=FALSE}
+```{r dk-url, message=FALSE}
 # Load RCurl package.
 library(RCurl)
 # Store the address of the spreadsheet.
-dk_link <- "https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&output=csv"
+dk.link <- "https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&output=csv"
 ```
 
-We now need to get the data from that address, using the `RCurl` library to fetch the online spreadsheet from the `dk_link` object in which we stored the link. Note that the `getURL` command is in a conditional statement that avoids downloading the same file again and again if you already have it.
+We now need to get the data from that address, using the `RCurl` library to fetch the online spreadsheet from the `dk.link` object in which we stored the link. Note that the `getURL` command is in a conditional statement that avoids downloading the same file again and again if you already have it.
 
 When the file is fetched from online, we convert the result, which is a large text file, to a proper CSV (comma-separated values) file. We specify that we do not want strings converted to factors, i.e. that we do not want a numeric structure for the text variables.
 
-```{r dk_get2}
+```{r dk-grab}
 if (!file.exists("data/dailykos.csv")) {
-  # Download the spreadsheet.
-  dk_html <- getURL(dk_link)
-  # Transform the result into a proper dataset, leaving text variables (strings) unchanged.
-  dk_data <- read.csv(textConnection(dk_html), stringsAsFactors = FALSE)
+  # Download spreadsheet.
+  dk.html <- getURL(dk.link, ssl.verifypeer = FALSE)
+  # Convert result to proper dataset, leaving strings as such.
+  dk.data <- read.csv(textConnection(dk.html), stringsAsFactors = FALSE)
   # Save local copy.
-  write.csv(dk_data, file = "data/dailykos.csv")
+  write.csv(dk.data, file = "data/dailykos.csv")
 } else {
   # Open local copy.
-  dk_data <- read.csv("data/dailykos.csv")
+  dk.data <- read.csv("data/dailykos.csv")
 }
 ```
 
 We finally inspect the result by looking at the structure of the dataset with `str` and the first few rows of data with `head`.
 
-```{r dk_get3}
+```{r dk-inspection}
 # Have a look at the final result.
-str(dk_data)
+str(dk.data)
 # List the first data rows.
-head(dk_data)
+head(dk.data)
 ```
 
 ## The Quality of Government dataset

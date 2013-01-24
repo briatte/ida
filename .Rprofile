@@ -46,18 +46,17 @@ cat("- Adding list of course packages\n")
 
 ida.packages <- function() {
   x <- list()
-  x[['essentials']] <- c("foreach", "knitr", "devtools", "ggplot2")
   
   # Listed by first session of use.
   
+  x[['11']] <- c("foreach", "knitr", "devtools", "ggplot2", "RCurl")
+  x[['23']]  <- c("randomNames")
   x[['40']]  <- c("gdata","WDI", "countrycode")
-  x[['41']]  <- c("RCurl", "xlsx")
+  x[['41']]  <- c("xlsx")
   x[['42']]  <- c("foreign", "Hmisc", "plyr", "reshape", "reshape2")
   x[['43']]  <- c("XML")
   x[['52']]  <- c("FactoMineR", "quantmod", "class", "rpart", "MASS")
-  # unavailable for now (licensing issue):
-  # https://github.com/andrie/ggdendro
-  # x[['53']]  <- c("ggdendro")
+  # x[['53']]  <- c("ggdendro") # unavailable: https://github.com/andrie/ggdendro
   x[['61']]  <- c("data.table", "memisc")
   x[['81']]  <- c("GGally", "scales")
   x[['82']]  <- c("arm", "car")
@@ -65,13 +64,15 @@ ida.packages <- function() {
   x[['100']] <- c("maps", "mapdata", "spdep", "rworldmap")
   x[['101']] <- c("maptools", "classInt", "ggmap")
   x[['102']] <- c("googleVis")
-  x[['111']] <- c("network", "sna", "ergm", "igraph", "tm")
-  x[['113']] <- c("twitteR")
+  x[['111']] <- c("network", "sna", "ergm", "igraph")
+  x[['113']] <- c("twitteR", "wordcloud")
   
   # Unassigned packages.
   
   x[['plots']] <- c("vcd", "lattice", "RColorBrewer")
-  x[['misc']]  <- c("lubridate", "stringr", "Snowball", "forecast", "rgrs")
+  x[['data']]  <- c("lubridate", "stringr")
+  x[['models']]  <- c("forecast", "rgrs")
+  x[['text']] <- c("tm", "Snowball")
   
   x <- unlist(x, use.names = FALSE)
   return(x)

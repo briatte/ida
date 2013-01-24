@@ -3,6 +3,16 @@
 
 # 3. Basic math operators
 
-Coming.
+We saw a bit of calculus, logic and vector/matrix manipulation last week. This week, we thread on the same topics with slightly more advanced operators.
+
+## Calculus
+
+```{r modulus}
+4 %/% 3
+6 %/% 3
+```
+
+## Matrix operators
+
 
 > __Next__: [Functions](31_functions.html).

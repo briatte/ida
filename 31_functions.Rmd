@@ -17,18 +17,33 @@ sum(x)
 ```
 
 ```{r add-function}
+# Define function
 add <- function(x,y) {
   x + y
 }
-
+# Example.
 sum(2,4)
 ```
 
 
 ## Basic examples
 
-## `apply` functions
+# Examples of recursion
 
-Loops are fantastic but can become memory-intensive. R also offers [`apply` functions](http://badhessian.org/loops-matrices-and-apply-functions/) that can usually do what you might want to do with a loop.
+http://www.stat.cmu.edu/~cshalizi/statcomp/
+
+```{r crs-factorial}
+# Calculate a factorial
+# Input: a number (n)
+# Output: the factorial of n
+# Presumes: n is a single positive integer
+my.factorial <- function(n) {
+  if (n == 1) {  # Base case
+    return(1)
+  } else {  # Recursion
+    return(n*my.factorial(n-1))
+  }
+}
+```
 
 > __Next___: [Loops](32_loops.html).

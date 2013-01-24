@@ -83,7 +83,7 @@ Let's install a few packages from a short list. Be careful with the capital lett
 
 ```{r installing, eval=FALSE, include=TRUE}
 # Create list of packages. 
-list <- c("foreach", "ggplot2", "knitr", "RCurl")
+list <- c("foreach", "knitr", "devtools", "ggplot2", "RCurl")
 # Install packages.
 install.packages(list, repos = "http://cran.us.r-project.org")
 ```
