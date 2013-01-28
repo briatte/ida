@@ -47,16 +47,16 @@ cat("- Adding list of course packages\n")
 ida.packages <- function() {
   x <- list()
   
-  # Listed by first session of use.
+  # Listed by first session of use. Grossly inefficient but human-readable.
   
   x[['11']] <- c("foreach", "knitr", "devtools", "ggplot2", "RCurl")
-  x[['23']]  <- c("randomNames")
+  x[['22']]  <- c("randomNames", "reshape")
   x[['40']]  <- c("gdata","WDI", "countrycode")
   x[['41']]  <- c("xlsx")
   x[['42']]  <- c("foreign", "Hmisc", "plyr", "reshape", "reshape2")
   x[['43']]  <- c("XML")
   x[['52']]  <- c("FactoMineR", "quantmod", "class", "rpart", "MASS")
-  # x[['53']]  <- c("ggdendro") # unavailable: https://github.com/andrie/ggdendro
+  x[['53']]  <- c("ggdendro")
   x[['61']]  <- c("data.table", "memisc")
   x[['81']]  <- c("GGally", "scales")
   x[['82']]  <- c("arm", "car")
@@ -71,7 +71,7 @@ ida.packages <- function() {
   
   x[['plots']] <- c("vcd", "lattice", "RColorBrewer")
   x[['data']]  <- c("lubridate", "stringr")
-  x[['models']]  <- c("forecast", "rgrs")
+  x[['models']]  <- c("lme4", "forecast", "rgrs", "sem", "lavaan")
   x[['text']] <- c("tm", "Snowball")
   
   x <- unlist(x, use.names = FALSE)

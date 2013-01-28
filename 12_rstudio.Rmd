@@ -49,20 +49,26 @@ You can now save your script: focus on it by clicking anywhere in its window, pr
 
 ## Drawing and saving plots
 
-One last functionality that we want to show as part of the RStudio interface has to do with plots. Let's take inspiration from a [basic ggplot2 tutorial](http://blog.echen.me/2012/01/17/quick-introduction-to-ggplot2/) (`ggplot2` is a graphics package that you might have [previously](11_r.html) installed when trying out package installation in R).
+One last functionality that we want to show as part of the RStudio interface has to do with plots. Let's take inspiration from a [quick introduction to `ggplot2`](http://blog.echen.me/2012/01/17/quick-introduction-to-ggplot2/), a graphics package that you should have [previously](11_r.html) installed when trying out package installation in R.
 
-```{r ggplot2-1, eval=FALSE}
-# In case you have not yet installed ggplot2, run this.
-install.packages("ggplot2")
+```{r ggplot2-load-package}
+# In case you have not yet installed ggplot2, this will.
+if(!"ggplot2" %in% installed.packages()[,1])
+     install.packages("ggplot2")
+# Now load the ggplot2 package.
+library(ggplot2)
 ```
 
-We are going to take a quick look at some example data that is part of the R software. The data describes a set of fifty flowers studied by famous statistician Ronald Fisher in an article published in 1936. The data itself were collected by Edgar Anderson and published one year before.
+We'll be looking at some example data included in the R software. The data describes a set of fifty flowers studied by famous statistician Ronald Fisher in an article published in 1936. The data itself were collected by Edgar Anderson and published a year before.
 
-```{r ggplot2-2}
-# Load ggplot2 package.
-library(ggplot2)
-# Look at a default dataset.
+```{r ggplot2-load-data}
+# Look at first rows of a default dataset.
 head(iris)
+```
+
+Let's now use the 'quick plot' functionality of the `ggplot2` package. The command `qplot` requires three arguments here: the data to use, one variable to plot on the horizontal x-axis, and another to plot on the vertical y-axis.
+
+```{r ggplot2-qplot}
 # Quick plot.
 qplot(data = iris, x = Sepal.Length, y = Petal.Length)
 ```

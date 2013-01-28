@@ -25,12 +25,7 @@ add <- function(x,y) {
 sum(2,4)
 ```
 
-
-## Basic examples
-
-# Examples of recursion
-
-http://www.stat.cmu.edu/~cshalizi/statcomp/
+Functional programming focues on writing functions. Statistical computing courses like [the one taught by Cosma Shalizi](http://www.stat.cmu.edu/~cshalizi/statcomp/) contains tons of interesting examples of such functions. A simple one is shown below to illustrate the principle of recursion.
 
 ```{r crs-factorial}
 # Calculate a factorial
@@ -44,6 +39,24 @@ my.factorial <- function(n) {
     return(n*my.factorial(n-1))
   }
 }
+```
+
+This course might lead you to write simple functions, but for the moment, let's focus simply on plotting them with the `ggplot2` package, which makes it fairly easy. The example below shows the basic function $y = x$.
+
+```{r fun-identity}
+qplot(c(0,2), stat="function", fun=identity, geom="point")
+```
+
+Now for the most math-oriented, here's a sine function for your enjoyment.
+
+```{r fun-sin}
+qplot(c(-10,10), stat="function", fun=sin, geom="line")
+```
+
+And finally, a function that will be more useful to us: the exponential.
+
+```{r fun-exp}
+qplot(c(-10:10), stat="function", fun=exp, geom=c("line","point"))
 ```
 
 > __Next___: [Loops](32_loops.html).

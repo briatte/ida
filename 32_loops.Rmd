@@ -7,10 +7,48 @@ Suppose you want to remove a letter from a column of data. Now, suppose that you
 
 ## `for` and `while`
 
-R understands `for` and `while` loops like many other programming languages.
+R understands `for` and `while` loops like many other programming languages. The idea is the same for both operators: allow to repeat an operation a certain number of times. The first example is as trivial as it gets.
+
+```{r for}
+# Set the counter.
+n <- 3
+# Loop n times.
+for(i in 1:n) {
+  cat("Hello!", i, "\n")
+}
+```
+
+The next example shows how to build a sequence of integers through a `for` loop. Explain the output.
+
+```{r r-for-vector}
+# Set the counter.
+n <- 9
+# Create an empty vector.
+sequence <- NULL
+# Loop over 9 values.
+for(i in 1:n) {
+  # Add i to the sequence.
+  sequence <- c(sequence, i)
+  # Mean of the sequence.
+  print(mean(sequence))
+}
+# Show final result.
+sequence
+```
+
+A `while` loop operates almost on the same level.
+
+```{r while}
+# Set the counter.
+i <- 5
+# Decrease i by an increment of 1 until it reaches 0.
+while(i > 0) {
+  print(i <- i - 1)
+}
+```
 
 ## `apply` functions
 
-Loops are fantastic but can become memory-intensive. R also offers [`apply` functions](http://badhessian.org/loops-matrices-and-apply-functions/) that can usually do what you might want to do with a loop.
+Loops are fantastic but can become memory-intensive. R also offers [`apply` functions](http://badhessian.org/loops-matrices-and-apply-functions/) that can usually do what you might want to do with a loop, but we will keep that for later, when we look at data manipulation.
 
 > __Next__: [Probability](33_proba.html).
