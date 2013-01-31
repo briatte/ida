@@ -21,8 +21,8 @@ if(!file.exists("data/bjs2007.csv") | 1==1) {
   bjs <- textConnection(bjs)
   # Read as CSV.
   bjs <- read.csv(bjs)
-  # Save the data.
-  write.table(bjs, file = "data/bjs2007.csv")
+  # Save as CSV.
+  write.table(bjs, file = "data/bjs2007.csv", row.names = FALSE)
 }
 
 # Check 
