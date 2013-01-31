@@ -7,7 +7,7 @@ Looking at [smoothed splines](http://www.johnmarquess.com/?p=111).
 
 ## Assault deaths in the United States
 
-Let's start with assault deaths in the United States. The data are from the [Bureau of Justice Statistics](http://bjs.ojp.usdoj.gov/). For state-by-state and OECD vs. USA comparative data, see [Kieran Healy's plots](https://github.com/kjhealy/assault-deaths).
+Let's start with assault deaths in the United States. The data are from the [Bureau of Justice Statistics](http://bjs.ojp.usdoj.gov/). It got shared on the Reddit `/r/datasets/` channel in early 2013 and is saved as `bjs2007.csv` in the `/data/` folder. If not, the routine below will downlod the data and save it for you.
 
 ```{r bjs-data}
 library(RCurl)
@@ -18,13 +18,17 @@ if(!file.exists("data/bjs2007.csv")) {
   # Get raw data.
   bjs <- getURL("https://raw.github.com/briatte/ida/master/data/bjs2007.csv")
   # Turn to text.
-  bjs <- textConnection(bjs)
+  bjs <- textConnection("/Users/fr/Downloads/weaponstab.csv")
+  # Read lines.
+  bjs <- readLines(bjs)
+  # Check for folder.
+  if(!file.exists("data")) dir.create("data")
   # Save as CSV.
-  write.table(bjs, file = "data/bjs2007.csv", row.names = FALSE)
+  write.csv(bjs, file = "data/bjs2007.csv", row.names = FALSE, eol = "\r")
 }
 
 # Read as CSV.
-bjs.data <- read.csv("data/bjs2007.csv", sep = " ")
+bjs.data <- read.csv("data/bjs2007.csv")
 # Check first rows.
 head(bjs.data)
 # Check final rows.
@@ -68,12 +72,36 @@ fig <- fig + geom_smooth(method="rlm", formula = y ~ ns(x,3))
 fig + theme_bw()
 ```
 
+For state-by-state and OECD vs. USA comparative data, see [Kieran Healy's plots](https://github.com/kjhealy/assault-deaths).
+
 ```{r}
 # Discriminate guns.
 bjs$dummy <- ifelse(bjs$Weapon %in% c("Handgun","Other.gun"), "Guns", "Else")
 ```
 
 ## Assault deaths in South America
+
+We now swtich to UNODC data for South America.
+
+```{r bjs-data}
+if(!file.exists("data/unodc2010.csv")) {
+  # Get raw data.
+  unodc <- getURL("http://www.quantumforest.com/wp-content/uploads/2012/02/homicides.csv")
+  # Turn to text.
+  unodc <- textConnection(unodc)
+  # Save as CSV.
+  write.table(unodc, file = "data/unodc2010.csv", row.names = FALSE)
+}
+
+# Read as CSV.
+unodc.data <- read.csv("data/unodc2010.csv", sep = " ")
+# Check first rows.
+head(unodc.data)
+# Check final rows.
+tail(unodc.data)
+```
+
+http://www.quantumforest.com/wp-content/uploads/2012/02/homicides.csv
 
 [intentional homicide rates in South America](http://www.quantumforest.com/2012/02/revisiting-homicide-rates/).
 
