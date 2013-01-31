@@ -10,11 +10,19 @@ Applications to [assault deaths in Europe and the United States](https://github.
 Let's start with assault deaths in the United States. The data are from the Bureau of Justice Statistics.
 
 ```{r bjs-data}
-if(!file.exists("data/bjs2007.csv")) {
-  # Get the data.
-  bjs <- read.csv("/Users/fr/Downloads/bjs2007.csv")
+library(RCurl)
+library(ggplot2)
+library(reshape)
+
+if(!file.exists("data/bjs2007.csv") | 1==1) {
+  # Get raw data.
+  bjs <- getURL("https://raw.github.com/briatte/ida/master/data/bjs2007.csv")
+  # Turn to text.
+  bjs <- textConnection(bjs)
+  # Read as CSV.
+  bjs <- read.csv(bjs)
   # Save the data.
-  write.csv(bjs, file = "data/bjs2007.csv")
+  write.table(bjs, file = "data/bjs2007.csv")
 }
 
 # Check 
@@ -22,8 +30,7 @@ head(bjs)
 tail(bjs)
 ```
 
-library(ggplot2)
-library(reshape)
+```{r}
 bjs <- melt(bjs, id = "Year")
 names(bjs) <- c("year", "weapon", "n")
 head(bjs)
