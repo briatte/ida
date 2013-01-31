@@ -32,6 +32,7 @@ cat("- Adding getPackage() function\n")
 
 getPackage <- function(pkg) {
   if(!suppressWarnings(require(pkg, character.only = TRUE, quietly = TRUE))) {
+    # Thanks.
     try(install.packages(pkg, repos = "http://cran.us.r-project.org"), silent = TRUE)
     suppressPackageStartupMessages(library(pkg, character.only = TRUE, quietly = TRUE))
   }
@@ -69,10 +70,11 @@ ida.packages <- function() {
   
   # Unassigned packages.
   
-  x[['plots']] <- c("vcd", "lattice", "RColorBrewer")
-  x[['data']]  <- c("lubridate", "stringr")
+  x[['plots']]   <- c("vcd", "lattice", "RColorBrewer")
+  x[['data']]    <- c("lubridate", "stringr")
   x[['models']]  <- c("lme4", "forecast", "rgrs", "sem", "lavaan")
-  x[['text']] <- c("tm", "Snowball")
+  x[['text']]    <- c("tm", "Snowball")
+  x[['misc']]    <- c("ProjectTemplate")
   
   x <- unlist(x, use.names = FALSE)
   return(x)
@@ -98,8 +100,11 @@ ida.setup <- function() {
 
 message("\nYou can now load all course packages by typing ida.setup()")
 
-if(length(ida.packages()[!ida.packages() %in% installed.packages()[,1]])) {
+ida.packages <- ida.packages()[!ida.packages() %in% installed.packages()[,1]]
+
+if(length(ida.packages) > 0) {
   message("Note: some packages will be downloaded first\n")
+  cat(ida.packages, sep = ", ")
 }
 
 cat("Enjoy your day.\n\n")

@@ -51,7 +51,7 @@ grades <- cbind(grades, names)
 head(grades)
 ```
 
-## Live session!
+## Data frames
 
 Let's show a final type of object: the data frame.
 
@@ -64,7 +64,9 @@ head(grades)
 str(grades)
 ```
 
-```{r melt}
+Data frames are very malleable objects: we can rearrange the variables easily with commands like `melt` from the `reshape` package.
+
+```{r melt, message=FALSE}
 # Install and load reshape package.
 if(!"reshape" %in% installed.packages()[,1])
   install.packages("reshape")
@@ -74,6 +76,8 @@ grades <- melt(grades, id.vars = "names")
 # Check result.
 head(grades)
 ```
+
+Let's finish with a few plots.
 
 ```{r grades-plots}
 # Install and load ggplot2 package.
@@ -88,7 +92,7 @@ qplot(data = grades, x = value, color = variable, fill = variable, alpha = I(.3)
 
 Now use the code on this page to:
 
-1. Download [this data extract from the U.S. National Health Interview Survey 2005](https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdF91SmhLcV8wMjRtZ3FraGQyVUt2V3c&output=csv). Use `RCurl` as shown above. Call the data `nhis`.
+1. Download [this data extract from the U.S. National Health Interview Survey 2005](https://raw.github.com/briatte/ida/master/data/nhis.txt). Use `RCurl` as shown above. Call the data `nhis`.
 
 ```{r nhis-data-import, include=FALSE}
 # Download the data if needed.
@@ -124,7 +128,7 @@ nhis <- cbind(nhis, bmi)
 qplot(data = nhis, x = bmi, geom = "density")
 ```
 
-4. Bonus question: explore how ggplot2 works and produce plots with the `x` and `y` variables. Guess what they stand for.
+4. Bonus question: explore how `ggplot2` works and produce plots with the `x` and `y` variables. Guess what they stand for.
 
 ```{r nhis-qplot-2, include=FALSE}
 # Another plot. Variable x stands for gender.

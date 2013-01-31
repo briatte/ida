@@ -3,15 +3,18 @@
 
 # 3.3. Probability
 
-## Probability distributions
+Not much for the moment, except for the exercise below.
+
+<!-- ## Probability distributions
 
 Let's review some probability distributions. One way to start manipulating a function is to throw some simulated data at it, knowing what kind of distribution it was taken from. 
 
-This data is usually used to test some algorithm or function that someone has written.  Since the data is simulated, you know where it came from and so what the answer should be from your algorithm or function.  Simulated data lets you double-check your work.
+This data is usually used to test some algorithm or function that someone has written.  Since the data is simulated, you know where it came from and so what the answer should be from your algorithm or function.  Simulated data lets you double-check your work. -->
 
-```{r pdf}
+```{r pdf, eval=FALSE, echo=FALSE}
 # rnorm
 ```
+
 
 ## Explosive roommate combinations
 

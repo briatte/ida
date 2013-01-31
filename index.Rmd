@@ -27,12 +27,19 @@ rm(list = ls())
 file.remove(dir(pattern="[0-9]+(.*)\\.html"))
 file.remove(dir(pattern="[0-9]+(.*)\\.md"))
 # get files; currently: intro, sessions 1-2
-(all <- dir(pattern="[0-9]+(.*).Rmd")) #[c(1:4,8,12,14,15:18)])
+all <- dir(pattern="[0-9]+(.*).Rmd")[c(1:4,8,12,14,15:22)]
 # knitr setup
 opts_knit$set(header="foobar")
 opts_chunk$set(fig.path = "plots/")
 # full monty!
-foreach(i=1:length(all)) %do% knit2html(all[i])
+foreach(i=1:length(all)) %do% {
+  # R scripts
+  purl(all[i], documentation = 0)
+  # HTML pages
+  knit2html(all[i])
+  # Remove .md
+  file.remove(gsub("Rmd", "md", all[i]))
+}
 ```
 
 ```{r populate-website, echo=FALSE, results='hide'}
@@ -49,6 +56,8 @@ Absolutely. Start reading below.
 - [Introduction](01_intro.html)
 - [Readings](02_readings.html)
 - [Links](03_links.html)
+
+> __Part 1: Introduction to Statistical Computing__. The course starts by one month dedicated to setting up R and learning its basic functionalities. This part of the course is designed to teach everyone some essentials of statistical computing. It assumes no particular knowledge of computers.
 
 ## 1. [Setup](10_setup.html)
 
@@ -93,6 +102,8 @@ __Readings:__ Kabacoff, ch. 4, and Teetor, ch. 4 and 6.
 - [Scraping](43_scraping.html)
 
 * * *
+
+> __Part 2: Introduction to Statistical Analysis__. The course continues by showcasing some statistical techniques, from 
 
 ## 5. [Clusters](50_clusters.html)
 
@@ -150,7 +161,7 @@ __Reading:__ B. Sue Bell *et al.*, "[Current practices in spatial analysis of ca
 
 - [Choropleth maps](101_choropleth.html)
 - [Google-powered maps](102_gmaps.html)
-- Shiny-powered maps (perhaps)
+- Spatial dependence (perhaps)
 
 * * *
 
@@ -168,9 +179,9 @@ __Reading:__ David Siegel, "[Social Networks in Comparative Perspective](http://
 
 __Special session__ with guests (if everything goes well):
 
-- What is data-driven journalism?
-- What is open data/government?
-- What is reproducible science?
+- [What is data-driven journalism?] <!-- with Alexandre Léchenet -->
+- What is open data/government? <!-- with OKFN -->
+- What is reproducible science? <!-- with Joël Gombin -->
 
 * * *
 

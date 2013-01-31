@@ -59,4 +59,4 @@ And finally, a function that will be more useful to us: the exponential.
 qplot(c(-10:10), stat="function", fun=exp, geom=c("line","point"))
 ```
 
-> __Next___: [Loops](32_loops.html).
+> __Next__: [Loops](32_loops.html).

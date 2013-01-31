@@ -3,6 +3,32 @@
 
 # 9.2. Smoothing
 
-Looking at [smoothed splines](http://www.johnmarquess.com/?p=111). Applications to [assault deaths in Europe and the United States](https://github.com/kjhealy/assault-deaths/blob/master/assault-2010.r) and [intentional homicide rates in South America](http://www.quantumforest.com/2012/02/revisiting-homicide-rates/).
+Looking at [smoothed splines](http://www.johnmarquess.com/?p=111).
+
+Applications to [assault deaths in Europe and the United States](https://github.com/kjhealy/assault-deaths/blob/master/assault-2010.r) and [intentional homicide rates in South America](http://www.quantumforest.com/2012/02/revisiting-homicide-rates/).
+
+Let's start with assault deaths in the United States. The data are from the Bureau of Justice Statistics.
+
+```{r bjs-data}
+if(!file.exists("data/bjs2007.csv")) {
+  # Get the data.
+  bjs <- read.csv("/Users/fr/Downloads/bjs2007.csv")
+  # Save the data.
+  write.csv(bjs, file = "data/bjs2007.csv")
+}
+
+# Check 
+head(bjs)
+tail(bjs)
+```
+
+library(ggplot2)
+library(reshape)
+bjs <- melt(bjs, id = "Year")
+names(bjs) <- c("year", "weapon", "n")
+head(bjs)
+
+ggplot(bjs, aes(y = n, x = year)) + geom_line(aes(color = weapon))
+```
 
 > __Next week__: [Visualization in space: Maps](100_maps.html).

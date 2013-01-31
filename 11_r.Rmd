@@ -22,7 +22,7 @@ The R development team maintains [a website](http://www.r-project.org/), but you
 - __For Mac OS X__, [download from this link](http://cran.at.r-project.org/bin/macosx/), double-click it, say "OK" to all installation steps. You can also watch this [excellent video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) by Gordon Davis, which also covers RStudio.
 - __For Windows__, [download from this link](http://cran.at.r-project.org/bin/windows/base/), which also has a few help pages. [This video tutorial](https://www.youtube.com/watch?v=ZoPJGmpYJzw&list=UUGNPKRpfVnngmcsC3a3brrg&index=11) can help with the installation and shows a few more things. If you are in a hurry, [this one](http://www.screenr.com/kzT8) is quicker.
 
-__Do not panic__ if you do not manage to install R and RStudio on your own, just bring your laptop and we will guide you through it in class.
+__Do not panic__ if you do not manage to install R (or RStudio, the next software you install) on your own, just bring your laptop and we will guide you through it in class.
 
 ## Commands
 

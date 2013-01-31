@@ -1,0 +1,46 @@
+#' <style>@import url(style.css);</style>
+#' <small>[Introduction to Data Analysis](index.html)</small>
+#' 
+#' # 3. Basic math operators
+#' 
+#' We saw a bit of calculus, logic and vector/matrix manipulation last week. This week, we thread on the same topics with slightly more advanced operators. Here, for instance, is the modulus operator in R:
+#' 
+## @knitr modulus
+4 %/% 3
+6 %/% 3
+
+#' 
+#' 
+#' Many matrix operators are also available: you might want to go back to the [cheat sheet](https://gastonsanchez.wordpress.com/2012/08/30/cheat-sheet-of-matrix-operations-in-r/) previously mentioned. Here are some basic manipulations on matrixes built out of random integers.
+#' 
+## @knitr matrix-ops
+# Create a random 3 x 5 matrix.
+A <- matrix(as.integer(10*runif(30)), nrow = 3, ncol = 5)
+# Check result.
+A
+# Create a random 2 x 2 (square) matrix.
+B <- matrix(as.integer(10*runif(16)), nrow = 2, ncol = 2)
+# Check result.
+B
+# Create another one.
+C <- matrix(as.integer(10*runif(16)), nrow = 2, ncol = 2)
+# Check result.
+C
+# Now a basic manipulation: scalar multiplication.
+2*A
+# Another one: extract the diagonal.
+diag(B)
+# Last one: matrix transposition.
+t(C)
+
+#' 
+#' 
+#' As an exercise, explain the result of a square matrix product.
+#' 
+## @knitr matrix-product
+# Square matrix multiplication.
+B %*% C
+
+#' 
+#' 
+#' > __Next__: [Functions](31_functions.html).

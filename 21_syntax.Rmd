@@ -6,8 +6,8 @@
 Before we go further into manipulating objects, here's a quick tour of R syntax. You will inevitably make mistakes when writing R commands, which is fine -- nothing (bad) happens when you do. To correct a mistake, simply press `UpArrow` (&uarr;) to go back into your last console input and fix it.
 
 ```{r broken-hello-world, eval=FALSE}
-# This will break.
-print(Hello World!)
+# This will break. Try it by uncommenting the line.
+# print(Hello World!)
 # Press UpArrow, select text, add double quotes.
 # This will now run fine.
 print("Hello World")
@@ -20,6 +20,16 @@ R syntax can be a bit strange. For some (probably good) reason, the `install.pac
 install.packages("ggplot2")
 # This does not.
 library(ggplot2)
+# So for consistency, we'll use quotes on both.
+library("ggplot2")
+# There's also another (less noisy) way to load packages.
+require(RCurl)
+# Thankfully, it also accepts quotes. We might use it.
+require("RCurl")
+# Oh, and single quotes can work too...
+library('ggplot2')
+# That covers the whole spectrum of quotes strangeness.
+require('RCurl')
 ```
 
 Note that brackets are omnipresent in R syntax: every *function* (or command) will require them. The bits written inside the brackets and separated by commas are called *arguments*. The `cat` command, for instance, accepts any number of arguments.
