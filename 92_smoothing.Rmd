@@ -5,37 +5,76 @@
 
 Looking at [smoothed splines](http://www.johnmarquess.com/?p=111).
 
-Applications to [assault deaths in Europe and the United States](https://github.com/kjhealy/assault-deaths/blob/master/assault-2010.r) and [intentional homicide rates in South America](http://www.quantumforest.com/2012/02/revisiting-homicide-rates/).
+## Assault deaths in the United States
 
-Let's start with assault deaths in the United States. The data are from the Bureau of Justice Statistics.
+Let's start with assault deaths in the United States. The data are from the [Bureau of Justice Statistics](http://bjs.ojp.usdoj.gov/). For state-by-state and OECD vs. USA comparative data, see [Kieran Healy's plots](https://github.com/kjhealy/assault-deaths).
 
 ```{r bjs-data}
 library(RCurl)
 library(ggplot2)
 library(reshape)
 
-if(!file.exists("data/bjs2007.csv") | 1==1) {
+if(!file.exists("data/bjs2007.csv")) {
   # Get raw data.
   bjs <- getURL("https://raw.github.com/briatte/ida/master/data/bjs2007.csv")
   # Turn to text.
   bjs <- textConnection(bjs)
-  # Read as CSV.
-  bjs <- read.csv(bjs)
   # Save as CSV.
   write.table(bjs, file = "data/bjs2007.csv", row.names = FALSE)
 }
 
-# Check 
+# Read as CSV.
+bjs.data <- read.csv("data/bjs2007.csv", sep = " ")
+# Check first rows.
+head(bjs.data)
+# Check final rows.
+tail(bjs.data)
+```
+
+The plot is easy to set up with `ggplot2`. First, reshape the data to long format (one unit, one group, one value). Then, rename the columns to variable names. Last, plot one coored line per weapon used category.
+
+```{r bjs-plot}
+# Reshape to long format.
+bjs <- melt(bjs.data, id = "Year")
+# Check result.
 head(bjs)
-tail(bjs)
+# Rename variables.
+names(bjs) <- c("Year", "Weapon", "Count")
+# Check result.
+head(bjs)
+# Plot by weapon type.
+ggplot(bjs, aes(y = Count, x = Year)) + geom_line(aes(color = Weapon))
+```
+
+Let's smooth the series. We build a x-y canvas that will plot each weapon type in a different color and add a smoothed curve to it, using a [LOWESS function](https://en.wikipedia.org/wiki/Local_regression).
+
+```{r -bjs-loess}
+# Plot canvas.
+fig <- ggplot(bjs, aes(y = Count, x = Year, group = Weapon, color = Weapon, fill = Weapon))
+# Add a LOESS curve.
+fig + geom_smooth()
+# Add data points.
+fig + geom_smooth() + geom_point()
+```
+
+A different smoother relies on the basic cubic spline of the series (see `?ns` for details).
+
+```{r spline}
+# Load splines package.
+library(splines)
+# A different smoother.
+fig <- fig + geom_smooth(method="rlm", formula = y ~ ns(x,3))
+# A different theme.
+fig + theme_bw()
 ```
 
 ```{r}
-bjs <- melt(bjs, id = "Year")
-names(bjs) <- c("year", "weapon", "n")
-head(bjs)
-
-ggplot(bjs, aes(y = n, x = year)) + geom_line(aes(color = weapon))
+# Discriminate guns.
+bjs$dummy <- ifelse(bjs$Weapon %in% c("Handgun","Other.gun"), "Guns", "Else")
 ```
+
+## Assault deaths in South America
+
+[intentional homicide rates in South America](http://www.quantumforest.com/2012/02/revisiting-homicide-rates/).
 
 > __Next week__: [Visualization in space: Maps](100_maps.html).
