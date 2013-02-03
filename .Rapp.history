@@ -1,3 +1,12 @@
+str(data.x)
+USArrests
+? USArrests
+?USArrests
+str(USArrests)
+head(USArrests)
+qog <- read.csv("/Users/fr/Documents/Research/Data/QOG 2012/qog-soc-cs-v4apr12.csv")
+head(qog)
+head(qog[1:5])
 df=data.frame(country=c("US", "GB", "BR"), val1=c(1,3,4), val2=c(23,12,32))#
 ## Line chart#
 Line <- gvisLineChart(df,#
@@ -495,94 +504,8 @@ dw_plot <- dw_plot + geom_point(aes(x = Margin12, y = State, color = "2012"))#
 dw_plot <- dw_plot + xlab("Two-party margin of victory")#
 # Check result.#
 dw_plot
-?factor
-factor(dw_data$State)
-rm(list = ls())
-<style>@import url(syllabus.css);</style>#
-# Data Visualization#
-# A graph made from David Wasserman's 2012 National popular Vote Tracker:#
-# https://docs.google.com/spreadsheet/ccc?key=0AjYj9mXElO_QdHpla01oWE1jOFZRbnhJZkZpVFNKeVE#gid=19#
-#
-# See also John Sides' analysis (with links to others) on the same topic:#
-# http://themonkeycage.org/blog/2013/01/07/what-if-the-obama-campaign-didnt-win-him-the-election/#
-#
-##
-# LOAD DATA#
-##
-#
-# Load RCurl package.#
-library(RCurl)#
-# Address of a copy of David Wasserman's spreadsheet, cleaned up.#
-dw_link <- "https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdHUxMkY3V0lua1VWd3V3RW9EemRpMFE&output=csv"#
-# Download the spreadsheet.#
-dw_html <- getURL(dw_link)#
-# Transform the result into a proper dataset, leaving text variables (strings) unchanged.#
-dw_data <- read.csv(textConnection(dw_html), stringsAsFactors = TRUE)#
-# Check result.#
-head(dw_data)#
-#
-##
-# MARK SWING STATES#
-##
-#
-# Create marker for battleground states.#
-dw_data$Swing <- "Non-Swing State"#
-# Mark first twelve states (defined as swing states in the data source).#
-dw_data$Swing[1:12] <- "Swing State"#
-# Make the variable a factor.#
-#dw_data$Swing <- factor(dw_data$Swing)#
-# Check result.#
-dw_data[1:15,]#
-#
-##
-# CREATE MARGINS OF VICTORY#
-##
-#
-# Two-party margins of victory.#
-dw_data  <- within(dw_data, {#
-  Margin08 <- 100 * ((Obama08 - McCain08) / (Obama08 + McCain08))#
-  Margin12 <- 100 * ((Obama12 - Romney12) / (Obama12 + Romney12))#
-})#
-# Check results.#
-summary(dw_data$Margin08)#
-summary(dw_data$Margin12)#
-#
-##
-# SORT VALUES#
-##
-#
-# Load reshape package.#
-library(reshape)#
-# (1/2) Reorder the data by margin of victory in 2012.#
-dw_data <- dw_data[order(dw_data$Margin12),]#
-# (2/2) Reorder state factor levels to the order of appearance in the data.#
-dw_data$State <- factor(dw_data$State, dw_data$State)#
-# Check first five rows.#
-head(dw_data)#
-# Check last five rows.#
-tail(dw_data)#
-#
-##
-# VISUALIZE AS A DOT PLOT#
-##
-#
-# Load ggplot2 package.#
-library(ggplot2)#
-# Initialize plot.#
-dw_plot <- ggplot(dw_data) #
-# Add vertical line at zero.#
-dw_plot <- dw_plot + geom_vline(xintercept = 0, color = "grey", linetype = "longdash")#
-# Add margin of victory from 2008. Note: Make sure the 'color' argument is _inside_ aes().#
-dw_plot <- dw_plot + geom_point(aes(x = Margin08, y = State, color = "2008"))#
-# Add margin of victory from 2012. Note: Make sure the 'color' argument is _inside_ aes().#
-dw_plot <- dw_plot + geom_point(aes(x = Margin12, y = State, color = "2012"))#
-# Add title for horizontal axis.#
-dw_plot <- dw_plot + xlab("Two-party margin of victory")#
-# Check result.#
-dw_plot
 str(dw_data)
 head(dw_data)
-str(dw_data$State)
 <style>@import url(syllabus.css);</style>#
 # Data Visualization#
 # A graph made from David Wasserman's 2012 National popular Vote Tracker:#
@@ -644,8 +567,6 @@ str(dw_data$State)
 factor(dw_data$State)
 as.factor(dw_data$State)
 ?factor
-rm(list = ls())
-ls()
 <style>@import url(syllabus.css);</style>#
 # Data Visualization#
 # A graph made from David Wasserman's 2012 National popular Vote Tracker:#
@@ -1075,9 +996,7 @@ dw_labc <- ifelse(dw_data$Swing=="Swing State","red","grey")#
 dw_plot <- dw_plot + theme(axis.text.y = element_text(colour = dw_labc))#
 # Check result: re-plot.#
 dw_plot
-ls()
 rm(list = ls())
-ls()
 ?ls
 library(twitteR)#
 library(ggplot2)#
@@ -1125,36 +1044,6 @@ annotate("text", x=textPos, y=yrange[6], label="hazardous", size=tsize, colour="
 opts(title="Air pollution in Beijing\nTwitter @BeijingAir",#
  panel.background=theme_rect(colour="white"))#
 ggsave(filename="twitter_pol.png")
-"hello world"
-http://www.biostat.jhsph.edu/~rpeng/makeBeijingAirGraph.R#
-#
-library(twitteR)#
-#
-n <- 27#
-feed <- userTimeline("BeijingAir", n = n)#
-sfeed <- lapply(feed, function(x) strsplit(x$getText(), "; ", fixed = TRUE))#
-times <- vector("list", length = n)#
-pm25 <- numeric(n)#
-times <- sapply(sfeed, function(x) {#
-        paste(x[[1]][1:2], collapse = " ")#
-})#
-times <- strptime(times, "%m-%d-%Y %H:%M")#
-pm25 <- sapply(sfeed, function(x) {#
-        x <- x[[1]]#
-        if(length(grep("^Past", x[3])) > 0)#
-                return(NA)#
-        as.numeric(x[4])#
-})#
-u <- !is.na(pm25)#
-times <- times[u]#
-pm25 <- pm25[u]#
-#
-png(file = "beijing24.png", width = 700, height = 480)#
-par(mar = c(2, 4.5, 2, 1) + .1)#
-plot(times, pm25, main = expression(PM[2.5] * " in Beijing"),#
-     xlab = "", ylab = expression(PM[2.5] * " (" * mu * g/m^3 * ")"),#
-     pch = 19, type = "b")#
-dev.off()
 http://www.biostat.jhsph.edu/~rpeng/makeBeijingAirGraph.R#
 #
 library(twitteR)#
@@ -1190,8 +1079,6 @@ plot(times, pm25, main = expression(PM[2.5] * " in Beijing"),#
      xlab = "", ylab = expression(PM[2.5] * " (" * mu * g/m^3 * ")"),#
      pch = 19, type = "b")
 qplot(times,pm25)
-library(ggplot2)
-qplot(times,pm25)
 http://www.biostat.jhsph.edu/~rpeng/makeBeijingAirGraph.R#
 #
 library(twitteR)#
@@ -1225,21 +1112,14 @@ dev.off()
 1 + 2
 x <- 1
 q()
-library(RCurl)
 require(RCurl)
-?rename
 ??rename
 library()
 install.packages(memisc)
 install.packages("memisc")
 ?rename
-library(memisc)
-?rename
 options(digits=3)
-nes1948.por <- UnZip("anes/NES1948.ZIP","NES1948.POR",package="memisc")
 ls
-ls()
-nes1948 <- spss.portable.file(nes1948.por)
 rint(nes1948)
 print(nes1948)
 ?description
@@ -1260,32 +1140,24 @@ head(d)
 with(d, lm(Womensrepresentation ~ FreedomHouse))
 with(d, lm(Womensrepresentation ~ FreedomHouse + Control.of.Courruption + Quotas + PR + GDP + Percent.Muslims + Female.Actitivity.rate))
 m <- with(d, lm(Womensrepresentation ~ FreedomHouse + Control.of.Courruption + Quotas + PR + GDP + Percent.Muslims + Female.Actitivity.rate))
-str(m)
 names(m)
 m$coefficients
 m$model
 ls()
-nes1948.por <- UnZip("anes/NES1948.ZIP","NES1948.POR",package="memisc")
 library(memisc)
 nes1948.por <- UnZip("anes/NES1948.ZIP","NES1948.POR",package="memisc")
 nes1948 <- spss.portable.file(nes1948.por)
 vote.48 <- subset(nes1948,              select=c(                  v480018,                  v480029,                  v480030,                  v480045,                  v480046,                  v480047,                  v480048,                  v480049,                  v480050                  ))
-xtabs(~vote3+occup4,data=vote.48)
-vote.48 <- within(vote.48,{  vote3 <- recode(vote,    1   -> "Truman",2 -> "Dewey",    3:4 -> "Other"    )  occup4 <- recode(occupation.hh,    10:20 -> "Upper white collar",    30    -> "Other white collar",    40:70 -> "Blue collar",    80    -> "Farmer"    )  relig3 <- recode(religious.pref,    1   -> "Protestant",    2   -> "Catholic",    3:5 -> "Other/none"    )   race2 <- recode(race,    1 -> "White",    2 -> "Black"    )})
 vote.48 <- rename(vote.48,v480018 = "vote",v480029 = "occupation.hh",v480030 = "unionized.hh",v480045 = "gender",v480046 = "race",v480047 = "age",v480048 = "education",v480049 = "total.income",v480050 = "religious.pref")
 vote.48 <- within(vote.48,{  vote3 <- recode(vote,    1   -> "Truman",2 -> "Dewey",    3:4 -> "Other"    )  occup4 <- recode(occupation.hh,    10:20 -> "Upper white collar",    30    -> "Other white collar",    40:70 -> "Blue collar",    80    -> "Farmer"    )  relig3 <- recode(religious.pref,    1   -> "Protestant",    2   -> "Catholic",    3:5 -> "Other/none"    )   race2 <- recode(race,    1 -> "White",    2 -> "Black"    )})
 xtabs(~vote3+occup4,data=vote.48)
 mtable(xtabs(~vote3+occup4,data=vote.48))
-genTable(percent(vote3)~occup4,data=vote.48)
 options(digits=1)
-genTable(percent(vote3)~occup4,data=vote.48)
 options(digits=2)
 genTable(percent(vote3)~occup4,data=vote.48)
 t(genTable(percent(vote3)~occup4,data=vote.48))
 install.packages("mosaic")
 ??fetchGoogle
-fetchGoogle
-require(mosaic)
 fetchGoogle
 ?rflip
 ??rflip
@@ -1300,7 +1172,6 @@ coin[,"sequence"]
 ?nflip
 as.numeric(rflip(10))
 as.list(rflip(10))
-library(ggplot2)
 qplot(c(0, 2), stat="function", fun=exp, geom="line")
 qplot(c(0:2), stat="function", fun=exp, geom="line")
 qplot(c(0:2), stat="function", fun=exp, geom="point")
@@ -1309,23 +1180,16 @@ qplot(c(0,2), stat="function", fun=exp, geom="bar")
 qplot(c(0,2), stat="function", fun=sum, geom="bar")
 qplot(c(0,2), stat="function", fun=sum, geom="point")
 qplot(c(0,2), stat="function", fun=x, geom="point")
-qplot(c(0,2), stat="function", fun=identity, geom="point")
 qplot(c(0,2), stat="function", fun=sin, geom="point")
-qplot(c(-10,10), stat="function", fun=sin, geom="point")
-qplot(c(-10,10), stat="function", fun=sin, geom="line")
 qplot(c(-10,10), stat="function", fun=sin, geom="line") + geom_point()
 qplot(c(-10,10), stat="function", fun=sin, geom=c("line","point"))
 qplot(c(-10:10), stat="function", fun=sin, geom=c("line","point"))
-qplot(c(-10:10), stat="function", fun=exp, geom=c("line","point"))
 p1 <- qplot(c(-10:10), stat="function", fun=exp, geom=c("line","point"))
 p2 <- qplot(c(-10:10), stat="function", fun=sin, geom=c("line","point"))
 p1 + p2
 p1
 p2
-qplot(c(-10:10), stat="function", fun=exp, geom=c("line","point"))
 qplot(c(-10:10), stat="function", fun=exp, geom="point")
-qplot(c(-10,10), stat="function", fun=sin, geom="point")
-qplot(c(-10,10), stat="function", fun=sin, geom="line")
 qplot(c(0,2), stat="function", fun=identity, geom="point")
 qplot(c(-10,10), stat="function", fun=sin, geom="line")
 qplot(c(-10,10), stat="function", fun=sin, geom="point")
@@ -1346,13 +1210,10 @@ qplot(c(-10:10), stat="function", fun=exp, geom=c("line","point"))
 qplot(c(-10:10), stat="function", fun=exp, geom=c("line","point"), color = c("blue","red"))
 qplot(c(-10:10), stat="function", fun=exp, geom=c("line","point"), color = "blue")
 qplot(c(-10:10), stat="function", fun=exp, geom=c("line","point"))
-library(ggplot2)
 install.packages('ggplot2', dep = TRUE)
-library(ggplot2)
 getwd()
 remove.package("grid")
 remove.packages("grid")
-library(ggplot2)
 ?qplot
 require(ggplot2)
 ?install.packages
@@ -1380,16 +1241,8 @@ m <- cbind(1:3, 4:6)
 m
 str(m)
 is.matrix(m)
-grades <- getURL("https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdG9oR2Y3T3U1Y3I5YlgzUmNBSVFrRUE&single=true&gid=0&output=csv")
 library(RCurl)
-grades <- getURL("https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdG9oR2Y3T3U1Y3I5YlgzUmNBSVFrRUE&single=true&gid=0&output=csv")
-grades
-grades <- getURL("https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdG9oR2Y3T3U1Y3I5YlgzUmNBSVFrRUE&single=true&gid=0&output=csv")
 length(grades)
-?getURL
-grades
-grades <- getURL("http://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdG9oR2Y3T3U1Y3I5YlgzUmNBSVFrRUE&single=true&gid=0&output=csv")
-grades
 ?getURL
 grades <- getURL("http://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdG9oR2Y3T3U1Y3I5YlgzUmNBSVFrRUE&single=true&gid=0&output=csv")
 grades <- getURL("https://docs.google.com/spreadsheet/pub?key=0Agz-ZYJ5rH_WdG9oR2Y3T3U1Y3I5YlgzUmNBSVFrRUE&single=true&gid=0&output=csv")
@@ -1424,15 +1277,6 @@ install.packages("wordcloud")
 require(twitteR)
 require(wordcloud)
 require(igraph)
-Create an empty character vector of the same length as the number of#
-# tweets#
-l <- length(tweets)#
-tweeter <- vector(mode = "character", length = l)#
-#
-# Extract the screen names from each tweet status#
-for (i in 1:l) tweeter[i] <- tweets[[i]]$getScreenName()#
-# Compile the frequencies of each screen name#
-tweeter.freq <- table(tweeter)
 tweets <- searchTwitter("#occupy", n = 250)
 str(tweets)
 Create an empty character vector of the same length as the number of#
@@ -1499,22 +1343,11 @@ for (i in 1:l) texts[i] <- tweets[[i]]$getText()#
 texts[tweeter == "leofroth"]
 library(tm)
 ??MIME
-C <- matrix(as.integer(10 * runif(16)), nrow = 2, ncol = 2)
-C
-t(C)
-library(knitr)
-?knit
-getwd()
-setwd()
-setwd("")
-setwd("~/Documents/Teaching/IDA")
-dir()
-knit("90_ts.Rmd")
-purl("90_ts.Rmd")
-purl("30_math.Rmd")
-?purl
-?knit2html
-interactive()
-?interactive
-purl("30_math.Rmd", documentation = 0)
-purl("30_math.Rmd", documentation = 2)
+install.packages("gmodels")
+library(gmodels)
+data(infert, package = "datasets")#
+CrossTable(infert$education, infert$induced, expected = TRUE)
+xtabs(cbind(ncases, ncontrols) ~ ., data = esoph)
+ida.packages("missing")
+ida.packages()
+source(".Rprofile")

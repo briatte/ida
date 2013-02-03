@@ -73,7 +73,7 @@ lookfor <- function(data, keywords = c("weight", "sample"), labels = TRUE, ignor
 
 getPackage <- function(pkg, silent = FALSE) {
   if(!suppressMessages(suppressWarnings(require(pkg, character.only = TRUE, quietly = TRUE)))) {
-    try(install.packages(pkg, repos = "http://cran.us.r-project.org", type = "source"), silent = TRUE)
+    try(install.packages(pkg, repos = "http://cran.us.r-project.org"), silent = TRUE)
     suppressPackageStartupMessages(library(pkg, character.only = TRUE, quietly = TRUE))
   }
   if(!silent) message("Loaded ", pkg)
@@ -115,7 +115,7 @@ ida.packages <- function(mode = "install") {
   x[['text']]    <- c("tm", "Snowball")
   x[['misc']]    <- c("ProjectTemplate", "descr", "rgrs", "psych")
   
-  x <- unlist(x, use.names = FALSE)
+  x <- sort(unlist(x, use.names = FALSE))
   
   if(mode == "all") {
     # list all

@@ -7,25 +7,26 @@ This course is an introductory stats course that turned into an introduction to 
 By the end of the course, you will understand stuff that reads like this:
 
 ```{r backup-code, results='hide', message=FALSE}
-# course directory
-setwd("/Users/fr/Documents/Teaching/IDA/")
 # backup code
-zip(paste("../IDA-backup",Sys.Date(),"zip",sep="."),dir(pattern=".Rmd"))
+zip(paste("../IDA-backup", Sys.Date(), "zip", sep = "."), dir(pattern = ".Rmd"))
 ```
 
 ```{r prepare-folder, echo=FALSE, results='hide', message=FALSE}
+# course directory
+setwd("/Users/fr/Documents/Teaching/IDA/")
 # create directories
 if(!file.exists("code")) dir.create("code")
 if(!file.exists("data")) dir.create("data")
+# clean up
+file.remove(dir(pattern="[0-9]+(.*)\\.html"))
+file.remove(dir(pattern="[0-9]+(.*)\\.md"))
 ```
 
 ```{r run-course, echo=FALSE, results='hide', message=FALSE, eval=TRUE}
-library(foreach)
-library(knitr)
+require(foreach)
+require(knitr)
 # clean up
 rm(list = ls())
-file.remove(dir(pattern="[0-9]+(.*)\\.html"))
-file.remove(dir(pattern="[0-9]+(.*)\\.md"))
 # get files; currently: intro, sessions 1-2
 all <- dir(pattern="[0-9]+(.*).Rmd")[c(1:4,8,12:26)]
 # knitr setup
@@ -103,7 +104,7 @@ __Readings:__ Kabacoff, ch. 4, and Teetor, ch. 4 and 6.
 
 * * *
 
-> __Part 2: Introduction to Statistical Analysis__. The course continues by showcasing some statistical techniques, from 
+> __Part 2: Introduction to Statistical Analysis__. The course continues by showcasing some statistical techniques, from finding clusters of related data to modelling relationships between several variables.
 
 ## 5. [Clusters](50_clusters.html)
 
@@ -144,6 +145,8 @@ __Readings:__ Kabacoff, ch. 8 and 11, and Teetor, ch. 11. Skim ANOVA to focus on
 - [Visually weighted regression](83_vwreg.html)
 
 * * *
+
+> __Part 3: Introduction to Data Visualization__. The course ends by focusing on the graphic dimension of quantitative data. We will also try to have guest speakers to talk about their professional use of data.
 
 ## 9. [Visualization in time: Time series](90_ts.html)
 

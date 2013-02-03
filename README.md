@@ -1,6 +1,6 @@
 # README
 
-This is meant to turn into a course during spring 2013. [The syllabus is here](ida/raw/master/syllabus.pdf).
+This is meant to turn into a course during spring 2013. [The syllabus is here](ida/raw/master/syllabus.pdf). The course is taught with [Ivaylo Petev](http://ipetev.org/).
 
 ## HOWTO
 
@@ -9,6 +9,8 @@ This is meant to turn into a course during spring 2013. [The syllabus is here](i
 * Typography nerds: all documents require [Open Sans](https://www.google.com/webfonts#UsePlace:use/Collection:Open+Sans) and [Signika Negative](https://www.google.com/webfonts#UsePlace:use/Collection:Signika+Negative) from Google Web Fonts.
 
 The course also uses a few files from the `code/` and `data/` folder. Most documents can be downloaded on the fly if needed.
+
+Everything got done on a MacBook Air running OS X 10.8, using Chrome, GitHub, R and RStudio, with some help from Terminal and TextMate.
 
 ## VERSION
 

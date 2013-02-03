@@ -3,33 +3,40 @@
 
 # 1. Setup
 
-As mentioned in the introductory pages, this course uses R, a free and open source software used by data analysts in many different contexts. The first fifteen minutes of this Google Tech Talk by [Hadley Wickham](http://had.co.nz/) explains why use R for data analysis:
+As mentioned in the introductory pages, this course uses R, a free and open source software used by data analysts in many different contexts. In the next pages, we explain how to set up R and its companion software RStudio for the course.
 
-<iframe width="800" height="450" src="https://www.youtube.com/embed/TaxJwC_MP9Q?rel=0" frameborder="0" allowfullscreen></iframe>
-
-In the next pages, we explain how to set up R and RStudio for the course. Before we do that, let's review the other tools that you will need to use in this class.
+Before we start installing and setting up anything, let's review the other tools that you will need to use in this class. You do not need to be a computer nerd to understand what follows. Remember to ask questions in class if things are unclear here.
 
 ## Computer equipment
 
-You will need to bring a fairly recent laptop to class. Do not forget to bring your battery charger, as well as a USB stick in case the wifi fails us or if we have to share large files.
+__You will need to bring a fairly recent laptop to class.__ Do not forget to bring your battery charger, as well as a USB stick in case the wifi fails us or if we have to share large files.
 
 We can offer support for Mac OS X and Windows computers, as well as standard Linux distributions. It should be possible to run the course on all these platforms.
 
-Recent computers run 64-bit processors, but it should also be possible to run the course on a 32-bit processor. More details when we install RStudio.
-
 It is recommended that you use a laptop with a decent amount of disk space and memory. 'Mini' laptops can unfortunately be fairly restrictive in these regards.
+
+Here's what to check about your laptop:
+
+* If it's recent enough, your laptop is running a 64-bit processor. It should also be possible to run the course on older 32-bit processors.
+* If your computer is slow at doing things, it might mean that you lack a decent amount or RAM (live memory). We recommend 4GB or more.
+* We will install things on your hard drive during class. It should not take much space, but let's say it will take 1GB to be safe.
+
+If you have no idea on how to check whether your laptop matches these requirements, just ask us in class. If your laptop is less than three years old, it probably matches everything above.
 
 ## Internet browsers
 
-The course requires that you use a modern and secure browser like [Apple Safari](https://www.apple.com/safari/), [Google Chrome](http://www.google.com/chrome) or [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/). Everything but Microsoft Internet Explorer should do.
+__The course requires that you use a modern and secure browser__. Anything but Microsoft Internet Explorer should do. Try [Apple Safari](https://www.apple.com/safari/), [Google Chrome](http://www.google.com/chrome) or [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/). 
 
-Some browsers modify the names of the files that you download when their extension is unrecognized. If your browser adds `.txt` at the end of `.r` script files, rename them to just `.r`.
+Some browsers modify the names of the files that you download when their extension is unrecognized. If your browser adds `.txt` at the end of `.R` script files, rename them to just `.R`.
+
+We strongly recommend that you use bookmarks to keep track of the different pages that will be referred to in class. Start by bookmarking the [course index](index.html) page.
+
 
 ## Course material
 
 Some of the files for this course will reach you through [ENTG group 58101](http://entg.sciences-po.fr/nui/virtualoffice.jsp#tool=docs&folderoid=11529888), so make sure that you have ENTG access and check the course emails for what to download from there.
 
-By the end of the course, you will be able to download the final version of all the course pages from [its GitHub repository](https://github.com/briatte/ida). [GitHub](https://github.com/) is a code hosting platform.
+By the end of the course, you will be able to download the final version of all the course pages from [its GitHub repository](https://github.com/briatte/ida). GitHub is a code hosting platform.
 
 ## Gist and RPubs
 
@@ -41,6 +48,6 @@ Finally, we might play a bit with [RPubs](http://rpubs.com/) if we get to the po
 
 ## Google accounts
 
-Finally, if you have a [Google account](https://www.google.com/accounts/), this will be useful to use tools like [Google Documents](https://docs.google.com/) or [Google Fusion Tables](http://www.google.com/fusiontables).
+Finally, if you have a [Google account](https://www.google.com/accounts/), this will be useful to use tools like [Google Documents](https://docs.google.com/) or [Google Fusion Tables](http://www.google.com/fusiontables). Google also offers large email storage, which is always useful.
 
 > __Next__: [Installing R](11_r.html).
