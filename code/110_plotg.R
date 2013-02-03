@@ -1,6 +1,3 @@
-# By Moritz Marbach
-# http://sumtxt.wordpress.com/2011/07/02/visualizing-networks-with-ggplot2-in-r/
-
 plotg <- function(net, value=NULL) {
   m <- as.matrix.network.adjacency(net) # get sociomatrix
   # get coordinates from Fruchterman and Reingold's force-directed placement algorithm.

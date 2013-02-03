@@ -17,12 +17,12 @@ R is as free as it is powerful, but it comes with [some drawbacks](http://badhes
 
 Now, download  and install the latest version of R. You will need admin privileges on your computer (i.e. the user login and password) to do so. R is free and available for all platforms.
 
-The R development team maintains [a website](http://www.r-project.org/), but you will download R from a different source, based in Wien, Austria. The download link depends on your operating system:
+The R development team maintains [a website](http://www.r-project.org/), but you will download R from a different source based in the United States. The download link depends on your operating system:
 
-- __For Mac OS X__, [download from this link](http://cran.at.r-project.org/bin/macosx/), double-click it, say "OK" to all installation steps. You can also watch this [excellent video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) by Gordon Davis, which also covers RStudio.
-- __For Windows__, [download from this link](http://cran.at.r-project.org/bin/windows/base/), which also has a few help pages. [This video tutorial](https://www.youtube.com/watch?v=ZoPJGmpYJzw&list=UUGNPKRpfVnngmcsC3a3brrg&index=11) can help with the installation and shows a few more things. If you are in a hurry, [this one](http://www.screenr.com/kzT8) is quicker.
+- __For Mac OS X__, [download from this link](http://cran.us.r-project.org/bin/macosx/), double-click it, say "OK" to all installation steps. You can also watch [this video tutorial](https://www.youtube.com/watch?v=Icawuhf0Yqo) by Roger Peng for help, or [this video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) by Gordon Davis, which also covers RStudio.
+- __For Windows__, [download from this link](http://cran.us.r-project.org/bin/windows/base/), which also has a few help pages. [This video tutorial](https://www.youtube.com/watch?v=mfGFv-iB724) by Roger Peng and [this video tutorial](http://www.screenr.com/kzT8) by Anthony Damico can help with the installation. You ight also consider [a few custom options](https://www.youtube.com/watch?v=Lc2sgDTzrV8) when running R on Windows.
 
-__Do not panic__ if you do not manage to install R (or RStudio, the next software you install) on your own, just bring your laptop and we will guide you through it in class.
+Do not panic if you do not manage to install R (or RStudio, the next software you will install) on your own. Just bring your laptop and we will guide you through it in class.
 
 ## Commands
 
@@ -39,17 +39,19 @@ The Console window should now look something like this (with icons at the top in
 
 Now type each command below in this order; skip the comments that start with a `#` hash. When you finish typing a line, press `Enter` to execute, or 'run', its command. If you get an error message, press `UpArrow`, check your typing against the original, correct it and try again.
 
-```{r hello}
+```{r hello-world}
 # Create a text object, called 'txt'.
-txt <- "Hello World!"
+a <- "Hello World!"
 # Create a numeric object, called 'num'.
-num <- (8^2)/5
+b <- (8^2)/5
+# Apply a function to store the date.
+c <- date()
 # Combine both objects into a vector, called 'msg'.
-msg <- c(txt,num)
+message <- c(a, b, c)
 # Print the vector object 'msg' on screen.
-print(msg)
+print(message)
 # More simply, just type its name and press Enter.
-msg
+message
 ```
 
 Let's go through all parts of this example. The basic _operator_ `<-` _assigns_ the _value_ `"Hello World!"` to the _object_ `txt`. Text objects are called _strings_. The same operation is repeated with a numerical result to the `num` object.
@@ -81,32 +83,28 @@ The command above requires that the `O` in `getOption` is typed in uppercase. R 
 
 Let's install a few packages from a short list. Be careful with the capital letters in `RCurl`. To minimize hassle, your best option is simply to copy-paste the code into R (you can include the comments; they will be ignored at execution).
 
-```{r installing, eval=FALSE, include=TRUE}
+```{r install-packages}
 # Create list of packages. 
 list <- c("foreach", "knitr", "devtools", "ggplot2", "RCurl")
+# Select those that are not installed.
+list <- list[!list %in% installed.packages()[, 1]]
 # Install packages.
 install.packages(list, repos = "http://cran.us.r-project.org")
 ```
 
 Once installed, the additional packages can be loaded (initialized) with the `library` command. The `ggplot2` package is used for [plotting neat graphics](http://ggplot2.org/). The `RCurl` package is used to download data from online sources.
 
-```{r loading, eval=FALSE, include=TRUE}
+```{r load-packages, results='hide'}
 # Load ggplot2 package.
 library(ggplot2)
 # Load RCurl package.
 library(RCurl)
 ```
 
-If we ever need to update these packages, we will simply type `update.packages()` and then agree to the updates that it suggests by comparing local versions of the packages with their online CRAN repository version.
-
 ## Exit
 
 You can quit R like any other application or by typing `q()`. You will be asked whether you want to save unsaved documents, and whether you want to save the R session, or workspace. You do not need to save anything for now.
 
-This concludes our very quick introduction to the R software. R can do a lot of things, including waiting for you to make coffee:
-
-<iframe src="http://player.vimeo.com/video/43305640?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-
-More seriously, a big drawback of R is its barebones interface. We can fix that by installing a software that 'pilots' R through better menus and windows.
+R can do a lot of things, including [waiting for you to make coffee](http://vimeo.com/43305640). A big drawback of R, however, is its barebones interface. We will fix that by installing a software that 'pilots' R through better menus and windows.
 
 > __Next__: [Installing RStudio](12_rstudio.html).

@@ -11,11 +11,7 @@ RStudio is very quickly developing into a powerhouse for R users, with [more fea
 
 ## Installation
 
-Use [this link](http://www.rstudio.com/ide/download/desktop) to download RStudio. Installation should then be pretty straightforward.
-
-We previously mentioned [Gordon Davis' video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) for Mac OS X users. It shows how to install R and RStudio, and also showcases some of its customizable features, starting at timestamp 6:18. Give it a try, regardless of your operating system:
-
-<iframe width="800" height="450" src="https://www.youtube.com/embed/WJDrYUqNrHg#t=6m18s" frameborder="0" allowfullscreen></iframe>
+Use [this link](http://www.rstudio.com/ide/download/desktop) to download RStudio. Installation should then be pretty straightforward. You will be installing the Desktop version -- the other one is for running RStudio on a server, while you will be running it as a desktop program.
 
 RStudio comes with [excellent documentation](http://www.rstudio.com/ide/docs/) available through the Help menu. The same menu will also show you [keyboard shortcuts](http://www.rstudio.com/ide/docs/using/keyboard_shortcuts), which will quickly come in handy. The sections below cover only the essentials, which should be enough to get started.
 
@@ -47,6 +43,14 @@ setwd("~/Documents/Teaching/IDA")
 
 You can now save your script: focus on it by clicking anywhere in its window, press &#8984;-S (Mac) or `Ctrl-S` (Win), and RStudio will offer to save it in your course folder.  Finally, set your course folder as the default working directory in RStudio's preferences.
 
+## Tab auto-completion
+
+Now that the script is saved, take a minute or two to explore the code from the keyboard. Get used to run your code from a script file, and tinker it from the Console. Get as much practice with keyboard editing and shortcuts as you can.
+
+Another feature of RStudio (and R) is tab auto-completion: type in the first letters of a command and press `Tab`: possible command names will appear. The example below shows how to reach the `install.packages()` command through tab auto-completion:
+
+![RStudio auto-completion.](images/rstudio-autocompletion.png)
+
 ## Drawing and saving plots
 
 One last functionality that we want to show as part of the RStudio interface has to do with plots. Let's take inspiration from a [quick introduction to `ggplot2`](http://blog.echen.me/2012/01/17/quick-introduction-to-ggplot2/), a graphics package that you should have [previously](11_r.html) installed when trying out package installation in R.
@@ -54,7 +58,7 @@ One last functionality that we want to show as part of the RStudio interface has
 ```{r ggplot2-load-package}
 # In case you have not yet installed ggplot2, this will.
 if(!"ggplot2" %in% installed.packages()[,1])
-     install.packages("ggplot2")
+  install.packages("ggplot2")
 # Now load the ggplot2 package.
 library(ggplot2)
 ```

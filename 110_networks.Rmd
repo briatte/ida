@@ -80,12 +80,17 @@ Let's now turn to real-world data of [U.S. student affiliations](https://solomon
 library(igraph)
 
 # (0) Fetch the source files.
-if(!file.exists("data/mag_act96.txt"))
-  download.file("http://dl.dropbox.com/u/25710348/snaimages/mag_act96.txt","data/mag_act96.txt")
-if(!file.exists("data/mag_act97.txt"))
-  download.file("http://dl.dropbox.com/u/25710348/snaimages/mag_act97.txt","data/mag_act97.txt")
-if(!file.exists("data/mag_act98.txt"))
-  download.file("http://dl.dropbox.com/u/25710348/snaimages/mag_act98.txt","data/mag_act98.txt")
+if(!file.exists("data/mcfarland"))
+  dir.create("data/mcfarland")
+if(!file.exists("data/mcfarland/mag_act96.txt"))
+  download.file("http://dl.dropbox.com/u/25710348/snaimages/mag_act96.txt",
+                "data/mcfarland/mag_act96.txt")
+if(!file.exists("data/mcfarland/mag_act97.txt"))
+  download.file("http://dl.dropbox.com/u/25710348/snaimages/mag_act97.txt",
+                "data/mcfarland/mag_act97.txt")
+if(!file.exists("data/mcfarland/mag_act98.txt"))
+  download.file("http://dl.dropbox.com/u/25710348/snaimages/mag_act98.txt",
+                "data/mcfarland/mag_act98.txt")
 
 # (1) Read in the data files, NA data objects coded as "na" 
 magact96 = read.delim("data/mag_act96.txt", na.strings = "na")

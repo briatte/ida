@@ -27,14 +27,14 @@ rm(list = ls())
 file.remove(dir(pattern="[0-9]+(.*)\\.html"))
 file.remove(dir(pattern="[0-9]+(.*)\\.md"))
 # get files; currently: intro, sessions 1-2
-all <- dir(pattern="[0-9]+(.*).Rmd")[c(1:4,8,12,14,15:22)]
+all <- dir(pattern="[0-9]+(.*).Rmd")[c(1:4,8,12:26)]
 # knitr setup
 opts_knit$set(header="foobar")
 opts_chunk$set(fig.path = "plots/")
 # full monty!
 foreach(i=1:length(all)) %do% {
   # R scripts
-  purl(all[i], documentation = 0)
+  purl(all[i], documentation = 0, output = paste0("code/", gsub("Rmd", "R", all[i])))
   # HTML pages
   knit2html(all[i])
   # Remove .md
@@ -44,7 +44,7 @@ foreach(i=1:length(all)) %do% {
 
 ```{r populate-website, echo=FALSE, results='hide'}
 # get HTML
-html <- dir(pattern="(index|[0-9]+(.*)).html")
+html <- dir(pattern="(index|[0-9]+(.*)).html|style.css")
 # set path
 path <- "~/Documents/Code/Websites/briatte.github.com/teaching/ida"
 # copy to website

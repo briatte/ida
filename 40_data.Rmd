@@ -3,7 +3,7 @@
 
 # 4. Basic data operators
   
-There is a growing number of online interfaces for data repositories. Have a look, for instance, at [CKAN](http://ckan.org/) and [Data Market](http://datamarket.com/). A very successful interface is the [Gapminder](http://factbased.blogspot.fr/2012/07/convenient-access-to-gapminder-datasets.html) project, which relies on UN data and motion (animated) charts.
+There is a growing number of online interfaces for data repositories. Have a look, for instance, at [CKAN](http://ckan.org/) and [Data Market](http://datamarket.com/), at [my links](https://github.com/briatte/srqm/wiki/data) or at [Moritz Marbach's links](https://delicious.com/moritz.marbach/data). A very successful interface is the [Gapminder](http://factbased.blogspot.fr/2012/07/convenient-access-to-gapminder-datasets.html) project, which relies on UN data and motion (animated) charts.
 
 Let's open the QOG Basic dataset.
 

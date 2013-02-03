@@ -2,10 +2,10 @@
 
 # 9. Visualization in time: Time series
 
-[An example with Twitter, using Beijing pollution data](http://brainchronicle.blogspot.co.uk/2012/07/twitter-analysis-of-air-pollution-in.html). There was a [pollution peak](http://brainchronicle.blogspot.fr/2013/01/air-quality-analysis-from-beijing.html) in January 2013. The city [looks like](http://kateoplis.tumblr.com/post/40555052298/nope-this-is-not-a-still-from-blade-runner-its) *Blade Runner*, and its ongoing [Smog-ocalypse](http://simplystatistics.org/2013/01/14/welcome-to-the-smog-ocalypse/) means that staying in Beijing is like [smoking between one and half and three cigarettes a day](http://simplystatistics.org/2011/12/14/smoking-is-a-choice-breathing-is-not/).
+Applications:
 
-## Annotating time series
-
-[An example with Twitter, using Beijing pollution data](http://brainchronicle.blogspot.co.uk/2012/07/twitter-analysis-of-air-pollution-in.html). There was a [pollution peak](http://brainchronicle.blogspot.fr/2013/01/air-quality-analysis-from-beijing.html) in January 2013. The city [looks like](http://kateoplis.tumblr.com/post/40555052298/nope-this-is-not-a-still-from-blade-runner-its) *Blade Runner*, and its ongoing [Smog-ocalypse](http://simplystatistics.org/2013/01/14/welcome-to-the-smog-ocalypse/) means that staying in Beijing is like [smoking between one and half and three cigarettes a day](http://simplystatistics.org/2011/12/14/smoking-is-a-choice-breathing-is-not/).
+* [Party support in the United Kingdom](http://www.guardian.co.uk/news/datablog/2009/oct/21/icm-poll-data-labour-conservatives).
+* [Income inequality and recession periods in the United States](http://www.perdomocore.com/2012/will-inequality-continue-to-get-worse-r-to-the-rescue/)
+* [Is the German market sensitive to federal elections?](http://rpubs.com/sumtxt/dax-volatility)
 
 > __Next__: [Autocorrelation](91_lags.html).
