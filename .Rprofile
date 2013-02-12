@@ -1,27 +1,32 @@
 ##
-## IDA STARTUP FILE 0.1 (2013-02-03)
+## IDA STARTUP FILE 0.2 (2013-02-03)
 ##
 
 require(utils, quietly = TRUE)
 require(grid, quietly = TRUE)
 
+##
+## setup course
+##
+
 cat("\nWelcome to Introduction to Data Analysis!\n")
-cat("http://f.briatte.org/teaching/ida/\n")
+cat(ida.site <- "http://f.briatte.org/teaching/ida/", "\n\n")
+
+if(!file.exists("code")) dir.create("code")
+if(!file.exists("data")) dir.create("data")
 
 set.seed(654321)
 
 ##
 ## ggplot2 tweaks
 ##
-## - set black and white theme as default
-## - set font size to something visible
-## - add space around axis titles
-##
 
 if("ggplot2" %in% installed.packages()[,1]) {
   suppressPackageStartupMessages(require(ggplot2, quietly = TRUE))
+  # black and white theme, large text
   theme_set(theme_bw(18))
   theme_update(
+    # add space around axis titles
     axis.title.y = element_text(angle = 90, vjust = -.25),
     axis.title.x = element_text(vjust = -1),
     plot.margin = unit(c(1,1,1,1), "cm")
@@ -29,114 +34,92 @@ if("ggplot2" %in% installed.packages()[,1]) {
 }
 
 ##
-## lookfor() function
-##
-## - works like the Stata command
-## - accepts multiple search keywords
-## - supports memisc data objects
+## ida.scan(): find all packages called in a list of scripts
 ##
 
-lookfor <- function(data, keywords = c("weight", "sample"), labels = TRUE, ignore.case = TRUE) {
-  n <- names(data)
-  if(!length(n) > 0) stop("there are no names to search in that object")
-  # search function
-  q <- paste(keywords, collapse="|")
-  look <- function(x, y) { grep(x, y, ignore.case = ignore.case) }
-  # standard search
-  x <- look(q, n)
-  variable <- n[x]
-  # memisc search
-  lib <- suppressPackageStartupMessages(suppressWarnings(require(memisc)))
-  obj <- grepl("data.set|importer", class(data))
-  if(lib & obj) {
-    # search labels
-    l <- as.vector(description(data))
-    if(labels) {
-      # search labels
-      y <- look(q, l)
-      # remove duplicates, reorder
-      x <- sort(c(x, y[!(y %in% x)]))
+ida.scan <- function(x = FALSE, detail = FALSE) {
+  # paths
+  if(!is.character(x))
+    x <- paste("code", dir(path = "code", pattern="[0-9]+(.*)\\.R"), sep = "/")
+  # parse
+  libs <- sapply(x, FUN = function(x) {
+    conn <- file(x)
+    text <- readLines(conn, warn = FALSE)
+    text <- text[grepl("(library|require)\\(([a-zA-Z0-9]*)\\)", text)]
+    pkgs <- gsub(".*(library|require)\\(([a-zA-Z0-9]*)\\).*", "\\2", text)
+    close(conn)
+    unique(pkgs)
+  })
+  # format
+  if(!detail)
+    libs <- unique(unlist(libs))
+  return(libs)
+}
+
+##
+## ida.load(): load a package, installing it if needed
+##
+
+ida.load <- function(x, load = TRUE, silent = FALSE) {
+  # install
+  if(!suppressMessages(suppressWarnings(require(x, character.only = TRUE)))) {
+    dl <- try(install.packages(x), silent = TRUE)
+    if(class(dl) == "try-error")
+      stop("The package ", x, "could not be downloaded.")
+  }
+  # load
+  if(load) {
+    suppressPackageStartupMessages(library(x, character.only = TRUE))
+    if(!silent) message("Loaded package: ", x)
+  }
+}
+
+##
+## ida.prep(): prepare for a course session by getting and scanning the scripts
+##
+
+ida.prep <- function(x, index = ida.site, replace = TRUE, scan = TRUE) {
+  if(!x %in% 0:12) stop("Please type a session number between 0 and 12.")
+  message("Downloading course files for session ", x, "...")
+  conn <- url(index)
+  text <- readLines(conn, warn = FALSE)
+  close(conn)
+  text <- text[grepl("[0-9]+_(.*).html", text)]
+  prep <- gsub("(.*)\\\"([0-9]+)(_.*).html(.*)", "\\2\\3", text)
+  prep <- prep[grepl(paste0("^(", paste0(x, 0:3, collapse = "|"), ")_"), prep)]
+  # download
+  for(i in 1:length(prep)) {
+    file <- paste0(prep[i], ".R")
+    path <- paste("code", file, sep = "/")
+    if(!file.exists(path) | replace) {
+      dl <- try(suppressWarnings(download.file(paste0(index, file), 
+                                               destfile = path, quiet = TRUE)), 
+                silent = TRUE)
+      if(class(dl) == "try-error") {
+        message("Failed to download file: ", file)
+        prep[i] <- NA
+      }
+      else {
+        message("Successfully downloaded: ", file)
+        prep[i] <- path
+      }
     }
-    # add variable labels
-    variable <- n[x]
-    label <- l[x]
-    variable <- cbind(variable, label)
+    else {
+        message("Skipped existing file: ", file)
+      prep[i] <- path
+    }
   }
-  # output
-  if(length(x) > 0) return(as.data.frame(variable, x))
-  else message("Nothing found. Sorry.")
+  message("\nThe files are in your code folder.")
+  # scan
+  libs <- ida.scan(na.omit(prep))
+  if(length(libs) & scan) {
+    message("\nSome packages are required to run them:\n", paste(libs, collapse = ", "), "\n")
+    x <- lapply(libs, ida.load)
+  }
+  # bye
+  message("\nHappy coding!\n")
 }
 
-##
-## getPackage(): package loader/installer
-##
-
-getPackage <- function(pkg, silent = FALSE) {
-  if(!suppressMessages(suppressWarnings(require(pkg, character.only = TRUE, quietly = TRUE)))) {
-    try(install.packages(pkg, repos = "http://cran.us.r-project.org"), silent = TRUE)
-    suppressPackageStartupMessages(library(pkg, character.only = TRUE, quietly = TRUE))
-  }
-  if(!silent) message("Loaded ", pkg)
-}
-
-##
-## ida.packages(): package listing
-##
-
-ida.packages <- function(mode = "install") {
-  x <- list()
-  
-  # Listed by first session of use. Grossly inefficient but human-readable.
-  
-  x[['11']] <- c("foreach", "knitr", "devtools", "ggplot2", "RCurl")
-  x[['22']]  <- c("randomNames", "reshape")
-  x[['40']]  <- c("gdata", "WDI", "countrycode")
-  x[['41']]  <- c("xlsx", "httr")
-  x[['42']]  <- c("foreign", "Hmisc", "plyr", "reshape2")
-  x[['43']]  <- c("XML")
-  x[['52']]  <- c("FactoMineR", "quantmod", "class", "rpart", "MASS")
-  x[['53']]  <- c("ggdendro")
-  x[['61']]  <- c("data.table", "memisc", "survey")
-  x[['81']]  <- c("GGally", "scales")
-  x[['82']]  <- c("arm", "car")
-  x[['91']]  <- c("zoo")
-  x[['92']]  <- c("astsa", "mgcv", "splines")
-  x[['100']] <- c("maps", "mapdata", "spdep", "rworldmap")
-  x[['101']] <- c("maptools", "classInt", "ggmap")
-  x[['102']] <- c("googleVis")
-  x[['111']] <- c("network", "sna", "ergm", "igraph")
-  x[['113']] <- c("twitteR", "wordcloud")
-  
-  # Unassigned packages.
-  
-  x[['plots']]   <- c("vcd", "lattice", "RColorBrewer")
-  x[['data']]    <- c("lubridate", "stringr", "RSQLite", "sqldf", "SAScii")
-  x[['models']]  <- c("lme4", "forecast", "sem", "lavaan", "mosaic")
-  x[['text']]    <- c("tm", "Snowball")
-  x[['misc']]    <- c("ProjectTemplate", "descr", "rgrs", "psych")
-  
-  x <- sort(unlist(x, use.names = FALSE))
-  
-  if(mode == "all") {
-    # list all
-    return(x)
-  }
-  else if(mode == "missing") {
-    # list missing
-    x[!x %in% installed.packages()[,1]]
-  } else {
-    # install missing, load all
-    stopifnot(exists("getPackage", mode = "function")) 
-    ida <- lapply(x, getPackage)
-  }
-}
-
-message("\nYou can now load all course packages by typing ida.packages()")
-
-if(length(ida.packages("missing")) > 0) {
-  message("Some packages will be downloaded first\n")
-}
-
-cat("Enjoy your day.\n\n")
+cat("Course functions ready.\nEnjoy your day.\n\n")
 
 ## kthxbye

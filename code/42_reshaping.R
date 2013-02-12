@@ -2,11 +2,10 @@
 
 library(foreign)
 library(Hmisc)
-library(plyr)
 
 if (file.exists("data/dwnominate.dta")) {
   # Open local copy.
-  dwNominate <- read.dta("data/HL01111E21_PRES.DTA")
+  dwNominate <- read.dta("data/dwnominate.dta")
 } else {
   print("Cannot find dataset, loading from web...")
   # Retrieve file.
@@ -25,6 +24,7 @@ head(dwNominate)
 
 
 
+library(plyr)
 # Letting plyr do the work for us (the weighted wtd.functions are from Hmisc)
 aggregatedIdeology <- ddply(.data = dwNominate,
                             .variables = .(cong, majorParty),

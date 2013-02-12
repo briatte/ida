@@ -38,9 +38,11 @@ if(!file.exists("data/qog_basic_cs.csv")) {
   }
   url <- "http://www.qog.pol.gu.se/digitalAssets/1373/1373417_qog_basic_cs_csv_120608.csv"
   qog <- getURL(url)
-  qog <- textConnection(qog)
-  qog <- read.csv(qog)
+  qog <- read.csv(textConnection(qog))
   write.csv(qog, file = "data/qog_basic_cs.csv")
+} else {
+  # Open local copy.
+  qog <- read.csv("data/qog_basic_cs.csv")
 }
 
 

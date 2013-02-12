@@ -3,6 +3,105 @@
 
 # 5.1. Heatmaps
 
-As a means of introduction to looking at multidimensional data, let's start with heatmaps, [the quick and easy way](http://flowingdata.com/2010/01/21/how-to-make-a-heatmap-a-quick-and-easy-solution/). We'll [do it in ggplot2](https://learnr.wordpress.com/2010/01/26/ggplot2-quick-heatmap-plotting/) for consistency.
+As a means of introduction to looking at multidimensional data, let's start with heatmaps, which are rather [quick and easy](http://flowingdata.com/2010/01/21/how-to-make-a-heatmap-a-quick-and-easy-solution/) to produce in R. We will [produce heatmaps in ggplot2](https://learnr.wordpress.com/2010/01/26/ggplot2-quick-heatmap-plotting/) for consistency.
+
+## Step 0: Setup
+
+```{r setup, message=FALSE}
+packages <- c("ggplot2", "reshape", "ape", "Hmisc", "cluster")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
+## Step 1: Data preparation
+
+We are going to use the Quality of Government (QOG) Basic dataset, which we downloaded in the previous session. Our very first operation is then to extract a few variables from it, while renaming the variables to something slightly less cryptic than what they are in the original data.
+
+```{r load-data, tidy=FALSE}
+# Load the dataset.
+qog <- read.csv("data/qog_basic_cs.csv")
+# Extract and rename.
+qog_b <- with(qog, data.frame(
+  ccode  = ccodealp, # country three letter code
+  cname  = cname,    # country name
+  births = wdi_fr,   # fertility rate
+  gdpc   = wdi_gdpc, # GDP per capita
+  gexp   = wdi_ge,   # government expenditures as percentage of GDP
+  hexpc  = wdi_hec,  # health care expenditure per capita
+  gini   = uw_gini,  # GINI coefficient of inequality 
+  edu    = bl_asyt25,# average years of schooling
+  gris   = wdi_gris, # female to male ratio in schools
+  winpar = m_wominpar# percentage of women in parliament
+  ))
+# Check result.
+head(qog_b)
+```
+
+The data contains a lot of missing observations: for our purposes, we need to get rid of them, or to select a more complex algorithm to extract the principal components of the data. Let's cover the simplest case and get rid of about half of the data to limit ourselves to fully informed observations.
+
+```{r subset}
+# Subset to nonmissing data: 'NA' means 'not available' in this context.
+qog_b <- na.omit(qog_b)
+# Delete unused row names.
+rownames(qog_b) <- NULL
+# Order country levels by fertility rate.
+qog_b$cname <- with(qog_b, reorder(cname, births))
+
+```
+
+At that stage, best practice is to take a look at the variables in some detail. The `describe` command provides some summary statistics (count, mean and percentiles), which are not shown here for brevity. Notice in your output, though, that strings are understood to be alphabetically ordered.
+
+```{r describe, results='hide'}
+# Explore variables with simple summary statistics
+describe(qog_b)
+```
+
+Because our first take at the data will be graphical, we need to decide how to order the observations if not by alphabetical order. The fertility rate of each country is used below to reorder the levels of the `cname` (country name) variable, which is necessary for plotting at later stages.
+
+```{r reorder-levels}
+# Save for later use.
+save(qog_b, file = "data/qog_b.Rda")
+```
+
+Let's finally reshape the data to long format, and rescale all variables to an identical scale of mean $0$. This causes the matrix formed by the data to be 'centered', which means that the product of the matrix by its transposition gives the covariance matrix times a factor $n$.
+
+```{r reshape-rescale}
+# Reshape, letting the function guess the unique row identifiers.
+qog_hm <- melt(qog_b)
+# Rescale.
+qog_hm <- ddply(qog_hm, .(variable), transform, rescale = scale(value))
+```
+
+The data are now in the shape that we need them to be for our visual approach, using a heatmap.
+
+# Step 2: Heatmapping
+
+The heatmap has each variable represented on the horizontal $x$-axis, and each country (ordered by its fertility rate) on the vertical $y$-axis. The job is done by the `geom_tile` element, which is colored by the scaling of each variable. The `scale_fill_gradient` option adjusts the color scheme.
+
+```{r heatmap, tidy=FALSE, fig.width=12, fig.height=20}
+# Compose plot.
+p <- ggplot(qog_hm, aes(y = cname, x = variable)) + 
+  geom_tile(aes(fill = rescale), colour = "white") +
+  scale_fill_gradient("Scale", low = "white", high = "steelblue", 
+                      guide = guide_legend(keywidth = 3, keyheight = 3)) + 
+  scale_x_discrete(expand = c(0, 0)) + 
+  scale_y_discrete(expand = c(0, 0)) +
+  labs(x = NULL, y = NULL)
+# View result with larger font.
+p + theme_grey(base_size = 24)
+```
+
+Plot syntax:
+
+- the `ggplot` element builds a plot based on the `qog_hm` dataset, with country names (`cname`) on the vertical $y$-axis and variables on the horizontal $x$-axis.
+- the `geom_tile` element draws colored tiles at the intersection of `variable` and `country`, using a white background and filling the tile with the `rescale` variable.
+- the `scale_fill_gradient` element colors the tiles from `white` to `steelblue` (type `colors()` to view all color names), names the legend "Scale" and makes it larger.
+- the other plot commands are less important: the `labs()` option sets the titles of the axes to nothing, and `theme_grey(base_size = 24)` increases the font size.
+
+That's for the heatmap. Now, what do you read from it? Try to assess which variables are correlated to each other, to what extent, and which countries are outliers.
 
 > __Next__: [Principal components](52_pca.html).

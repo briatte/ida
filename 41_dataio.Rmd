@@ -3,9 +3,7 @@
 
 # 4.1. Import/Export
 
-This section introduces data import and export (or "I/O", for "input/output") with R. covers a few ways to read/write `CSV` and `TXT` data, as well as common proprietary formats.
-
-## Opening a CSV file
+This section introduces data import and export (or "I/O", for "input/output") with R.
 
 ## Downloading a CSV file
 
@@ -18,7 +16,9 @@ library(RCurl)
 dk.link <- "https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&output=csv"
 ```
 
-We now need to get the data from that address, using the `RCurl` library to fetch the online spreadsheet from the `dk.link` object in which we stored the link. Note that the `getURL` command is in a conditional statement that avoids downloading the same file again and again if you already have it.
+We now need to get the data from that address, using the `getURL` command from the `RCurl` package to fetch the online spreadsheet from the `dk.link` object in which we stored the link. The `ssl.verifypeer` option is required to [avoid an issue](http://christophergandrud.blogspot.fr/2012/06/update-to-data-on-github-post-solution.html) with the SSL certification used by `HTTPS` links.
+
+Note that the `getURL` command is in a conditional statement that avoids downloading the same file again and again if you already have it.
 
 When the file is fetched from online, we convert the result, which is a large text file, to a proper CSV (comma-separated values) file. We specify that we do not want strings converted to factors, i.e. that we do not want a numeric structure for the text variables.
 
@@ -60,17 +60,17 @@ if(!file.exists("data/qog_basic_cs.csv")) {
   }
   url <- "http://www.qog.pol.gu.se/digitalAssets/1373/1373417_qog_basic_cs_csv_120608.csv"
   qog <- getURL(url)
-  qog <- textConnection(qog)
-  qog <- read.csv(qog)
+  qog <- read.csv(textConnection(qog))
   write.csv(qog, file = "data/qog_basic_cs.csv")
+} else {
+  # Open local copy.
+  qog <- read.csv("data/qog_basic_cs.csv")
 }
 ```
 
 ## Other formats
 
 The `Hmisc` and `foreign` packages do a wonderful job at converting datasets in proprietary formats.
-
-Here's a simple example using Stata.
 
 Here's another example using Excel. [The data](http://www.inflationtrends.com/data/Raw_data.xlsx) are about inflation trends in the United States, as [made available](http://www.reddit.com/r/datasets/comments/13ww5b/have_some_data_on_us_food_and_fuel_prices_median/) by user [data_junkie](http://www.reddit.com/user/data_junkie) at Reddit on the [/r/datasets](http://www.reddit.com/r/datasets/) channel. Check out Reddit if you don't know about it already.
 
@@ -123,4 +123,4 @@ Finally, since the series seems to increase exponentially, let's have a look at 
 qplot(year,medinc,data=infl,geom="line",log="y")
 ```
 
-> __Next___: [Reshaping](42_reshaping.html).
+> __Next__: [Reshaping](42_reshaping.html).

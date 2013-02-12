@@ -2,37 +2,28 @@
 
 # Introduction to Data Analysis
 
-This course is an introductory stats course that turned into an introduction to [R](http://www.r-project.org/). It features some mathematics and statistics as well as some statistical computing and data visualization.
+This course is an introduction to analyzing data with the [R](http://www.r-project.org/) software. It features some mathematics and statistics as well as some statistical computing and data visualization. You will need a laptop with an Internet connection to follow the class.
 
-By the end of the course, you will understand stuff that reads like this:
-
-```{r backup-code, results='hide', message=FALSE}
-# backup code
-zip(paste("../IDA-backup", Sys.Date(), "zip", sep = "."), dir(pattern = ".Rmd"))
-```
-
-```{r prepare-folder, echo=FALSE, results='hide', message=FALSE}
+```{r prepare-folder, include=FALSE, message=FALSE}
 # course directory
 setwd("/Users/fr/Documents/Teaching/IDA/")
-# create directories
-if(!file.exists("code")) dir.create("code")
-if(!file.exists("data")) dir.create("data")
+# backup code
+zip(paste("../IDA-backup", Sys.Date(), "zip", sep = "."), dir(pattern = ".Rmd"))
 # clean up
+rm(list = ls())
 file.remove(dir(pattern="[0-9]+(.*)\\.html"))
 file.remove(dir(pattern="[0-9]+(.*)\\.md"))
 ```
 
-```{r run-course, echo=FALSE, results='hide', message=FALSE, eval=TRUE}
+```{r run-course, include=FALSE, message=FALSE}
 require(foreach)
 require(knitr)
-# clean up
-rm(list = ls())
-# get files; currently: intro, sessions 1-2
-all <- dir(pattern="[0-9]+(.*).Rmd")[c(1:4,8,12:26)]
+# get files
+all <- dir(pattern="[0-9]+(.*).Rmd")[c(1:4,8,12:30)]
 # knitr setup
 opts_knit$set(header="foobar")
 opts_chunk$set(fig.path = "plots/")
-# full monty!
+# go go go
 foreach(i=1:length(all)) %do% {
   # R scripts
   purl(all[i], documentation = 0, output = paste0("code/", gsub("Rmd", "R", all[i])))
@@ -43,22 +34,23 @@ foreach(i=1:length(all)) %do% {
 }
 ```
 
-```{r populate-website, echo=FALSE, results='hide'}
+```{r populate-website, include=FALSE, message=FALSE}
 # get HTML
-html <- dir(pattern="(index|[0-9]+(.*)).html|style.css")
+html <- dir(pattern="(index|[0-9]{2,}_\\w+).html|style.css")
+# get code
+code <- dir("code", pattern="([0-9]{2,}_\\w+).R$")
 # set path
 path <- "~/Documents/Code/Websites/briatte.github.com/teaching/ida"
 # copy to website
 file.copy(html, path, overwrite = TRUE)
+file.copy(paste0("code/",code), path, overwrite = TRUE)
 ```
-
-Absolutely. Start reading below.
 
 - [Introduction](01_intro.html)
 - [Readings](02_readings.html)
 - [Links](03_links.html)
 
-> __Part 1: Introduction to Statistical Computing__. The course starts by one month dedicated to setting up R and learning its basic functionalities. This part of the course is designed to teach everyone some essentials of statistical computing. It assumes no particular knowledge of computers.
+> __Part 1: Introduction to Statistical Computing__. The course starts by one month dedicated to setting up R and learning its basic functionalities. All course logistics will be discussed in these weeks.
 
 ## 1. [Setup](10_setup.html)
 

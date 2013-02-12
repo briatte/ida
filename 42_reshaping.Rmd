@@ -7,9 +7,9 @@ Datasets do not always come in the exact form in which we want to analyze them: 
 
 Collapse, merge, [reshape](http://is-r.tumblr.com/post/34556058683/ggtutorial-day-1-using-reshape), etc. Illustrations with  of how , and help [identify patterns](http://is-r.tumblr.com/post/34288940225/congressional-ideology-by-state) in large datasets.
 
-## Calculations by groups
+<!-- ## Calculations by groups
 
-<!-- https://gastonsanchez.wordpress.com/2012/06/28/5-ways-to-do-some-calculation-by-groups/ -->
+ https://gastonsanchez.wordpress.com/2012/06/28/5-ways-to-do-some-calculation-by-groups/ -->
 
 ## Using `plyr` to summarize aggregate data
 
@@ -17,14 +17,13 @@ More complex manipulations can produce [nice results](http://is-r.tumblr.com/pos
 
 We are going to look at ideology in the U.S. Congress by plotting the [DW-NOMINATE](http://voteview.org/dwnominate.asp) index, using an example byadapted from David Sparks.
 
-```{r dwnominate1, results='hide'}
+```{r dwnominate1, results='hide', message=FALSE}
 library(foreign)
 library(Hmisc)
-library(plyr)
 
 if (file.exists("data/dwnominate.dta")) {
   # Open local copy.
-  dwNominate <- read.dta("data/HL01111E21_PRES.DTA")
+  dwNominate <- read.dta("data/dwnominate.dta")
 } else {
   print("Cannot find dataset, loading from web...")
   # Retrieve file.
@@ -44,7 +43,8 @@ head(dwNominate)
 
 The code now calls `plyr` to aggregate the observations by major party 
 
-```{r dwnominate2}
+```{r dwnominate2, message=FALSE}
+library(plyr)
 # Letting plyr do the work for us (the weighted wtd.functions are from Hmisc)
 aggregatedIdeology <- ddply(.data = dwNominate,
                             .variables = .(cong, majorParty),
@@ -78,11 +78,11 @@ zp1 <- zp1 + theme_bw()
 print(zp1)
 ```
 
-This example is about [Congressional ideology](http://research.bshor.com/2012/10/31/scoring-the-2012-congressional-candidates/).
+<!-- This example is about [Congressional ideology](http://research.bshor.com/2012/10/31/scoring-the-2012-congressional-candidates/). -->
 
 ## Using `melt` to collapse data
 
-Here's an [example based on the recent housing bubble](http://www.decisionsciencenews.com/2011/03/17/the-housing-bubble-by-city/). It shows changes in the [http://www.standardandpoors.com/indices/sp-case-shiller-home-price-indices/en/us/](Case Schiller Index), a price index for the housing market, over the recent years.
+Here's an [example based on the recent housing bubble](http://www.decisionsciencenews.com/2011/03/17/the-housing-bubble-by-city/). It shows changes in the [Case Schiller Index](http://www.standardandpoors.com/indices/sp-case-shiller-home-price-indices/en/us/), a price index for the housing market, over the recent years.
 
 The example is based on `ggplot2` and the `reshape` package.
 
@@ -138,9 +138,11 @@ Job's done.
 
 ## Atrociously brilliant reshaping stuff that we will spare you
 
-Reshaping can become pretty complex once you go into its deeper mechanics:
+Reshaping can become pretty complex once you go into its deeper mechanics.
 
-![Split-Apply-Combine, by Hadley Wickham](http://25.media.tumblr.com/tumblr_m15p7oNIuj1qktnb8o1_500.png)
+![Split-Apply-Combine, by Hadley Wickham](images/split-apply-combine-wickham.png)
+
+![Split-Apply-Combine](images/split-apply-combine-shalizi.png)
 
 Hadley Wickham's `plyr` package contains a command called `ddply` that is simply brilliant. It implements a technique called "[The Split-Apply-Combine Strategy for Data
 Analysis](http://www.jstatsoft.org/v40/i01/paper)". Unfortunately, we won't have the time to go into the details of how it works, but we might end up using it occasionally.

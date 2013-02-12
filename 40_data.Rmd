@@ -2,15 +2,11 @@
 <small>[Introduction to Data Analysis](index.html)</small>
 
 # 4. Basic data operators
-  
+
 There is a growing number of online interfaces for data repositories. Have a look, for instance, at [CKAN](http://ckan.org/) and [Data Market](http://datamarket.com/), at [my links](https://github.com/briatte/srqm/wiki/data) or at [Moritz Marbach's links](https://delicious.com/moritz.marbach/data). A very successful interface is the [Gapminder](http://factbased.blogspot.fr/2012/07/convenient-access-to-gapminder-datasets.html) project, which relies on UN data and motion (animated) charts.
 
-Let's open the QOG Basic dataset.
+The basic point of today's session will be to open the QOG Basic dataset, and to check whether you can all download data for this course.
 
-Let's now have a  look at [World Bank](https://github.com/vincentarelbundock/WDI) datasets (see their [methodology](http://data.worldbank.org/about/data-overview/methodologies) of measurement).
-
-Finally, let's merge QOG and WDI data.
-
-Use the `countrycode` package if you need more country code classifications.
+Later on, we'll have a look at [World Bank](https://github.com/vincentarelbundock/WDI) datasets (see their [methodology](http://data.worldbank.org/about/data-overview/methodologies) of measurement), and we'll merge QOG and WDI data. Use the `countrycode` package if you need more country code classifications.
 
 > Next: [Import/Export](41_dataio.html).
