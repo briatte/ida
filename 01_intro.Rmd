@@ -45,7 +45,7 @@ And last, here's an hour-long video of [Andrew Gelman](http://andrewgelman.com/)
 
 These videos give you a taste of how data, statistics and visualization are affecting the teaching and use of these tools in academia, but also in many other professions. These developments are relevant to all social sciences, whether it be public health, political science, economics…
 
-Finally, this course is very influenced by the development of data visualization. To get a taste of it, see [this selection of "dataviz" methods](http://selection.datavisualization.ch/), read some articles from [Robert Kosara's blog](http://eagereyes.org/) on computational graphics, and see [Simon Jackman's neat graphs](http://jackman.stanford.edu/blog/?p=2620) of Barack Obama's electoral victory in 2012.
+Finally, this course is heavily influenced by the development of data visualization. To get a taste of what "dataviz" is, see [this selection of methods](http://selection.datavisualization.ch/), read some articles from [Robert Kosara's blog](http://eagereyes.org/) on computational graphics, and see [Simon Jackman's neat graphs](http://jackman.stanford.edu/blog/?p=2620) of Barack Obama's electoral victory in 2012 for a brilliant example of numbers translated into figures.
 
 ## Who is this for
 
@@ -79,15 +79,35 @@ The list of topics is tentative at best, and all course sessions are still in th
 
 ## Requirements
 
-__To follow and complete this course__, you will need a laptop with Internet access and an interest in building both computer and statistical skills. Please bring your laptop at every class and make sure that you know how to use it to work (e.g. how to manage files and folders, install an application, unzip files, switch between windows, etc.).
+__To follow and complete this course__, you will need a laptop with Internet access and an interest in building both computer and statistical skills. Please bring your laptop at every class and make sure that you know how to use it to work:
 
-__The course requires that you focus on learning by trial-and-error__ instead of focusing on getting it "right" immediately: take this course to work on your skills at problem-solving. In order to complete the course, you will also have to search for documentation, examples and tutorials from various sources: prepare to [Google responsibly](http://agbeat.com/real-estate-technology-new-media/google-cheat-sheet-every-trick-you-need-to-master-search/)!
+* You will have to manage __files and folders__ all along the course. Make sure that you know how to unzip a file. Make sure that you know how to browse and locate your files efficiently.
+* You will have to __install applications__ for use during the course. This requires admin privileges. Locate the folder where programs are installed on your system.
+* You will have to use __keyboard shortcuts__ to get stuff done in class. This is quicker than pointing and clicking. See if you know how to select text and browse a page from the keyboard.
 
-__Exams are not a crucial element of the course__: you will be assessed mainly through your level of engagement with the coursework, which will consist in forming a small-scale student data team to publish short projects. The precise content of the projects will be decided in class, following each team's research interests.
+__The course requires that you focus on learning by trial-and-error__ instead of focusing on getting it "right" immediately: take this course to work on your skills at problem-solving. Some stuff (if not most stuff) will not work on first try, so get ready:
 
-__Feedback is a crucial element of the course__: you will be assessed in part through the level of feedback--either positive or negative--that you provide inc lass. You will be required to tell us whether you find the methods we teach useful, what applications you can imagine for them, and whether we managed to make you understand how it works (and if not, why).
+* Learn to __search for documentation__, examples and tutorials from various sources: check whether you know how to [Google responsibly](http://agbeat.com/real-estate-technology-new-media/google-cheat-sheet-every-trick-you-need-to-master-search/).
+* Prepare __class discussions__ in advance: take five minutes before class to review your coursework, and ask all questions during the "Q & A". Share your questions!
+* Start all your __email subjects__ with "`IDA:`" when emailing the instructors. Attach the code and data that correspond to your issue, so that we can recreate it on our end.
 
-__Graphics are a crucial element of the course__: [junk charts](http://junkcharts.typepad.com/) have [dire consequences](http://andrewgelman.com/2011/09/worst-graph-of-the-year/) on how we learn about events, so we will focus a lot of our attention to the construction and examination of graphics. Data visualization will be complemented with essential statistical analysis along the way.
+__Exams are not a crucial element of the course__: you will be assessed mainly through your level of engagement with the coursework, which will consist in forming a small-scale student data team to publish short projects.
+
+* __Review every class__ during the weekend, and practice as much as possible. Be playful: try things out, change a parameter or two to see what happens.
+* There will be __coursework exercises__ for you to try out in the course notes. These are meant to help you become confident in your own skills.
+* You will be required to spell out your __research interests__. Use your other courses and personal interests to find topics to analyze.
+
+__Feedback is a crucial element of the course__: you will be assessed in part through the level of feedback--either positive or negative--that you provide in class. You will be required to tell us about the following things:
+
+* whether you find the methods we teach useful,
+* what applications you can imagine for them, and
+* whether we managed to make you understand how it works (and if not, why).
+
+__Graphics are a crucial element of the course__: [junk charts](http://junkcharts.typepad.com/) have [dire consequences](http://andrewgelman.com/2011/09/worst-graph-of-the-year/) on how we learn about events, so we will focus a lot of our attention to the construction and examination of graphics.
+
+* There will be __some mathematics__ involved. Brush up on mathematical notation, probability theory and statistical terminology from your previous classes.
+* The __course handbooks__ provide the theoretical background for most of the procedures covered in class. Read them when you need to.
+* If you _really_ like mathematics, take a look at [Wolfram Alpha](https://www.wolframalpha.com/) and learn as much as you want on __matrix notation__ -- it always comes in handy.
 
 ## Disclosure
 

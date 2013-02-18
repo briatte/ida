@@ -16,7 +16,7 @@ Here is how it looks like in practice:
     ?setwd
     ??heatmap
 
-Finally, this command will bring up help for a whole package.
+This command will bring up help for a whole package:
 
     help(package="ggplot2")
 
@@ -44,7 +44,7 @@ For a much more complex illustration, try this:
 ls
 ```
 
-Admittedly, the output of doing this won't be that helpful in most cases.
+The output of that method won't be that helpful in most cases. When stuck, what you _really_ want to do is read from a handbook like Teetor's _R Cookbook_.
 
 ## Practice is required
 
@@ -52,4 +52,4 @@ R is difficult. [Even professional programmers](http://www.johndcook.com/R_langu
 
 Take some regular time with the software. Use R two hours per week, and fiddle with the examples given here: try out your own, even if it means modifying them just slightly. Do not neglect fishing for [other tutorials](03_links.html) online, there's tons of them.
 
-> __Next week__: [Basic R operators](20_basics.html).
+> __Next week__: [Basic R operators](20_basics.html). Do not forget to read the assigned handbook chapters!

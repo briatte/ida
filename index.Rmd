@@ -21,8 +21,7 @@ require(knitr)
 # get files
 all <- dir(pattern="[0-9]+(.*).Rmd")[c(1:4,8,12:30)]
 # knitr setup
-opts_knit$set(header="foobar")
-opts_chunk$set(fig.path = "plots/")
+opts_chunk$set(fig.path = "plots/", comment = NA)
 # go go go
 foreach(i=1:length(all)) %do% {
   # R scripts
@@ -79,7 +78,7 @@ __Readings:__ Kabacoff, ch. 5, and Teetor, ch. 8.
 <!-- Matloff, ch. 8. -->
 
 - [Functions](31_functions.html)
-- [Loops](32_loops.html)
+- [Iteration](32_iteration.html)
 - [Probability](33_proba.html)
 
 * * *
@@ -188,4 +187,4 @@ Special thanks to the Sciences Po Reims staff and students for indefectible supp
 
 __Inspired by__ [Christopher Adolph](http://faculty.washington.edu/cadolph/index.php?page=22), [Dave Armstrong](http://quantoid.net/ICPSRR.html), [Christopher Gangrud](https://github.com/christophergandrud/Introduction_to_Statistics_and_Data_Analysis_Yonsei/), [Andrew Gelman](http://andrewgelman.com/2012/12/textbook-for-data-visualization/), [Rebecca Nugent](http://www.stat.cmu.edu/~rnugent/teaching/introR/), [Gaston Sanchez](https://gastonsanchez.wordpress.com/), [David Sparks](http://is-r.tumblr.com/), [Hadley Wickham](http://had.co.nz/ggplot2/).
 
-This course has its own [GitHub repository](https://github.com/briatte/ida); fork at will.
+This course has its own [GitHub repository](https://github.com/briatte/ida); fork at will. This HTML version was compiled from source on `r format(Sys.time(), "%A %B %d, %Y")`.

@@ -27,7 +27,7 @@ Most of the time, you will actually have one more window open on the left side o
 
 ![RStudio new script.](images/rstudio-new-script.png)
 
-Now copy-paste [this code](https://gist.github.com/4555856) into the blank R script, select it all, and run. You will see results get printed out (in black) in the Console, along with the code (in blue). Objects will also appear in the Workspace, and a help page will open in the bottom-right quadrant.
+Now copy-paste [this code](https://raw.github.com/briatte/ida/master/code/12_playground.R) into the blank R script, select it all, and run. You will see results get printed out (in black) in the Console, along with the code (in blue). Objects will also appear in the Workspace, and a plot will appear in the bottom-right quadrant (yay! plots!).
 
 ## Setting the working directory
 
@@ -79,8 +79,14 @@ qplot(data = iris, x = Sepal.Length, y = Petal.Length)
 
 We will come back to how `ggplot2` works in due time; for the moment, let's simply improve the plot by adding a bunch of options that will add some color, sizing and transparency effects to the plot that opened in the bottom-right quadrant.
 
-```{r ggplot2-3}
-qplot(data = iris, x = Sepal.Length, y = Petal.Length, color = Species, size = Petal.Width, alpha = I(0.7))
+```{r ggplot2-3, tidy=FALSE}
+# Select all elements to run properly.
+qplot(data = iris, 
+      x = Sepal.Length, 
+      y = Petal.Length, 
+      color = Species, 
+      size = Petal.Width, 
+      alpha = I(0.7))
 ```
 
 This plot can be saved to PNG (a [bitmap](https://en.wikipedia.org/wiki/Raster_graphics) format) or PDF (a [vector](https://en.wikipedia.org/wiki/Vector_graphics) format) from the "Export" menu. You will want to use PNG if you are saving the plot for screen viewing, e.g. posting on a Web page. Otherwise, you will prefer to export the plot as PDF, as shown below.

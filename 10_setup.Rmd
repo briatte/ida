@@ -3,7 +3,7 @@
 
 # 1. Setup
 
-As mentioned in the introductory pages, this course uses R, a free and open source software used by data analysts in many different contexts. In the next pages, we explain how to set up R and its companion software RStudio for the course.
+As mentioned in the introductory pages, this course uses [R](http://www.r-project.org/), a free and open source software used by data analysts in many different contexts. In the next pages, we explain how to set up R and its companion software [RStudio](http://www.rstudio.com/) for the course.
 
 Before we start installing and setting up anything, let's review the other tools that you will need to use in this class. You do not need to be a computer nerd to understand what follows. Remember to ask questions in class if things are unclear here.
 
@@ -19,7 +19,7 @@ Here's what to check about your laptop:
 
 * If it's recent enough, your laptop is running a 64-bit processor. It should also be possible to run the course on older 32-bit processors.
 * If your computer is slow at doing things, it might mean that you lack a decent amount or RAM (live memory). We recommend 4GB or more.
-* We will install things on your hard drive during class. It should not take much space, but let's say it will take 1GB to be safe.
+* We will install things on your hard drive during class. It should not take much space, but let's say it will take 1GB to be very safe.
 
 If you have no idea on how to check whether your laptop matches these requirements, just ask us in class. If your laptop is less than three years old, it probably matches everything above.
 
@@ -44,7 +44,7 @@ GitHub also offers [Gist](https://gist.github.com/), a handy way to share code. 
 
 You can use Gist anonymously, or create an account and join the [`ida13`](https://github.com/ida13) organization. [Creating a GitHub account](https://github.com/signup?return_to=gist) is free and makes finding your code much easier than if you do not register.
 
-Finally, we might play a bit with [RPubs](http://rpubs.com/) if we get to the point of publishing projects. RPubs is a straightforward publishing platform that can be operated [directly from RStudio](http://youtu.be/XqzHnYLr5BE). Maybe later…
+Finally, we might play a bit with [RPubs](http://rpubs.com/) if we get to the point of publishing projects. RPubs is a straightforward publishing platform that can be operated [directly from RStudio](http://youtu.be/XqzHnYLr5BE).
 
 ## Google accounts
 

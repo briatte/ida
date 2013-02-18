@@ -40,59 +40,60 @@ The Console window should now look something like this (with icons at the top in
 Now type each command below in this order; skip the comments that start with a `#` hash. When you finish typing a line, press `Enter` to execute, or 'run', its command. If you get an error message, press `UpArrow`, check your typing against the original, correct it and try again.
 
 ```{r hello-world}
-# Create a text object, called 'txt'.
-a <- "Hello World!"
-# Create a numeric object, called 'num'.
-b <- (8^2)/5
-# Apply a function to store the date.
-c <- date()
-# Combine both objects into a vector, called 'msg'.
-message <- c(a, b, c)
-# Print the vector object 'msg' on screen.
-print(message)
+# Create a text object, called 'x'.
+x <- "Hello World!"
+# Create a numeric object, called 'y'.
+y <- (8^2)/5
+# Combine both objects into a vector called 'z'.
+z <- c(x, y)
+# Print the vector object 'z' on screen.
+print(z)
 # More simply, just type its name and press Enter.
-message
+z
 ```
 
-Let's go through all parts of this example. The basic _operator_ `<-` _assigns_ the _value_ `"Hello World!"` to the _object_ `txt`. Text objects are called _strings_. The same operation is repeated with a numerical result to the `num` object.
+Let's go through all parts of this example. The basic operator `<-` assigns the value `"Hello World!"` to the object `x`. Text objects are called strings. The same operation is repeated with a numerical result to the `y` object.
 
-We then bind these objects together with the `c()` command that creates a _vector_ with the `txt` and `num` values. The result is shown on screen with the `print()` command, but this command can also be omitted by just typing the name of the object.
+We then bind these objects together with the `c()` command that creates a vector with the `x` and `y` values. The result is shown on screen with the `print()` command, but this command can also be omitted by just typing the name of the object.
 
-Note, finally, that the lines of code starting with a hash (`#`) are comments. They do not have any result: if you pass them to R, they are simply ignored. Commenting your code is the most important good programming practice.
+Note, finally, that the lines of code starting with a hash (`#`) are comments. They do not have any result: if you pass them to R, they are simply ignored. Commenting your code is the most important good practice in programming.
 
 ## Scripts
 
-Code is impossible to remember, and you want to save as well as share your work. Let's see how to run a R script. Press &#8984;-N (Mac) or `Ctrl-N` (Win) to open a blank R document, called a script, then [click this link](https://gist.github.com/4555856) and click again the top-right `<>` icon:
+Code is impossible to remember, and you want to save as well as share your work. Let's see how to run a R script. Press &#8984;-N (Mac) or `Ctrl-N` (Win) to open a blank R document, called a script, then [click this link](https://raw.github.com/briatte/ida/master/code/11_hello.R) to open a basic script example.
 
-![Gist, view raw code](images/gist-raw.png)
+Select all code, copy it to the clipboard, and paste it into your blank R script window. Then select all lines in the script with &#8984;-A (Mac) or `Ctrl-A` (Win), and press &#8984;-Enter (Mac) or `Ctrl-Enter` (Win) to run it. The results will show in the "R Console" window.
 
-Select all code and copy it, either by clicking as explained above, or by [clicking this link](https://gist.github.com/raw/4555856/489abfb6b0de6d7d8d303e5504bdec4d6f69cbe5/hello.r) to view the raw source directly. Now paste that into your blank R script window. Finally, select all lines with &#8984;-A (Mac) or `Ctrl-A` (Win) and press &#8984;-Enter (Mac) or `Ctrl-Enter` (Win) to run.
-
-You have just executed your first R script. You will get used to all these operations pretty soon, as you get familiar with R syntax and learn to use R scripts, which are just plain text files that end with the `.r` extension.
+You have just executed your first R script: have a look at the results. You will get used to all these operations pretty soon, as you get familiar with R syntax and learn to use R scripts, which are just plain text files that end with the `.r` extension.
 
 ## Packages
                                                                                                                                                                                                                                                                                                                                                                                                                  
-Some particular commands need to be installed into R to work. This might be done through compressed archives of packages, or through the online [CRAN](http://cran.r-project.org/) central repository. This makes the software modular and has encouraged the development of thousands of R packages.
+Some particular commands need to be installed into R to work. This is usually done through the online [CRAN](http://cran.r-project.org/) central repository. This makes the software modular and has encouraged the development of thousands of R packages.
+
+Let's take a look at which packages come with R by default, and where the packages are installed:
 
 ```{r default-packages}
-# The default packages.
+# See the default packages.
 getOption("defaultPackages")
+# See where packages are stored.
+.libPaths()
 ```
 
-The command above requires that the `O` in `getOption` is typed in uppercase. R is case-sensitive: we will come back to that next week when we review command syntax in more detail.
+The commands above require that the `O` in `getOption` and `P` in `libPaths` are typed in uppercase. R is case sensitive: we will come back to that next week when we review command syntax in more detail. Also, do not forget the starting dot at the beginning of `.libPaths()`.
 
 Let's install a few packages from a short list. Be careful with the capital letters in `RCurl`. To minimize hassle, your best option is simply to copy-paste the code into R (you can include the comments; they will be ignored at execution).
 
 ```{r install-packages}
-# Create list of packages. 
-list <- c("foreach", "knitr", "devtools", "ggplot2", "RCurl")
+# Create list of packages.
+list <- c("foreach", "knitr", "devtools", "ggplot2", "httr", "RCurl", "reshape")
 # Select those that are not installed.
 list <- list[!list %in% installed.packages()[, 1]]
-# Install packages.
-install.packages(list, repos = "http://cran.us.r-project.org")
+# Install packages. Select both lines to execute properly.
+if(length(list))
+  lapply(list, install.packages, repos = "http://cran.us.r-project.org")
 ```
 
-Once installed, the additional packages can be loaded (initialized) with the `library` command. The `ggplot2` package is used for [plotting neat graphics](http://ggplot2.org/). The `RCurl` package is used to download data from online sources.
+Once installed, the additional packages can be loaded (initialized) with the `library` command. Each package brings its own functionalities. The `ggplot2` package is used for [plotting neat graphics](http://ggplot2.org/). The `httr` and `RCurl` packages are used to download data from online sources.
 
 ```{r load-packages, results='hide'}
 # Load ggplot2 package.
@@ -101,10 +102,14 @@ library(ggplot2)
 library(RCurl)
 ```
 
+The "loading ..." message that you might get at that point is not an error but simply a sign that other packages are loaded at the same time. Do not trust the colors: sometimes, red ink does not stand for "problem" in R.
+
+(Also, no result after a command generally means that it executed without any issue, and "Warning" messages can generally be ignored. You get used to it after some time.)
+
 ## Exit
 
 You can quit R like any other application or by typing `q()`. You will be asked whether you want to save unsaved documents, and whether you want to save the R session, or workspace. You do not need to save anything for now.
 
-R can do a lot of things, including [waiting for you to make coffee](http://vimeo.com/43305640). A big drawback of R, however, is its barebones interface. We will fix that by installing a software that 'pilots' R through better menus and windows.
+R can do a lot of things, including [waiting for you to make coffee](http://vimeo.com/43305640). A big drawback of R, however, is its barebones interface. We will fix that by installing a software that "pilots" R through better menus and windows.
 
 > __Next__: [Installing RStudio](12_rstudio.html).

@@ -76,7 +76,7 @@ median(exam)
 summary(exam)
 ```
 
-Note that R uses a precise taxonomy of objects, and that even though we just used the word "list" to describe a vector, a *list* is not the same as a *vector*. If you ask R if the `exam` object is a vector, the result will be `TRUE`, but not if you ask whether `exam` is a list.
+Note that R uses a precise taxonomy of objects, and that even though we just used the word "list" to describe a vector, a list is not the same as a vector. If you ask R if the `exam` object is a vector, the result will be `TRUE`, but not if you ask whether `exam` is a list.
 
 ```{r exam-vector-object}
 # Recall the exam object.
@@ -96,8 +96,7 @@ exam[1]
 exam[1:3]
 # Select a vector of values: show grades of students no. 1, 2, 3 and 5.
 exam[c(1:3,5)]
-# In context, it makes more sense to simply hide student no. 4's grade.
-# Thanks to the student who brought up that point in class!
+# In context, it does makes more sense to simply exclude student no. 4's grade.
 exam[-4]
 # Vectors can be logical.
 exam >= 10
@@ -106,6 +105,8 @@ exam[exam >= 10]
 ```
 
 What is shown here is important: in R, everything is an object. Here, `exam` is an object, just like the list of values that you want to show from it. This logic is everywhere in R. It is harder to learn than less flexible syntaxes, but it provides a lot of power to the user.
+
+Think, for instance, of how you can associate a Body Mass Index value with its category (underweight, normal, overweight obese). You could code these categories as a vector of numbers, and as a vector of text labels. Then, you could find which values are below or above a certain value. Here's the [code solution](https://raw.github.com/briatte/ida/master/code/22_bmi_logic.R), using the same BMI function as we just looked at.
 
 ## Working with matrixes
 
@@ -199,7 +200,7 @@ The `pass` vector contains text items (strings). Try to combine it to the numeri
 cbind(grades, pass)
 ```
 
-To solve the issue, you are going to convert the text column to numeric values, while keeping the textual information as 'captions' or 'labels' for the numbers. R calls that operation *factor encoding*, and the 'labels' are called 'levels'.
+To solve the issue, you are going to convert the text column to numeric values, while keeping the textual information as 'captions' or 'labels' for the numbers. R calls that operation factor encoding, and the 'labels' are called 'levels'.
 
 ```{r factor}
 # Understand what happens when you factor a string (text) variable.
@@ -211,5 +212,7 @@ grades <- cbind(grades, pass = factor(pass))
 # Marvel at your work.
 grades
 ```
+
+Notice that factors are alphabetically ordered, and that this influences how they are ordered in graphs. In the simple example above, there is no particular issue with the fact that "1" stands for "Fail" and "2" for "Pass", but if we want to order a list of countries in any other way than alphabetically, this is when we will be (re)ordering factors.
 
 > __Next__: [Other R objects](23_objects.html).
