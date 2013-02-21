@@ -228,6 +228,10 @@ header {
 }
 
 p.header {
+	font-size: 16px;
+}
+
+p.authors {
 	font-size: 14px;
 }
 
