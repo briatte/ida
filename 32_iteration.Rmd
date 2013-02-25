@@ -5,7 +5,7 @@
 
 Suppose you want to remove a letter from a column of data. Now, suppose that you want to remove a letter from 9,000 columns of data. You are going to need a system to do the same thing over and over: you are going to need a loop.
 
-## `for` and `while`
+## `for` loops
 
 R understands `for` and `while` loops like many other programming languages. The idea is the same for both operators: allow to repeat an operation a certain number of times. The first example is as trivial as it gets.
 
@@ -36,7 +36,9 @@ for(i in 1:n) {
 sequence
 ```
 
-A `while` loop operates almost on the same level.
+## `while` loops
+
+A `while` loop operates [almost on the same level](https://en.wikipedia.org/wiki/While_loop). It iterates *until* a condition becomes true, or, if you prefer, *while* a condition is not *yet* true. Be careful: if the condition never becomes true, your loop will iterate [indefinitely](https://en.wikipedia.org/wiki/Infinite_loop).
 
 ```{r while}
 # Set the counter.
@@ -47,8 +49,12 @@ while(i > 0) {
 }
 ```
 
-## `apply` functions
+## Extensions
 
-Loops are fantastic but can become memory-intensive. R also offers [`apply` functions](http://badhessian.org/loops-matrices-and-apply-functions/) that can usually do what you might want to do with a loop, but we will keep that for later, when we look at data manipulation.
+You can do amusing things with loops, like [solving number games](https://xianblog.wordpress.com/2013/02/22/le-monde-puzzle-809/). However, as the author of the example writes, it is probably more fun to find the math trick behnd the puzzle than to 'brute-force' the game by trying out all possible numbers through a loop.
+
+Loops have this 'brutal' aspect that actually make them quite unpopular, and they can become memory-hungry when they iterate a lot. R instead privileges the vectorization of iterated functions through [`apply` procedures](http://badhessian.org/loops-matrices-and-apply-functions/) that can often do what you might want to do with a loop.
+
+There is another way to deal more efficiently with loops, which is to run them over several computer processors. If you are running a dual-core computer, you can run loops as parallel computing jobs with the [`foreach` package](http://cran.r-project.org/web/packages/foreach/index.html).
 
 > __Next__: [Probability](33_proba.html).

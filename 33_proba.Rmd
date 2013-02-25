@@ -5,7 +5,11 @@
 
 Not much for the moment, except for the exercise below.
 
-<!-- ## Probability distributions
+<!-- ## RNG
+
+http://freakonometrics.hypotheses.org/3706
+
+## Probability distributions
 
 Let's review some probability distributions. One way to start manipulating a function is to throw some simulated data at it, knowing what kind of distribution it was taken from. 
 

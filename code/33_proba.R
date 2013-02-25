@@ -1,5 +1,5 @@
 
 
-## # rnorm
+# rnorm
 
 

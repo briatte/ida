@@ -5,32 +5,33 @@
 
 
 
-# Create a text object, called 'txt'.
-a <- "Hello World!"
-# Create a numeric object, called 'num'.
-b <- (8^2)/5
-# Apply a function to store the date.
-c <- date()
-# Combine both objects into a vector, called 'msg'.
-message <- c(a, b, c)
-# Print the vector object 'msg' on screen.
-print(message)
+# Create a text object, called 'x'.
+x <- "Hello World!"
+# Create a numeric object, called 'y'.
+y <- (8^2)/5
+# Combine both objects into a vector called 'z'.
+z <- c(x, y)
+# Print the vector object 'z' on screen.
+print(z)
 # More simply, just type its name and press Enter.
-message
+z
 
 
 
-# The default packages.
+# See the default packages.
 getOption("defaultPackages")
+# See where packages are stored.
+.libPaths()
 
 
 
-# Create list of packages. 
-list <- c("foreach", "knitr", "devtools", "ggplot2", "RCurl")
+# Create list of packages.
+list <- c("foreach", "knitr", "devtools", "ggplot2", "httr", "RCurl", "reshape")
 # Select those that are not installed.
 list <- list[!list %in% installed.packages()[, 1]]
-# Install packages.
-install.packages(list, repos = "http://cran.us.r-project.org")
+# Install packages. Select both lines to execute properly.
+if(length(list))
+  lapply(list, install.packages, repos = "http://cran.us.r-project.org")
 
 
 

@@ -16,7 +16,7 @@ log(1) >= 0
 # Note that equality requires two equal signs.
 log(1) == 0
 # A more complex example with scientific notation.
-1 + log10(1e7) == 8*exp(1)^0
+1 + log10(1e7) == 8 * exp(1)^0
 
 
 

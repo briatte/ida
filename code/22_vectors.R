@@ -64,8 +64,7 @@ exam[1]
 exam[1:3]
 # Select a vector of values: show grades of students no. 1, 2, 3 and 5.
 exam[c(1:3,5)]
-# In context, it makes more sense to simply hide student no. 4's grade.
-# Thanks to the student who brought up that point in class!
+# In context, it does makes more sense to simply exclude student no. 4's grade.
 exam[-4]
 # Vectors can be logical.
 exam >= 10
@@ -144,7 +143,7 @@ pass
 
 
 
-## cbind(grades, pass)
+cbind(grades, pass)
 
 
 

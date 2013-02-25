@@ -19,7 +19,7 @@ file.remove(dir(pattern="[0-9]+(.*)\\.md"))
 require(foreach)
 require(knitr)
 # get files
-all <- dir(pattern="[0-9]+(.*).Rmd")[c(1:4,8,12:30)]
+all <- dir(pattern="[0-9]+(.*).Rmd")[c(1:4, 8, 12:30)] # sessions 0, 1, 2, 3, 4, 5, 12
 # knitr setup
 opts_chunk$set(fig.path = "plots/", comment = NA)
 # go go go

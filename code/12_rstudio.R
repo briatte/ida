@@ -1,6 +1,6 @@
 
 
-## setwd("~/Documents/Teaching/IDA")
+setwd("~/Documents/Teaching/IDA")
 
 
 
@@ -22,6 +22,12 @@ qplot(data = iris, x = Sepal.Length, y = Petal.Length)
 
 
 
-qplot(data = iris, x = Sepal.Length, y = Petal.Length, color = Species, size = Petal.Width, alpha = I(0.7))
+# Select all elements to run properly.
+qplot(data = iris, 
+      x = Sepal.Length, 
+      y = Petal.Length, 
+      color = Species, 
+      size = Petal.Width, 
+      alpha = I(0.7))
 
 
