@@ -1,4 +1,4 @@
-## IDA Session 6
+## IDA Session 7
 ## -------------
 
 # Package loading
@@ -243,7 +243,7 @@ g + scale_fill_brewer(palette = "RdBu")
 
 # Define a function to cut the data at median and label segments "lo" and "hi".
 hilo <- function(x) { 
-  cut(x, breaks = quantile(x, probs = 0:2/2), labels = ("lo", "hi"), 
+  cut(x, breaks = quantile(x, probs = 0:2/2), labels = c("lo", "hi"), 
       ordered = TRUE, include.lowest = TRUE)
 }
 
