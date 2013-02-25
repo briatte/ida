@@ -5,7 +5,7 @@
 # ---------------
 
 # Load/install packages.
-packages <- c("countrycode", "ggplot2", "Hmisc", "scales")
+packages <- c("countrycode", "ggplot2", "Hmisc", "plyr", "scales")
 packages <- lapply(packages, FUN = function(x) {
   if (!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -453,7 +453,16 @@ qplot(region, geom = "point")
 # -----------------
 
 
+# Significance testing revolves around the idea that a statistic, whatever it
+# might stand for, can be estimated to be significantly different from zero.
+# One of the simplest forms of test, the t-test, is shown below.
 t.test(births)
+
+# The bounds of the test form a confidence interval: the range in which the
+# test estimates that the mean of the fertility rate is located. The width of
+# the interval depends on both the sample size and the level of confidence.
+c(t.test(births)$conf.int[1], mean(births), t.test(births)$conf.int[2])
+
 
 # Confidence intervals
 # --------------------
