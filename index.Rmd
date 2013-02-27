@@ -2,96 +2,108 @@
 
 # Introduction to Data Analysis
 
-This course is an introduction to analyzing data with the [R](http://www.r-project.org/) software. It features some mathematics and statistics as well as some statistical computing and data visualization. You will need a laptop with an Internet connection to follow the class.
+This course is an introduction to analyzing data with the [R](http://www.r-project.org/) software. 
+It features some mathematics and statistics as well as some statistical computing and data visualization. 
+You will need a laptop with an Internet connection to follow the class.
 
 ```{r prepare-folder, include=FALSE, message=FALSE}
 # course directory
-setwd("/Users/fr/Documents/Teaching/IDA/")
+setwd("~/Documents/Teaching/IDA/")
 # backup code
-zip(paste("../IDA-backup", Sys.Date(), "zip", sep = "."), dir(pattern = ".Rmd"))
+zip(paste("admin/backup", Sys.Date(), "zip", sep = "."), dir(pattern = ".Rmd"))
 # clean up
 rm(list = ls())
-file.remove(dir(pattern="[0-9]+(.*)\\.html"))
-file.remove(dir(pattern="[0-9]+(.*)\\.md"))
 ```
 
 ```{r run-course, include=FALSE, message=FALSE}
 require(foreach)
 require(knitr)
 # get files
-all <- dir(pattern="[0-9]+(.*).Rmd")[c(1:4, 8, 12:30)] # sessions 0, 1, 2, 3, 4, 5, 12
+all <- dir(pattern="[0-9]+(.*).Rmd")[1:2] # sequence is 2 + session number * 3 
 # knitr setup
 opts_chunk$set(fig.path = "plots/", comment = NA)
 # go go go
-foreach(i=1:length(all)) %do% {
-  # R scripts
-  purl(all[i], documentation = 0, output = paste0("code/", gsub("Rmd", "R", all[i])))
-  # HTML pages
-  knit2html(all[i])
-  # Remove .md
-  file.remove(gsub("Rmd", "md", all[i]))
-}
-```
-
-```{r populate-website, include=FALSE, message=FALSE}
+lapply(all, FUN = function(x) {
+  print(x)
+  if(substr(x, 0, 2) != "00")
+    purl(x, documentation = 0, output = paste0("code/", gsub("Rmd", "R", x)))
+  knit2html(x)
+})
 # get HTML
-html <- dir(pattern="(index|[0-9]{2,}_\\w+).html|style.css")
+html <- dir(pattern="(index|[0-9]{3,}_\\w+).html|style.css")
 # get code
-code <- dir("code", pattern="([0-9]{2,}_\\w+).R$")
+code <- dir("code", pattern="([0-9]{3,}_\\w+).R$")
 # set path
 path <- "~/Documents/Code/Websites/briatte.github.com/teaching/ida"
 # copy to website
 file.copy(html, path, overwrite = TRUE)
-file.copy(paste0("code/",code), path, overwrite = TRUE)
+if(length(code) > 0) file.copy(paste0("code/", code), path, overwrite = TRUE)
+# clean up
+file.remove(gsub("Rmd", "md", all))
+file.remove(gsub("Rmd", "html", all))
 ```
 
-- [Introduction](01_intro.html)
-- [Readings](02_readings.html)
-- [Links](03_links.html)
+- [Introduction][001]
+- [Readings][002]
+
+[001]: 001_intro.html
+[002]: 002_readings.html
 
 > __Part 1: Introduction to Statistical Computing__. The course starts by one month dedicated to setting up R and learning its basic functionalities. All course logistics will be discussed in these weeks.
 
-## 1. [Setup](10_setup.html)
+## 1. [Setup][010]
 
 __Readings:__ Kabacoff, ch. 1 and Teetor, ch. 1 and 3.
 
-- [Installing R](11_r.html)
-- [Installing RStudio](12_rstudio.html)
-- [Help pages](13_help.html)
+- [Installing R][011]
+- [Installing RStudio][012]
+- [Practice][013]
+
+[010]: 010_setup.html
+[011]: 011_r.html
+[012]: 012_rstudio.html
+[013]: 013_practice.html
 
 * * *
 
-## 2. [Basic R operators](20_basics.html)
+## 2. [Objects][020]
 
 __Readings:__ Teetor, ch. 2 and 5.
 
-- [Command syntax](21_syntax.html)
-- [Vectors and matrices](22_vectors.html)
-- [Other R objects](23_objects.html)
+- [Vectors and matrices][021]
+- [Variables and factors][022]
+
+[020]: 020_objects.html
+[021]: 021_vectors.html
+[022]: 022_variables.html
 
 * * *
 
-## 3. [Basic math operators](30_math.html)
+## 3. [Functions][030]
 
 __Readings:__ Kabacoff, ch. 5, and Teetor, ch. 8.
 
 <!-- Matloff, ch. 8. -->
 
-- [Functions](31_functions.html)
-- [Iteration](32_iteration.html)
-- [Probability](33_proba.html)
+- [Boolean logic][031]
+- [Iteration and probability][032]
+
+[030]: 030_functions.html
+[031]: 031_logic.html
+[032]: 032_iteration.html
 
 * * *
 
-## 4. [Basic data operators](40_data.html)
+## 4. [Data][040]
 
-__Readings:__ Kabacoff, ch. 4, and Teetor, ch. 4 and 6.
+__Readings:__ Kabacoff, ch. 4, and Teetor, ch. 4 and 6-7.
 
-<!-- additional manipulations with strings and dates: Teetor, ch. 7 -->
+- [Imports, exports, scraping][041]
+- [Reshapes and aggregates][042]
 
-- [Import/Export](41_dataio.html)
-- [Reshaping](42_reshaping.html)
-- [Scraping](43_scraping.html)
+[040]: 040_data.html
+[041]: 041_dataio.html
+[042]: 042_reshaping.html
 
 * * *
 
@@ -103,7 +115,7 @@ __Readings:__ Kabacoff, ch. 14, and Teetor, ch. 13.4, 13.6 and 13.9.
 
 - [Heatmaps](51_heatmaps.html)
 - [Principal components](52_pca.html)
-- [*k*-means](53_kmeans.html)
+- [*k*-means](53_kmeans.html) ##merge with PCA
 
 * * *
 
@@ -111,29 +123,29 @@ __Readings:__ Kabacoff, ch. 14, and Teetor, ch. 13.4, 13.6 and 13.9.
 
 __Readings:__ Kabacoff, ch. 6, and Teetor, ch. 10.
 
-- [Descriptive statistics](61_descr.html)
-- [Probability density functions](62_pdf.html)
-- [Empirical cumulative density functions](63_ecdf.html)
+- [Descriptive statistics](61_descr.html) ##edit: name?
+- [Probability density functions](62_pdf.html) ##edit: merge with below
+- [Density functions](63_density.html) # ECDF, histograms, PDF (normal distribution)
 
 * * *
 
-## 7. [Hypothesis tests](70_hyptests.html)
+## 7. [Differences](70_hyptests.html) ##edit: rename
 
 __Readings:__ Kabacoff, ch. 7, and Teetor, ch. 9.
 
-- [Confidence intervals](71_ci.html)
+- [Confidence intervals](71_ci.html) ##edit: merge with t-test
 - [Comparison of means](72_ttest.html)
 - [Comparison of proportions](73_prtest.html)
 
 * * *
 
-## 8. [Linear models](80_lin.html)
+## 8. [Models](80_lin.html) ##edit: rename
 
 __Readings:__ Kabacoff, ch. 8 and 11, and Teetor, ch. 11. Skim ANOVA to focus on OLS.
 
-- [Correlation and scatterplots](81_scatterplots.html)
-- [Linear regression](82_regression.html)
-- [Visually weighted regression](83_vwreg.html)
+- [Correlation and ordinary least squares](81_scatterplots.html) ##edit: rename
+- [Linear regression](82_regression.html) ##edit: rename
+- [Visually weighted regression](83_vwreg.html) ##edit: merge with linear reg.
 
 * * *
 
@@ -141,11 +153,11 @@ __Readings:__ Kabacoff, ch. 8 and 11, and Teetor, ch. 11. Skim ANOVA to focus on
 
 ## 9. [Visualization in time: Time series](90_ts.html)
 
-__Reading:__ Teetor, ch. 14. We'll try to add ARIMA models to the course content, as they are highly relevant for finance students.
+__Reading:__ Teetor, ch. 14. # detrending, ARIMA
 
-- [Autocorrelation](91_lags.html)
-- [Smoothing](92_smoothing.html)
-- ARIMA (perhaps)
+- [Autocorrelation](91_lags.html) ##edit
+- [Smoothing](92_smoothing.html) ##edit
+- ARIMA (perhaps) ##edit
 
 * * *
 
@@ -153,9 +165,9 @@ __Reading:__ Teetor, ch. 14. We'll try to add ARIMA models to the course content
 
 __Reading:__ B. Sue Bell *et al.*, "[Current practices in spatial analysis of cancer data mapping health statistics to inform policymakers and the public](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1647272/)", 2006.
 
-- [Choropleth maps](101_choropleth.html)
-- [Google-powered maps](102_gmaps.html)
-- Spatial dependence (perhaps)
+- [Choropleth maps](101_choropleth.html) ##edit
+- [Google-powered maps](102_gmaps.html) ##edit
+- Spatial dependence (perhaps) ##edit
 
 * * *
 
@@ -163,9 +175,9 @@ __Reading:__ B. Sue Bell *et al.*, "[Current practices in spatial analysis of ca
 
 __Reading:__ David Siegel, "[Social Networks in Comparative Perspective](http://opensiuc.lib.siu.edu/cgi/viewcontent.cgi?article=1045&context=pn_wp)", 2011.
 
-- [Measures of influence](111_influence.html)
-- [Mining an online network](112_twitter.html)
-- Plotting interactive networks (perhaps)
+- [Measures of influence](111_influence.html) ##edit
+- [Mining an online network](112_twitter.html) ##edit
+- Plotting interactive networks (perhaps) ##edit
 
 * * *
 

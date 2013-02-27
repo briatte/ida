@@ -1,15 +1,39 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# Links
+# Readings
 
-This courses uses the R software, and you will find a lot of 'R links' in these pages. That is because the course heavily relies on [examples posted online](http://www.statsblogs.com/) by R enthusiasts, many of whom are professionals from all horizons, from academia to finance to government.
+This section documents the list of handbooks and optional readings that you can find in the course syllabus. We cover [online help](03_links.html) and [internal R documentation](13_help.html) at later stages.
+
+## Course handbooks
+
+ [![inline](images/book-kabacoff.jpg)](http://www.manning.com/kabacoff/) [![inline](images/book-teetor.gif)](http://shop.oreilly.com/product/9780596809164.do) [![inline](images/book-urdan.jpg)](http://www.routledge.com/books/details/9780415872911/)
+
+- Robert Kabacoff, *[R in Action](http://www.manning.com/kabacoff/)* (Manning 2011)
+- Paul Teetor, *[R Cookbook](http://shop.oreilly.com/product/9780596809164.do)* (O'Reilly 2011)
+- Timothy Urdan, *[Statistics in Plain English](http://www.routledge.com/books/details/9780415872911/)* (Routledge 2010)
+
+Handbook chapters are assigned weekly to establish a learning baseline, and independent study of online material is greatly encouraged. All chapters should be read *after* each session.
+
+## Additional readings
+
+[![inline](images/book-chang.gif)](http://shop.oreilly.com/product/0636920023135.do) [![inline](images/book-pace.jpg)](http://www.apress.com/9781430245544) [![inline](images/book-yau.png)](http://book.flowingdata.com/)
+
+- Winston Chang, *[R Graphics Cookbook](http://shop.oreilly.com/product/0636920023135.do)* (O'Reilly 2012)
+- Larry Pace, *[Beginning R](http://www.apress.com/9781430245544)* (Apress 2012)
+- Nathan Yau, *[Visualize This](http://book.flowingdata.com/)* (Wiley 2011)
+
+Finally, these books go further than what we will explore, but serve as good examples of what you can learn to do with slightly more advanced computing and visualization skills:
+
+- Norman Matloff, *[The Art of R Programming](http://nostarch.com/artofr.htm)* (No Starch Press 2011)
+- Edward Tufte, *[The Visual Display of Quantitative Information](http://www.edwardtufte.com/tufte/books_vdqi)* (Graphics Press 2001)
+- Hadley Wickham, [ggplot2. Elegant Graphics for Data Analysis](http://ggplot2.org/book/) (Springer 2009)
 
 ## Tutorials
 
 There's tons of R tutorials out there. [Here's a good one](https://files.nyu.edu/dm141/public/tutdoc/R_intro/html/Introduction%20to%20R.xhtml). [Here's another good one](http://compdiag.molgen.mpg.de/ngfn/docs/2003/jan/R-intro.pdf). In these pages, we do our best to document the R software by example, but you are very welcome to find more relevant resources that better fit your interests.
 
-These tutorials will teach you something new you take the time to read them:
+These tutorials will teach you something new every time you read them:
 
 - Winston Chang, [Cookbook for R](http://wiki.stdout.org/rcookbook/) (very good on graphics)
 - Robert Kabacoff, [Quick-R](http://www.statmethods.net/) (our favourite reference)
@@ -33,16 +57,4 @@ The visualization component of the course can be explored through [Alberto Cairo
 
 The [SRQM blog](http://srqm.tumblr.com/), created for [another course](http://f.briatte.org/teaching/quanti/), does its best to deliver a regular amount of illustrated links on statistical analysis for the social sciences as well as on data visualization and other related themes.
 
-## Online tools
-
-The following tools require a stable Internet connection:
-
-- [GitHub](https://github.com/) is a code hosting platform that offers [Gist](https://gist.github.com/), a tool used in class to share code snippets.
-- [Google Documents](http://docs.google.com/) is a great way to take notes and collaborate over writing reports.
-- [RPubs](http://www.rpubs.com/) is an easy way to publish reports [straight from R Studio, using R Markdown](http://blog.rstudio.org/2012/06/04/announcing-rpubs/).
-
-This course uses these tools: it is developed in RStudio with R Markdown, and is available as a [GitHub repository](https://github.com/briatte/ida). The most recent version is available as HTML pages on the [course website](http://f.briatte.org/teaching/ida/). We will also use Google Documents for assignments.
-
-If you find useful online resources for this course, please share them on the [course blog](http://srqm.tumblr.com/), using the "[Suggestions](http://srqm.tumblr.com/submit)" link to let the author know about your find. Your submission will be checked before publication.
-
-> __Next__: [Setup](10_setup.html).
+> __Next__: [Setup](010_setup.html).

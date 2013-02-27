@@ -1,7 +1,0 @@
-<style>@import url(style.css);</style>
-<small>[Introduction to Data Analysis](index.html)</small>
-
-# 11.1. Measures of influence
-
-
-> __Next__: [Mining an online network](112_twitter.html).

@@ -1,0 +1,87 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 1.1. Installing R
+
+[R](http://www.r-project.org/) is a software that uses a specific language to manipulate statistical objects. Researchers and statisticians are [increasingly](http://r4stats.com/articles/popularity/) adopting R as their software of choice, and the R user base goes well beyond academia. Many [R User Groups](http://www.r-bloggers.com/RUG/) exist on a [worldwide scale](http://blog.revolutionanalytics.com/local-r-groups.html).
+
+Some people *really* like R. This very enthusiastic user is [Anthony Damico](https://github.com/ajdamico), a [prolific](http://www.ajdamico.com/p/work.html) and [proficient](http://www.asdfree.com/) analyst of U.S. survey data working at the Kaiser Family Foundation. His video mentions other programming and statistical languages:
+
+<iframe src="http://player.vimeo.com/video/52999628?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+The R language has its roots in the S language developed by AT&T, which also developed the C language. It is not the only language available for statistical analysis: there are [many others](http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/), and you might have also heard about SAS, SPSS or Stata, or even Matlab and Python.
+
+R is as free as it is powerful, but it comes with [some drawbacks](http://badhessian.org/seven-reasons-to-use-r-for-social-network-analysis-and-three-reasons-against/). Its major disadvantage is that its learning curve is pretty steep. Do not worry: we will review as many examples as we need to make it work, and we will give you code to help creating your own.
+
+## Installation
+
+Now, download  and install the latest version of R. You will need admin privileges on your computer (i.e. the user login and password) to do so. R is free and available for all platforms. It does not take a lot of memory to install and use.
+
+The R development team maintains [a website](http://www.r-project.org/), but you will download R from a different source based in the United States. The exact download link depends on your operating system:
+
+- __For Mac OS X__, [download from this link](http://cran.us.r-project.org/bin/macosx/), double-click it, say "OK" to all installation steps. You can also watch [this video tutorial](https://www.youtube.com/watch?v=Icawuhf0Yqo) by Roger Peng for help, or [this video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) by Gordon Davis, which also covers RStudio.
+- __For Windows__, [download from this link](http://cran.us.r-project.org/bin/windows/base/), which also has a few help pages. [This video tutorial](https://www.youtube.com/watch?v=mfGFv-iB724) by Roger Peng and [this video tutorial](http://www.screenr.com/kzT8) by Anthony Damico can help with the installation. You might also consider [using a few custom options](https://www.youtube.com/watch?v=Lc2sgDTzrV8) when running R on Windows.
+
+Do not panic if you do not manage to install R (or RStudio, the next software you will install) on your own. Just bring your laptop and we will guide you through it in class.
+
+## Commands
+
+Open R and locate the blinking cursor preceded by a `>` at the bottom of the R Console window. This is where you will type commands and read their results. You might be already familiar with that process if you have ever used a Command Line Interface (CLI) before.
+
+Type the following examples to print some text and numeric results. When you finish typing each line, press `Enter` to execute, or 'run', its command. If you get an error message in red ink, press `UpArrow`, check your typing against the original, correct it and try again.
+
+```{r very-first-commands, results='hide'}
+"Hello R World!"
+2 * (1 + 2) == 6
+letters[1:5]
+```
+
+The bottom of your R Console window should now look something like this:
+
+![R, very first commands](images/r-very-first-commands.png)
+
+## Syntax
+
+You might have run into errors in the example above if you typed anything else than the code provided. That is because R, just like every other programming language, requires that you follow a precise syntax. You might have run into these errors in particular:
+
+- __Forgetting quotes around text.__ R requires that you enclose text into single or double quotes, as to specify that it is text that you are typing, and not the name of an object. Try typing `hello` without quotes to see what an error message looks like in R.
+- __Using `=` instead of `==` for logical expressions.__ The second command in the example above is a logical test, and therefore requires that you type _two_ equal signs instead of just one as you would in common mathematics. R uses the single equal sign for assignment.
+- __Typing uppercase instead of lowercase.__ Note, finally, that R is case sensitive. If you type `Letters` instead of `letters` the example above, it will fail to run, and if you type `LETTERS`, you will get another result (try it out if you like).
+
+The next section tells you a bit more about objects and assignment.
+
+## Assignment
+
+Now type each command below in their order of appearance. You should skip the lines that start with the `#` (hash) symbol and show in a different color than the rest of the code. Also, the commands below will _not_ produce any (immediate) result. This is normal: just carry on.
+
+```{r hello-world}
+# Create a text object, called x.
+x <- "Hello World!"
+# Create a numeric object, called y.
+y <- (8^2) / 5
+# Combine both objects into a vector, called z.
+z <- c(x, y)
+```
+
+This example shows you how to assign a value to an object in R. The basic operator `<-` assigns the value `"Hello World!"` to the object `x`. Text objects are called "strings" in computing environments. In R, you will later refer to them as objects of class `character`.
+
+The same operation is then repeated with a numerical value, which is assigned to the `y` object. Because R operates pretty much like a scientific calculator, the object `y` contains the result of the operation $\frac{8^2}{5} = 12.8$. R calls this an object of class `numeric`.
+
+We then bind these objects together into the object `z` with the `c()` command, which creates a vector with the `x` and `y` values stored as text inside it (hence the quotes). The result can be shown on screen with the `print()` function, or just by typing the name of the object, `z`:
+
+```{r print-results}
+# Print the vector object 'z' on screen.
+print(z)
+# More simply, just type its name and press Enter.
+z
+```
+
+All lines above that start with a hash symbol (`#`) are comments. They do not produce any result: if you pass them to R (that is, if you try to run them), they will be ignored. Commenting your code is the most important good practice in programming.
+
+## Exit
+
+You can quit R like any other application or by typing `q()` from the command line interface. You might be asked whether you want to save the R session that you started by creating the `x`, `y` and `z` objects in your Workspace (more on that later). You do not need to do so.
+
+R can do a lot of things, including [waiting for you to make coffee](http://vimeo.com/43305640). A big drawback of R, however, is its barebones interface. We will fix that by installing a software that "pilots" R through better menus and windows.
+
+> __Next__: [Installing RStudio](012_rstudio.html).

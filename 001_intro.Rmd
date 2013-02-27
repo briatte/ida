@@ -117,4 +117,4 @@ __We'll suggest exercises__ like drawing plots to illustrate your student newspa
 
 __We hope to present the results of this course__ at the [R 2013](http://r2013-lyon.sciencesconf.org/) conference, in order to report on how well (or how badly!) the experiment ran. Your identity and grades will naturally *not* be disclosed, but we will take notes on your feedback during class and use it to write our report.
 
-> __Next__: [Readings](02_readings.html).
+> __Next__: [Readings](002_readings.html).

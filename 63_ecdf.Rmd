@@ -1,8 +1,0 @@
-<style>@import url(style.css);</style>
-<small>[Introduction to Data Analysis](index.html)</small>
-
-# 6.3. Empirical cumulative density functions
-
-[With ggplot2](http://docs.ggplot2.org/current/stat_ecdf.html). Coming.
-
-> __Next week__: [Hypothesis tests](70_hyptests.html).
