@@ -8,7 +8,9 @@
 
 Correlation coefficients and scatterplots, illustrated with the [OECD Better Life Index](https://github.com/jeromyanglim/oecd_life_analysis/blob/master/oecd-life.md) and [quartile-frame scatterplots](https://github.com/bearloga/Quartile-frame-Scatterplot).
 
-[Scatterplot matrixes](https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/). -->
+[Scatterplot matrixes](https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/). 
+http://gettinggeneticsdone.blogspot.com/2011/07/scatterplot-matrices-in-r.html
+-->
 
 ```{r correlation, eval=FALSE}
 # Continuing with QOG data. 

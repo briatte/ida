@@ -40,6 +40,9 @@ cor(qog.x)
 # Correlation plot (arm).
 corrplot(qog.x, color = TRUE)
 
+# Scatterplot matrix.
+pairs(qog.x)
+
 # Scatterplot matrix (car).
 scatterplotMatrix(qog.x, spread=FALSE, lty.smooth=2)
 
