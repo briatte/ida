@@ -1,4 +1,6 @@
+##
 ## PACKAGES
+##
 
 require(arm)
 require(car)
@@ -7,22 +9,24 @@ require(foreign)
 require(ggplot2)
 require(GGally)
 
+##
 ## DATA
+##
 
 # Download QOG codebook.
 if(!file.exists(file <- "data/qog_codebook.pdf"))
-  download("http://www.qogdata.pol.gu.se/codebook/codebook_standard_20110406.pdf", file)
+  download("http://www.qogdata.pol.gu.se/codebook/codebook_standard_20110406.pdf", file, mode = "wb")
 
 # Download QOG data.
 if(!file.exists(file <- "data/qog_cs.dta")) {
-  download("http://www.qogdata.pol.gu.se/data/qog_std_cs.dta", file)
+  download("http://www.qogdata.pol.gu.se/data/qog_std_cs.dta", file, mode = "wb")
 }
 
 # Import.
 qog.d <- read.dta(file)
 
 # Check result.
-names(qog.d)
+names(qog.d)[1:50]
 
 ##
 ## CORRELATION
@@ -54,7 +58,7 @@ ggpairs(qog.x)
 ##
 
 # Extract QOG data.
-qog <- with(qog, data.frame(
+qog <- with(qog.d, data.frame(
   cname = cname,
   ccode = ccodealp,
   fertility = wdi_fr,
