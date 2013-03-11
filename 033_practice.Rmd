@@ -1,0 +1,24 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 3.3. Practice
+
+The exercise for this week computes market concentration for the browser market, and shows you how to defend a function against bad input.
+
+This week's exercise is called [`3_browsers.R`](3_browsers.R). Clicking this link will open it in your browser: just __copy-paste the full code into a new R script__, and save it under that name (or one of your choosing) into your `code` folder.
+
+```{r include=FALSE, results='hide'}
+source("code/3_browsers.R")
+```
+
+The exercise ends on the following plot:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Time series.
+ggplot(melt, aes(x = Date)) + labs(y = "", x = "") + theme_bw(16) +
+  geom_smooth(aes(y = value, color = Browser, fill = Browser), alpha = .2) + 
+  geom_smooth(aes(y = HHI, linetype = "HHI"), HHI, se = FALSE, color = "black") +
+  scale_linetype_manual(name = "Market\nconcentration", values = c("HHI" = "dashed"))
+```
+
+> __Next week__: [Data](040_data.html).

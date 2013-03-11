@@ -55,7 +55,7 @@ Finally, select the whole code and run it. You will see results get printed out 
 
 ## Setting the working directory
 
-Let's now save the script. Click the "Files" tab in the bottom-right pane. Choose the folder where you store your student stuff, and create a new folder called `IDA` for this course. Then set it as the working directory through the "More" menu, as shown below:
+Let's now save the script. Click the "Files" tab in the bottom-right pane. Choose the folder where you store your student stuff, and create a new folder called `IDA` for this course. Then set it as the working directory through the More menu, as shown below:
 
 ![RStudio working directory.](images/rstudio-setwd.png)
 
@@ -65,9 +65,9 @@ The working directory is the default location on your computer where R looks for
 setwd("~/Documents/Teaching/IDA")
 ```
 
-You can now save your script: focus on it by clicking anywhere in its window, press &#8984;-S (Mac) or `Ctrl-S` (Win), and RStudio will offer to save it in your `IDA` folder. Save it there under a sensible name like `heatmap-demo.R`. R scripts should end with the `.R` extension.
+You can now save your script: focus on it by clicking anywhere in its window, press &#8984;-S (Mac) or Ctrl-S (Win), and RStudio will offer to save it in your `IDA` folder. Save it there under a sensible name like `heatmap-demo.R`. R scripts should end with the `.R` extension.
 
-Finally, set your course folder as the default working directory in RStudio's preferences. Open the preferences with &#8984;-, (Mac) or from the "Tools > Options" menu. The very first preference is the default working directory, which should be set to your `IDA` folder:
+Finally, set your course folder as the default working directory in RStudio's preferences. Open the preferences with &#8984;-, (Mac) or from "Tools > Options". The very first preference is the default working directory, which should be set to your `IDA` folder:
 
 ![RStudio working directory.](images/rstudio-setwd-pref.png)
 
@@ -77,7 +77,7 @@ Last but not least: __never move your `IDA` folder once you have set it up__, or
 
 ## Tab auto-completion
 
-Now that the script is saved, take a minute to explore its code by navigating its lines with the keyboard arrow keys. Switch back and forth from the Source Editor (the script) to the Console (its results) by pressing `Ctrl-1` and `Ctrl-2` to change the cursor focus.
+Now that the script is saved, take a minute to explore its code by navigating its lines with the keyboard arrow keys. Switch back and forth from the Source Editor (the script) to the Console (its results) by pressing Ctrl-1 and Ctrl-2 to change the cursor focus.
 
 Your goal for the first month of class is actually to get as much practice with keyboard navigation and shortcuts as you can, so that you get used to running code from a script file while tinkering it from the Console.
 
@@ -169,7 +169,7 @@ qplot(data = iris,
       alpha = I(0.7))
 ```
 
-This plot can be saved to PNG (a [bitmap](https://en.wikipedia.org/wiki/Raster_graphics) format) or PDF (a [vector](https://en.wikipedia.org/wiki/Vector_graphics) format) from the "Export" menu. You will want to use PNG if you are saving the plot for screen viewing, e.g. posting on a Web page. Otherwise, you will prefer to export the plot as PDF, as shown below.
+This plot can be saved to PNG (a [bitmap](https://en.wikipedia.org/wiki/Raster_graphics) format) or PDF (a [vector](https://en.wikipedia.org/wiki/Vector_graphics) format) from the Export menu. You will want to use PNG if you are saving the plot for screen viewing, e.g. posting on a Web page. Otherwise, you will prefer to export the plot as PDF, as shown below.
 
 ![RStudio export plot.](images/rstudio-save-plot.png)
 
@@ -206,4 +206,4 @@ R documentation pages contain precise instructions on the syntax of each command
 
 Do not hate the documentation: _everyone_ finds it difficult to read, and there are good reasons why the technical documentation is written how it is. It is not really meant to teach you R but rather to document it like a flight manual documents a plane: fully and exactly.
 
-> __Next__: [Practice session](013_practice.html).
+> __Next__: [Practice](013_practice.html).

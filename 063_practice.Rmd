@@ -1,0 +1,8 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 6.3. Practice
+
+[With ggplot2](http://docs.ggplot2.org/current/stat_ecdf.html). Coming next week!
+
+> __Next week__: [Differences](070_differences.html).

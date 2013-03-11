@@ -1,0 +1,39 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 8.1. Linear correlation
+
+
+<!-- Linear bivariate relationships.
+
+Correlation coefficients and scatterplots, illustrated with the [OECD Better Life Index](https://github.com/jeromyanglim/oecd_life_analysis/blob/master/oecd-life.md) and [quartile-frame scatterplots](https://github.com/bearloga/Quartile-frame-Scatterplot).
+
+[Scatterplot matrixes](https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/). -->
+
+```{r correlation, eval=FALSE}
+# Continuing with QOG data. 
+require(arm)
+require(car)
+require(ggplot2)
+require(GGally)
+
+# Extract UNDP data.
+qog.x <- qog.d[, grepl("undp_", names(qog.d))]
+
+# Subset to full data.
+qog.x <- na.omit(qog.x)
+
+# Correlation matrix.
+cor(qog.x)
+
+# Correlation plot (arm).
+corrplot(qog.x, color = TRUE)
+
+# Scatterplot matrix (car).
+scatterplotMatrix(qog.x, spread=FALSE, lty.smooth=2)
+
+# Scatterplot matrix (GGally).
+ggpairs(qog.x)
+``` 
+
+> __Next__: [Linear regression](082_ols.html)

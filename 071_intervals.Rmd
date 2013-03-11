@@ -1,0 +1,6 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 7.1. Confidence intervals
+
+> __Next__: [Significance tests](072_tests.html).

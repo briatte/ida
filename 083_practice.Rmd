@@ -1,0 +1,10 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 8.3. Practice
+
+Check the definition of a fiscal multiplier before the next class example.
+
+__Exercise 2:__ copy the class examples to find predictors of happiness. Identify correlates, run a multiple linear regression and briefly interpret your model in your code. Run some diagnostics for bonus grades.
+
+> __Next week__: [Visualization in time: Time series](090_ts.html).

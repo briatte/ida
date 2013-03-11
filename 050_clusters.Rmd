@@ -1,0 +1,28 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 5. Clusters
+
+We start our course segment on statistical analysis with some exploratory techniques. Specifically, we will be looking at techniques to detect clusters in a large amount of data. Clusters are simply groups of observations that are more related to each other than they are to other observations in other groups.
+
+## Principles
+
+The general idea is to take observations that have many dimensions (variables) and to pack them into less dimensions (groups). For that reason, we consider the operation of finding clusters an exercise in dimensionality reduction: we start with many observations and many variables, and end up with a few groups.
+
+This operation has two characteristics. First, this operation loses some information: the transition from many-to-few dimensions is done at some expense in precision. Second, this operation requires a method to squeeze the matrix formed by the data into less dimensions. These dimensions are called the *principal components* of the data in the method used here.
+
+A principal component is a projection of the matrix in a particular direction, which is often obtained through matrix algebra via [singular value decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) (SVD). Principal components can be designated by their [eigenvalue](https://en.wikipedia.org/wiki/Eigenvalues), where higher values indicate higher efficacy at maximizing variance in the data.
+
+Each principal component is a weighted linear combination $PC_i = a_1 X_1 + a_2 X_2 + ... + a_k X_k$ of the variables $X_1, X_2, ..., X_k$ that characterize the data. Pricipal components exploit the correlations between the variables but are themselves *orthogonal* (strictly uncorrelated) to each other.
+
+(Some of the terminology above, such as correlation and linear combinations, will be explored in detail in the upcoming sessions.)
+
+A few principal components can sometimes capture a large fraction of the variance in the data. '[Principal components analysis](https://en.wikipedia.org/wiki/Principal_components_analysis)' (PCA) provides that and just that: a ranked list of dimensions that account for some percentage of the covariance matrix. It can be put to use to reduce the complexity of [markets](https://systematicinvestor.wordpress.com/2013/01/12/examples-of-current-major-market-clusters/), of [credit scores](https://github.com/gastonstat/CreditScoring), of [electoral districts](https://dsparks.wordpress.com/2010/10/18/k-means-redistricting/)…
+
+## Limitations
+
+PCA is a non-parametric approach, which means that the accuracy of the procedure is not parametrically proportional to the number of observations in the data. The method of identifying clusters with PCA is not statistically robust so to speak: the reliability of the results does not scale up with *N*.
+
+Furthermore, [even random data](http://machine-master.blogspot.ca/2012/08/pca-or-polluting-your-clever-analysis.html) can express some degree of linearity, so the degree of accuracy of PCA is not even strictly proportional to the number of variables. When you find relationships with PCA, make sure to specify them further and run additional diagnostics on the clusters, as shown in the next section.
+
+> __Next__: [Heatmaps](051_heatmaps.html).

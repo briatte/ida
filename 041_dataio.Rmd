@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 4.1. Import/Export
+# 4.1. Imports and exports
 
 This section introduces data import and export (or "I/O", for "input/output") with R.
 
@@ -123,4 +123,4 @@ Finally, since the series seems to increase exponentially, let's have a look at 
 qplot(year,medinc,data=infl,geom="line",log="y")
 ```
 
-> __Next__: [Reshaping](42_reshaping.html).
+> __Next__: [Reshapes and aggregates](042_reshaping.html).

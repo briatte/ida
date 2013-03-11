@@ -1,0 +1,35 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 8. Linear models
+
+This session focuses on (linear) models. We will start with a bivariate relationship of the form $y = a + b x + \epsilon$ between a dependent variable $y$ and one independent variable, $x$, and continue with a more complex example of the form $y = a + b_1 x + b_2 x + b_3 x + \epsilon$ with multiple predictors.
+
+Use the QOG Standard cross-sectional dataset for this session.
+
+```{r qog-cs}
+# Load packages.
+require(downloader)
+require(foreign)
+
+# Download QOG codebook.
+if(!file.exists(file <- "data/qog_codebook.pdf"))
+  download("http://www.qogdata.pol.gu.se/codebook/codebook_standard_20110406.pdf", file)
+
+# Download QOG data.
+if(!file.exists(file <- "data/qog_cs.dta")) {
+  download("http://www.qogdata.pol.gu.se/data/qog_std_cs.dta", file)
+}
+
+# Import.
+qog.d <- read.dta(file)
+
+# Check result.
+names(qog.d)
+```
+
+<!-- Correlation coefficients and scatterplots, illustrated with the [OECD Better Life Index](https://github.com/jeromyanglim/oecd_life_analysis/blob/master/oecd-life.md) and [quartile-frame scatterplots](https://github.com/bearloga/Quartile-frame-Scatterplot). 
+
+[Scatterplot matrixes](https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/). -->
+
+> __Next__: [Linear correlation](081_correlation.html).

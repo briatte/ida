@@ -1,0 +1,8 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 5.3. Practice
+
+As an exercise for this week, recreate a similar analysis as the one shown in this session, using the measure of happiness available from the QOG Basic dataset. Steal all the code you need from us, and we will review your results next week.
+
+> __Next week__: [Distributions](060_distributions.html).

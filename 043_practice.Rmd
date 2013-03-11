@@ -1,0 +1,10 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 4.3. Practice
+
+The exercise for this week is a quick overview of the main R object classes: vectors, matrices, data frames and factors. Each class will be useful to manipulate data in the next sessions, so make sure that you are familiar enough with them.
+
+This week's exercise is called [`4_browsers.R`](4_browsers.R). Clicking this link will open it in your browser: just __copy-paste the full code into a new R script__, and save it under that name (or one of your choosing) into your `code` folder.
+
+> __Next week__: [Clusters](050_clusters.html).

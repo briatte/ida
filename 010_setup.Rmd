@@ -15,4 +15,14 @@ Before we start installing and setting up anything, let's review the other tools
 
 If your laptop is less than three years old, it probably matches everything in the list above. Tablets and other gadgets won't do. Finally, __do not forget to bring your battery charger__, as well as a USB stick in case the local wifi network fails us.
 
+## Computer skills
+
+Along a laptop with Internet access, you will need to acquire a few computer skills to get through the course without too much hassle. Here's a short selection of such skills, on which we will also work during class.
+
+- __Check that you can install applications.__ This usually requires having admin privileges over your computer, i.e. a username and password combination that gives you the necessary rights to install some software. Also learn to locate the folder where programs are installed on your system.
+- __Keep control over files and folders.__ Make sure that you know how to unzip a file and that you know how to browse, locate, move and rename your files efficiently. This is generally easier if you keep things tidy and organized into a single folder accessible from your main screen.
+- __Get used to keyboard shortcuts!__ This is the most important bit: to get stuff done efficiently, practice using keyboard shortcuts. This is quicker than pointing and clicking. See, for example, if you know how to select text and browse a page from the keyboard.
+
+These are very generic skills that will serve you in a variety of contexts.
+
 > __Next__: [Installing R](011_r.html).

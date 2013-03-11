@@ -1,9 +1,9 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 3.2. Loops
+# 3.2. Iteration
 
-Suppose you want to remove a letter from a column of data. Now, suppose that you want to remove a letter from 9,000 columns of data. You are going to need a system to do the same thing over and over: you are going to need a loop.
+<!-- it's a mess -->
 
 ## `for` loops
 
@@ -57,4 +57,4 @@ Loops have this 'brutal' aspect that actually make them quite unpopular, and the
 
 There is another way to deal more efficiently with loops, which is to run them over several computer processors. If you are running a dual-core computer, you can run loops as parallel computing jobs with the [`foreach` package](http://cran.r-project.org/web/packages/foreach/index.html).
 
-> __Next__: [Probability](33_proba.html).
+> __Next__: [Practice](033_practice.html).

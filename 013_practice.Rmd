@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 1.3. Practice session
+# 1.3. Practice
 
 Let's be entirely honest here: even programmers often [find R difficult](http://www.johndcook.com/R_language_for_programmers.html), or even [hellish](http://www.burns-stat.com/pages/Tutor/R_inferno.pdf), to learn. It is very powerful and flexible, but it has a steep learning curve. If you find yourself at a loss with R, remember that you are not alone (and somebody might hear you scream).
 
@@ -35,12 +35,18 @@ if(length(scripts <- list.files(".", ".R$"))) {
 }
 ```
 
-## "Hello, R World" (Redux)
+## "Hello, R World" (redux)
 
-Now that you are fully set up to work in RStudio, you get to download your first exercise and run the entire code while reading the comments along the way. This exercise will teach you a few more things about keyboard shortcuts and R syntax.
+Now that you are fully set up to work in RStudio, you get to download your first exercise and run the entire code while reading the comments along the way. This exercise will teach you a few more things about keyboard shortcuts, R syntax, and trivia like this:
 
-__Copy-paste the exercise__ into a new R script from [this link to the source code]().
+```{r bye-bye-bye}
+rep("See you next week!", 10)
+```
 
-And of course, do not forget to read the assigned handbook chapters for next week: they will teach you more about the R interface, and they also cover things like the working directory in more depth, in case you need additional clarifications. Enjoy.
+The exercise is called [`1_hello.R`](1_hello.R). Clicking this link will open it in your browser: just __copy-paste the full code into a new R script__, and save it under that name (or one of your choosing) into your `code` folder.
+
+Be careful if you opt instead for __downloading the script directly from your browser__: some browsers might try to save it as HTML or plain text instead of a R script. In that case, make sure to rename the file properly with a `.R` file extension.
+
+Finally, do not forget to __read the assigned handbook chapters__ for next week: they will teach you more about the R interface, and they also cover things like the working directory in more depth, in case you need additional clarifications. Enjoy.
 
 > __Next week__: [Objects](020_objects.html).

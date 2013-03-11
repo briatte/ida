@@ -1,0 +1,59 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 12. Data-driven advances
+
+For our final session(s), we'll have a [political scientist](#), a [journalist](#) and a member of the [Open Knowledge Foundation](http://okfn.org/) come and talk to us about what they do with data, how they do it, and why this concerns you. Below are a few more ideas on the topic.
+
+## What is reproducible science?
+
+Reproducible science is science that you can reenact at home to see whether the analysis checks out, and to what extent the data are reliable. It's also the idea that scientists would benefit from spending more time versioning their research and working on each other's stuff.
+
+It [outsmarts junk science](http://www.economist.com/node/21528593). It [works with R](http://ropensci.org/about/).
+
+Let's consider data and its uses in scientific research, and let's actually include scientific publications as a special form of data. Data is not just a tool of the trade for scientists: sharing it is also part of the solution against the corruption of the scientific field by fraud and [corporate control](http://fora.tv/2012/03/02/Does_Corporate_Funding_Corrupt_Science). It carries both research and ethical value for the scientific field, even though many of its members hardly care.
+
+It is still quite difficult for scientists to share scientific writing or data. There are few [open access repositories](https://en.wikipedia.org/wiki/Open_Archives_Initiative) like [arXiv](https://en.wikipedia.org/wiki/Arxiv), and [open access](https://en.wikipedia.org/wiki/Open_Access) publishing is not ([yet](http://www.guardian.co.uk/science/2012/apr/24/harvard-university-journal-publishers-prices)) a dominant value of academic research. Very few scientists, however, are actively engaged in building a more open science, probably due to lack of incentives.
+
+Calls for higher standards in [reproducibility](https://en.wikipedia.org/wiki/Reproducibility) and [access](http://www.opensocietyfoundations.org/voices/making-scientific-research-accessible-all), as well as higher computer proficiency and higher-quality tools for code and data sharing, might be driving an [interesting trend](http://blog.stodden.net/2011/02/20/my-symposium-at-the-aaas-annual-meeting-the-digitization-of-science/) for all computational and empirical sciences. Right now, however, publishing a lot is more important than actually sharing your work with the public.
+
+## What is data-driven journalism?
+
+[Data-driven journalism](http://datajournalismhandbook.org/) (DDJ) is more than one thing, and several of its aspects can also be called 'computer-assisted reporting'. The general principles of DDJ are well embodied in Geoff McGhee's video presentation of the topic, called "[Journalism in the Age of Data](http://datajournalism.stanford.edu/)". The video covers the DDJ work done at the *New York Times*, which published a great recap of its "[Year in Graphics](http://www.nytimes.com/interactive/2012/12/30/multimedia/2012-the-year-in-graphics.html)" at the end of 2012.
+
+[Here's a data journalist](http://ben.welsh.usesthis.com/) writing about software and his job.
+
+If you wish to reuse some of the data put together by data-driven journalists, the [Guardian Data Blog](http://www.guardian.co.uk/data), a leading DDJ initiative, has published an impressive list of [all its datasets so far](http://www.guardian.co.uk/news/datablog/interactive/2013/jan/14/all-our-datasets-index). The data are accessible as Google Spreadsheets that are easily [importable in R](41_dataio.html).
+
+From the perspective of a social scientist, let's add a few words. The virtual meetup of journalism, stats and hacking is a rather interesting one. The print media is not any profession: it's one involved in mass communication and in shaping political representations.
+
+Any long-lasting effect of 'data people' onto the rules of the [journalistic field](http://books.google.fr/books?id=aGf_utfe3dMC&printsec=frontcover#v=onepage&q&f=false) and news reporting would deserve attention. Typically, this is not an easy world to subvert: it contains hard-coded rules that might not interact well with the slowly legitimizing capital of geeks and über-geeks.
+
+Furthermore, your future line of work might include press releases and/or press reviews and/or report and research publications. It is not trivial to observe that what is happening to journalism is likely to affect other fields of public communication: this is already happening within [IGOs](http://sunfoundation.tumblr.com/tagged/International-Development), [NGOs](http://www.opensocietyfoundations.org/reports/visualizing-information-advocacy-introduction-information-design) and think tanks, and is probably spilling over to [many other forms](http://edition.cnn.com/2009/TECH/11/11/data.visualization/index.html) of organizations, including private sector ones.
+
+## What are open data initiatives?
+
+In the [words](http://crookedtimber.org/2012/07/03/a-database-of-folly/) of [Aaron Swartz](https://en.wikipedia.org/wiki/Aaron_Swartz), a [political activist](http://phnk.com/tagged/Aaron%20Swartz) who died while being prosecuted by the United States federal authorities for downloading data from the JSTOR academic journal database:
+
+> The open data movement is a hammer which has gathered the support of many nails. There are the curious taxpayers, who feel their annual checks mean they deserve a peek at the interesting facts the government has collected. There are the ambitious business owners, who see an opportunity to privatize profits from work with socialized costs. And there are the self-styled activists, who believe that if we reveal the data on what the government is really doing, we will arrest corruption by exposing it to sunlight.
+
+Below are a few initiatives. There are many more listed at [Blog about Stats](https://blogstats.wordpress.com/) by Armin Grossenbacher, who works at Statistics Switzerland as Head of the Dissemination and Publication unit. For background reading, see the [seminar on open data](http://crookedtimber.org/2012/07/17/open-data-seminar-2/) published by the *Crooked Timber* academic blog.
+
+### Initiatives by non-profit groups
+
+- [Regards Citoyens](http://www.regardscitoyens.org/open-data-en-france/) (France)  - [article](http://www.siliconmaniacs.org/depute-un-travail-enfin-visible/)
+- [Sunlight Foundation](http://sunlightfoundation.com/) (USA) - [blog](http://sunfoundation.tumblr.com/)
+
+### Initiatives by international organizations
+
+- [Open Data Hub of the European Union](http://open-data.europa.eu/open-data/home)
+- [Open UNDP](https://blogstats.wordpress.com/2012/12/01/working-in-the-open/)
+- [Open Data Catalog at the World Bank](http://data.worldbank.org/)
+
+### Initiatives by governments
+
+- [data.gouv.fr](http://www.data.gouv.fr/)
+- [data.gov](http://data.gov)
+- [data.gov.uk](http://data.gov.uk/)
+
+> __That's it!__ Go back to the bottom of the [index page](index.html) to read a few final words on the course.

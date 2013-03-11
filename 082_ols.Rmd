@@ -1,0 +1,50 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 8.2. Ordinary least squares
+
+We continue with the QOG example, switching to the fertility rate.
+
+<!-- For starters, let's try to predict some things.
+
+- Let's start with the [2012 Olympics](http://badhessian.org/amazing-prediction-of-100m-mens-final-within-0-05s/).
+- Let's continue with the [2012 U.S. presidential election](http://www.douglas-hibbs.com), using a model that was [highly effective](http://lanekenworthy.net/2008/02/03/bread-peace-and-the-2008-election/) for past elections. -->
+
+Some of the general ideas that emerge at that stage are:
+
+1. The logic of "ordinary least squares" makes visual as well as statistical sense. The visual idea of OLS is that we are trying to find a way to get a straight line that goes through the data points by coming as close to possible to all of them on average.
+2. The extended logic behind that is to make all data points on a scatterplot form a horizontal straight line by using a mathematical transformation of the *y*-axis into a function of the *x*-axis. That is basically what a model does from a visual perspective.
+3. Finally, the logic of minimizing the distance between the line and the data points implies that the true result of a model is never the model on its own, but the combination of the line and the data points.
+
+So you can see that a lot about statistical modelling can be translated into visual terms without deviating too much from canonical terminology. Let's take a look at R code to run linear regression models.
+
+<!-- add Visually weighted regression -->
+
+```{r vwreg1, eval=FALSE, echo=FALSE, results='hide'}
+library(foreign)
+source("code/vwreg.r")
+```
+
+```{r vwreg2, eval=FALSE, echo=FALSE, results='hide'}
+# Import the data.
+if (file.exists("data/qog_basic_cs.csv")) {
+  # Open local copy.
+  qog <- read.csv("data/qog_basic_cs.csv")
+} else {
+  print("Cannot find dataset, loading from web...")
+  # Retrieve file.
+  qog <- read.csv("http://www.qog.pol.gu.se/digitalAssets/1373/1373417_qog_basic_cs_csv_120608.csv", header = FALSE)
+  # Save local copy.
+  write.csv(qog, file = "data/qog_basic_cs.csv")
+}
+```
+
+```{r vwreg3, eval=FALSE, echo=FALSE, message=FALSE, results='hide', cache=TRUE}
+p1 <- vwReg(wdi_fr ~ bl_asyf25 + I(bl_asyf25^2), qog, method=lm)
+```
+
+```{r vwreg4, eval=FALSE, echo=FALSE}
+p1 + ylab("Fertility rate") + xlab("Average education years among 25+ year-old females")
+```
+
+> __Next__: [Practice](083_practice.html)

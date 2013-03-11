@@ -13,26 +13,27 @@ setwd("~/Documents/Teaching/IDA/")
 zip(paste("admin/backup", Sys.Date(), "zip", sep = "."), dir(pattern = ".Rmd"))
 # clean up
 rm(list = ls())
+file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.html$"))
+file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.md$"))
 ```
 
 ```{r run-course, include=FALSE, message=FALSE}
-require(foreach)
 require(knitr)
 # get files
-all <- dir(pattern="[0-9]+(.*).Rmd")[1:2] # sequence is 2 + session number * 3 
+all <- dir(pattern="[0-9]+(.*).Rmd")
+all <- all[1:34] # sequence is 2 + session number * 4 
 # knitr setup
 opts_chunk$set(fig.path = "plots/", comment = NA)
 # go go go
 lapply(all, FUN = function(x) {
-  print(x)
   if(substr(x, 0, 2) != "00")
     purl(x, documentation = 0, output = paste0("code/", gsub("Rmd", "R", x)))
   knit2html(x)
 })
 # get HTML
-html <- dir(pattern="(index|[0-9]{3,}_\\w+).html|style.css")
+html <- dir(pattern="(index|[0-9]{3,}_\\w{1,}).html|style.css")
 # get code
-code <- dir("code", pattern="([0-9]{3,}_\\w+).R$")
+code <- dir("code", pattern="([0-9]{1,}_\\w+).R$")
 # set path
 path <- "~/Documents/Code/Websites/briatte.github.com/teaching/ida"
 # copy to website
@@ -72,10 +73,12 @@ __Readings:__ Teetor, ch. 2 and 5.
 
 - [Vectors and matrices][021]
 - [Variables and factors][022]
+- [Practice][023]
 
 [020]: 020_objects.html
 [021]: 021_vectors.html
 [022]: 022_variables.html
+[023]: 023_practice.html
 
 * * *
 
@@ -85,12 +88,14 @@ __Readings:__ Kabacoff, ch. 5, and Teetor, ch. 8.
 
 <!-- Matloff, ch. 8. -->
 
-- [Boolean logic][031]
-- [Iteration and probability][032]
+- [Conditionals][031] <!-- flow control -->
+- [Iteration][032] <!-- over probabilities -->
+- [Practice][033]
 
 [030]: 030_functions.html
-[031]: 031_logic.html
+[031]: 031_conditionals.html
 [032]: 032_iteration.html
+[033]: 033_practice.html
 
 * * *
 
@@ -98,96 +103,134 @@ __Readings:__ Kabacoff, ch. 5, and Teetor, ch. 8.
 
 __Readings:__ Kabacoff, ch. 4, and Teetor, ch. 4 and 6-7.
 
-- [Imports, exports, scraping][041]
+- [Imports and exports][041]
 - [Reshapes and aggregates][042]
+- [Practice][043]
 
 [040]: 040_data.html
 [041]: 041_dataio.html
 [042]: 042_reshaping.html
+[043]: 043_practice.html
 
 * * *
 
 > __Part 2: Introduction to Statistical Analysis__. The course continues by showcasing some statistical techniques, from finding clusters of related data to modelling relationships between several variables.
 
-## 5. [Clusters](50_clusters.html)
+## 5. [Clusters][050]
 
 __Readings:__ Kabacoff, ch. 14, and Teetor, ch. 13.4, 13.6 and 13.9.
 
-- [Heatmaps](51_heatmaps.html)
-- [Principal components](52_pca.html)
-- [*k*-means](53_kmeans.html) ##merge with PCA
+- [Heatmaps][051]
+- [Principal components][052] <!-- add k-means -->
+- [Practice][053]
+
+[050]: 050_clusters.html
+[051]: 051_heatmaps.html
+[052]: 052_pca.html
+[053]: 053_practice.html
 
 * * *
 
-## 6. [Distributions](60_distributions.html)
+## 6. [Distributions][060]
 
 __Readings:__ Kabacoff, ch. 6, and Teetor, ch. 10.
 
-- [Descriptive statistics](61_descr.html) ##edit: name?
-- [Probability density functions](62_pdf.html) ##edit: merge with below
-- [Density functions](63_density.html) # ECDF, histograms, PDF (normal distribution)
+- [Descriptive statistics][061]
+- [Density functions][062] <!-- ECDF, histograms, PDF (normal distribution) -->
+- [Practice][063]
+
+[060]: 60_distributions.html
+[061]: 061_description.html
+[062]: 062_density.html
+[063]: 063_practice.html
 
 * * *
 
-## 7. [Differences](70_hyptests.html) ##edit: rename
+## 7. [Differences][070]
 
 __Readings:__ Kabacoff, ch. 7, and Teetor, ch. 9.
 
-- [Confidence intervals](71_ci.html) ##edit: merge with t-test
-- [Comparison of means](72_ttest.html)
-- [Comparison of proportions](73_prtest.html)
+- [Confidence intervals][071]
+- [Significance tests][072]
+- [Practice][073]
+
+[070]: 070_differences.html
+[071]: 071_intervals.html
+[072]: 072_tests.html
+[073]: 073_practice.html
 
 * * *
 
-## 8. [Models](80_lin.html) ##edit: rename
+## 8. [Models][080]
 
 __Readings:__ Kabacoff, ch. 8 and 11, and Teetor, ch. 11. Skim ANOVA to focus on OLS.
 
-- [Correlation and ordinary least squares](81_scatterplots.html) ##edit: rename
-- [Linear regression](82_regression.html) ##edit: rename
-- [Visually weighted regression](83_vwreg.html) ##edit: merge with linear reg.
+- [Linear correlation][081]
+- [Ordinary least squares][082] <!-- add v.w.reg. -->
+- [Practice][083]
+
+[080]: 080_models.html
+[081]: 081_correlation.html
+[082]: 082_ols.html
+[083]: 083_practice.html
 
 * * *
 
 > __Part 3: Introduction to Data Visualization__. The course ends by focusing on the graphic dimension of quantitative data. We will also try to have guest speakers to talk about their professional use of data.
 
-## 9. [Visualization in time: Time series](90_ts.html)
+## 9. [Visualization in time: Time series][090]
 
-__Reading:__ Teetor, ch. 14. # detrending, ARIMA
+__Reading:__ Teetor, ch. 14. <!-- detrending, ARIMA -->
 
-- [Autocorrelation](91_lags.html) ##edit
-- [Smoothing](92_smoothing.html) ##edit
-- ARIMA (perhaps) ##edit
+- [Autocorrelation][091]
+- [Smoothing][092]
+- [Practice][093]
+
+[090]: 090_ts.html
+[091]: 091_lags.html
+[092]: 092_smoothing.html
+[093]: 093_practice.html
 
 * * *
 
-## 10. [Visualization in space: Maps](100_maps.html)
+## 10. [Visualization in space: Maps][100]
 
 __Reading:__ B. Sue Bell *et al.*, "[Current practices in spatial analysis of cancer data mapping health statistics to inform policymakers and the public](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1647272/)", 2006.
 
-- [Choropleth maps](101_choropleth.html) ##edit
-- [Google-powered maps](102_gmaps.html) ##edit
-- Spatial dependence (perhaps) ##edit
+- [Choropleth maps][101]
+- [Spatial dependence][102]
+- **Special guest**
+
+[100]: 100_maps.html
+[101]: 101_choropleths.html
+[102]: 102_spatialdep.html
 
 * * *
 
-## 11. [Networks](110_networks.html)
+## 11. [Networks][110]
 
 __Reading:__ David Siegel, "[Social Networks in Comparative Perspective](http://opensiuc.lib.siu.edu/cgi/viewcontent.cgi?article=1045&context=pn_wp)", 2011.
 
-- [Measures of influence](111_influence.html) ##edit
-- [Mining an online network](112_twitter.html) ##edit
-- Plotting interactive networks (perhaps) ##edit
+- [Measures of influence][111]
+- [Mining an online network][112]
+- **Special guest**
+
+[110]: 110_networks.html
+[111]: 111_influence.html
+[112]: 112_twitter.html
+
 
 * * *
 
-## 12. [Data-driven advances](120_data.html)
+## 12. [Data-driven advances][120]
 
-__Special session__ with guests (if everything goes well):
+__Final session__:
 
-- [What is data-driven journalism?] <!-- with Alexandre Léchenet -->
+- What is data-driven journalism? <!-- with Alexandre Léchenet -->
 - What is open data/government? <!-- with OKFN -->
 - What is reproducible science? <!-- with Joël Gombin -->
+
+[120]: 120_data.html
 
 * * *
 

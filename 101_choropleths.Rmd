@@ -1,0 +1,14 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 10.1. Choropleth maps
+
+[A guide to choropleths](http://quanti.hypotheses.org/795/), in French.
+
+David Sparks has posted his [chloropleth](https://dsparks.wordpress.com/2011/02/21/choropleth-tutorial-and-regression-coefficient-plots/) code.
+
+In the future, there's a chance that he will also post his code for [isarithmic map](https://dsparks.wordpress.com/2012/07/18/mapping-public-opinion-a-tutorial/):
+
+[![Isarithmic map, by David Sparks.](images/cces-2008-family-income-black.png)](images/cces-2008-family-income-black.png)
+
+> __Next__: [Google maps](102_gmaps.html).

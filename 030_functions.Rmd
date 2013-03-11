@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 3. Basic math operators
+# 3. Functions
 
 We saw a bit of calculus, logic and vector/matrix manipulation last week. This week, we thread on the same topics with slightly more advanced operators. Here, for instance, is the modulus operator in R:
 
@@ -40,4 +40,64 @@ As an exercise, explain the result of a square matrix product.
 B %*% C
 ```
 
-> __Next__: [Functions](31_functions.html).
+## Functional programming
+
+Suppose that you find yourself doing the same computation over and over again. You do not want to type the whole calculations every time you need: you want to program a function that does the job for you.
+
+Take a basic example: the `sum` command adds a vector of numbers together.
+
+```{r sum}
+# Create a vector of 99 random [0,1] values.
+x <- runif(9)
+# Check result: show first 5 values.
+head(x)
+# Add them up.
+sum(x)
+```
+
+```{r add-function}
+# Define function
+add <- function(x,y) {
+  x + y
+}
+# Example.
+sum(2,4)
+```
+
+Functional programming focuses on writing functions. Statistical computing courses like [the one taught by Cosma Shalizi](http://www.stat.cmu.edu/~cshalizi/statcomp/) contains tons of interesting examples of such functions. A simple one is shown below to illustrate the principle of recursion.
+
+```{r crs-factorial}
+# Calculate a factorial
+# Input: a number (n)
+# Output: the factorial of n
+# Presumes: n is a single positive integer
+my.factorial <- function(n) {
+  if (n == 1) {  # Base case
+    return(1)
+  } else {  # Recursion
+    return(n*my.factorial(n-1))
+  }
+}
+```
+
+## Plotting functions
+
+This course might lead you to write simple functions, but for the moment, let's focus simply on plotting them with the `ggplot2` package, which makes it fairly easy. The example below shows the basic function $y = x$.
+
+```{r fun-identity}
+qplot(c(0,2), stat="function", fun=identity, geom="point")
+```
+
+Now for the most math-oriented, here's a sine function for your enjoyment.
+
+```{r fun-sin}
+qplot(c(-10,10), stat="function", fun=sin, geom="line")
+```
+
+And finally, a function that will be more useful to us: the exponential.
+
+```{r fun-exp}
+qplot(c(-10:10), stat="function", fun=exp, geom=c("line","point"))
+```
+
+> __Next__: [Conditionals](031_conditionals.html).

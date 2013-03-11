@@ -1,0 +1,22 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 11.2. Mining an online network
+
+```{r tweets}
+library(twitteR)
+```
+
+Tony Hirst has documented many ways to [examine Twitter networks](http://blog.ouseful.info/tag/twitter/) and content. [One way to do it](http://blog.ouseful.info/2012/10/02/grabbing-twitter-search-results-into-google-refine-and-exporting-conversations-into-gephi/) is to use [Open Refine](http://openrefine.org/) to process the data and then use [Gephi](http://gephi.org/) to visualize it and [run basic tests](http://blog.ouseful.info/2012/11/09/drug-deal-network-analysis-with-gephi-tutorial/). You could also use a [scraper](https://scraperwiki.com/scrapers/multiple_sclerosis_tweets_and_locations/), as seen earlier.
+
+For the sake of software consistency, we will run everything in R, but knowing that there are alternatives and that we have time only for a very short overview of what can be done here.
+
+...
+
+Let's rip everything from [Gaston Sanchez's repo](https://github.com/gastonstat/Mining_Twitter).
+
+...
+
+Now let's [make the graphs pretty](http://is-r.tumblr.com/post/38240018815/making-prettier-network-graphs-with-sna-and-igraph), or even [real pretty](http://is-r.tumblr.com/post/38459242505/beautiful-network-diagrams-with-ggplot2).
+
+> __Next week__: [Data-driven advances](120_data.html).

@@ -1,0 +1,11 @@
+<style>@import url(style.css);</style>
+
+# 9. Visualization in time: Time series
+
+Applications:
+
+* [Party support in the United Kingdom](http://www.guardian.co.uk/news/datablog/2009/oct/21/icm-poll-data-labour-conservatives).
+* [Income inequality and recession periods in the United States](http://www.perdomocore.com/2012/will-inequality-continue-to-get-worse-r-to-the-rescue/)
+* [Is the German market sensitive to federal elections?](http://rpubs.com/sumtxt/dax-volatility)
+
+> __Next__: [Autocorrelation](91_lags.html).

@@ -34,11 +34,14 @@
 # 2- Move your cursor to a given line using the keyboard arrows.
 # 3- Press Cmd-Enter (Mac) or Ctrl-Enter (Win) to run the line.
 
-# Put your cursor anywhere on the next line and run with the keyboard shortcut:
+# Put your cursor anywhere on the next line and run from the keyboard:
 message("Hello R World!")
 
 # Now look at your Console (bottom-left quadrant by default in RStudio).
 # If you see a "Hello World!" message in red ink, it worked: well done!
+
+# You might have noticed that running a command moves your cursor to the next
+# line, which helps running things sequentially. Neat trick, RStudio.
 
 # Your mission is to run this whole script while reading the comments along.
 # First, a few tips on running code from a command line interface (CLI).
@@ -57,8 +60,8 @@ message("Hello R World!")
 
 # Try to run that code block to define a useless "Hello World" function.
 hello.world <- function(x) {
-  rep("Hello World!", x)
-} # ... you should select all lines from "hello.world" down to this one.
+  rep("Hello R World!", x)
+}
 
 # You should not see any result yet, but a function is now in your Workspace.
 # In RStudio, the workspace is shown by default in the top-right quadrant.
@@ -68,6 +71,9 @@ hello.world(99)
 
 # Congratulations, you just filled your Console with useless output!
 # Clean your Console with Ctrl-L (Mac/Win).
+
+# Yet another trick: you can run a whole function by moving your cursor anywhere
+# in it, and then press Cmd-Alt-F (Mac) or Ctrl-Alt-F (Win). Another neat trick.
 
 # Important: get used to working with keyboard arrows and shortcuts RIGHT NOW!
 # It will save you enormous amounts of time from copy-pasting and all that.
@@ -225,11 +231,11 @@ w
 # Let's go back to vector s, which was defined as the sequence { 2, 4, 6 }.
 # This vector is simply the sequence n = { 1, 2, 3 }, multiplied by 2.
 
-# Build a sequence of integers in R.
-seq(1:3)
-# You can write that in shorter form.
+# Build a sequence of integers.
+seq(1, 3, by = 1)
+# You can write that in much shorter form.
 1:3
-# Now mutiply all sequence items by 2.
+# Multiply all items of that sequence by 2.
 2 * 1:3
 
 # Let's create the longer sequence f(x) = x^2 for x = { 1, 2, ..., 100 }.
@@ -249,7 +255,7 @@ v[1:3]
 # Select the last element of v.
 v[length(v)]
 # Select all elements of v at the exception of the first 10.
-v[-seq(1:10)]
+v[-c(1:10)]
 
 # What happened here is: (1) show me vector v, (2) but only [some elements];
 # (3) -skip some elements (minus sign); (4) those elements are 1, 2, ... 10.
@@ -267,15 +273,11 @@ rep(y, times = x^2)
 
 # What happened is that you asked to repeate object y ("Hello World!"), x times.
 # Since object x is equal to the numeric value 9, y got repeated 9^2 = 81 times.
-rep("This is how it works", times = 9)
+rep("Alright, this is how it works!", times = 9)
 
 # Note that this is the same function that you trained yourself on earlier on.
 # The syntax is slightly different, because you wrote "times" explicitly here.
 rep("So... How do I learn about function syntax?", 9)
-
-# The help page for rep() reads rather well, and there are examples at the end.
-# You can actually access the examples directly.
-example(rep)
 
 # Take advantage of handbooks: find rep() in the index of Teetor's "R Cookbook".
 # It's at page 33 in Section 2.7, with more examples of how sequences work in R.
@@ -319,13 +321,13 @@ save.image("hello.Rda")
 rm(x)
 
 # Object x is now undefined.
-x
+exists("x")
 
 # Remove all objects from the Workspace.
 rm(list = ls())
 
 # All objects have been deleted and are now undefined.
-y
+exists("y")
 
 # Now load your saved Workspace again.
 load("hello.Rda")
@@ -342,7 +344,7 @@ ls()
 
 # Verify whether file "hello.Rda" exists.
 file.exists("hello.Rda")
-# Rename it to something more explicit.
+# Rename it to something perhaps more explicit.
 file.rename("hello.Rda", "Exercise-1.Rda")
 # Remove the file completely.
 file.remove("Exercise-1.Rda")
@@ -361,14 +363,17 @@ file.remove("Exercise-1.Rda")
 # Which directory is currently your working directory?
 getwd()
 
-# And what is that, by the way? (Read the course pages for details.)
+# And what is that, again? (A: Read the course pages!)
 ?getwd
 
 # We will always work from the IDA working directory. When you run R scripts for
 # this course in or outside class, always make it your working directory first.
 
 # Quit now. You might want to save this script if you have added notes to it.
-q()
+# Quit as you would quit any other application or let R do it as shown below.
+
+# Uncomment the next line by removing the frontal hash symbol and then run it.
+# q()
 
 
 ## Enjoy your day.

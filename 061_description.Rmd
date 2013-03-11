@@ -1,0 +1,63 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 6.1. Descriptive statistics
+
+Central tendency, dispersion (spread).
+
+## Extracting a mean over several observations
+
+Let's use the Daily Kos dataset holding Obama, McCain and Romney scores for the 2008 and 2012 elections. The dataset holds data for each Congressional district.
+
+```{r data-table1, message=FALSE}
+# Load the data from file (created in Session 4.1).
+dk_data <- read.csv("data/dailykos.csv")
+# Review columns 1-5.
+head(dk_data)[1:5]
+```
+
+We'll extract the state by creating a `state` variable from the first two letters of the `CD` variable.
+
+```{r data-table2}
+# Create a variable holding states.
+dk_data$state <- substr(dk_data$CD,1,2)
+# Check result: the new variable is at the end.
+str(dk_data)
+```
+
+Let's now turn the dataset (which is a `data.frame` object) into a `data.table` object (without the missing values), and show the state-level average electoral support for Barack Obama in 2012.
+
+```{r data-table3}
+# Load data.table package.
+library(data.table)
+# Convert nonmissing data to a data.table object.
+dk_table <- data.table(na.omit(dk_data))
+# Check result.
+head(dk_table)
+# Compute mean Obama score by state.
+dk_state <- dk_table[, mean(Obama.2012), by=state]
+# Check result.
+head(dk_state)
+```
+
+Before plotting the result, we sort the states by electoral support for Obama (`V1`). This works because a `data.table` works like a `data.frame` object.
+
+```{r data-table4}
+# Sort the data.
+dk_state$state <- reorder(dk_state$state, dk_state$V1)
+# Plot by decreasing electoral support.
+p <- ggplot(dk_state, aes(V1, state)) + geom_point() + 
+  geom_vline(xintercept = 50, colour="darkgray", linetype = "longdash") +
+  labs(x = "% of popular vote for Obama in 2012", y = "State"); p
+```
+
+Let's finish by coloring state by majority party.
+
+```{r data-table5}
+# Create a red/blue variable.
+dk_state$color <- ifelse(dk_state$V1 > 50, "blue", "red")
+# Add a new layer of colored dots.
+p + geom_point(colour=dk_state$color)
+```
+
+> __Next___: [Density functions](062_density.html)

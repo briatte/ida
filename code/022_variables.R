@@ -1,19 +1,9 @@
-<style>@import url(style.css);</style>
-<small>[Introduction to Data Analysis](index.html)</small>
 
-# 2.2. Variables and factors
 
-<!-- not even on factors... -->
-
-In R, everything is an object. The list of objects in memory `ls()` is an object itself, as shown in the example below, which wipes all objects from the workspace:
-  
-```{r clear-workspace, eval=FALSE}
 rm(list=ls());
-```
 
-Let's use some real, anonymized data from Autumn 2012. These are the grades from my three mathematics classes in first year. I have removed any student identification, so you have to trust me that these are the real grades. We will use a package to create fake names in replacement.
 
-```{r mygrades-import}
+
 # Download the data if needed.
 if (!file.exists("data/grades.txt")) {
   # Install RCurl package. Remember that R is case-sensitive.
@@ -31,11 +21,9 @@ if (!file.exists("data/grades.txt")) {
 grades <- read.table("data/grades.txt", header = TRUE, )
 # Check result.
 head(grades)
-```
 
-Let's add random names.
 
-```{r grades-with-random-names}
+
 # Install randomNames package. Remember that R is case-sensitive.
 if(!"randomNames" %in% installed.packages()[,1])
   install.packages("randomNames")
@@ -49,24 +37,18 @@ names <- randomNames(86)
 grades <- cbind(grades, names)
 # Check result.
 head(grades)
-```
 
-## Data frames
 
-Let's show a final type of object: the data frame.
 
-```{r df}
 # Convert to data frame.
 grades <- as.data.frame(grades)
 # Check result.
 head(grades)
 # Check structure of a data frame.
 str(grades)
-```
 
-Data frames are very malleable objects: we can rearrange the variables easily with commands like `melt` from the `reshape` package.
 
-```{r melt, message=FALSE}
+
 # Install and load reshape package.
 if(!"reshape" %in% installed.packages()[,1])
   install.packages("reshape")
@@ -75,11 +57,9 @@ library(reshape)
 grades <- melt(grades, id.vars = "names")
 # Check result.
 head(grades)
-```
 
-Let's finish with a few plots.
 
-```{r grades-plots}
+
 # Install and load ggplot2 package.
 if(!"ggplot2" %in% installed.packages()[,1])
   install.packages("ggplot2")
@@ -88,13 +68,9 @@ library(ggplot2)
 qplot(data = grades, x = value, group = variable, geom = "density")
 # Add color.
 qplot(data = grades, x = value, color = variable, fill = variable, alpha = I(.3), geom = "density")
-```
 
-Now use the code on this page to:
 
-1. Download [this data extract from the U.S. National Health Interview Survey 2005](https://raw.github.com/briatte/ida/master/data/nhis.txt). Use `RCurl` as shown above. Call the data `nhis`.
 
-```{r nhis-data-import, include=FALSE}
 # Download the data if needed.
 if (!file.exists("data/nhis.txt")) {
   # Load RCurl package.
@@ -110,32 +86,25 @@ if (!file.exists("data/nhis.txt")) {
 nhis <- read.table("data/nhis.txt", header = TRUE)
 # Check result.
 head(nhis)
-```
 
-2. Create an object called `bmi` that corresponds to the Body Mass Index from the `height` and `weight` columns of the `nhis` object. Use the U.S. formula since the data use inches and pounds. Bind the `bmi` object to the `nhis` object.
 
-```{r nhis-bmi, include=FALSE}
+
 # Compute BMI vectore.
 bmi <- 703*nhis[ ,4]/nhis[ ,3]^2
 # Bind to matrix.
 nhis <- cbind(nhis, bmi)
-```
 
-3. Plot the results using `qplot(data = ..., x = ..., geom = "density")`.
 
-```{r nhis-qplot-1, include=FALSE}
+
 # The plot.
 qplot(data = nhis, x = bmi, geom = "density")
-```
 
-4. Bonus question: explore how `ggplot2` works and produce plots with the `x` and `y` variables. Guess what they stand for.
 
-```{r nhis-qplot-2, include=FALSE}
+
 # Another plot. Variable x stands for gender.
 qplot(data = nhis, x = bmi, geom = "density", group = x, color = factor(x))
 # One more plot. Variable y stands for for racial group.
 qplot(data = nhis, x = bmi, geom = "density", group = x, color = factor(x)) +
   facet_grid(y ~ .)
-```
 
-> __Next__: [Practice](023_practice.html).
+

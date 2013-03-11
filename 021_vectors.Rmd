@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 2.2. Vectors and matrices
+# 2.1. Vectors and matrices
 
 In R, almost everything is a *vector*. If it's not a vector, it might be a special kind of vector. When something is not a vector, then it's not data and is probably some form of *function*.
 
@@ -215,4 +215,4 @@ grades
 
 Notice that factors are alphabetically ordered, and that this influences how they are ordered in graphs. In the simple example above, there is no particular issue with the fact that "1" stands for "Fail" and "2" for "Pass", but if we want to order a list of countries in any other way than alphabetically, this is when we will be (re)ordering factors.
 
-> __Next__: [Other R objects](23_objects.html).
+> __Next__: [Variables and factors](022_variables.html).

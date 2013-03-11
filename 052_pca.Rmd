@@ -1,0 +1,108 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 5.2. Principal components
+
+Let's continue with our data to perform a principal components analysis.
+
+```{r pca}
+# Load original data subset.
+load("data/qog_b.Rda")
+# Reorder the dataset by fertility rate.
+qog_pca <- qog_b[order(qog_b$births), ]
+# Store country names in row names.
+rownames(qog_pca) <- qog_pca$cname
+# Remove country codes and names from the matrix.
+qog_pca <- qog_pca[, -c(1:2)]
+# Compute principal components from the correlation matrix.
+fit <- princomp(qog_pca, cor = TRUE)
+```
+
+The next step is to look at the efficacy of each component: the 'screeplot' is a graph of each component, showing how much variance it predicts.
+
+```{r screeplot}
+# Screeplot: components below one criterion are not useful for reduction.
+plot(fit, type="l")
+```
+
+Two components seem useful here. We can plot them together in a 'biplot', for which we need to run another PCA command that uses SVD instead of the correlation matrix to extract the principal components. The biplot shows how observations relate to each variable on each axis.
+
+```{r biplot}
+# Compute principal components via SVD.
+fit2 <- prcomp(qog_pca, scale = TRUE)
+# Biplot.
+biplot(fit2)
+```
+
+At that stage, we want to take a good look at the components themselves to understand what is going on. The first component, for example, shows that, in our sample, fertility is negatively correlated to the rest of the variables considered. The first two components capture 25% of all variance in the data.
+
+```{r loadings}
+# Loadings: principal components decomposed for each variable.
+loadings(fit)
+```
+
+There are many refinements to the method shown here. The `ClustOfVar` and [FactoMineR](http://factominer.free.fr/) packages, both by French teams, support PCA with missing data as well as [MCA plots](https://gastonsanchez.wordpress.com/2012/10/13/5-functions-to-do-multiple-correspondence-analysis-in-r/), a method that also allows categorical (non-continuous) variables.
+
+<!-- pasted from 5.3 -->
+
+## *k*-means
+
+To finish, here's one more method to classify your data into clusters: hierarchical clustering.
+
+```{r prepare-data}
+# Load original data subset.
+load("data/qog_b.Rda")
+# Reorder the dataset by fertility rate.
+qog_hc <- qog_b[order(qog_b$births), ]
+# Store country names in row names.
+rownames(qog_hc) <- qog_hc$cname
+# Remove country codes and names from the matrix.
+qog_hc <- qog_hc[, -c(1:2)]
+```
+
+Hierarchical clustering methods are based on distance matrixes, i.e. distances between each row of the data matrix. The distance increases with differences in the data. These distances can be used to plot the observations, and to separate them into rectangular groups at the bottom of a graph called the dendrogram, where each observation belongs to one or more clusters.
+
+```{r distance-matrix}
+# Create the distance matrix.
+d <- dist(qog_hc, method="euclidean")
+# Clusters
+hfit <- hclust(d, method="ward")
+# Plot dendrogram.
+plot(hfit)
+```
+
+The information provided by the dendrogram becomes more clear once we build some limits between groups, as is made possible by the within-group architecture of the plot.
+
+```{r clusters}
+# Cutting dendrogram into five clusters.
+clus5 <- cutree(hfit, 5)
+# Plot dendrogram with red borders around the five clusters.
+rect.hclust(hfit, k=5, border="red")
+```
+
+There's [tons of ways to plot dendrograms](https://gastonsanchez.wordpress.com/2012/10/03/7-ways-to-plot-dendrograms-in-r/). Let's have fun, to finish, with one of them.
+
+```{r fan-plot}
+# Create a vector of colors for the five clusters.
+mypal <- c("#556270", "#4ECDC4", "#1B676B", "#FF6B6B", "#C44D58")
+# Fan plot.
+plot(as.phylo(hfit), type = "fan", tip.color = mypal[clus5], label.offset = 1)
+# Rerun so that the size of the labels represents the (log of the) fertility rate.
+plot(as.phylo(hfit), type = "fan", tip.color = mypal[clus5], label.offset = 1,
+     cex = log(qog_hc$births, 2.5))
+```
+
+One element of hierarchical clustering draws on $k$-means, which is a handy tool when you want to add ellipses around clusters on your PCA plots. It calculates distances between observations so as to identify groups that largely correspond to what your PCA biplot has already shown.
+
+```{r kmeans}
+# k-means clustering with five clusters.
+hfit2 <- kmeans(qog_hc, 5)
+# Cluster plot.
+clusplot(qog_hc, hfit2$cluster, color = TRUE, shade = TRUE, labels = 2, lines = 0)
+# Describe the hfit matrix.
+hfit2
+```
+
+<!-- Brief overview [simple examples](http://www.r-chart.com/2010/09/bot-botany-k-means-and-ggplot2.html) and more complex ones like  Focus on [clustergrams and diagnostics](http://www.r-statistics.com/2010/06/clustergram-visualization-and-diagnostics-for-cluster-analysis-r-code/) for cluster analysis. -->
+
+> __Next__: [Practice](053_practice.html).

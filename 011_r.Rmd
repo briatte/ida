@@ -22,61 +22,87 @@ The R development team maintains [a website](http://www.r-project.org/), but you
 - __For Mac OS X__, [download from this link](http://cran.us.r-project.org/bin/macosx/), double-click it, say "OK" to all installation steps. You can also watch [this video tutorial](https://www.youtube.com/watch?v=Icawuhf0Yqo) by Roger Peng for help, or [this video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) by Gordon Davis, which also covers RStudio.
 - __For Windows__, [download from this link](http://cran.us.r-project.org/bin/windows/base/), which also has a few help pages. [This video tutorial](https://www.youtube.com/watch?v=mfGFv-iB724) by Roger Peng and [this video tutorial](http://www.screenr.com/kzT8) by Anthony Damico can help with the installation. You might also consider [using a few custom options](https://www.youtube.com/watch?v=Lc2sgDTzrV8) when running R on Windows.
 
-Do not panic if you do not manage to install R (or RStudio, the next software you will install) on your own. Just bring your laptop and we will guide you through it in class.
+Do not worry if you do not manage to install R (or RStudio, the next software that you will have to install) on your own. Just download the program to your hard drive, and we will guide you through installation in class.
 
 ## Commands
 
 Open R and locate the blinking cursor preceded by a `>` at the bottom of the R Console window. This is where you will type commands and read their results. You might be already familiar with that process if you have ever used a Command Line Interface (CLI) before.
 
-Type the following examples to print some text and numeric results. When you finish typing each line, press `Enter` to execute, or 'run', its command. If you get an error message in red ink, press `UpArrow`, check your typing against the original, correct it and try again.
+Type the following lines in R and press Enter to execute, or "run", their commands. You should skip the lines that start with a `#` (hash) symbol and show in a different color than the rest of the code: these lines are comments, which R will ignore if you try to run them.
 
 ```{r very-first-commands, results='hide'}
+# A string of characters.
 "Hello R World!"
-2 * (1 + 2) == 6
-letters[1:5]
+# A numeric result.
+1 + 2
+# A logical statement.
+1 / (2 + 3) == .2
+# A vector of integers.
+1:3
 ```
 
-The bottom of your R Console window should now look something like this:
+If you get an error message in red ink at any point, it means that you have run into a syntax error: press &uarr; (UpArrow) to go back to your last command, check your typing against the original shown here, correct it, and press Enter to try it again.
 
-![R, very first commands](images/r-very-first-commands.png)
+The next section tells you a few more things about R syntax.
 
 ## Syntax
 
 You might have run into errors in the example above if you typed anything else than the code provided. That is because R, just like every other programming language, requires that you follow a precise syntax. You might have run into these errors in particular:
 
 - __Forgetting quotes around text.__ R requires that you enclose text into single or double quotes, as to specify that it is text that you are typing, and not the name of an object. Try typing `hello` without quotes to see what an error message looks like in R.
-- __Using `=` instead of `==` for logical expressions.__ The second command in the example above is a logical test, and therefore requires that you type _two_ equal signs instead of just one as you would in common mathematics. R uses the single equal sign for assignment.
-- __Typing uppercase instead of lowercase.__ Note, finally, that R is case sensitive. If you type `Letters` instead of `letters` the example above, it will fail to run, and if you type `LETTERS`, you will get another result (try it out if you like).
+- __Double equal signs in logical expressions.__ One of the commands in the example above is a logical statement and therefore requires that you type _two_ equal signs instead of just one as you would in common mathematics. R uses the single equal sign for assignment.
+- __Typing UPPERCASE instead of lowercase.__ Note, finally, that R is case sensitive: lowercase and UPPERCASE letters are interpreted differently, and therefore cannot be used interchangeably. Lowercase is the common default, but UPPERCASE is also used from time to time.
 
-The next section tells you a bit more about objects and assignment.
+Try the example below to see how changing the case can affect a given command:
+
+```{r letters}
+# A vector of lowercase letters.
+letters[1:5]
+# A vector of UPPERCASE letters.
+LETTERS[1:5]
+```
+
+One last element of R syntax that you will have to get familiar with is the use of punctuation. Brackets and commas, in particular, are put to intensive use in R. The examples below show some of their common usage in R:
+
+```{r}
+# A sequence of floating point numbers.
+seq(from = 1, to = 3, by = .5)
+# A function with a logical argument.
+order(1:3, decreasing = TRUE)
+```
+
+Whitespace is technically ignored by R, so leaving space after a comma, for example, is not important for the successful execution of a command. Forgetting a comma or a closing bracket, however, will end up in a syntax error.
+
+The next section tells you a bit more about objects and assignment, which were both mentioned in the explanations above. We will come back to brackets and commas later, when we study functions. 
 
 ## Assignment
 
-Now type each command below in their order of appearance. You should skip the lines that start with the `#` (hash) symbol and show in a different color than the rest of the code. Also, the commands below will _not_ produce any (immediate) result. This is normal: just carry on.
+Type each command below in their order of appearance. The commands will _not_ produce any (immediate) result, which is normal: just carry on. If you are uncomfortable with using the `<-` symbol, you can type `=` instead: the two symbols are equivalent in R.
 
-```{r hello-world}
-# Create a text object, called x.
-x <- "Hello World!"
-# Create a numeric object, called y.
-y <- (8^2) / 5
-# Combine both objects into a vector, called z.
+```{r assign}
+# Create an object called x.
+x <- "Hello"
+# Create an object called y.
+y <- "World"
+```
+
+This example shows you how to assign a value to an object in R. The basic operator `<-` assigns the values `"Hello"` and `"World"` to the objects `x` and `y`. We will now bind these objects together into the object `z` with the `c()` command.
+
+```{r combine}
+# Combine x and y into a vector called z.
 z <- c(x, y)
 ```
 
-This example shows you how to assign a value to an object in R. The basic operator `<-` assigns the value `"Hello World!"` to the object `x`. Text objects are called "strings" in computing environments. In R, you will later refer to them as objects of class `character`.
-
-The same operation is then repeated with a numerical value, which is assigned to the `y` object. Because R operates pretty much like a scientific calculator, the object `y` contains the result of the operation $\frac{8^2}{5} = 12.8$. R calls this an object of class `numeric`.
-
-We then bind these objects together into the object `z` with the `c()` command, which creates a vector with the `x` and `y` values stored as text inside it (hence the quotes). The result can be shown on screen with the `print()` function, or just by typing the name of the object, `z`:
+The result can be shown with the `print()` function, or just by typing the name of the object.
 
 ```{r print-results}
-# Print the vector object 'z' on screen.
+# Print the object z on screen.
 print(z)
-# More simply, just type its name and press Enter.
+# Just type its name do do the same.
 z
 ```
 
-All lines above that start with a hash symbol (`#`) are comments. They do not produce any result: if you pass them to R (that is, if you try to run them), they will be ignored. Commenting your code is the most important good practice in programming.
+R syntax is very much like German or Latin syntax: a bit counter-intuitive at first, but flawlessly logical. It takes a lot of practice to feel at ease with it, but it will never fail you. Just work through every example in the next pages to learn it step by step.
 
 ## Exit
 

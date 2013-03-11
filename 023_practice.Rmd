@@ -1,0 +1,53 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 2.3. Practice
+
+<!-- see rewrite tag -->
+
+The exercise for this week is a quick overview of the main R object classes: vectors, matrices, data frames and factors. Each class will be useful to manipulate data in the next sessions, so make sure that you are familiar enough with them.
+
+Remember that a lot of what we cover here, especially with regards to the basic functioning of R, is also covered in many other tutorials. If you enjoy video tutorials, those by Anthony Damico are short and efficient: try his [2-minute approach to arithmetic in R](http://www.screenr.com/hyT8).
+
+## Body Mass Index
+
+This week's exercise is called [`2_bmi.R`](https://raw.github.com/briatte/ida/master/code/2_bmi.R). Clicking this link will open it in your browser: just __copy-paste the full code into a new R script__, and save it under that name (or one of your choosing) into your `code` folder.
+
+All instructions from last week apply. If you download the script, make sure that your browser preserved its `.R` file extension. And of course, do not forget the handbook readings. Next week, we continue manipulating objects and delve a bit deeper into programming full-fledged functions.
+
+<!-- rewrite from here -->
+
+A very important aspect of R syntax is *assignment*. To put some values into an object, you need two things, separated by a right-left arrow (or by a single equal sign if you prefer). The example below creates an object that holds my Body Mass Index, and then evaluates its normality.
+
+```{r my-bmi}
+# Compute my Body Mass Index.
+bmi <- round(703*134 / (70^2), 1)
+# Create a text object (called a string).
+assessment <- "normal"
+# Modify the assessment statement if BMI is below 18 or above 25.
+if(bmi < 18) assessment <- "below normal"
+if(bmi > 25) assessment <- "above normal"
+cat("My BMI is approximately", bmi, ", which is", assessment)
+```
+
+In fact, it would make more sense to write a Body Mass Index *function*, which is not very difficult if you can survive the additional brackets. We will come back shortly to writing functions next week.
+
+```{r bmi-function}
+# A simple Body Mass Index function.
+bmi <- function(weight, height, digits = 2) {
+  round(weight*703 / (height^2), digits)
+}
+# An object called 'bmi' now appears in your Workspace.
+# Check result.
+bmi
+# This object is a function.
+class(bmi)
+# Example, with default argument of 2 digits.
+bmi(weight = 134, height = 70)
+# Another example, this time with no digits.
+bmi(weight = 134, height = 70, digits = 0)
+```
+
+The exercise shows how to create the `bmi.quetelet` function that computes the BMI in its [original metric units](https://en.wikipedia.org/wiki/Body_mass_index), so that you can compute your own value. It also shows you how to plot that single variable function.
+
+> __Next week__: [Functions](030_functions.html).

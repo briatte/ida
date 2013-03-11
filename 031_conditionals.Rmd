@@ -1,7 +1,7 @@
 <style>@import url(style.css);</style>
 <small>[Introduction to Data Analysis](index.html)</small>
 
-# 3.3. Probability
+# 3.1. Conditionals
 
 Not much for the moment, except for the exercise below.
 
@@ -19,9 +19,8 @@ This data is usually used to test some algorithm or function that someone has wr
 # rnorm
 ```
 
-
 ## Explosive roommate combinations
 
 Replicate the [explosive roommate combinations](http://www.econometricsbysimulation.com/2012/10/explosive-roommate-combinations.html) by Francis Smart, which is also used as an example in the "maths and stats" workshops. Play with it, compute the probabilities, and explain what kind of probability distribution is followed by the simulation.
 
-> __Next week__: [Basic data operators](40_data.html).
+> __Next__: [Iteration](032_iteration.html).

@@ -1,0 +1,8 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 7.3. Proportions tests
+
+Coming.
+
+> __Next week__: [Models](080_models.html).
