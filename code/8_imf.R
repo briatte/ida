@@ -24,7 +24,7 @@ require(xlsx)
 # Download.
 file = "data/IMFmultipliers.xls"
 if(!file.exists(file))
-  download("http://interactive.ftdata.co.uk/ft/ftdata/IMFmultipliers.xls", file)
+  download("http://interactive.ftdata.co.uk/ft/ftdata/IMFmultipliers.xls", file, mode = "wb")
 
 # Import.
 imf <- read.xlsx(file,
@@ -113,19 +113,10 @@ imf.rvfplot + geom_point(aes(color = rdist), size = 18, alpha = .3) +
 imf.rvfplot + aes(color = outlier2) + 
   scale_colour_manual(name = "Cook's D > 1", values = c("black", "red"))
 
-imf.rvfplot + aes(color = cooksd) + 
-  scale_colour_gradient(name = "Cook's D", low = "black", high = "red")
-
-imf.rvfplot + geom_point(aes(color = cooksd), alpha = .5, size = 18) +
-  scale_colour_gradient(name = "Cook's D", low = "white", high = "red")
-
 imf.rvfplot + 
   geom_point(data = subset(imf.rvf, outlier2 == TRUE), color = "red", size = 18, alpha = .4)
 
-# Variations with rsta:
-imf.rvfplot + aes(y = rsta) + labs(y = "Standardized residuals") +
-  geom_hline(y = c(-2, 2), linetype = "dotted")
-
+# Standardized residuals.
 imf.rvfplot + aes(y = rsta) + labs(y = "Standardized residuals") +
   geom_hline(y = c(-2, 2), linetype = "dotted") + 
   geom_point(data = subset(imf.rvf, outlier1 == TRUE), color = "red", size = 18, alpha = .4)
@@ -133,30 +124,6 @@ imf.rvfplot + aes(y = rsta) + labs(y = "Standardized residuals") +
 # Normality of standardized residuals.
 qplot(sample = rsta, data = imf.rvf) + 
   geom_abline(linetype = "dotted")
-
-# With country codes.
-ggplot(imf.rvf, aes(sample = rsta)) + 
-  geom_text(label = imf.rvf$iso3c, stat="qq") + 
-  geom_abline(linetype = "dotted")
-
-# Store the plot data.
-imf.qq <- ggplot_build(imf.qqplot)$data[[1]]
-
-# Add country codes.
-imf.qq <- within(imf.qq, {
-  delta = abs(sample - theoretical)
-  iso3c <- imf.rvf$iso3c[order(imf.rvf$rsta)]
-})
-
-# Plot again with country codes.
-qplot(data = imf.qq, x = theoretical, y = sample, label = iso3c, geom = "text") +
-  geom_abline(linetype = "dotted") + theme_bw()
-
-# Plot again with colored circles.
-qplot(data = imf.qq, x = theoretical, y = sample, size = I(18), alpha = I(.2), geom = "point") + 
-  aes(color = delta) + scale_color_gradient(name = "Deviation", low = "white", high = "red") + 
-  geom_text(aes(label = iso3c)) + 
-  geom_abline(linetype = "dotted") + theme_bw()
 
 # send to Financial Times, get published, like a boss
 # 2013-03-11
