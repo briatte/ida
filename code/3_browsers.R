@@ -279,4 +279,5 @@ ggplot(melt, aes(x = Date)) + labs(y = "", x = "") + theme_bw(16) +
   geom_smooth(aes(y = HHI, linetype = "HHI"), HHI, se = FALSE, color = "black") +
   scale_linetype_manual(name = "Market\nconcentration", values = c("HHI" = "dashed"))
 
-# enjoy your day
+# Enjoy your day.
+# 2013-03-01
