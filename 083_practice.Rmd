@@ -3,34 +3,33 @@
 
 # 8.3. Practice
 
+[ft-giles-1]: http://www.ft.com/intl/cms/s/0/85a0c6c2-1476-11e2-8cf2-00144feabdc0.html
+[ft-giles-2]: http://blogs.ft.com/money-supply/2012/10/12/has-the-imf-proved-multipliers-are-really-large-wonkish/
+[ft-giles-3]: http://blogs.ft.com/money-supply/2013/01/07/the-imf-and-multipliers-again/
+[ft-fm]: http://ftalphaville.ft.com/2012/10/09/1199151/its-austerity-multiplier-failure/
+[hanretty]: https://gist.github.com/chrishanretty/3885712
+[imf-weo]: http://www.imf.org/external/pubs/ft/weo/2012/02/pdf/text.pdf
+[imf-data]: https://raw.github.com/briatte/ida/master/data/imf.weo.2012.txt
+
 <p class="info"><strong>Instructions:</strong> you should work on this exercise with one or two other classmates. Run the entire code as you read through this page in order to replicate the plots and model, and then write a <strong>one-page answer</strong> to the final question on the relevance of the IMF analysis. Refer to your handbook readings for additional explanations on linear regression.</p>
 
 ```{r imf-exercise, include=FALSE, message=FALSE}
 source("code/8_imf.R")
 ```
 
-This week's exercise is based on an article published by Chris Giles in the *Financial Times*. In "[Robustness of IMF data scrutinised][ft1]" (October 12, 2012), Giles raises an issue with recent IMF data on the relationship between fiscal consolidation (i.e. austerity politics) and growth forecasts. This graph expresses the gist of the problem:
+This week's exercise is based on an article published by Chris Giles in the *Financial Times*. In "[Robustness of IMF data scrutinised][ft-giles-1]" (October 12, 2012), Giles raises an issue with recent IMF data on the relationship between fiscal consolidation (i.e. austerity politics) and growth forecasts. This graph expresses the gist of the problem:
 
-[![FT graph](http://im.ft-static.com/content/images/42f72894-14b6-11e2-8cf2-00144feabdc0.img)][ft1]
+[![FT graph](http://im.ft-static.com/content/images/42f72894-14b6-11e2-8cf2-00144feabdc0.img)][ft-giles-1]
 
-The main theme here is the size of the (Keynesian) [fiscal multipliers][ft4] applied by governments in reaction to the current economic crisis. Giles further documented the issue in a blog post, "[Has the IMF proved multipliers are really large? (wonkish)][ft2]", in which he explains being puzzled by the following graph, taken from the last [IMF World Economic Outlook report][weo] (p. 43):
+The main theme here is the size of the (Keynesian) [fiscal multipliers][ft-fm] applied by governments in reaction to the current economic crisis. Giles further documented the issue in a blog post, "[Has the IMF proved multipliers are really large? (wonkish)][ft-giles-2]", in which he explains being puzzled by the following graph, taken from the last [IMF World Economic Outlook report][imf-weo] (p. 43):
 
-[![IMF graph](http://blogs.r.ftdata.co.uk/money-supply/files/2012/10/12-october-2012-IMF-multipliers-590x405.jpg)][ft2]
+[![IMF graph](http://blogs.r.ftdata.co.uk/money-supply/files/2012/10/12-october-2012-IMF-multipliers-590x405.jpg)][ft-giles-2]
 
-In a later post, "[The IMF and multipliers, again][ft3]" (January 7, 2013), Giles explains that the controversy over that graph led to additional analysis that put the original diagnostic of the World Economic Outlook report into question. Let's run our own analysis, which uses the IMF data provided by Giles and draws on the [replication code](https://gist.github.com/chrishanretty/3885712) by Chris Hanretty.
-
-[ft1]: http://www.ft.com/intl/cms/s/0/85a0c6c2-1476-11e2-8cf2-00144feabdc0.html
-[ft2]: http://blogs.ft.com/money-supply/2012/10/12/has-the-imf-proved-multipliers-are-really-large-wonkish/
-[ft3]: http://blogs.ft.com/money-supply/2013/01/07/the-imf-and-multipliers-again/
-[ft4]: http://ftalphaville.ft.com/2012/10/09/1199151/its-austerity-multiplier-failure/
-[ch]: http://chrishanretty.co.uk/blog/
-[weo]: http://www.imf.org/external/pubs/ft/weo/2012/02/pdf/text.pdf
+In a later post, "[The IMF and multipliers, again][ft-giles-3]" (January 7, 2013), Giles explains that the controversy over that graph led to additional analysis that put the original diagnostic of the World Economic Outlook report into question. Let's run our own analysis, which uses the IMF data provided by Giles and draws on the [replication code by Chris Hanretty][hanretty].
 
 ## Step 1: preparation
 
-Form student teams or groups and read all references cited above. Then create the `imf` dataset by downloading the [`8_imf.R`](8_imf.R) script: install any missing packages, and run the first segment of the code (alternately, [download the data][data] directly). The segment ends with a scatterplot called `imf.plot` that replicates the base structure of the IMF graph:
-
-[data]: https://raw.github.com/briatte/ida/master/data/imf.weo.2012.txt
+Form student teams or groups and read all references cited above. Then create the `imf` dataset by downloading the [`8_imf.R`](8_imf.R) script: install any missing packages, and run the first segment of the code (alternately, [download the data][imf-data] directly). The segment ends with a scatterplot called `imf.plot` that replicates the base structure of the IMF graph:
 
 ```{r imf-plot, echo=FALSE}
 imf.plot

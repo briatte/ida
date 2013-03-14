@@ -3,10 +3,12 @@
 
 # 8.1. Linear correlation
 
-Let's start with the simplest form of a linear relationship between two continuous variables. The following example uses data from the [OECD Better Life Index][bli], which is available for 36 countries, and draws on code by [Jeromy Anglim][ja]. We drop the last row of the data on import, as it does not represent a country (it holds the OECD average figures).
+[anglim]: https://github.com/jeromyanglim/oecd_life_analysis/blob/master/oecd-life.md
+[oecd-bli]: http://www.oecdbetterlifeindex.org/
+[sanchez]: https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
+[turner]: http://gettinggeneticsdone.blogspot.fr/2011/07/scatterplot-matrices-in-r.html
 
-[bli]: http://www.oecdbetterlifeindex.org/
-[ja]: https://github.com/jeromyanglim/oecd_life_analysis/blob/master/oecd-life.md
+Let's start with the simplest form of a linear relationship between two continuous variables. The following example uses data from the [OECD Better Life Index][oecd-bli], which is available for 36 countries, and draws on code by [Jeromy Anglim][anglim]. We drop the last row of the data on import, as it does not represent a country (it holds the OECD average figures).
 
 ```{r oecd-data, message=FALSE}
 # Load downloader package.
@@ -128,9 +130,6 @@ require(car)
 scatterplotMatrix(oecd.d[c(15:17, 25)], smoother=NULL)
 ```
 
-The functions listed on this page should give you enough ways to explore your data for linear patterns. The `ggplot2` engine is not as capable with scatterplot matrixes than it is with many other graphics, so we left it aside here, but see [online examples][pairs] and [tweaks][ggpairs] of the `ggpairs()` function if you absolutely want your scatterplot matrixes to get the `ggplot2` treatment.
-
-[pairs]: http://gettinggeneticsdone.blogspot.fr/2011/07/scatterplot-matrices-in-r.html
-[ggpairs]: https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
+The functions listed on this page should give you enough ways to explore your data for linear patterns. The `ggplot2` engine is not as capable with scatterplot matrixes than it is with many other graphics, so we left it aside here, but see [online examples][turner] and [tweaks][sanchez] of the `ggpairs()` function if you absolutely want your scatterplot matrixes to get the `ggplot2` treatment.
 
 > __Next__: [Ordinary least squares](082_ols.html).
