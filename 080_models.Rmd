@@ -5,12 +5,93 @@
 
 This session focuses on (linear) models. The first section covers computation and graphical methods to detect linear trends in your data, using correlation coefficients and scatterplot matrixes. The second section is a rough guide to linear regression, and requires that you read extensively from your handbooks for the mathematical background.
 
-Linear models are commonly used for all sorts of purposes, all of which revolve around different definitions of prediction. Ordinary language defines prediction as forecasting: the ability to estimate something that is not yet in the data. A simple example would be a [prediction of London Olympics 100m men's sprint results][mages]. Let's start by loading the data.
+Models are commonly used for all sorts of purposes that revolve around several definitions of prediction. Ordinary language defines prediction as forecasting: the ability to estimate something that is not yet in the data. A simple example would be Markus Gesmann's [prediction of London Olympics 100m men's sprint results][mages1]. Let's load his data:
 
-```{r olympics-data}
-
+```{r olympics-data, message=FALSE}
+# Load downloader package.
+require(downloader)
+# Identify the data file.
+dataset = "data/olympics.2012.txt"
+# Identify the data source.
+file = "https://raw.github.com/briatte/ida/master/data/olympics.2012.txt"
+# Download the data if needed.
+if(!file.exists(dataset)) download(file, dataset)
+# Read the data.
+olympics <- read.table(dataset, stringsAsFactors=FALSE)
+# Check result.
+head(olympics)
 ```
 
-[mages]: http://lamages.blogspot.fr/2012/08/london-olympics-100m-mens-sprint-results.html
+In [his code][mages1], Markus Gessman uses a log-linear model to predict the 2012 sprint result from the series of past results, using all data from 1900 to today. To understand [this model][mages2], we take a quick look at the sprinter results and add a LOESS curve to the plot, which provides a smoothed trend of the series:
+
+[mages1]: http://lamages.blogspot.fr/2012/08/london-olympics-100m-mens-sprint-results.html
+[mages2]: http://lamages.blogspot.co.uk/2012/07/london-olympics-and-prediction-for-100m.html
+
+```{r olympics-scatterplot, message=FALSE}
+# Load ggplot2 package.
+require(ggplot2)
+# Scatterplot of sprinter results.
+g <- qplot(data = olympics, y = Result, x = Year)
+# Show plot with LOESS curve.
+g + geom_smooth()
+```
+
+What appears is that, if we exclude the first data point from 1896, there seems to be a downward linear trend in the data. We can compute and visualize what a simple linear model of the form $Y \text{(result)} = m X \text{(year)} + b$ would look like at that stage: it will tells us that, for every year that goes by, the sprinter time decreases by `r abs(round(coef(lm(Result ~ Year, data = olympics))[2], 2))` seconds.
+
+```{r olympics-linear}
+# Compute the sprint result as a function of its year, excluding 1896.
+olympics.linear <- lm(Result ~ Year, data = olympics[-1, ])
+# Show the result.
+olympics.linear
+# Plot the result.
+g + geom_abline(intercept = coef(olympics.linear)[1], slope = coef(olympics.linear)[2])
+```
+
+Because the marginal rate of improvement in the sprinter results is very small ($4m \approx 0.04$ seconds every competition), it makes sense to measure it on a logarithmic scale instead. We then take the natural exponent of that result for year 2012 to get the predicted sprinter result in that year.
+
+```{r olympics-log-linear, tidy=FALSE}
+# Model the natural logarithm of the sprint result.
+olympics.log.linear <- lm(log(Result) ~ Year, data = olympics[-1, ])
+# Create the sequence of years for which to predict the result.
+predicted.years <- data.frame(Year = seq(1900, 2012, 4))
+# Predict the result for years 1900-2012.
+predicted.times <- data.frame(Year = predicted.years,
+                          exp(predict(olympics.log.linear, 
+                           newdata = predicted.years, 
+                           level = 0.95,
+                           interval = "prediction")))
+# Merge predictions to the original data.
+olympics <- merge(olympics, predicted.times, by = "Year", all = TRUE)
+# Check result, excluding a few columns.
+tail(olympics)[-c(2, 4)]
+```
+
+The log-linear prediction has added three columns of data (the prediction with its lower and upper bounds) and a few rows of data for several years, including year 2012. The graph below singles out that prediction, at `r olympics$fit[31]` seconds, and shows the rest of the predicted trend.
+
+```{r olympics-predicted-line, warning=FALSE, tidy=FALSE}
+# Plot the model.
+qplot(data = olympics, x = Year, y = Result) + 
+  geom_point(x = 2012, y = olympics$fit[31], color = "yellow", size = 10) +
+  geom_point(y = olympics$fit, color = "red") +
+  geom_line(y = olympics$upr, color = "red", linetype = "dashed") +
+  geom_line(y = olympics$lwr, color = "red", linetype = "dashed")
+```
+
+As Markus Gessman [notes][mages2], his model was very close to reality: in 2012, the best sprinter in the 100m men's run was only slightly quicker than predicted, at 9.63 seconds. This illustrates the common use of models to forecast results from data like financial markets, [elections][538] or sports events. Note that the model actually improves if you take year 1896 into account:
+
+[538]: http://fivethirtyeight.blogs.nytimes.com/
+
+```{r olympics-prediction-with-1896, tidy=FALSE}
+# Model the full data.
+olympics.log.linear.full <- lm(log(Result) ~ Year, data = olympics)
+# Predict the result for year 2012.
+data.frame(Year = predicted.years,
+                          exp(predict(olympics.log.linear.full, 
+                           newdata = predicted.years, 
+                           level = 0.95,
+                           interval = "prediction")))[29, ]
+```
+
+The next pages show a different use of linear models, where we look for linear trends in the existing data in order to interpret how different variables might be associated with each other. The forecasting of future values is mathematically possible but generally not of interest in such models, which are explanatory rather than predictive.
 
 > __Next__: [Linear correlation](081_correlation.html).

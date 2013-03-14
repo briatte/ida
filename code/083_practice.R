@@ -1,18 +1,21 @@
 
 
 source("code/8_imf.R")
+
+
+
 imf.plot
 
 
 
-# Checking on the model.
 summary(imf.lm)
-# Checking on the coefficient.
-coef(imf.lm)[2]
 
 
 
-imf.plot + geom_smooth(method = "lm")
+imf.plot + geom_smooth(method = "lm", fill = "steelblue", alpha = .2) +
+  geom_segment(x = imf$D_struct_bal, xend = imf$D_struct_bal, 
+               y = imf$D_growth, yend = fitted.values(imf.lm),
+               linetype = "dashed", color = "red")
 
 
 

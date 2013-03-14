@@ -3,7 +3,7 @@
 
 # 8.2. Ordinary least squares
 
-We continue with the QOG example, switching to the fertility rate.
+Coming in a few hours. In the meantime, turn to your handbooks and work on the [exercise](083_practice.html) :)
 
 <!-- For starters, let's try to predict some things.
 
