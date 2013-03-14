@@ -163,7 +163,7 @@ __Readings:__ Kabacoff, ch. 7, Teetor, ch. 9, and Urdan, ch. 7, 9 and 14.
 
 ## 8. [Models][080]
 
-__Readings:__ Kabacoff, ch. 8 and 11, Teetor, ch. 11, and Urdan, ch. 8, 10 and 13. Skim ANOVA to focus on OLS.
+__Readings:__ Kabacoff, ch. 8 and 11, Teetor, ch. 11, and Urdan, ch. 8, 10 and 13. Skim ANOVA to focus on OLS (simple and multiple linear regression).
 
 - [Linear correlation][081]
 - [Ordinary least squares][082]

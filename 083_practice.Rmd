@@ -29,7 +29,7 @@ In a later post, "[The IMF and multipliers, again][ft-giles-3]" (January 7, 2013
 
 ## Step 1: preparation
 
-Form student teams or groups and read all references cited above. Then create the `imf` dataset by downloading the [`8_imf.R`](8_imf.R) script: install any missing packages, and run the first segment of the code (alternately, [download the data][imf-data] directly). The segment ends with a scatterplot called `imf.plot` that replicates the base structure of the IMF graph:
+Form student teams or groups and read all references cited above. Then create the `imf` dataset by downloading the [`8_imf.R`](8_imf.R) script: install any missing packages and run the first segment of the code (alternately, just download the [`imf.weo.2012.txt`][imf-data] dataset). The segment ends with a scatterplot called `imf.plot` that replicates the base structure of the IMF graph:
 
 ```{r imf-plot, echo=FALSE}
 imf.plot

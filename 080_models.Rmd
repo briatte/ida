@@ -3,13 +3,13 @@
 
 # 8. Linear models
 
-[gessman-1]: http://lamages.blogspot.fr/2012/08/london-olympics-100m-mens-sprint-results.html
-[gessman-2]: http://lamages.blogspot.co.uk/2012/07/london-olympics-and-prediction-for-100m.html
+[gesmann-1]: http://lamages.blogspot.fr/2012/08/london-olympics-100m-mens-sprint-results.html
+[gesmann-2]: http://lamages.blogspot.co.uk/2012/07/london-olympics-and-prediction-for-100m.html
 [silver]: http://fivethirtyeight.blogs.nytimes.com/
 
 This session focuses on (linear) models. The first section covers computation and graphical methods to detect linear trends in your data, using correlation coefficients and scatterplot matrixes. The second section is a rough guide to linear regression, and requires that you read extensively from your handbooks for the mathematical background.
 
-Models are commonly used for all sorts of purposes that revolve around several definitions of prediction. Ordinary language defines prediction as forecasting: the ability to estimate something that is not yet in the data. A simple example would be Markus Gesmann's [prediction of London Olympics 100m men's sprint results][gessman-1]. Let's load his data:
+Models are commonly used for all sorts of purposes that revolve around several definitions of prediction. Ordinary language defines prediction as forecasting: the ability to estimate something that is not yet in the data. A simple example would be Markus Gesmann's [prediction of London Olympics 100m men's sprint results][gesmann-1]. Let's load his data:
 
 ```{r olympics-data, message=FALSE}
 # Load downloader package.
@@ -26,7 +26,7 @@ olympics <- read.table(dataset, stringsAsFactors=FALSE)
 head(olympics)
 ```
 
-In [his code][gessman-1], Markus Gessman uses a log-linear model to predict the 2012 sprint result from the series of past results, using all data from 1900 to today. To understand [this model][gessman-2], we take a quick look at the sprinter results and add a LOESS curve to the plot, which provides a smoothed trend of the series:
+In [his code][gesmann-1], Markus Gesmann uses a log-linear model to predict the 2012 sprint result from the series of past results, using all data from 1900 to today. To understand [this model][gesmann-2], we take a quick look at the sprinter results and add a LOESS curve to the plot, which provides a smoothed trend of the series:
 
 ```{r olympics-scatterplot, message=FALSE}
 # Load ggplot2 package.
@@ -78,7 +78,7 @@ qplot(data = olympics, x = Year, y = Result) +
   geom_line(y = olympics$lwr, color = "red", linetype = "dashed")
 ```
 
-As Markus Gessman [notes][gessman-2], his model was very close to reality: in 2012, the best sprinter in the 100m men's run was only slightly quicker than predicted, at 9.63 seconds. This illustrates the common use of models to forecast results from data like financial markets, [elections][silver] or sports events. Note that the model actually improves if you take year 1896 into account:
+As Markus Gesmann [notes][gesmann-2], his model was very close to reality: in 2012, the best sprinter in the 100m men's run was only slightly quicker than predicted, at 9.63 seconds. This illustrates the common use of models to forecast results from data like financial markets, [elections][silver] or sports events. Note that the model actually improves if you take year 1896 into account:
 
 ```{r olympics-prediction-with-1896, tidy=FALSE}
 # Model the full data.

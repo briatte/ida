@@ -3,25 +3,45 @@
 
 # 8.2. Ordinary least squares
 
-Coming in a few hours. In the meantime, turn to your handbooks and work on the [exercise](083_practice.html) :)
+[kenworthy]: http://lanekenworthy.net/2008/02/03/bread-peace-and-the-2008-election/
 
-<!-- For starters, let's try to predict some things.
+Linear relationships can be turned into models that provide an estimation of the marginal rate at which a given dependent variable $Y$ changes in function of one or more independent variables $X_1, X_2, ..., X_k$, called the predictors. 
 
-- 
-- Let's continue with the [2012 U.S. presidential election](http://www.douglas-hibbs.com), using a model that was [highly effective](http://lanekenworthy.net/2008/02/03/bread-peace-and-the-2008-election/) for past elections. -->
+Likewise, the model explored below is unlikely to provide valid forecasts of the fertility rate, but is choice of predictors provides analytical leverage about the effect of literacy and family planning.
 
+<!--
 Some of the general ideas that emerge at that stage are:
 
 1. The logic of "ordinary least squares" makes visual as well as statistical sense. The visual idea of OLS is that we are trying to find a way to get a straight line that goes through the data points by coming as close to possible to all of them on average.
 2. The extended logic behind that is to make all data points on a scatterplot form a horizontal straight line by using a mathematical transformation of the *y*-axis into a function of the *x*-axis. That is basically what a model does from a visual perspective.
 3. Finally, the logic of minimizing the distance between the line and the data points implies that the true result of a model is never the model on its own, but the combination of the line and the data points.
 
-So you can see that a lot about statistical modelling can be translated into visual terms without deviating too much from canonical terminology. Let's take a look at R code to run linear regression models.
+So you can see that a lot about statistical modelling can be translated into visual terms without deviating too much from canonical terminology. Let's take a look at R code to run linear regression models. -->
 
-<!-- add Visually weighted regression -->
+## Visually weighted regression
+
+Multiple linear regression can be used to [model presidential approval][kenworthy] as a function of economic performance and military casualties. Douglas Hibb's model, which is better known as the "[Bread and Peace][hibbs]" model, performed well in previous elections but badly in the presidential election of 2012. Its explanatory value should not be affected by these considerations, so let's run the model.
+
+```{r hibbs-model, message=FALSE}
+# Load packages.
+require(downloader)
+require(foreign)
+dataset = "data/hibbs.2012.txt"
+# Download the data.
+if(!file.exists(dataset)) {
+  file = "data/hibbs.2012.dta"
+  if(!file.exists(file))
+    download("http://www.douglas-hibbs.com/HibbsArticles/HIBBS-OBAMA-FORECAST-27July2012-WEBPOST.dta", file)
+  hibbs <- read.dta(file)
+  write.table(hibbs, dataset)
+}
+# Load the data.
+hibbs <- read.table(dataset, stringsAsFactors=FALSE)
+# Subset to election quarters.
+hibbs <- subset(hibbs, !is.na(presvote))
+```
 
 ```{r vwreg1, eval=FALSE, echo=FALSE, results='hide'}
-library(foreign)
 source("code/vwreg.r")
 ```
 
@@ -37,13 +57,9 @@ if (file.exists("data/qog_basic_cs.csv")) {
   # Save local copy.
   write.csv(qog, file = "data/qog_basic_cs.csv")
 }
-```
 
-```{r vwreg3, eval=FALSE, echo=FALSE, message=FALSE, results='hide', cache=TRUE}
 p1 <- vwReg(wdi_fr ~ bl_asyf25 + I(bl_asyf25^2), qog, method=lm)
-```
 
-```{r vwreg4, eval=FALSE, echo=FALSE}
 p1 + ylab("Fertility rate") + xlab("Average education years among 25+ year-old females")
 ```
 
