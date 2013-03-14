@@ -66,7 +66,7 @@ olympics <- merge(olympics, predicted.times, by = "Year", all = TRUE)
 tail(olympics)[-c(2, 4)]
 ```
 
-The log-linear prediction has added three columns of data (the prediction with its lower and upper bounds) and a few rows of data for several years, including year 2012. The graph below singles out that prediction, at `r olympics$fit[31]` seconds, and shows the rest of the predicted trend.
+The log-linear prediction has added three columns of data (the prediction with its lower and upper bounds) and a few rows of data for several years, including year 2012. The graph below singles out that prediction, at `r olympics$fit[31]` seconds, and shows the rest of the predicted trend, along with the actual (observed) data.
 
 ```{r olympics-predicted-line, warning=FALSE, tidy=FALSE}
 # Plot the model.

@@ -133,7 +133,7 @@ __Readings:__ Kabacoff, ch. 14, and Teetor, ch. 13.4, 13.6 and 13.9.
 
 ## 6. [Distributions][060]
 
-__Readings:__ Kabacoff, ch. 6, and Teetor, ch. 10.
+__Readings:__ Kabacoff, ch. 6, Teetor, ch. 10, and Urdan, ch. 4-6. See also Urdan, ch. 1-3, if you have forgotten everything about statistics.
 
 - [Descriptive statistics][061]
 - [Density functions][062] <!-- ECDF, histograms, PDF (normal distribution) -->
@@ -148,7 +148,7 @@ __Readings:__ Kabacoff, ch. 6, and Teetor, ch. 10.
 
 ## 7. [Differences][070]
 
-__Readings:__ Kabacoff, ch. 7, and Teetor, ch. 9.
+__Readings:__ Kabacoff, ch. 7, Teetor, ch. 9, and Urdan, ch. 7, 9 and 14.
 
 - [Confidence intervals][071]
 - [Significance tests][072]
@@ -163,7 +163,7 @@ __Readings:__ Kabacoff, ch. 7, and Teetor, ch. 9.
 
 ## 8. [Models][080]
 
-__Readings:__ Kabacoff, ch. 8 and 11, and Teetor, ch. 11. Skim ANOVA to focus on OLS.
+__Readings:__ Kabacoff, ch. 8 and 11, Teetor, ch. 11, and Urdan, ch. 8, 10 and 13. Skim ANOVA to focus on OLS.
 
 - [Linear correlation][081]
 - [Ordinary least squares][082] <!-- add v.w.reg. -->
@@ -180,7 +180,7 @@ __Readings:__ Kabacoff, ch. 8 and 11, and Teetor, ch. 11. Skim ANOVA to focus on
 
 ## 9. [Visualization in time: Time series][090]
 
-__Reading:__ Teetor, ch. 14. <!-- detrending, ARIMA -->
+__Reading:__ Teetor, ch. 14. Focus on detrending and read ARIMA only if you plan to earn millions as a financial analyst.
 
 - [Autocorrelation][091]
 - [Smoothing][092]
@@ -226,9 +226,9 @@ __Reading:__ David Siegel, "[Social Networks in Comparative Perspective](http://
 
 __Final session__:
 
-- What is data-driven journalism? <!-- with Alexandre Léchenet -->
-- What is open data/government? <!-- with OKFN -->
-- What is reproducible science? <!-- with Joël Gombin -->
+- What is data-driven journalism?
+- What is open data/government?
+- What is reproducible science?
 
 [120]: 120_data.html
 
