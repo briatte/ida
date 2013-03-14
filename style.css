@@ -86,6 +86,11 @@ p,ul,ol {
 	line-height: 1.5; /* was 24px */
 	max-width: 800px;
 }
+p.info {
+  border: 1px solid yellow;
+  padding: 1em;
+  background: lightyellow;
+}
 pre {
 	padding: 0px 24px;
 	max-width: 800px;

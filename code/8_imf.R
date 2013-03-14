@@ -9,11 +9,13 @@
 # You will need to read Chris Giles' articles in the Financial Times to get
 # the point of the model, and to understand what to interpret in the results.
 
+# The script is limited to the analysis of a single model of the data, but you
+# should naturally feel free to try other models, as Chris Giles suggested.
+
 
 # Packages
 # --------
 
-require(arm)
 require(downloader)
 require(countrycode)
 require(ggplot2)
@@ -23,41 +25,53 @@ require(xlsx)
 # Data preparation
 # ----------------
 
-# Download XLS spreadsheet. Chris Giles collected the data from the IMF. The
-# data used in the World Economic Outlook 2012 is in the second spreadsheet.
-file = "data/IMFmultipliers.xls"
-if(!file.exists(file))
-  download("http://interactive.ftdata.co.uk/ft/ftdata/IMFmultipliers.xls", 
-           file, mode = "wb")
+dataset = "data/imf.weo.2012.txt"
 
-# Import XLS format. The read.xlsx() function was already shown in Session 4 on
-# data import/export. If it fails to work, check that the data downloaded fine.
-imf <- read.xlsx(file,
-                 sheetIndex = 2, 
-                 rowIndex = c(4:52)[-34], 
-                 colIndex = c(1:11, 14:15, 17:20),
-                 stringsAsFactors = FALSE,
-                 colClasses = c("character", rep("numeric", 15)),
-                 header = FALSE)
+# Create the dataset if it does not exist in the data folder. The next block of
+# code is likely to fail for several reasons, so use the provided file instead!
+if(!file.exists(dataset)) {
+  # Download XLS spreadsheet. Chris Giles collected the data from the IMF. The
+  # data used in the World Economic Outlook 2012 is in the second spreadsheet.
+  file = "data/IMFmultipliers.xls"
+  if(!file.exists(file))
+    download("http://interactive.ftdata.co.uk/ft/ftdata/IMFmultipliers.xls", 
+             file, mode = "wb")
+  
+  # Import XLS format. The read.xlsx() function was already shown in Session 4
+  # on data import/export. Unfortunately, it seems to work only on some setups.
+  imf <- read.xlsx(file,
+                   sheetIndex = 2, 
+                   rowIndex = c(4:52)[-34], 
+                   colIndex = c(1:11, 14:15, 17:20),
+                   stringsAsFactors = FALSE,
+                   colClasses = c("character", rep("numeric", 15)),
+                   header = FALSE)
+  
+  # Fix variable names, drawing largely on the names used by Chris Hanretty's own
+  # replication code. We include many more variables than those used afterwards.
+  names(imf) <- c("Country",
+                  "gdp_4cast_2011","gdp_4cast_2012",
+                  "struct_bal_2010","struct_bal_2011","struct_bal_2012",
+                  "cyc_adj_prim_bal_2010","cyc_adj_prim_bal_2012",
+                  "gdp_4cast_2011_new","gdp_4cast_2012_new",
+                  "cumgrowth_2010","cumgrowth_2012","D_growth",
+                  "D_struct_bal","D_cyc_adj_prim_bal","ca_def")
+  
+  # Fix country codes. 'ISO-3C' is the numeric standard for country codes that we
+  # have previously used when we explored OECD and Quality of Government data.
+  imf$iso3c <- countrycode(imf$Country, "country.name", "iso3c")
+  imf$iso3c [ which(imf$Country == "Kosovo") ] <- "KOS"
+  
+  # Subset to full data. This results in a dataset slightly larger than the one
+  # used by the IMF, as Chris Giles points out in his own analysis of the data.
+  imf <- imf[!is.na(imf$D_struct_bal), ]
+  
+  # Write the data as plain text, for future access.
+  write.table(imf, file = dataset)
+}
 
-# Fix variable names, drawing largely on the names used by Chris Hanretty's own
-# replication code. We include many more variables than those used afterwards.
-names(imf) <- c("Country",
-                "gdp_4cast_2011","gdp_4cast_2012",
-                "struct_bal_2010","struct_bal_2011","struct_bal_2012",
-                "cyc_adj_prim_bal_2010","cyc_adj_prim_bal_2012",
-                "gdp_4cast_2011_new","gdp_4cast_2012_new",
-                "cumgrowth_2010","cumgrowth_2012","D_growth",
-                "D_struct_bal","D_cyc_adj_prim_bal","ca_def")
-
-# Fix country codes. 'ISO3C' is a numeric standard for country codes, which we
-# already used when we previously explored the Quality of Government dataset.
-imf$iso3c <- countrycode(imf$Country, "country.name", "iso3c")
-imf$iso3c [ which(imf$Country == "Kosovo") ] <- "KOS"
-
-# Subset to full data. This results in a dataset slightly larger than the one
-# used by the IMF, as Chris Giles points out in his own analysis of the data.
-imf <- imf[!is.na(imf$D_struct_bal), ]
+# Load the data.
+imf <- read.table(dataset, stringsAsFactors=FALSE)
 
 # Draw the scatterplot corresponding to Figure 1.1.1 in the IMF World Economic
 # Outlook 2012 report (p. 41). Country codes are shown instead of data points.
@@ -88,7 +102,7 @@ imf.plot + geom_abline(intercept = imf.coef[1], slope = imf.coef[2])
 
 # Add a LOESS curve to show a smoothed trend through the data Specifying a 
 # linear method (lm) will draw a confidence interval around the regression line. 
-imf.plot + geom_smooth(method = "lm")
+imf.plot + geom_smooth(method = "lm", fill = "steelblue", alpha = .2)
 
 
 # Diagnostics
@@ -151,5 +165,5 @@ imf.rvfplot + aes(y = rsta) + labs(y = "Standardized residuals") +
 qplot(sample = residual, data = imf.rvf) + 
   geom_abline(linetype = "dotted")
 
-# Now send that to the Financial Times and get published like a boss.
+# Now send that to the Financial Times and get published -- like a boss.
 # 2013-03-11

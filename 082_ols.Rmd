@@ -7,7 +7,7 @@ We continue with the QOG example, switching to the fertility rate.
 
 <!-- For starters, let's try to predict some things.
 
-- Let's start with the [2012 Olympics](http://badhessian.org/amazing-prediction-of-100m-mens-final-within-0-05s/).
+- 
 - Let's continue with the [2012 U.S. presidential election](http://www.douglas-hibbs.com), using a model that was [highly effective](http://lanekenworthy.net/2008/02/03/bread-peace-and-the-2008-election/) for past elections. -->
 
 Some of the general ideas that emerge at that stage are:

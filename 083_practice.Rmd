@@ -3,6 +3,12 @@
 
 # 8.3. Practice
 
+<p class="info"><strong>Instructions:</strong> you should work on this exercise with one or two other classmates. Run the entire code as you read through this page in order to replicate the plots and model, and then write a <strong>one-page answer</strong> to the final question on the relevance of the IMF analysis. Refer to your handbook readings for additional explanations on linear regression.</p>
+
+```{r imf-exercise, include=FALSE, message=FALSE}
+source("code/8_imf.R")
+```
+
 This week's exercise is based on an article published by Chris Giles in the *Financial Times*. In "[Robustness of IMF data scrutinised][ft1]" (October 12, 2012), Giles raises an issue with recent IMF data on the relationship between fiscal consolidation (i.e. austerity politics) and growth forecasts. This graph expresses the gist of the problem:
 
 [![FT graph](http://im.ft-static.com/content/images/42f72894-14b6-11e2-8cf2-00144feabdc0.img)][ft1]
@@ -22,28 +28,29 @@ In a later post, "[The IMF and multipliers, again][ft3]" (January 7, 2013), Gile
 
 ## Step 1: preparation
 
-Form student teams or groups and read all references cited above. Then create the `imf` dataset by downloading the [`8_imf.R`](8_imf.R) script and running the first segment of the code (install any missing packages if needed). The segment ends with a scatterplot called `imf.plot` that replicates the base structure of the IMF graph:
+Form student teams or groups and read all references cited above. Then create the `imf` dataset by downloading the [`8_imf.R`](8_imf.R) script: install any missing packages, and run the first segment of the code. The segment ends with a scatterplot called `imf.plot` that replicates the base structure of the IMF graph:
 
-```{r imf-plot, echo=FALSE, message=FALSE}
-source("code/8_imf.R")
+```{r imf-plot, echo=FALSE}
 imf.plot
 ```
 
+The simple linear equation that is being run here is of the form $Y = \alpha + \beta X + \epsilon$, where $Y = \delta_{\text{growth forecast error}}$, $X = \delta_{\text{structural balance}}$ and $\beta$ is the estimated average size of the fiscal multiplier. Chris Giles' argument is that the estimation of $\beta$ by the IMF is not robust to the inclusion of additional data and/or to the exclusion of outliers.
+
 ## Step 2: replication
 
-Now turn to the simple linear regression component of the script and execute the model. The results will be stored into the `imf.lm` object. The regression coefficient for the $\delta_{\text{structural balance}}$ should be, as reported by Chris Giles, somewhere near $-0.67$. Take some time to analyze that result substantively, using the sources mentioned above.
+Turn now to the simple linear regression component of the script and execute the model. The results will be stored into the `imf.lm` object. The regression coefficient for the $\delta_{\text{structural balance}}$ should be, as reported by Chris Giles, somewhere near `r round(coef(imf.lm)[2], 2)`. Take some time to analyze that result substantively, using the sources mentioned above.
 
-```{r ols}
-# Checking on the model.
+```{r ols, echo=FALSE}
 summary(imf.lm)
-# Checking on the coefficient.
-coef(imf.lm)[2]
 ```
 
-The script offers a few more graphs at that stage, including one that simply overlays the raw data with a simple regression line and a LOESS curve, as show below. The LOESS curve is simply a smoothed trend of the data. At that stage, you can intuitively detect which countries are going to be outliers in the regression model:
+The script offers a few more graphs at that stage, including one that overlays a simple regression line and a 95% confidence interval to the raw data. The plot below also shows the residuals of the regression model, and at that stage, you should be able to intuitively detect which countries are going to be outliers:
 
 ```{r loess, echo=FALSE}
-imf.plot + geom_smooth(method = "lm")
+imf.plot + geom_smooth(method = "lm", fill = "steelblue", alpha = .2) +
+  geom_segment(x = imf$D_struct_bal, xend = imf$D_struct_bal, 
+               y = imf$D_growth, yend = fitted.values(imf.lm),
+               linetype = "dashed", color = "red")
 ```
 
 ## Step 3: diagnostics
@@ -66,6 +73,6 @@ imf.rvfplot + aes(y = rsta) + labs(y = "Standardized residuals") +
              color = "red", size = 18, alpha = .4)
 ```
 
-The script concludes by looking at the normality of the outliers. To finish the exercise, you might want to try running the original model without them, in order to get your own battery of results and make up your mind about the original IMF analysis: decide whether the IMF was correct in its estimation of the average size of the fiscal multiplier.
+The script concludes by looking at the normality of the outliers. To finish the exercise, you might want to try running the original model without them, in order to get your own battery of results and make up your mind about the original IMF analysis: __assess whether the IMF was correct in its estimation of the average size of the fiscal multiplier__.
 
 > __Next week__: [Visualization in time: Time series](090_ts.html).
