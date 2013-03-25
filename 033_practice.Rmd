@@ -3,7 +3,9 @@
 
 # 3.3. Practice
 
-The exercise for this week computes market concentration for the browser market, and shows you how to defend a function against bad input.
+The exercise for this week computes market concentration for the browser market, and shows you how to defend a function against bad input. The data come from [StatCounter](http://gs.statcounter.com/), a company that tracks browser usage worldwide. Here's a vision of the recent times on that market:
+
+[![large](https://farm7.staticflickr.com/6213/6302832047_4bd4ee3bd9_b.jpg)](http://mezzoblue.com/archives/2011/11/01/a_new_number/)
 
 This week's exercise is called [`3_browsers.R`](3_browsers.R). Clicking this link will open it in your browser: just __copy-paste the full code into a new R script__, and save it under that name (or one of your choosing) into your `code` folder.
 

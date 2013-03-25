@@ -69,7 +69,7 @@ correlation <- ifelse(bottom.left | top.right, "positive", "negative")
 g + geom_point(size=16, alpha = .4, aes(color = correlation)) +
   scale_colour_manual("Correlation", 
                       values = c("positive" = "green", "negative" = "red")) +
-  theme(legend.position = "top")
+  theme(legend.position = "top", legend.margin = unit(1.5, "inches"))
 ```
 
 A simpler way to express the association is to fit a smoothed trend through the data. What then appears is an approximate line that goes through the bottom-left quadrant, then through the intersection of the means, and then through the top-right quadrant. This trend confirms that the data shows an 'upward', positive, linear correlation.
@@ -84,9 +84,9 @@ The smoothed trend above is calculated through an algorithm that uses the local 
 
 $$r = \frac{\sum ^n _{i=1}(X_i - \bar{X})(Y_i - \bar{Y})}{\sqrt{\sum ^n _{i=1}(X_i - \bar{X})^2} \sqrt{\sum ^n _{i=1}(Y_i - \bar{Y})^2}}$$
 
-The numerator of Pearson's formula is the covariance of the two variables, which is positive when the variables show similar behaviour (when they increase and decrease together), and negative otherwise. The denominator of Pearson's formula is the product of the standard deviations of the variables, which converts the covariance to a value between $-1$ and $+1$.
+The numerator the formula is the covariance of the two variables, which is positive when the variables show similar behaviour (when they increase and decrease together), and negative otherwise. The denominator of the formula is the product of the standard deviations of the variables, which converts the covariance to a value between $-1$ (perfect negative correlation) and $+1$ (perfect positive correlation).
 
-The `cor()` function computes Pearson's correlation coefficient. The result will vary between $-1$ (perfect negative correlation) and $+1$ (perfect positive correlation). We use the `with()` function to tell R that both variables are in the same `oecd` dataset. The result indicates a moderate correlation, as previously observed.
+The `cor()` function computes Pearson's correlation coefficient. We use the `with()` function to tell R that both variables are in the same `oecd` dataset. The result indicates a moderate correlation, as previously observed.
 
 ```{r oecd-correlation}
 # Correlation coefficient.

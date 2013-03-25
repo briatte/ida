@@ -64,6 +64,12 @@ img {
 	margin-left: auto;
 	margin-right: auto;
 }
+/* for large images */
+img[alt="large"] {
+	width: 100%;
+	display: inline;
+	border: 1px solid gray;
+}
 /* for inline images */
 img[alt="inline"] {
 	width: auto;

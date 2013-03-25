@@ -105,11 +105,13 @@ g <- g + geom_abline(intercept = coef(m1)[1], slope = coef(m1)[2])
 g
 
 # Add fitted values.
-g <- g + geom_point(y = fitted.values(m1), x = qog$education, color = "blue")
+qog$yhat <- fitted.values(m1)
+g <- g + geom_point(y = qog$yhat, color = "blue")
 g
 
 # Add residual distance.
-g + geom_segment(y = fitted.values(m1), yend = qog$fertility, 
+str(within(qog, rd <- ifelse(yhat > fertility, "overpredicted", "underpredicted")))
+g <- g + geom_segment(y = fitted.values(m1), yend = qog$fertility, 
                  x = qog$education, xend = qog$education, color = "blue")
 g
 
