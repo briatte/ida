@@ -1,3 +1,11 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 10.2. Google Maps
+
+## Choropleth maps
+
+```{r}
 #
 # PACKAGES
 #
@@ -41,6 +49,10 @@ dw_data  <- within(dw_data, {
 summary(dw_data$Margin08)
 summary(dw_data$Margin12)
 
+# Distribution of 2008 and 2012 margins.
+qplot(data = dw_data, x = Margin08, geom = "density") +
+  geom_density(aes(x = Margin12), color = "red")
+
 #
 # MAP
 #
@@ -69,3 +81,12 @@ print(p)
 
 # Produce the same map for 2008 and look for differences in the geographical
 # distribution of Obama margins of victory. How else could you visualize it?
+```
+
+[A guide to choropleths](http://quanti.hypotheses.org/795/), in French.
+
+David Sparks has posted his [chloropleth](https://dsparks.wordpress.com/2011/02/21/choropleth-tutorial-and-regression-coefficient-plots/) code, as well as examples of U.S. maps [with ggplot2](http://is-r.tumblr.com/post/37708137014/us-state-maps-using-map-data). In the future, there's a chance that he will also post his code for [isarithmic map](https://dsparks.wordpress.com/2012/07/18/mapping-public-opinion-a-tutorial/):
+
+[![Isarithmic map, by David Sparks.](images/cces-2008-family-income-black.png)](images/cces-2008-family-income-black.png)
+
+> __Next:__ [Practice](103_practice.html).

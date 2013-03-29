@@ -1,3 +1,11 @@
+<style>@import url(style.css);</style>
+<small>[Introduction to Data Analysis](index.html)</small>
+
+# 10.1. Geocoded information
+
+Most of the work can be [done with ggmap](http://www.milanor.net/blog/?p=534). Let's plot [airport traffic](http://www.milanor.net/blog/?p=594).
+
+```{r}
 #
 # PACKAGES
 #
@@ -77,3 +85,6 @@ ggmap(map) +
   geom_point(data = airportDA, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5) +
   scale_size_area(breaks = sqrt(seq), labels = seq, name = "Routes") +
   facet_grid(. ~ type)
+```
+
+> __Next__: [Choropleth maps](102_choropleths.html).
