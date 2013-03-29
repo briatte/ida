@@ -199,11 +199,12 @@ __Reading:__ B. Sue Bell *et al.*, "[Current practices in spatial analysis of ca
 
 - [Choropleth maps][101]
 - [Spatial dependence][102]
-- **Special guest**
+- **Special guest**: [Joël Gombin][jg] on open science
 
 [100]: 100_maps.html
 [101]: 101_choropleths.html
 [102]: 102_spatialdep.html
+[jg]: http://www.joelgombin.fr
 
 * * *
 
@@ -213,24 +214,27 @@ __Reading:__ David Siegel, "[Social Networks in Comparative Perspective](http://
 
 - [Measures of influence][111]
 - [Mining an online network][112]
-- **Special guest**
+- **Special guest**: [Alexandre Léchenet][al] on data journalism
 
 [110]: 110_networks.html
 [111]: 111_influence.html
 [112]: 112_twitter.html
+[al]: http://alphoenix.net
 
 
 * * *
 
 ## 12. [Data-driven advances][120]
 
-__Final session__:
+__Final session__: the last special guest [Samuel Goëta][sg], who will talk about open government in the [Distinguished Lecture Series][dls-talk].
 
 - What is data-driven journalism?
 - What is open data/government?
 - What is reproducible science?
 
 [120]: 120_data.html
+[sg]: http://coulisses-opendata.com
+[dls-talk]: https://www.facebook.com/events/123760981144191/
 
 * * *
 
