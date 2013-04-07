@@ -1,5 +1,5 @@
 <style>@import url(style.css);</style>
-<small>[Introduction to Data Analysis](index.html)</small>
+[Introduction to Data Analysis](index.html "Course index")
 
 # 10.2. Google Maps
 

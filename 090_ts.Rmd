@@ -1,4 +1,5 @@
 <style>@import url(style.css);</style>
+[Introduction to Data Analysis](index.html "Course index")
 
 # 9. Visualization in time: Time series
 
@@ -8,4 +9,4 @@ Applications:
 * [Income inequality and recession periods in the United States](http://www.perdomocore.com/2012/will-inequality-continue-to-get-worse-r-to-the-rescue/)
 * [Is the German market sensitive to federal elections?](http://rpubs.com/sumtxt/dax-volatility)
 
-> __Next__: [Autocorrelation](91_lags.html).
+> __Next__: [Autocorrelation](091_lags.html).

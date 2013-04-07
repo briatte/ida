@@ -1,7 +1,14 @@
 <style>@import url(style.css);</style>
-<small>[Introduction to Data Analysis](index.html)</small>
+[Introduction to Data Analysis](index.html "Course index")
 
 # 9.1. Autocorrelation
+
+[Jay Ulfelder][ju], a political scientist who has been credited for publishing [rather accurate lists][fp] of most likely military coups in recent years, wrote on that topic: "Unsurprisingly, coups also turn out to be a recurrent problem; the risk is higher in countries that have experienced other coup attempts in the past several years, a factor common to the top eight countries on this list."
+
+[ju]: https://dartthrowingchimp.wordpress.com/
+[fp]: http://blog.foreignpolicy.com/posts/2013/03/25/stats_junkie_successfully_predicts_african_coup_again
+
+This observation is applicable in many different contexts with relatively slow-moving quantities: the unemployment rate, for instance, is highly redundant from one month to another, modulo a small percent change; GDP approximates itself from one year to another; and so on. In brief, the best way to predict an event at time $t$ is often to look at that same event at $t-1, t - 2, ..., t - k$, with $k$ lags.
 
 Correlograms, marginal change, lagged values (detrending and differencing).
 

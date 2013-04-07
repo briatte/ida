@@ -1,143 +1,187 @@
 
-/* Markdown CSS, originally written by Kevin Burke */
+/* remixed from Kevin Burke's Markdown CSS */
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,600);
 @import url(http://fonts.googleapis.com/css?family=Signika+Negative:400,600);
-  
+
 body {
 	margin: 0 auto;
-	font-family: "Open Sans",sans-serif;
-	color: #444444;
+	font-family: "Open Sans", sans-serif;
+	color: #444;
 	line-height: 1.2;
 	max-width: 960px;
 	padding: 30px;
 }
-h1,h2,h3,h4 {
+
+h1, h2, h3, h4 {
 	font-family: "Signika Negative";
-	color: #111111;
+	color: #111;
 	font-weight: 400;
 }
-h1,h2,h3,h4,h5,p {
+
+h1, h2, h3, h4, h5, p {
 	margin-bottom: 24px;
 	padding: 0;
 }
+
 h1 {
 	font-size: 48px;
 }
+
 h2 {
-	font-size: 36px;/* The bottom margin is small. It's designed to be used with gray meta text
-	* below a post title. */
-	margin:24px 0 6px;
+	font-size: 36px;
+	margin:24px 0 6px; /* The bottom margin is small. It's designed to be used with gray meta text below a post title. */
 }
+
 h3 {
 	font-size: 24px;
 }
+
 h4 {
 	font-size: 21px;
 }
+
 h5 {
 	font-size: 18px;
 }
-a, a:visited { /* hide visited links */
-	color: #0099ff;
+
+/*
+		LINKS
+		-----
+*/
+
+a, a:visited { /* ignore visited links */
 	margin: 0;
 	padding: 0;
 	vertical-align: baseline;
+	color: #09f;
   text-decoration: none;
 }
+
 a:hover {
+	color: #f60;
 	text-decoration: underline;
-	color: #ff6600;
 }
-/* hide visited links */
-/* a:visited {
-	color: purple;
-} */
-/* small top link to contents */
-small a { display: block;
-	color: gray !important;
-	text-align: right !important;
+
+a[title = "Course index"] { /* small top link to contents */
+  display: block;
+  color: #666;
+  font-size: 75%;
+  text-align: right;
 }
-img {
+
+/* 
+		IMAGES
+		------
+*/
+
+img { /* all images are resized to 540px width */
 	width: 504px;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 }
-/* for large images */
-img[alt="large"] {
+
+img[alt = "large"] { /* large images go up to 800px width */
 	width: 100%;
 	display: inline;
 	border: 1px solid gray;
 }
-/* for inline images */
-img[alt="inline"] {
+
+img[alt = "inline"] { /* inline images */
 	width: auto;
 	display: inline;
 	border: 1px solid gray;
 }
-ul,ol {
+
+/*
+		ITEM LISTS
+    ----------
+*/
+
+ul, ol {
 	padding: 0 1em;
 	margin: 1em 0;
 }
+
 li {
 	line-height: 24px;
 	margin-bottom: 1em;
 }
+
 li ul {
 	margin-left: 24px;
 }
-p,ul,ol {
+
+/*
+		PARAGRAPHS AND CODE
+		-------------------
+*/
+
+p, ul, ol {
 	font-size: 18px;
 	line-height: 1.5; /* was 24px */
 	max-width: 800px;
 }
+
 p.info {
   border: 1px solid yellow;
   padding: 1em;
   background: lightyellow;
 }
+
 pre {
 	padding: 0px 24px;
 	max-width: 800px;
 	white-space: pre-wrap;
 	font-size: 150%;
 }
+
 code {
-	font-family: Consolas,Monaco,Andale Mono,monospace;
+	font-family: Consolas, Monaco, Andale Mono, monospace;
 	line-height: 1.5;
 	font-size: 90%;
 }
+
 aside {
 	display: block;
 	float: right;
 	width: 390px;
 }
+
+/*
+		CITATION BLOCKS
+		---------------
+*/
+
 blockquote {
 	border-left: .5em solid #eee;
 	padding: 0 2em;
 	margin-left: 0;
 	/* max-width: 476px; */
 }
+
 blockquote cite {
 	font-size: 14px;
 	line-height: 20px;
 	color: #bfbfbf;
 }
+
 blockquote cite:before {
 	content: '\2014 \00A0';
 }
-/* basic nav blockquotes */
-blockquote p:before {
+
+blockquote p:before { /* basic nav blockquotes start with a left-arrow */
 	color: #666;
 	content: '\2192 \00A0';
 }
+
 blockquote p {
 	color: #666;
 	max-width: 460px;
-	/* more space */
-	margin: 2em 0 4em;
+	margin: 2em 0 4em; /* leave more space */
 }
+
 hr {
 	width: 540px;
 	text-align: left;
