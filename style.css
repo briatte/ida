@@ -1,5 +1,7 @@
-
-/* remixed from Kevin Burke's Markdown CSS */
+/*
+   Remixed from Kevin Burke's Markdown CSS code:
+	 https://bitbucket.org/kevinburke/markdowncss
+*/
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,600);
 @import url(http://fonts.googleapis.com/css?family=Signika+Negative:400,600);
@@ -30,7 +32,7 @@ h1 {
 
 h2 {
 	font-size: 36px;
-	margin:24px 0 6px; /* The bottom margin is small. It's designed to be used with gray meta text below a post title. */
+	margin:24px 0 6px;
 }
 
 h3 {
