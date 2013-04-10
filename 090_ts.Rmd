@@ -3,10 +3,194 @@
 
 # 9. Visualization in time: Time series
 
-Applications:
+Let's start our session with some revision about opening and preparing data for analysis, today in time series format. The first example shows how to plot [party support in the United Kingdom since 1984](http://www.guardian.co.uk/news/datablog/2009/oct/21/icm-poll-data-labour-conservatives) using ICM polling data, as _The Guardian_ did a few years back. It uses a mix of old and new packages.
 
-* [Party support in the United Kingdom](http://www.guardian.co.uk/news/datablog/2009/oct/21/icm-poll-data-labour-conservatives).
-* [Income inequality and recession periods in the United States](http://www.perdomocore.com/2012/will-inequality-continue-to-get-worse-r-to-the-rescue/)
+```{r packages, message=FALSE, warning=FALSE}
+# Load packages.
+packages <- c("ggplot2", "lubridate", "plyr", "reshape", "RColorBrewer", "RCurl")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
+## Data preparation
+
+The data source is imported [from *The Guardian Data Blog*](http://www.guardian.co.uk/news/datablog/2009/oct/21/icm-poll-data-labour-conservatives#data) as a CSV spreadsheet. The download and import technique below was previously introduced in [Session 4.1](041_dataio.html). The first step consists in assigning data targets: the one from which we import, and the one to which we save the data. 
+
+```{r icm-sources}
+# Target data link.
+link = "https://docs.google.com/spreadsheet/pub?key=0AonYZs4MzlZbcGhOdG0zTG1EWkVPOEY3OXRmOEIwZmc&output=csv"
+# Target data file.
+file = "data/icm-polls.txt"
+```
+
+The next code block then quickly checks for the existence of the file on disk, downloads and converts the data to CSV format if it is not found, and opens it with strings (text characters) left as such. The download procedure is handled by the `RCurl` package through an unsigned SSL connection, and its result requires to be converted from raw to structured text, and then to comma-separated values.
+
+```{r icm-download}
+# Download dataset.
+if (!file.exists(file)) {
+  message("Dowloading the data...")
+  # Download and read HTML spreadsheet.
+  html <- textConnection(getURL(link, ssl.verifypeer = FALSE))
+  # Convert and export CSV spreadsheet.
+  write.csv(read.csv(html), file)
+}
+# Open file.
+icm <- read.csv(file, stringsAsFactors = FALSE)
+# Check result.
+str(icm)
+```
+
+As usual, the data structure shows a few issues. The first of them is solved by extracting the voting intentions matrix that forms columns 3-7 of the data frame, to remove percentage symbols from it with the `gsub()` search-and-replace function, and to return the numeric results to the dataset. The resulting columns will be converted from `character` to `numeric` class.
+
+```{r icm-data-prep-1}
+# Clean percentages.
+icm[, 3:7] <- as.numeric(gsub("%", "", as.matrix(icm[, 3:7])))
+# Check result.
+str(icm)
+```
+
+A specificity of the data is that general election results have been marked as "GENERAL ELECTION RESULT" in the `Sample` column (take a look at the [original spreadsheet][data] to determine that). We simply extract a logical statement from that information, in order to create a `TRUE/FALSE` marker called `GE` for general elections. The result can be check by showing voting intentions on these precise dates.
+
+[data]: http://spreadsheets.google.com/ccc?key=phNtm3LmDZEO8F79tf8B0fg
+
+```{r icm-data-prep-2}
+# Mark general elections.
+icm$GE <- grepl("RESULT", icm$Sample)
+# Check result.
+icm[icm$GE, 2:6]
+```
+
+A specific aspect of the Guardian/ICM dataset is the presence of dates, which can be converted to be recognized as such. The next code block creates a `Date` variable in the `icm` dataset that will be used in later plots. The `dmy()` function of the `lubridate` package is used to convert the text strings from `dd-mm-yyy` (day-month-year) format into proper dates, called `POSIXct` objects.
+
+```{r icm-lubridate}
+# Convert dates.
+icm$Date <- dmy(icm$End.of.fieldwork..election.date)
+# Check result.
+str(icm)
+```
+
+This process works like the `as.Date()` base function shown in [Session 4.2](042_reshaping.html), and for which Teetor, ch. 7.9-7.11, is a good strating point. The `lubridate` package is a convenience tool that deals with date formats in a more flexible way. Extracting the year from the `Date` variable created above, for instance, can be done effortlessly, just as any other form of date extraction:
+
+```{r icm-year}
+# List polling years.
+table(year(icm$Date))
+# List general election years.
+table(year(icm$Date[icm$GE]))
+# List general election months.
+table(month(icm$Date[icm$GE], label = TRUE))
+```
+
+Our final step is to remove unused information from the data by selecting the `date`, `ge` and voting intentions columns to form the finalized `icm` dataset, which is them reshape to long format in order to write one row of data for each political party. A few missing values that correspond to undated information at the end of the series are removed from the data.
+
+```{r icm-data-finalize}
+# Subset data.
+icm <- icm[, c("Date", "GE", "CON", "LAB", "LIB.DEM", "OTHER")]
+# Drop missing data.
+icm <- na.omit(icm)
+# Reshape dataset.
+icm <- melt(icm, id = c("Date", "GE"), variable_name = "Party")
+# Check result.
+head(icm)
+```
+
+## Plotting time series
+
+Another aspect of the data is that the "party" variable is split over columns and requires a reshape of the dataset to hold a single `party` variable.
+
+```{r icm-parties}
+# Check party name order.
+levels(icm$Party)
+```
+
+In the previous block, we finished by checking the levels of the `Party` variable to assign it specific colors from a tone palette, using a vector of color values of the same length and order. The next code block uses Cynthia Brewer's [ColorBrewer][cb] palette of discrete colors to find tinits of blue, red, orange, purple that fit each British party formation (purple for "Others" is arbitrary).
+
+```{r icm-palette-1}
+# View Set1 from ColorBrewer.
+display.brewer.pal(7, "Set1")
+# View selected color classes.
+brewer.pal(7,"Set1")[c(2, 1, 5, 4)]
+```
+
+The selection of colors can be passed to a `ggplot2` graph object through its [option for manual scales][ggplot2-scm]. That option can be itself stored into a one-word object that we can quickly assign to any number of graphs in what follows. We create similar objects to colorize fills as well as lines and to drop titles on axes while giving a title to the overall graph.
+
+```{r icm-palette-2}
+# ggplot2 manual color palette.
+colors <- scale_colour_manual(values = brewer.pal(7,"Set1")[c(2, 1, 5, 4)])
+# ggplot2 manual fill color palette.
+fcolors <- scale_fill_manual(values = brewer.pal(7,"Set1")[c(2, 1, 5, 4)])
+# ggplot2 option to set titles.
+titles <- labs(title= "Guardian/ICM voting intentions polls\n",
+               y = NULL, x = NULL)
+```
+
+The ICM polling data can now be plotted as a time series of estimated party support, using the `Party` variable and the `ukcolors` option to determine the color of each series. We start with a `ggtplot2` object that uses a [`line` geometry][ggplot2-line] to connect observations over time, passing the graph options defined previously. The line break `\n` at the end of the title adds a margin.
+
+```{r icm-lines}
+# Time series lines.
+qplot(data = icm, y = value, x = Date, color = Party, geom = "line") + 
+  colors + titles
+```
+
+A more detailed visualization shows the actual data points at a reduced, factorized size `I(.75)`, along with a smoothed trend of each series. The [`smooth` geometry][ggplot2-smooth] will select its own method for smoothing the series, namely a [LOESS estimator][loess]. The `se` option to show its confidence interval is dropped, and the same graph options as before are passed for consistency.
+
+```{r icm-points}
+# Scatterplot.
+qplot(data = icm, y = value, x = Date, 
+      color = Party, size = I(.75), geom = "point") +
+  geom_smooth(se = FALSE) + 
+  colors + titles
+```
+
+Another visualization consists in stacking the entire series and showing it as an [area][ggplot2-area] of a common space represeting 100% of voting intentions. Be careful with interpretation here: the electorate changes from an election to another, and voting intentions are not actual votes. Slight errors appear at the top of the graph due to rounding approximations in the polling data.
+
+```{r icm-stacked}
+# Stacked area plot.
+qplot(data = icm, y = value, x = Date,
+      color = Party, fill = Party, stat="identity", geom = "area") + 
+  colors + fcolors + titles
+```
+
+The graph possibly contains excess information by assuming that voting intentions are volatile enough to express meaningful monthly variations. To show the same pattern with less data, we [aggregate the data][gs] by averaging over years. The `year()` function from the `lubridate` package and the `ddply()` function from the `plyr` package show one possible way to achieve this result.
+
+```{r icm-bars}
+# Stacked bar plot.
+qplot(data = ddply(icm, .(Year = year(Date), Party), summarize, value = mean(value)), 
+      fill = Party, color = Party, x = Year, y = value, 
+      stat = "identity", geom = "bar") + 
+  colors + fcolors + titles
+```
+
+## Adding annotations
+
+You might also want to take advantage of the general elections results alone to plot actual vote shares. The slightly more complex line plot below shows them by subsetting the data to `GE` observations, by extracting their year with the `year()` function of the `lubridate` package, by plotting a white dot where they are located, and by overimposing the year in small text above that white space.
+
+```{r icm-ges}
+# Plotting only general elections.
+qplot(data = icm[icm$GE, ], y = value, x = Date, 
+      color = Party, size = I(.75), geom = "line") +
+  geom_point(size = 12, color = "white") +
+  geom_text(aes(label = year(Date)), size = 4) +
+  colors + titles
+```
+
+[cb]: http://colorbrewer2.org/
+[ggplot2-area]: http://docs.ggplot2.org/current/geom_area.html
+[ggplot2-line]: http://docs.ggplot2.org/current/geom_line.html
+[ggplot2-scm]: http://docs.ggplot2.org/current/scale_manual.html
+[ggplot2-smooth]: http://docs.ggplot2.org/current/geom_smooth.html
+[gs]: https://gastonsanchez.wordpress.com/2012/06/28/5-ways-to-do-some-calculation-by-groups/
+[loess]: http://www.inside-r.org/r-doc/stats/loess
+
 * [Is the German market sensitive to federal elections?](http://rpubs.com/sumtxt/dax-volatility)
+
+Now that we have some idea of how to represent time series visually, let's turn to the properties of time series that can be put into perspective with a bit of statistical analysis. The [first one][091] deals with temporal dependence in time series. The second one returns to graphs to explain how [smoothed trends][092] are produced. The final [practice exercise][093] shows how to model panel data.
+
+[091]: 091_lags.html
+[092]: 092_smoothing.html
+[093]: 093_practice.html
 
 > __Next__: [Autocorrelation](091_lags.html).

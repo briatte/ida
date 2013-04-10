@@ -86,30 +86,36 @@ Here's an [example based on the recent housing bubble](http://www.decisionscienc
 
 The example is based on `ggplot2` and the `reshape` package.
 
-```{r schiller1, results='hide'}
+```{r csi-load, results='hide'}
 # Open the data.
 dat <- read.csv("data/CSHomePrice_History.csv")
 ```
 
 Let's have a look at the data.
 
-```{r shiller2}
+```{r csi-inspect}
+# Inspect the data structure.
 str(dat)
+# Inspect the first data rows.
+head(dat)
 ```
 
-You can see that the data uses U.S. states as columns (inspect the `dat` table further with `head(dat)` if you fail to see it at first). Instead of that 'wide' format, we prefer to use 'long' data where all states are held in a single column.
+You can see that the data uses U.S. states as columns. Instead of that "wide" format, we prefer to use "long" data where all states are held in a single column. To get this arrangement in more rows and less columns, we "collapse" the data: all column variables are put into a single one, except for the one identifier variable, year, which is repeated over rows.
 
-To get there, let's `melt` the data. This will 'collapse' the dataset: all column variables will be put into a single one, except for those that we keep as identifier variables: these will be repeated over rows.
-
-```{r schiller3, results='hide'}
+```{r csi-collapse, results='hide'}
 # Load packages.
 library(reshape)
 # Collapse the data by years.
-mdf <- melt(dat,id.vars="YEAR")
-# Convert dates.
-mdf$Date=as.Date(paste("01-",mdf$YEAR,sep=""),"%d-%b-%y")
+mdf <- melt(dat, id = "YEAR")
 # Name the columns.
-names(mdf) <- c("MonthYear","City","IndexValue","Date")
+names(mdf) <- c("MonthYear", "City", "IndexValue")
+```
+
+The `MonthYear` variable is given a `01-` prefix to make it the first day of each month, and that result is converted into a date, which is required for optimal plotting. This process uses time code format for day-month-year, `%d-%b-%y`, where `%b`, for example, is the abbreviated month. This process is explored again when we come to study time series in [Session 9](090_ts.html).
+
+```{r csi-date}
+# Convert dates.
+mdf$Date <- as.Date(paste0("01-", mdf$MonthYear), "%d-%b-%y")
 ```
 
 Finally, here's the first plot, using a different color for each city. There's a lot of data but the general trend is clearly understandable.

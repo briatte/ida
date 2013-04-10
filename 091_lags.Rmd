@@ -10,10 +10,211 @@
 
 This observation is applicable in many different contexts with relatively slow-moving quantities: the unemployment rate, for instance, is highly redundant from one month to another, modulo a small percent change; GDP approximates itself from one year to another; and so on. In brief, the best way to predict an event at time $t$ is often to look at that same event at $t-1, t - 2, ..., t - k$, with $k$ lags.
 
-Correlograms, marginal change, lagged values (detrending and differencing).
+This form of temporal dependence is called autocorrelation, or serial correlation, in the context of time series. They can be shown in specific plot arrangements, like correlograms, or expressed through notions like marginal change (which mathematically relies on derivatives), lagged values, or detrended series. We will sample a few of these methods below.
 
-## Pollution in Beijing
+```{r packages, message=FALSE, warning=FALSE}
+# Load packages.
+packages <- c("downloader", "ggplot2", "reshape", "scales", "xlsx", "zoo")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
 
-[An example with Twitter, using Beijing pollution data](http://brainchronicle.blogspot.co.uk/2012/07/twitter-analysis-of-air-pollution-in.html). There was a [pollution peak](http://brainchronicle.blogspot.fr/2013/01/air-quality-analysis-from-beijing.html) in January 2013. The city [looks like](http://kateoplis.tumblr.com/post/40555052298/nope-this-is-not-a-still-from-blade-runner-its) *Blade Runner*, and its ongoing [Smog-ocalypse](http://simplystatistics.org/2013/01/14/welcome-to-the-smog-ocalypse/) means that staying in Beijing is like [smoking between one and half and three cigarettes a day](http://simplystatistics.org/2011/12/14/smoking-is-a-choice-breathing-is-not/).
+## Top incomes in the United States
 
-> __Next__: [Smoothing](92_smoothing.html).
+Let's first get the data for this example from [Emmanuel Saez](http://elsa.berkeley.edu/~saez/), who published several articles on income inequality with Thomas Piketty in the recent years. The data for their work on [income inequality in the United States](http://elsa.berkeley.edu/~saez/pikettyqje.pdf), first published in 2003, has since been updated to cover all years from 1913 to 2011.
+
+```{r ps-data-download}
+# Target data link.
+link = "http://elsa.berkeley.edu/~saez/TabFig2011prel.xls"
+# Target data file.
+file = "data/piketty-saez-2011.xls"
+# Download dataset.
+if (!file.exists(file)) {
+  message("Dowloading the data...")
+  # Download spreadsheet.
+  download(link, file)
+}
+```
+
+The first segment of data that we want to use is the income share of the top 1% income earners (excluding capital gains), which is Table A1 in the [Excel spreadsheet](http://elsa.berkeley.edu/~saez/TabFig2011prel.xls). The `xlsx` package makes it easy to select what rows and columns we want to import. The "Piketty-Saez" dataset of income shares is then reshaped to long format.
+
+```{r ps-shares-data}
+# Import from XLS format.
+ps_share <- read.xlsx(file, sheetName = "Table A1", 
+                      rowIndex = c(4, 6:104), colIndex = 1:7)
+# Check result.
+str(ps_share)
+# Change variable names.
+names(ps_share) <- c("Year", "Top 10%", "Top 5%", "Top 1%", "Top 0.5%", "Top 0.1%", "Top 0.01%")
+# Reshape to long format.
+ps_share <- melt(ps_share, id = "Year", variable_name = "Fractile")
+# Drop missing data.
+ps_share <- na.omit(ps_share)
+# Check result.
+head(ps_share)
+```
+
+Let's produce a first plot showing all top fractile income shares, colored by income fractile. This plot shows some of the same data as Figure 1 in the original Piketty-Saez paper: it reveals a "U"-shaped trend, starting with a general contraction of the income share of top income earners at the end of World War II, and followed by an expansion in recent decades.
+
+```{r ps-shares}
+# Time series plot.
+qplot(data = ps_share, x = Year, y = value, color = Fractile, geom = "line") + 
+  labs(y = NULL, x = NULL, title = "U.S. top income shares (%)\n")
+```
+
+The rate of increase in income shares over the recent years is different for each income fractile: some top incomes have grown their shares quicker than others. To visualize the event, we extract a different spreadsheet holding real income levels (including capital gains) for the lowest 90%, top 10% and top 1% income fractiles. The years are added manually due to an import error with the Excel format.
+
+```{r ps-incomes-data}
+# Import from XLS format.
+ps_income <- read.xlsx(file, sheetName = "Table_Incomegrowth", 
+                       rowIndex = c(2, 5:103), colIndex = c(10, 5, 3))
+# Add years manually.
+ps_income <- cbind(1913:2011, ps_income)
+# Check result.
+str(ps_income)
+# Change variable names.
+names(ps_income) <- c("Year", "Top 10%", "Top 1%", "Bottom 90%")
+# Reshape to long format.
+ps_income <- melt(ps_income, id = "Year", variable_name = "Fractile")
+# Drop missing data.
+ps_income <- na.omit(ps_income)
+# Check result.
+head(ps_income)
+```
+
+The plots for real income growth in the United States show a sharp difference for top earners versus the rest of the population -- the "99%" of Occupy Wall Street, if you prefer: the difference in income growth is much more pronounced for those higher on the income scale. This graph circulated on several [blogs](http://crookedtimber.org/2009/04/13/reducing-inequality-whats-the-problem/) in the early months of the current financial crisis.
+
+```{r ps-incomes-plot}
+# Plot in real dollar units.
+qplot(data = ps_income, x = Year, y = value, color = Fractile, geom = "line") +
+  labs(y = NULL, x = NULL, title = "Real income growth in the United States\n") +
+  scale_y_continuous(labels = dollar)
+```
+
+One [problematic](http://lanekenworthy.net/2008/03/09/the-best-inequality-graph/) aspect of this graph  is that the metric income scale eschews any change at the bottom of the graph: the bottom 90% income earners seem to enjoy no income growth over the entire time period. Using a logarithmic scale of base 10 for real income corrects for that issue by plotting income by $10^1, 10^2, ..., 10^k$ dollar units.
+
+```{r ps-incomes-log10}
+# Plot in log10 dollar units.
+qplot(data = ps_income, x = Year, y = value, color = Fractile, geom = "line") +
+  labs(y = NULL, x = NULL, title = "Real income growth in the United States\n") +
+  scale_y_log10(labels = dollar)
+```
+
+Even by doing so, income inequality is clearly apparent and growing over the recent period, due to stagnating income levels in the income fractiles that do not rely on larger capital gains. One way to show this is to switch to growth rates of the form $\frac{W_{t}}{W_{t-1} - 1}$, which brings us to the core of the topic: lagged values.
+
+## Lagging a time series
+
+Let's pause for a second and leave the Piketty-Saez dataset for a simpler example where $t$ (time) varies from 2001 to 2005, and $x_t = {1, 2, ..., 5}$. This series can be turned into a time series object with many different packages. One of them is called `zoo`: it creates a single object made of core data, and a time index, both of which are accessible through dedicated functions.
+
+```{r ts}
+# Create year data.
+df <- data.frame(t = 2001:2005, x = (1:5)^2)
+# Check result.
+str(df)
+# Create zoo object.
+df <- with(df, zoo(x, t))
+# Check result.
+str(df)
+# Extract core data.
+coredata(df)
+# Extract time index.
+index(df)
+```
+
+Teetor, ch. 14, offers a quick introduction to the topic of time series from that perspective, using the `zoo` and `xts` packages. The `lag()` function, for example, is convenient to effortlessly obtain the lagged values $x_{-k}, ..., x_{t-1}, x_{t+1}, x_{t+k}$ from $x_{t}$ in a time series object. In the examples below, we show the `x` sequence lagged at $k = (-2, -1, +1, +2)$:
+
+```{r ts-lag}
+# Original time series.
+df
+# Lagged at k = -2: shifts series right by two years.
+lag(df, -2, na = TRUE)
+# Lagged at k = -1: shifts series right by one year.
+lag(df, -1, na = TRUE)
+# Lagged at k = +1: shifts series left by one year.
+lag(df, 1, na = TRUE)
+# Lagged at k = +2: shifts series left by two years.
+lag(df, 2, na = TRUE)
+```
+
+When your interest is in _differencing_ a time series, you want to subtract $x_{t-1}$ to all its values $x_{t}$, that is, obtain the net difference between two values separated by one time period. This is equivalent to asking for the marginal change in $x$ at every point $t$ of the curve $x(t)$. The `diff()` function offers a very convenient way to obtain lagged differences:
+
+```{r ts-diff}
+# Recall the time series and lagged values.
+t(cbind(df, lag(df, -1)))
+# Compute the successive differences.
+diff(df)
+# Show differences with both time series.
+t(cbind(df, lag(df, -1), diff(df)))
+```
+
+Going back to the Piketty-Saez data, we start by calculating the growth rate for each series from its lagged values. The graph uses line ranges, [colored](https://learnr.wordpress.com/2009/05/18/ggplot2-three-variable-time-series-panel-chart/) in blue when the growth rate is positive and red when the growth rate is negative.
+
+```{r ps-incomes-rate, tidy=FALSE, warning=FALSE}
+# Add lagged series.
+ps_income <- ddply(ps_income, .(Fractile), transform,
+                   lagged = c(NA, value[-length(value)]))
+# Create growth rate.
+ps_income$rate <- with(ps_income, (value / lagged) - 1)
+# Plot real income growth rates.
+qplot(data = ps_income, 
+      ymin = 0, ymax = rate, x = Year, geom = "linerange") +
+  geom_hline(y = 0, color = "gray") +
+  aes(color = ifelse(rate > 0, "positive", "negative")) +
+  scale_colour_manual("", values = c("positive" = "blue", "negative" = "red")) +
+  scale_y_continuous(labels = percent) +
+  facet_grid(Fractile ~ .)
+```
+
+Note that the rate of change is mathematically equivalent to taking the ratio of the derivative by the function: the relative rate of change is $\frac{f'(x)}{f(x)}$, and the percentage rate of change is $100 \cdot \frac{f'(x)}{f(x)}$. What we now want to compute is the actual change, using the differences of each series divided by $x_{t-1}$. The scales of each plot facet are particularly telling:
+
+```{r ps-incomes-diff, tidy=FALSE, warning=FALSE}
+# Add differenced series.
+ps_income <- ddply(ps_income, .(Fractile), transform,
+                   Difference = c(NA, diff(value)))
+# Plot real income percentage changes.
+qplot(data = ps_income, 
+      ymin = 0, ymax = Difference, x = Year, geom = "linerange") +
+  geom_hline(y = 0, color = "gray") +
+  aes(color = ifelse(rate > 0, "positive", "negative")) +
+  scale_colour_manual("", values = c("positive" = "blue", "negative" = "red")) +
+  scale_y_continuous(labels = dollar) +
+  facet_grid(Fractile ~ ., scale = "free_y")
+```
+
+## Detrending
+
+The previous plots show how a time series at $x_{t}$ can be lagged by taking $x_{t-1}$ into account. The final step is to take many lags into account to control for autocorrelation, i.e. the full series of correlations $\rho_k$ with $k = 1, 2, ..., k$ lags, in order to detrend the data. This is done by regressing the data onto its time index, for which an example follows.
+
+```{r ps-detrend, tidy=FALSE, warning=FALSE}
+# Subsetting to top 1% incomes.
+ps_top1 <- subset(ps_income, Fractile=="Top 1%")
+# Create a time series.
+ps_top1 <- with(ps_top1, zoo(value, Year))
+# Check result.
+str(ps_top1)
+# Detrend the series.
+m <- lm(coredata(ps_top1) ~ index(ps_top1))
+# Plot the residuals.
+qplot(ymin = 0, ymax = resid(m), x = index(ps_top1), geom = "linerange") +
+  aes(color = ifelse(resid(m) > 0, "positive", "negative")) +
+  scale_color_manual("Residuals\n", 
+                     values = c("positive" = "red", "negative" = "blue")) +
+  scale_y_continuous(label = dollar) +
+  labs(x = NULL, title = "Detrended series of top 1% income growth\n")
+```
+
+The model clearly shows one thing: the series is not stationary, insofar as its past values fail to predict large amounts of its present values, even by very large margins. The last fifteen years are [particularly remarkable](http://www.vanityfair.com/society/features/2011/05/top-one-percent-201105) in that respect: while some of the rise in income inequality has been absorbed by the model, the most recent years are robust to detrending.
+
+Teetor, ch. 14.13-14.21, further explains how to model a time series from its past values, using plots and elements similar to those shown here. There is also a great book and R package by [Shumway and Stoffer](http://www.stat.pitt.edu/stoffer/tsa3/), which goes into greater length about linear time series (and the nonlinear book is forthcoming this year).
+
+## Another example: pollution in Beijing
+
+An interesting time series can be created [from Twitter, using Beijing pollution data](http://brainchronicle.blogspot.co.uk/2012/07/twitter-analysis-of-air-pollution-in.html). There was a [pollution peak](http://brainchronicle.blogspot.fr/2013/01/air-quality-analysis-from-beijing.html) in January 2013, and the city [looks like](http://kateoplis.tumblr.com/post/40555052298/nope-this-is-not-a-still-from-blade-runner-its) *Blade Runner*, except worse because of its ongoing [Smog-ocalypse](http://simplystatistics.org/2013/01/14/welcome-to-the-smog-ocalypse/), which makes staying in Beijing like [smoking between one and half and three cigarettes a day](http://simplystatistics.org/2011/12/14/smoking-is-a-choice-breathing-is-not/).
+
+Unfortunately, the Twitter API is now less open as it used to be, so we will not be able to access the data as easily as it was in the recent past.
+
+> __Next__: [Smoothing](092_smoothing.html).
