@@ -23,7 +23,7 @@ require(knitr)
 all <- dir(pattern="[0-9]+(.*).Rmd")
 all <- all[1:34] # sequence is 2 + session number * 4 
 # knitr setup
-opts_chunk$set(fig.path = "plots/", comment = NA)
+opts_chunk$set(fig.path = "plots/", comment = NA, fig.width = 7, fig.height = 5.3)
 # go go go
 lapply(all, FUN = function(x) {
   if(substr(x, 0, 2) != "00")
