@@ -39,7 +39,7 @@ olympics.log.linear <- lm(log(Result) ~ Year, data = olympics[-1, ])
 predicted.years <- data.frame(Year = seq(1900, 2012, 4))
 # Predict the result for years 1900-2012.
 predicted.times <- data.frame(Year = predicted.years,
-                          exp(predict(olympics.log.linear, 
+                           exp(predict(olympics.log.linear, 
                            newdata = predicted.years, 
                            level = 0.95,
                            interval = "prediction")))

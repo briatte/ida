@@ -5,7 +5,7 @@
 
 [R](http://www.r-project.org/) is a software that uses a specific language to manipulate statistical objects. Researchers and statisticians are [increasingly](http://r4stats.com/articles/popularity/) adopting R as their software of choice, and the R user base goes well beyond academia. Many [R User Groups](http://www.r-bloggers.com/RUG/) exist on a [worldwide scale](http://blog.revolutionanalytics.com/local-r-groups.html).
 
-Some people *really* like R. This very enthusiastic user is [Anthony Damico](https://github.com/ajdamico), a [prolific](http://www.ajdamico.com/p/work.html) and [proficient](http://www.asdfree.com/) analyst of U.S. survey data working at the Kaiser Family Foundation. His video mentions other programming and statistical languages:
+There is a [huge R community online](http://www.burns-stat.com/r-and-social-media/), and some people *really* like R. This very enthusiastic user is [Anthony Damico](https://github.com/ajdamico), a [prolific](http://www.ajdamico.com/p/work.html) and [proficient](http://www.asdfree.com/) analyst of U.S. survey data working at the Kaiser Family Foundation. His video mentions other programming and statistical languages:
 
 <iframe src="http://player.vimeo.com/video/52999628?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
@@ -62,12 +62,12 @@ letters[1:5]
 LETTERS[1:5]
 ```
 
-One last element of R syntax that you will have to get familiar with is the use of punctuation. Brackets and commas, in particular, are put to intensive use in R. The examples below show some of their common usage in R:
+One last element of R syntax that you will have to get familiar with is the use of punctuation. Brackets and commas, in particular, are put to intensive use in R. The examples below show some of their common usage in R. In the `seq()` function, the arguments `from`, `to` and `by` are arguments, all assigned with the equal sign `=` and separated by commas. Some arguments can be optional.
 
 ```{r}
 # A sequence of floating point numbers.
 seq(from = 1, to = 3, by = .5)
-# A function with a logical argument.
+# A function with an optional logical argument.
 order(1:3, decreasing = TRUE)
 ```
 

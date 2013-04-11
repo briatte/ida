@@ -21,7 +21,7 @@ file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.md$"))
 require(knitr)
 # get files
 all <- dir(pattern="[0-9]+(.*).Rmd")
-all <- all[1:34] # sequence is 2 + session number * 4 
+#all <- all[1:34] # sequence is 2 + session number * 4 
 # knitr setup
 opts_chunk$set(fig.path = "plots/", comment = NA, fig.width = 7, fig.height = 5.3)
 # go go go

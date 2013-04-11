@@ -1,0 +1,83 @@
+
+
+#
+# PACKAGES
+#
+packages <- c("ggmap", "mapproj", "plyr")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+
+# The example below is based on an online tutorial by Max Marchi. It shows how
+# to plot geocoded airports and additional information on Google Maps, from R.
+
+#
+# DATA
+#
+
+# Prepare the data.
+url = "http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/airports.dat"
+airports <- read.csv(url, header = FALSE)
+names(airports) <- c("ID", "name", "city", "country", "IATA_FAA", "ICAO", "lat", "lon", "altitude", "timezone", "DST")
+head(airports)
+
+# Prepare more data.
+url = "http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/routes.dat"
+routes <- read.csv(url, header = FALSE)
+names(routes) <- c("airline", "airlineID", "sourceAirport", "sourceAirportID", "destinationAirport", "destinationAirportID", "codeshare", "stops", "equipment")
+head(routes)
+
+#
+# MAPS
+#
+
+# Create a simple map of Europe, using Google Maps.
+map <- get_map(location = 'Europe', zoom = 4)
+ggmap(map)
+
+# Plot the data by passing coordinates.
+ggmap(map) + 
+  geom_point(data = airports, aes(x = lon, y = lat), 
+             color = "orangered", alpha = .5)
+
+# Aggregate trips into number of departures and arrivals.
+departures <- ddply(routes, .(sourceAirportID), "nrow")
+names(departures)[2] <- "flights"
+arrivals <- ddply(routes, .(destinationAirportID), "nrow")
+names(arrivals)[2] <- "flights"
+
+# Create datasets by matching data to airports.
+airportD <- merge(airports, departures, by.x = "ID", by.y = "sourceAirportID")
+airportA <- merge(airports, arrivals, by.x = "ID", by.y = "destinationAirportID")
+
+# Plot airports proportionally to the square root of flights.
+ggmap(map) +
+  geom_point(data = airportD, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5)
+
+# Prepare a sequence to pass to square root legends.
+seq <- c(1, 5, 10, 50, 100, 500)
+
+# Adjust the legend.
+ggmap(map) +
+  geom_point(data = airportD, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5) +
+  scale_size_area(breaks = sqrt(seq), labels = seq, name = "Departing routes")
+
+# Combine departures and arrivals in a single dataset.
+airportD$type <- "Departures"
+airportA$type <- "Arrivals"
+airportDA <- rbind(airportD, airportA)
+
+# Map the data.
+ggmap(map) +
+  geom_point(data = airportDA, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5)
+
+# Adjust the legend and separate by type of flight.
+ggmap(map) +
+  geom_point(data = airportDA, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5) +
+  scale_size_area(breaks = sqrt(seq), labels = seq, name = "Routes") +
+  facet_grid(. ~ type)
+
+

@@ -20,7 +20,7 @@ LETTERS[1:5]
 
 # A sequence of floating point numbers.
 seq(from = 1, to = 3, by = .5)
-# A function with a logical argument.
+# A function with an optional logical argument.
 order(1:3, decreasing = TRUE)
 
 

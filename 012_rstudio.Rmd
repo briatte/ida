@@ -143,21 +143,21 @@ if(!require(ggplot2)) {
 }
 ```
 
-We'll be looking at some example data included in the R software. The data describes a set of fifty flowers studied by famous statistician Ronald Fisher in an article published in 1936. The data itself were collected by Edgar Anderson and published a year before.
+We'll be looking at some example data included in the R software. The data describes [Edgar Anderson's set of fifty flowers](http://stat.ethz.ch/R-manual/R-patched/library/datasets/html/iris.html), studied by famous statistician Ronald Fisher in an article published in 1936. The data itself were collected by Edgar Anderson and published a year before.
 
 ```{r ggplot2-load-data}
 # Look at first rows of a default dataset.
 head(iris)
 ```
 
-Let's now use the 'quick plot' functionality of the `ggplot2` package. The command `qplot` requires three arguments here: the data to use, one variable to plot on the horizontal x-axis, and another to plot on the vertical y-axis.
+Let's now use the 'quick plot' functionality of the `ggplot2` package. The [`qplot()` function](http://docs.ggplot2.org/current/qplot.html) requires three arguments here: the data to use, one variable to plot on the horizontal x-axis, and another to plot on the vertical y-axis. The order of the arguments is, as usual, irrelevant, as long as you identify `x` and `y` properly in the function call.
 
 ```{r ggplot2-qplot}
 # Quick plot.
 qplot(data = iris, x = Sepal.Length, y = Petal.Length)
 ```
 
-We will come back to how `ggplot2` works in due time; for the moment, let's simply improve the plot by adding a bunch of options that will add some color, sizing and transparency effects to the plot that opened in the bottom-right pane.
+We will come back to how `ggplot2` works in due time (here's [another quick introduction](http://inundata.org/2013/04/10/a-quick-introduction-to-ggplot2/) showing more plots if you want a preview). For the moment, let's simply improve the plot by adding a bunch of options that will add some color, sizing and transparency effects to the plot that opened in the bottom-right pane.
 
 ```{r ggplot2-3, tidy=FALSE}
 # Select all lines below to run properly.
@@ -204,6 +204,6 @@ median
 
 R documentation pages contain precise instructions on the syntax of each command: read the "Description", "Usage" and "Arguments" sections first, then skmi the (not always useful) "Details". Always check out the "Examples" section.
 
-Do not hate the documentation: _everyone_ finds it difficult to read, and there are good reasons why the technical documentation is written how it is. It is not really meant to teach you R but rather to document it like a flight manual documents a plane: fully and exactly.
+Do not hate the documentation: _everyone_ finds it difficult to read, and there are good reasons why the technical documentation is written how it is. It is not really meant to teach you R but rather to document it like a flight manual documents a plane: as fully and exactly as possible.
 
 > __Next__: [Practice](013_practice.html).

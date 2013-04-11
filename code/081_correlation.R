@@ -48,7 +48,7 @@ correlation <- ifelse(bottom.left | top.right, "positive", "negative")
 g + geom_point(size=16, alpha = .4, aes(color = correlation)) +
   scale_colour_manual("Correlation", 
                       values = c("positive" = "green", "negative" = "red")) +
-  theme(legend.position = "top")
+  theme(legend.position = "top", legend.margin = unit(1.5, "inches"))
 
 
 

@@ -185,12 +185,12 @@ qplot(data = icm[icm$GE, ], y = value, x = Date,
 [gs]: https://gastonsanchez.wordpress.com/2012/06/28/5-ways-to-do-some-calculation-by-groups/
 [loess]: http://www.inside-r.org/r-doc/stats/loess
 
-* [Is the German market sensitive to federal elections?](http://rpubs.com/sumtxt/dax-volatility)
-
 Now that we have some idea of how to represent time series visually, let's turn to the properties of time series that can be put into perspective with a bit of statistical analysis. The [first one][091] deals with temporal dependence in time series. The second one returns to graphs to explain how [smoothed trends][092] are produced. The final [practice exercise][093] shows how to model panel data.
 
 [091]: 091_lags.html
 [092]: 092_smoothing.html
 [093]: 093_practice.html
+
+* [Is the German market sensitive to federal elections?](http://rpubs.com/sumtxt/dax-volatility)
 
 > __Next__: [Autocorrelation](091_lags.html).

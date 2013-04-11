@@ -64,18 +64,24 @@ dat <- read.csv("data/CSHomePrice_History.csv")
 
 
 
+# Inspect the data structure.
 str(dat)
+# Inspect the first data rows.
+head(dat)
 
 
 
 # Load packages.
 library(reshape)
 # Collapse the data by years.
-mdf <- melt(dat,id.vars="YEAR")
-# Convert dates.
-mdf$Date=as.Date(paste("01-",mdf$YEAR,sep=""),"%d-%b-%y")
+mdf <- melt(dat, id = "YEAR")
 # Name the columns.
-names(mdf) <- c("MonthYear","City","IndexValue","Date")
+names(mdf) <- c("MonthYear", "City", "IndexValue")
+
+
+
+# Convert dates.
+mdf$Date <- as.Date(paste0("01-", mdf$MonthYear), "%d-%b-%y")
 
 
 
