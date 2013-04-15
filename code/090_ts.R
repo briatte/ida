@@ -118,7 +118,7 @@ qplot(data = icm, y = value, x = Date,
 
 
 # Stacked bar plot.
-qplot(data = ddply(icm, .(Year = year(Date), Party), summarize, value = mean(value)), 
+qplot(data = ddply(icm, .(Year = year(Date), Party), summarise, value = mean(value)), 
       fill = Party, color = Party, x = Year, y = value, 
       stat = "identity", geom = "bar") + 
   colors + fcolors + titles

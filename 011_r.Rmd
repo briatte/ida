@@ -9,7 +9,7 @@ There is a [huge R community online](http://www.burns-stat.com/r-and-social-medi
 
 <iframe src="http://player.vimeo.com/video/52999628?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
-The R language has its roots in the S language developed by AT&T, which also developed the C language. It is not the only language available for statistical analysis: there are [many others](http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/), and you might have also heard about SAS, SPSS or Stata, or even Matlab and Python.
+The R language has its [roots](http://www.burns-stat.com/pages/Present/infernoishR_annotated.pdf) in the S language developed by AT&T, which also developed the C language. It is not the only language available for statistical analysis: there are [many others](http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/), and you might have also heard about SAS, SPSS or Stata, or even Matlab and Python.
 
 R is as free as it is powerful, but it comes with [some drawbacks](http://badhessian.org/seven-reasons-to-use-r-for-social-network-analysis-and-three-reasons-against/). Its major disadvantage is that its learning curve is pretty steep. Do not worry: we will review as many examples as we need to make it work, and we will give you code to help creating your own.
 

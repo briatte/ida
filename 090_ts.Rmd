@@ -3,6 +3,8 @@
 
 # 9. Visualization in time: Time series
 
+Time series are made of observations that are repeated over time, such as the daily stock value of a company or the annual GDP growth rate of a country. It is a very common data format in demography, economics and social science in general. Large amounts of data are available as time series. Try services like [Quandl](http://www.quandl.com/) to find and plot series from many different sources.
+
 Let's start our session with some revision about opening and preparing data for analysis, today in time series format. The first example shows how to plot [party support in the United Kingdom since 1984](http://www.guardian.co.uk/news/datablog/2009/oct/21/icm-poll-data-labour-conservatives) using ICM polling data, as _The Guardian_ did a few years back. It uses a mix of old and new packages.
 
 ```{r packages, message=FALSE, warning=FALSE}
@@ -145,7 +147,7 @@ qplot(data = icm, y = value, x = Date,
   colors + titles
 ```
 
-Another visualization consists in stacking the entire series and showing it as an [area][ggplot2-area] of a common space represeting 100% of voting intentions. Be careful with interpretation here: the electorate changes from an election to another, and voting intentions are not actual votes. Slight errors appear at the top of the graph due to rounding approximations in the polling data.
+Another visualization consists in stacking the entire series and showing it as an [area][ggplot2-area] of a common space representing 100% of voting intentions. Be careful with interpretation here: the electorate changes from an election to another, and voting intentions are not votes. Slight errors appear at the top of the graph due to rounding approximations in the polling data.
 
 ```{r icm-stacked}
 # Stacked area plot.
@@ -158,7 +160,7 @@ The graph possibly contains excess information by assuming that voting intention
 
 ```{r icm-bars}
 # Stacked bar plot.
-qplot(data = ddply(icm, .(Year = year(Date), Party), summarize, value = mean(value)), 
+qplot(data = ddply(icm, .(Year = year(Date), Party), summarise, value = mean(value)), 
       fill = Party, color = Party, x = Year, y = value, 
       stat = "identity", geom = "bar") + 
   colors + fcolors + titles

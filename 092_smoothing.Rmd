@@ -7,6 +7,17 @@ In this segment, we show how to draw smooth trends of assault deaths in the Unit
 
 The mathematics of [smoothed splines](http://www.johnmarquess.com/?p=111) involve several methods of computation. When there is a lot of data, we fit local polynomials with `loess`. When there is less data, as with time series over a few decades, a generalized additive model (`gam`) provides a more robust smoother.
 
+```{r packages, message=FALSE, warning=FALSE}
+# Load packages.
+packages <- c("downloader", "ggplot2", "MASS", "reshape", "scales", "splines")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
 ## Step 1: get the data
 
 The routine below will downlod the data and save it for you if you do not already have the data at hand. The first block looks for the BJS data folder and downloads the original data source if necessary.
@@ -19,7 +30,7 @@ if(!file.exists(zip)) {
   # Homicide Trends in the United States, 1980-2008.
   url <- "http://bjs.ojp.usdoj.gov/content/pub/sheets/htus8008.zip"
   # Download ZIP archive.
-  download.file(url, zip)
+  download(url, zip)
 }
 # Unzip directory.
 if(!file.exists("data/htus8008")) {
@@ -54,8 +65,6 @@ names(bjs)
 The next step is to prepare the data by reshaping it to long format, which has one unit of analysis (years), one category of observations (weapon type), and one column of values (homicide counts). We rename the columns to variable names
 
 ```{r bjs-prepare, message=FALSE}
-# Load reshape2 library.
-library(reshape2)
 # Reshape to long format.
 bjs <- melt(bjs, id = "Year")
 # Check result.
@@ -68,33 +77,17 @@ levels(bjs$Weapon)
 bjs$Weapon <- with(bjs, reorder(Weapon, -Count, mean))
 ```
 
-The plot is easy to set up with `ggplot2`: we set the canvas to represent the homicide counts on the vertical y-axis and the year on the horizontal x-axis, and then plot one colored line per weapon category.
+The plot is easy to set up with `ggplot2`: we set the canvas to represent the homicide counts on the vertical y-axis and the year on the horizontal x-axis, and then plot one colored line per weapon category. There's all sort of tweaks that might apply at that stage of the plot. A simple one is to format the vertical y-scale, to show commas every 1,000 units.
 
 ```{r bjs-plot}
 # Plot canvas.
-fig <- ggplot(bjs, aes(y = Count, x = Year))
-# Plot weapon types.
-fig <- fig + geom_line(aes(color = Weapon)) 
-# Plot y-title.
-fig <- fig + ylab("Homicide count")
-# Check result.
-fig
-```
-
-There's all sort of tweaks that might apply at that stage of the plot. A simple one is to edit the vertical y-axis title to make it more informative, as shown above. Another one is to format the vertical y-scale, to show commas every 1,000 units, using a function from the `scales` library, as shown below.
-
-```{r bjs-scales, message=FALSE}
-# Load scales package.
-library(scales)
-# Add commas to y-axis
-fig <- fig + scale_y_continuous(labels = comma)
-# Check result.
-fig
+qplot(data = bjs, y = Count, x = Year, color = Weapon, geom = "point") +
+  geom_line() + ylab("Homicide count") + scale_y_continuous(labels = comma)
 ```
 
 ## Step 3: tabular statistics
 
-To extract whatever statistic you need from the `bjs` dataset, you need to set up a table for it. The quickest way uses `tapply`. This was first shown in the section on [reshaping](42_reshaping.html) and shown again in the section on [descriptive statistics](61_descr.html).
+To extract whatever statistic you need from the `bjs` dataset, you need to set up a table for it. The quickest way uses `tapply`. This was first shown in the section on [reshaping](042_reshaping.html) and shown again in the section on [descriptive statistics](061_description.html).
 
 ```{r bjs-tapply}
 # Average homicide count by weapon type.
@@ -106,8 +99,6 @@ with(bjs, tapply(Count, Weapon, summary))
 Using `ddply` is a bit more syntax-demanding but offers more functionality.
 
 ```{r bjs-table, message=FALSE}
-# Load plyr package.
-library(plyr)
 # Mean and median of homicide counts by weapon type.
 tbl <- ddply(bjs, .(Weapon), summarize, Mean = mean(Count), Median = median(Count))
 # Check result.
@@ -125,7 +116,9 @@ fig <- ggplot(bjs, aes(y = Count, x = Year, group = Weapon, color = Weapon, fill
 fig <- fig + scale_y_continuous(labels = comma) + ylab("Homicide count")
 ```
 
-We now add a smoothed curve to the plot canvas, using a [LOWESS function](https://en.wikipedia.org/wiki/Local_regression).
+We now add a smoothed curve to the plot canvas, using a [LOESS function][loess].
+
+[loess]: https://en.wikipedia.org/wiki/Local_regression
 
 ```{r bjs-loess-curve}
 # Add a LOESS curve.
@@ -136,103 +129,16 @@ fig + geom_smooth() + geom_point(alpha = I(.3))
 
 ## Step 5: cubic spline smoother
 
-A different smoother uses a [generalized additive model](https://en.wikipedia.org/wiki/Generalized_additive_model) to plot the basic cubic spline of the series (see `?gam` and `?ns` for details). The general idea is to predict each data point of the series $x$ at $t_k$ from the vector of regressors $(t_0, t_1, t_2, ..., t_{k-2}, t_{k-1})$, i.e. from the past values of the series.
+A different smoother uses a [generalized additive model][gam] to plot the basic cubic spline of the series (see `?gam` and `?ns` for details). The general idea is to predict each data point of the series $x$ at $t_k$ from the vector of regressors $(t_0, t_1, t_2, ..., t_{k-2}, t_{k-1})$, i.e. from the past values of the series. The `MASS` library provides the `rlm` method, and the `splines` library provides the `ns()` function.
+
+[gam]: https://en.wikipedia.org/wiki/Generalized_additive_model
 
 ```{r bjs-spline, message=FALSE}
-# Load MASS package (provides "rlm" function).
-library(MASS)
-# Load splines package (provides "ns" function).
-library(splines)
 # Different smoother, 3-length knots.
-fig + geom_smooth(method="rlm", formula = y ~ ns(x,3))
+fig + geom_smooth(method = "rlm", formula = y ~ ns(x,3)) + 
+  geom_point(alpha = .75, size = 1)
 ```
 
 Note how the change in smoothing algorithm affects the aspect of the curve for handguns. On the same topic, see [Kieran Healy's plots and code](https://github.com/kjhealy/assault-deaths) on state-by-state trends and the United States vers other OECD countries.
 
-## Exercises
-
-__Application 1.__ Use any time series from the Bureau of Justics Statistics and plot your own smoothed trend. The routine above has downloaded and unzipped all 1980-2008 spreadsheets to your `data/` folder.
-__Application 2.__ Use the [UN Data Explorer](http://data.un.org/Data.aspx?d=UNODC&f=tableCode%3a1) and the code below to download and extract UN data on worldwide homicide rates. Produce plots of geographical regions.
-
-Application 2 is shown using data on intentional homicide rates in South America. The data are imported from a [blog example](http://www.quantumforest.com/2012/02/revisiting-homicide-rates/) by Luis A. Apiolaza. Use the `.encoding="TRUE"` option to deal with Unicode characters.
-
-```{r unodc-data}
-library(RCurl)
-library(ggplot2)
-library(reshape2)
-
-if(!file.exists("data/unodc2010_extract.csv")) {
-  # Get raw data.
-  unodc <- getURL("http://www.quantumforest.com/wp-content/uploads/2012/02/homicides.csv", .encoding="UTF-8")
-  # Turn to text.
-  unodc <- textConnection(unodc)
-  # Read lines.
-  unodc <- readLines(unodc)
-  # Convert to CSV.
-  unodc <- read.csv(text = unodc)
-  # Check for folder.
-  if(!file.exists("data")) dir.create("data")
-  # Save as CSV.
-  write.csv(unodc, file = "data/unodc2010_extract.csv", row.names = FALSE)
-}
-
-# Read as CSV.
-unodc <- read.csv("data/unodc2010_extract.csv")
-# Check first rows.
-head(unodc)
-# Check final rows.
-tail(unodc)
-# Plot main distribution.
-qplot(unodc$rate, geom = "histogram", bin = 5) + xlab("Distribution of homicide rates") + ylab("N")
-```
-
-Some summary statistics can be obtained from a `ddply` transformation, as shown above. The example below shows the average, minimum and maximum homicide rate per country. Use the `na.rm = TRUE` option for the mean-min-max functions.
-
-```{r unodc-table, message=FALSE}
-# Load the plyr library.
-library(plyr)
-# Mean and median of homicide counts.
-tbl <- ddply(unodc, .(country), summarise, mean = round(mean(rate, na.rm = TRUE),1), min = min(rate, na.rm = TRUE), max = max(rate, na.rm = TRUE))
-# Check result.
-tbl
-```
-
-You could actually plot that table, using a pointrange plot with some additional information about the minimum and maximum crime rates experienced in each country over the past decades. The code also shows the use of a heatmap on a time series.
-
-```{r unodc-plot}
-# Load the reshape2 library.
-library(reshape2)
-# Reorder levels.
-tbl$country <- with(tbl, reorder(country, mean))
-# Plot it.
-fig <- ggplot(tbl, aes(x = country, y = mean, ymin = min, ymax = max))
-# Add pointrange lines.
-fig <- fig + geom_pointrange()
-# Pivot graph.
-fig <- fig + coord_flip()
-# Add titles.
-fig <- fig + ylab("Homicide rates 1995-2010\n(min-max ranges, dot at mean)") + xlab("")
-# Add minimum and maximum on the plot.
-fig + 
-  geom_text(label = round(tbl$max, 0), y = tbl$max, hjust = -.25, size = 4) + 
-  geom_text(label = round(tbl$min, 0), y = tbl$min, hjust = 1.25, size = 4)
-# Heatmap.
-ggplot(unodc, aes(x = year, y = country, fill = rate)) + geom_tile() + scale_fill_gradient(low="white", high="red", name = "Homicide rate") + theme_bw()
-```
-
-There's plenty of other ways to look at the data. Make sure to plot a smoothed trend. I stopped coding at the one below.
-
-```{r unodc-spline, warning=FALSE}
-# Load MASS package (provides "rlm" function).
-library(MASS)
-# Load splines package (provides "ns" function).
-library(splines)
-# Plot canvas.
-fig <- ggplot(unodc, aes(y = rate, x = year, group = country, color = country, fill = country))
-# Spline, 2-length knots.
-fig <- fig + geom_smooth(method="rlm", formula = y ~ ns(x, 2), alpha = .25)
-# Check result.
-fig + ylab("Homicide rate per 100,000 population") + xlab("Year")
-```
-
-> __Next week__: [Visualization in space: Maps](100_maps.html).
+> __Next__: [Practice](093_practice.html).
