@@ -16,7 +16,7 @@ require(downloader)
 # Target source.
 source <- "https://raw.github.com/jeromyanglim/oecd_life_analysis/master/oecd-life.csv"
 # Download the dataset.
-if(!file.exists(file <- "data/oecd-life.csv"))
+if(!file.exists(file <- "data/OECD.BLI.csv"))
   download(source, file, mode = "wb")
 # Import the CSV file.
 oecd <- read.csv(file, sep = "\t", stringsAsFactors = FALSE)[1:36, ]

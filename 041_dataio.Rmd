@@ -15,7 +15,7 @@ require(RCurl)
 # Store the address of the spreadsheet.
 link = "https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&output=csv"
 # Create a filename for the dataset.
-file = "data/dkos-us0812.txt"
+file = "data/DKOS.US.0812.txt"
 ```
 
 We now need to get the data from that address, using the `getURL` command from the `RCurl` package to fetch the online spreadsheet from the `dk.link` object in which we stored the link. The `ssl.verifypeer` option is required to [avoid an issue](http://christophergandrud.blogspot.fr/2012/06/update-to-data-on-github-post-solution.html) with the SSL certification used by `HTTPS` links.
@@ -55,13 +55,13 @@ Here's the code to download a dataset that we will use in future classes. Instal
 ```{r qog-basic-dl, results='hide'}
 require(downloader)
 # Download Quality of Government Basic codebook.
-file = "data/qog-basic-codebook.pdf"
+file = "data/QOG.Basic.codebook.pdf"
 if(!file.exists(file)) {
   url = "http://www.qogdata.pol.gu.se/codebook/codebook_basic_20120608.pdf"
   download(url, file, mode = "wb")
 }
 # Download Quality of Government Basic dataset.
-file = "data/qog-basic-cs.csv"
+file = "data/QOG.Basic.CS.csv"
 if(!file.exists(file)) {
   url = "http://www.qog.pol.gu.se/digitalAssets/1373/1373417_qog_basic_cs_csv_120608.csv"
   download(url, file, mode = "wb")

@@ -26,17 +26,17 @@ Multiple linear regression can be used to [model presidential approval][kenworth
 # Load packages.
 require(downloader)
 require(foreign)
-dataset = "data/hibbs.2012.txt"
+dataset = "data/Hibbs.2012.txt"
 # Download the data.
 if(!file.exists(dataset)) {
-  file = "data/hibbs.2012.dta"
+  file = "data/Hibbs.2012.dta"
   if(!file.exists(file))
     download("http://www.douglas-hibbs.com/HibbsArticles/HIBBS-OBAMA-FORECAST-27July2012-WEBPOST.dta", file)
   hibbs <- read.dta(file)
-  write.table(hibbs, dataset)
+  write.table(hibbs, dataset, sep = ",")
 }
 # Load the data.
-hibbs <- read.table(dataset, stringsAsFactors=FALSE)
+hibbs <- read.csv(dataset, stringsAsFactors = FALSE)
 # Subset to election quarters.
 hibbs <- subset(hibbs, !is.na(presvote))
 ```

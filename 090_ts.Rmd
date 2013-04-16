@@ -26,7 +26,7 @@ The data source is imported [from *The Guardian Data Blog*](http://www.guardian.
 # Target data link.
 link = "https://docs.google.com/spreadsheet/pub?key=0AonYZs4MzlZbcGhOdG0zTG1EWkVPOEY3OXRmOEIwZmc&output=csv"
 # Target data file.
-file = "data/icm-polls.txt"
+file = "data/ICM.polls.txt"
 ```
 
 The next code block then quickly checks for the existence of the file on disk, downloads and converts the data to CSV format if it is not found, and opens it with strings (text characters) left as such. The download procedure is handled by the `RCurl` package through an unsigned SSL connection, and its result requires to be converted from raw to structured text, and then to comma-separated values.

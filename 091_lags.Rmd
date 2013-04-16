@@ -31,7 +31,7 @@ Let's first get the data for this example from [Emmanuel Saez](http://elsa.berke
 # Target data link.
 link = "http://elsa.berkeley.edu/~saez/TabFig2011prel.xls"
 # Target data file.
-file = "data/piketty-saez-2011.xls"
+file = "data/Piketty.Saez.2011.xls"
 # Download dataset.
 if (!file.exists(file)) {
   message("Dowloading the data...")

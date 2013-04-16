@@ -25,14 +25,14 @@ require(xlsx)
 # Data preparation
 # ----------------
 
-dataset = "data/imf.weo.2012.txt"
+dataset = "data/IMF.WEO.2012.txt"
 
 # Create the dataset if it does not exist in the data folder. The next block of
 # code is likely to fail for several reasons, so use the provided file instead!
 if(!file.exists(dataset)) {
   # Download XLS spreadsheet. Chris Giles collected the data from the IMF. The
   # data used in the World Economic Outlook 2012 is in the second spreadsheet.
-  file = "data/IMFmultipliers.xls"
+  file = "data/IMF.WEO.2012.xls"
   if(!file.exists(file))
     download("http://interactive.ftdata.co.uk/ft/ftdata/IMFmultipliers.xls", 
              file, mode = "wb")

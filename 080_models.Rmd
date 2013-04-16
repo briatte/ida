@@ -17,7 +17,7 @@ require(downloader)
 # Identify the data file.
 dataset = "data/olympics.2012.txt"
 # Identify the data source.
-file = "https://raw.github.com/briatte/ida/master/data/olympics.2012.txt"
+file = "https://raw.github.com/briatte/ida/master/data/Olympics.100m.txt"
 # Download the data if needed.
 if(!file.exists(dataset)) download(file, dataset)
 # Read the data.

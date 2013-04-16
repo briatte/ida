@@ -3,6 +3,66 @@
 
 # 7. Differences
 
+From a practical perspective, data comes with two measurable dimensions. The first one pertains to the reliability of the variables: with social data, you are rarely looking something that justifies several decimals of precision. The second aspect of measurement lies with the magnitude of the relationships that it expresses, and whether differences and association reaches statistical significance.
+
+We'll start straight away with a real-world example, using fertility rates, measured in average births per woman, and GDP per capita. We will cover issues of statistical confidence, power and inference, using a few bivariate significance tests (tests that measure associations between two variables). Most functions are available as base R commands.
+
+```{r packages, message=FALSE, warning=FALSE}
+# Load packages.
+packages <- c("countrycode", "ggplot2", "reshape", "WDI")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
+# Measuring bivariate associations
+
+The measures that we will use are from [World Bank Indicators][wb] and from United Nations official statistics. The code below shows a quick way to import them from the World Bank website. Despite these being reliable sources, fertility rates build on census and hospital infrastructures that are not reliable on a worldwide basis, and GDP per capita is often measured out of [poor numbers][jerven].
+
+[wb]: http://data.worldbank.org/
+[jerven]: http://mortenjerven.com/poornumbers/
+
+```{r wdi-data}
+file = "data/WDI.extract.txt"
+if(!file.exists(file)) {
+  message("Dowloading the data...")
+  wdi <- WDI(indicator = c("SP.DYN.TFRT.IN", "NY.GDP.PCAP.CD"), start = 2005, end = 2005)
+  write.table(wdi, file)
+} else {
+ wdi <- read.csv(file)
+}
+
+str(wdi)
+```
+
+The second aspect is what most people understand by statistics: whether these entities associate to each other under a certain level of confidence. 
+
+We'll cover that last aspect
+
+```{r wdi-data-prepare}
+wdi$iso3c <- countrycode(wdi$iso2c, "iso2c", "iso3c")
+wdi$Continent <- countrycode(wdi$iso2c, "iso2c", "continent")
+wdi <- na.omit(wdi)
+```
+
+```{r wdi-plot-codes}
+# Scatterplot of fertility and GDP per capita with country codes and continents.
+qplot(data = wdi, y = SP.DYN.TFRT.IN, x = log(NY.GDP.PCAP.CD), 
+      color = Continent, label = iso3c, size = I(4), geom = "text") +
+  labs(y = "Fertility rate", x = "GDP per capita (log units)")
+```
+
+```{r wdi-plot-boxes}
+# Box plot of fertility rate by continent.
+qplot(data = wdi, y = SP.DYN.TFRT.IN, x = Continent, 
+      color = Continent, geom = "boxplot") +
+    labs(y = "Fertility rate", x = "")
+```
+
+
 The summary statistics that you calculate from your sample are generalizable to the whole population if you select a level of confidence and use the sample size to determine the margin of error of your measurements.
 
 There is [more than one reason](https://solomonmessing.wordpress.com/2012/03/04/visualization-series-insight-from-cleveland-and-tufte-on-plotting-numeric-data-by-groups/) not to use bar plots or pie charts. One of them is that you might want to plot an estimate instead of a value, by showing the size of the standard error on the graph.
