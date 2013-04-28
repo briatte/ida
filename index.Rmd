@@ -12,7 +12,6 @@ setwd("~/Documents/Teaching/IDA/")
 # backup code
 zip(paste("admin/backup", Sys.Date(), "zip", sep = "."), dir(pattern = ".Rmd"))
 # clean up
-rm(list = ls())
 file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.html$"))
 file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.md$"))
 ```
@@ -26,6 +25,7 @@ all <- dir(pattern="[0-9]+(.*).Rmd")
 opts_chunk$set(fig.path = "plots/", comment = NA, fig.width = 7, fig.height = 5.3)
 # go go go
 lapply(all, FUN = function(x) {
+  rm(list = ls())
   if(substr(x, 0, 2) != "00")
     purl(x, documentation = 0, output = paste0("code/", gsub("Rmd", "R", x)))
   knit2html(x)
