@@ -44,9 +44,11 @@ file.remove(gsub("Rmd", "md", all))
 file.remove(gsub("Rmd", "html", all))
 ```
 
+- [Syllabus][syllabus] (PDF)
 - [Introduction][001]
 - [Readings][002]
 
+[syllabus]: https://github.com/briatte/ida/raw/master/syllabus.pdf
 [001]: 001_intro.html
 [002]: 002_readings.html
 
