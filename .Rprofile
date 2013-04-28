@@ -26,10 +26,13 @@ if("ggplot2" %in% installed.packages()[,1]) {
   # black and white theme, large text
   theme_set(theme_bw(18))
   theme_update(
-    # add space around axis titles
+    panel.border = element_rect(fill = NA, color = "white"), 
+    panel.grid.major.x = element_line(color = "white"),
+    panel.grid.minor.x = element_line(color = "white"),
+    plot.margin = unit(c(1, 1, 1, 1), "cm"),
+    plot.title = element_text(face = "bold", vjust = 1),
     axis.title.y = element_text(angle = 90, vjust = -.25),
-    axis.title.x = element_text(vjust = -1),
-    plot.margin = unit(c(1,1,1,1), "cm")
+    axis.title.x = element_text(vjust = -1)
   )
 }
 
