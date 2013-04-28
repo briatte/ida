@@ -5,22 +5,31 @@
 
 This section introduces data import and export (or "I/O", for "input/output") with R.
 
+```{r packages, message=FALSE, warning=FALSE}
+# Load packages.
+packages <- c("ggplot2", "RCurl")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
 ## Downloading a CSV file
 
 We are going to use the [Daily Kos Elections' presidential results by congressional district for the 2012 and 2008 elections](http://www.dailykos.com/story/2012/11/19/1163009/-Daily-Kos-Elections-presidential-results-by-congressional-district-for-the-2012-2008-elections?detail=hide), for which the data is accessible as a [Google spreadsheet](https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&single=true&gid=0&output=html). The [Google Docs API documentation](http://code.google.com/apis/spreadsheets/) tells us that we can get the data in CSV format through a URL request that includes the identifier key of the spreadsheet and the format specification `output=csv`.
 
 ```{r dk-url, message=FALSE}
-# Load RCurl package.
-require(RCurl)
-# Store the address of the spreadsheet.
-link = "https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&output=csv"
 # Create a filename for the dataset.
 file = "data/DKOS.US.0812.txt"
+# Store the address of the spreadsheet.
+link = "https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&output=csv"
 ```
 
 We now need to get the data from that address, using the `getURL` command from the `RCurl` package to fetch the online spreadsheet from the `dk.link` object in which we stored the link. The `ssl.verifypeer` option is required to [avoid an issue](http://christophergandrud.blogspot.fr/2012/06/update-to-data-on-github-post-solution.html) with the SSL certification used by `HTTPS` links.
 
-Note that the `getURL` command is in a conditional statement that avoids downloading the same file again and again if you already have it.
+Note that the `getURL()` command is in a conditional statement that avoids downloading the same file again and again if you already have it.
 
 When the file is fetched from online, we convert the result, which is a large text file, to a proper CSV (comma-separated values) file. We specify that we do not want strings converted to factors, i.e. that we do not want a numeric structure for the text variables.
 
@@ -39,20 +48,21 @@ dkos <- read.csv(file, stringsAsFactors = FALSE)
 str(dkos)
 ```
 
-We finally inspect the result by looking at the structure of the dataset with `str` and the first few rows of data with `head`.
+We finally inspect the result by looking at the structure of the dataset with `str` and the first few rows of data with `head`. We finally build a quick plot showing the distribution of Obama vote shares in congressional districts held by Democrat and Republican congressmen.
 
 ```{r dk-inspection}
-# Have a look at the final result.
-str(dkos)
-# List the first data rows.
+# List first data rows.
 head(dkos)
+# Plot distribution of Obama vote share.
+qplot(data = dkos, x = Obama.2012, 
+      fill = Party, colour = Party, alpha = I(.75), geom = "density")
 ```
 
 ## The Quality of Government dataset
 
 Here's the code to download a dataset that we will use in future classes. Install the `downloader` package before running the code (by now, you should know how to install a package).
 
-```{r qog-basic-dl, results='hide'}
+```{r QOG-Basic-data, results='hide'}
 require(downloader)
 # Download Quality of Government Basic codebook.
 file = "data/QOG.Basic.codebook.pdf"
@@ -67,60 +77,28 @@ if(!file.exists(file)) {
   download(url, file, mode = "wb")
 }
 # Open local copy.
-qog <- read.csv(file)
+qog <- read.csv(file, stringsAsFactors = FALSE, header = TRUE)
 ```
 
-## Other formats
+QOG datasets feature a wide range of variables from various sources, including UN data, World Development Indicators and several research datasets. The example below uses data from the Barro and Lee and Maddison studies. Another advantage of Quality of Government data is that it comes with several country identifiers that allow to match external data to it, as we do below by adding continental origin based on ISO-3C country codes.
 
-The `Hmisc` and `foreign` packages do a wonderful job at converting datasets in proprietary formats.
-
-Here's another example using Excel. [The data](http://www.inflationtrends.com/data/Raw_data.xlsx) are about inflation trends in the United States, as [made available](http://www.reddit.com/r/datasets/comments/13ww5b/have_some_data_on_us_food_and_fuel_prices_median/) by user [data_junkie](http://www.reddit.com/user/data_junkie) at Reddit on the [/r/datasets](http://www.reddit.com/r/datasets/) channel. Check out Reddit if you don't know about it already.
-
-Because the data are formatted as an Excel 2007 file (`.xlsx`), you will need to load the [xlsx](http://cran.r-project.org/web/packages/xlsx/) package for the next commands to work. You would usually export the file as a CSV if it's only a single file that you need to import; the method shown below is useful only for larger batch imports.
-
-The import is done through the `read.xlsx` command, with the `header` option set to `FALSE` because the first row of the spreadsheet is not a header (it holds the first row of data, not the variable names). After checking on the import, we subset the `infl` data frame to columns 3 and 4 and rename them.
-
-```{r xlsx-1, message=FALSE}
-# Load the xlsx package.
-require(xlsx)
-# Set target file.
-file = "data/us_inflation.xlsx"
-# Import the data.
-if (!file.exists(file)) {
-  url = "http://www.inflationtrends.com/data/Raw_data.xlsx"
-  download(url, file, mode = "wb")
-}
-# Open local copy.
-infl <- read.xlsx(file, "median_income", header = FALSE)
-# Check the result.
-str(infl)
-# Subset to columns 3 to 4.
-infl <- infl[3:4]
-# Add column names.
-names(infl) <- c("year", "medinc")
+```{r QOG-Basic-plot}
+# Add geographic continents using UN country codes.
+continent <- factor(countrycode(qog$ccodealp, "iso3c", "continent"))
+# Plot log-GDP/capita and female education, weighted by population (2002).
+qplot(data = qog, y = log(wdi_gdpc), x = bl_asyf25, 
+      colour = continent, size = mad_pop /  10^3, geom = "point") +
+  scale_size_area(max_size = 24) + scale_colour_brewer(palette = "Set1") +
+  labs(y = "log GDP/capita", x = "Female schooling years") +
+  theme(legend.position = "none")
 ```
 
-Let's plot the data to take a look. All we have here is median income by year: a single time series. We use `ggplot2` to draw a quick plot as a [simple line](http://docs.ggplot2.org/current/geom_line.html). The command understands the first argument as the x-variable and the second one as the y-variable. The `data` and `geom` arguments do the rest of the job.
+## Scraping
 
-```{r xlsx-2, message=FALSE, warning=FALSE}
-# A quick plot.
-qplot(year, medinc, data = infl, geom = "smooth")
-```
+For our purposes, scraping is the idea of taking information from online sources and to process it into a dataset. [Zarino Zappia](https://scraperwiki.com/profiles/zarino/), the creator of the ScraperWiki website, has written great examples of such scrapers in the Python programming language, as with his [scraper of Occupy protest locations](https://scraperwiki.com/scrapers/occupy_protest_locations/) (using Wikipedia sources; see also the [chronological map](https://views.scraperwiki.com/run/occupy_protest_locations_1/) based on the data).
 
-The end of the series shows a punctuation (you guessed it: welcome to the subprime crisis). Let's focus on the most recent years, then.
+Let's replicate one of his examples and scrape the [life expectancy index](http://hdrstats.undp.org/en/indicators/72206.html) calculated by the United Nations. The [Python scraper](https://scraperwiki.com/scrapers/un_life_expectancy_scores/) can be emulated in R at low programming cost.
 
-```{r xlsx-3, message=FALSE, warning=FALSE}
-# Check how far the series goes.
-summary(infl$year)
-# Plot the last twenty years.
-qplot(year, medinc, data = subset(infl, year > 1992), geom = "smooth")
-```
-
-Finally, since the series seems to increase exponentially, let's have a look at the logged series, where the y-axis uses a logarithmic scale.
-
-```{r xlsx-4, message=FALSE, warning=FALSE}
-# A quick plot with a log scale.
-qplot(year, medinc, data = infl, geom = "smooth", log = "y")
-```
+Examples: scraping [RealClearPolitics](http://is-r.tumblr.com/post/36059986744/gathering-realclearpolitics-polling-trends-with-xml) and [Wikipedia](http://is-r.tumblr.com/post/36945206190/using-xml-to-grab-tables-from-the-web) with `XML`. Read on how scraping and [data APIs](http://stats.stackexchange.com/questions/12670/data-apis-feeds-available-as-packages-in-r) makes [data sociology](http://quanti.hypotheses.org/647/) possible. Here's a nice example: [scraping Craigslist](http://quanti.hypotheses.org/724/) (in French).
 
 > __Next__: [Reshapes and aggregates](042_reshaping.html).

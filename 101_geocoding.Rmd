@@ -3,43 +3,34 @@
 
 # 10.1. Geocoded information
 
-Most of the work can be [done with ggmap](http://www.milanor.net/blog/?p=534). Let's plot [airport traffic](http://www.milanor.net/blog/?p=594).
+Most of the work can be [done with ggmap](http://www.milanor.net/blog/?p=534). Let's plot [airport traffic](http://www.milanor.net/blog/?p=594), using an online tutorial by Max Marchi. It shows how to plot geocoded airports and additional information on Google Maps, from R.
 
-```{r}
-#
-# PACKAGES
-#
-packages <- c("ggmap", "mapproj", "plyr")
+```{r packages}
+packages <- c("ggmap", "plyr")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
     library(x, character.only = TRUE)
   }
 })
+```
 
-# The example below is based on an online tutorial by Max Marchi. It shows how
-# to plot geocoded airports and additional information on Google Maps, from R.
-
-#
-# DATA
-#
-
+```{r airports-data}
 # Prepare the data.
 url = "http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/airports.dat"
-airports <- read.csv(url, header = FALSE)
+if(!file.exists(file <- "data/OF.Airports.txt")) download(url, file, mode = "wb")
+airports <- read.csv(file, header = FALSE)
 names(airports) <- c("ID", "name", "city", "country", "IATA_FAA", "ICAO", "lat", "lon", "altitude", "timezone", "DST")
-head(airports)
-
+str(airports)
 # Prepare more data.
 url = "http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/routes.dat"
-routes <- read.csv(url, header = FALSE)
+if(!file.exists(file <- "data/OF.Routes.txt")) download(url, file, mode = "wb")
+routes <- read.csv(file, header = FALSE)
 names(routes) <- c("airline", "airlineID", "sourceAirport", "sourceAirportID", "destinationAirport", "destinationAirportID", "codeshare", "stops", "equipment")
-head(routes)
+str(routes)
+```
 
-#
-# MAPS
-#
-
+```{r map-europe}
 # Create a simple map of Europe, using Google Maps.
 map <- get_map(location = 'Europe', zoom = 4)
 ggmap(map)
@@ -48,7 +39,9 @@ ggmap(map)
 ggmap(map) + 
   geom_point(data = airports, aes(x = lon, y = lat), 
              color = "orangered", alpha = .5)
+```
 
+```{r}
 # Aggregate trips into number of departures and arrivals.
 departures <- ddply(routes, .(sourceAirportID), "nrow")
 names(departures)[2] <- "flights"
@@ -62,7 +55,10 @@ airportA <- merge(airports, arrivals, by.x = "ID", by.y = "destinationAirportID"
 # Plot airports proportionally to the square root of flights.
 ggmap(map) +
   geom_point(data = airportD, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5)
+```
 
+
+```{r}
 # Prepare a sequence to pass to square root legends.
 seq <- c(1, 5, 10, 50, 100, 500)
 
@@ -70,7 +66,9 @@ seq <- c(1, 5, 10, 50, 100, 500)
 ggmap(map) +
   geom_point(data = airportD, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5) +
   scale_size_area(breaks = sqrt(seq), labels = seq, name = "Departing routes")
+```
 
+```{r}
 # Combine departures and arrivals in a single dataset.
 airportD$type <- "Departures"
 airportA$type <- "Arrivals"
@@ -79,7 +77,9 @@ airportDA <- rbind(airportD, airportA)
 # Map the data.
 ggmap(map) +
   geom_point(data = airportDA, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5)
+```
 
+```{r}
 # Adjust the legend and separate by type of flight.
 ggmap(map) +
   geom_point(data = airportDA, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5) +

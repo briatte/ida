@@ -36,7 +36,7 @@ file = "data/Piketty.Saez.2011.xls"
 if (!file.exists(file)) {
   message("Dowloading the data...")
   # Download spreadsheet.
-  download(link, file)
+  download(link, file, mode = "wb")
 }
 ```
 

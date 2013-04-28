@@ -5,80 +5,16 @@
 
 Datasets do not always come in the exact form in which we want to analyze them: there is often some manipulation to do. Most people do this by hand, which is error-prone and time-consuming. This section covers a few ways to reshape a dataset.
 
+Reshaping can become pretty complex once you go into its deeper mechanics.
+
+![Split-Apply-Combine, by Hadley Wickham](images/split-apply-combine-wickham.png)
+
+![Split-Apply-Combine](images/split-apply-combine-shalizi.png)
+
+Hadley Wickham's `plyr` package contains a command called `ddply` that is simply brilliant. It implements a technique called "[The Split-Apply-Combine Strategy for Data
+Analysis](http://www.jstatsoft.org/v40/i01/paper)". Unfortunately, we won't have the time to go into the details of how it works, but we might end up using it occasionally.
+
 Collapse, merge, [reshape](http://is-r.tumblr.com/post/34556058683/ggtutorial-day-1-using-reshape), etc. Illustrations with  of how , and help [identify patterns](http://is-r.tumblr.com/post/34288940225/congressional-ideology-by-state) in large datasets.
-
-<!-- ## Calculations by groups
-
- https://gastonsanchez.wordpress.com/2012/06/28/5-ways-to-do-some-calculation-by-groups/ -->
-
-## Using `plyr` to summarize aggregate data
-
-More complex manipulations can produce [nice results](http://is-r.tumblr.com/post/33765462561/the-distribution-of-ideology-in-the-u-s-house-with) if you give some thought to the mathematics that you want to get into the plot.
-
-We are going to look at ideology in the U.S. Congress by plotting the [DW-NOMINATE](http://voteview.org/dwnominate.asp) index, using an example byadapted from David Sparks.
-
-```{r dwnominate1, results='hide', message=FALSE}
-library(foreign)
-library(Hmisc)
-
-if (file.exists("data/dwnominate.dta")) {
-  # Open local copy.
-  dwNominate <- read.dta("data/dwnominate.dta")
-} else {
-  print("Cannot find dataset, loading from web...")
-  # Retrieve file.
-  dwNominate <- read.dta("ftp://voteview.com/junkord/HL01111E21_PRES.DTA")
-  # Save local copy.
-  write.dta(dwNominate, file = "data/dwnominate.dta")
-}
-
-# Make a re-coded party variable
-dwNominate$majorParty <- "Other"
-dwNominate$majorParty[dwNominate$party == 100] <- "Democrat"
-dwNominate$majorParty[dwNominate$party == 200] <- "Republican"
-
-# Have a look.
-head(dwNominate)
-```
-
-The code now calls `plyr` to aggregate the observations by major party 
-
-```{r dwnominate2, message=FALSE}
-library(plyr)
-# Letting plyr do the work for us (the weighted wtd.functions are from Hmisc)
-aggregatedIdeology <- ddply(.data = dwNominate,
-                            .variables = .(cong, majorParty),
-                            .fun = summarise,
-                            Median = wtd.quantile(dwnom1, 1/bootse1, 1/2),
-                            q25 = wtd.quantile(dwnom1, 1/bootse1, 1/4),
-                            q75 = wtd.quantile(dwnom1, 1/bootse1, 3/4),
-                            q05 = wtd.quantile(dwnom1, 1/bootse1, 1/20),
-                            q95 = wtd.quantile(dwnom1, 1/bootse1, 19/20),
-                            N = length(dwnom1))
-
-# Convert the major party variable to a factor variable.
-aggregatedIdeology$majorParty <- factor(aggregatedIdeology$majorParty,
-                                        levels = c("Republican", "Democrat", "Other"))
-
-# All of our stats, calculated "by" our .variables.
-head(aggregatedIdeology)
-```
-
-```{r dwnominate3}
-# Neat, simple, clean plot of ideological distributions
-zp1 <- ggplot(aggregatedIdeology,
-              aes(x = cong, y = Median,
-                  ymin = q05, ymax = q95,
-                  colour = majorParty, alpha = N))
-# Plot the 90% CI, inheritting x, y, colour and alpha
-zp1 <- zp1 + geom_linerange(aes(ymin = q25, ymax = q75), size = 1)
-zp1 <- zp1 + geom_pointrange(size = 1/2)  # Plot the IQR
-zp1 <- zp1 + scale_colour_brewer(palette = "Set1")
-zp1 <- zp1 + theme_bw()
-print(zp1)
-```
-
-<!-- This example is about [Congressional ideology](http://research.bshor.com/2012/10/31/scoring-the-2012-congressional-candidates/). -->
 
 ## Using `melt` to collapse data
 
@@ -142,23 +78,85 @@ sm$City=droplevels(sm$City)
 
 Job's done.
 
-## Atrociously brilliant reshaping stuff that we will spare you
+## Using `plyr` to summarize aggregate data
 
-Reshaping can become pretty complex once you go into its deeper mechanics.
+More complex manipulations can produce [nice results](http://is-r.tumblr.com/post/33765462561/the-distribution-of-ideology-in-the-u-s-house-with) if you give some thought to the mathematics that you want to get into the plot.
 
-![Split-Apply-Combine, by Hadley Wickham](images/split-apply-combine-wickham.png)
+We are going to look at ideology in the U.S. Congress by plotting the [DW-NOMINATE](http://voteview.org/dwnominate.asp) index, using an example byadapted from David Sparks.
 
-![Split-Apply-Combine](images/split-apply-combine-shalizi.png)
+```{r dwnominate1, results='hide', message=FALSE}
+library(foreign)
+library(Hmisc)
 
-Hadley Wickham's `plyr` package contains a command called `ddply` that is simply brilliant. It implements a technique called "[The Split-Apply-Combine Strategy for Data
-Analysis](http://www.jstatsoft.org/v40/i01/paper)". Unfortunately, we won't have the time to go into the details of how it works, but we might end up using it occasionally.
+if (file.exists("data/dwnominate.dta")) {
+  # Open local copy.
+  dwNominate <- read.dta("data/dwnominate.dta")
+} else {
+  print("Cannot find dataset, loading from web...")
+  # Retrieve file.
+  dwNominate <- read.dta("ftp://voteview.com/junkord/HL01111E21_PRES.DTA")
+  # Save local copy.
+  write.dta(dwNominate, file = "data/dwnominate.dta")
+}
 
-<!-- copy below to 4.2:
+# Make a re-coded party variable
+dwNominate$majorParty <- "Other"
+dwNominate$majorParty[dwNominate$party == 100] <- "Democrat"
+dwNominate$majorParty[dwNominate$party == 200] <- "Republican"
 
-For our purposes, scraping is the idea of taking information from online sources and to process it into a dataset. [Zarino Zappia](https://scraperwiki.com/profiles/zarino/), the creator of the ScraperWiki website, has written great examples of such scrapers in the Python programming language, as with his [scraper of Occupy protest locations](https://scraperwiki.com/scrapers/occupy_protest_locations/) (using Wikipedia sources; see also the [chronological map](https://views.scraperwiki.com/run/occupy_protest_locations_1/) based on the data).
+# Have a look.
+head(dwNominate)
+```
 
-Let's replicate one of his examples and scrape the [life expectancy index](http://hdrstats.undp.org/en/indicators/72206.html) calculated by the United Nations. The [Python scraper](https://scraperwiki.com/scrapers/un_life_expectancy_scores/) can be emulated in R at low programming cost.
+Exploring this dataset is easy if you need simple measures like raw frequencies. Here, for instance, is the number of different observations in the data for each major party affiliation, and the average DW-NOMINATE score in each group.
 
-Examples: scraping [RealClearPolitics](http://is-r.tumblr.com/post/36059986744/gathering-realclearpolitics-polling-trends-with-xml) and [Wikipedia](http://is-r.tumblr.com/post/36945206190/using-xml-to-grab-tables-from-the-web) with `XML`. Read on how scraping and [data APIs](http://stats.stackexchange.com/questions/12670/data-apis-feeds-available-as-packages-in-r) makes [data sociology](http://quanti.hypotheses.org/647/) possible. Here's a nice example: [scraping Craigslist](http://quanti.hypotheses.org/724/) (in French). -->
+```{r dwnominate-table}
+# Raw frequencies (N) by party.
+table(dwNominate$majorParty)
+# Mean DW-NOMINATE score by party.
+with(dwNominate, tapply(dwnom1, majorParty, mean))
+```
+
+There is more than one way to do [calculations by groups][gs-aggr] in R.
+
+[gs-aggr]: https://gastonsanchez.wordpress.com/2012/06/28/5-ways-to-do-some-calculation-by-groups/ 
+
+The code now calls `plyr` to aggregate the observations by major party 
+
+```{r dwnominate2, message=FALSE, tidy=FALSE}
+library(plyr)
+# Letting plyr do the work for us (the weighted wtd.functions are from Hmisc)
+aggregatedIdeology <- ddply(.data = dwNominate,
+                            .variables = .(cong, majorParty),
+                            .fun = summarise,
+                            Median = wtd.quantile(dwnom1, 1/bootse1, 1/2),
+                            q25 = wtd.quantile(dwnom1, 1/bootse1, 1/4),
+                            q75 = wtd.quantile(dwnom1, 1/bootse1, 3/4),
+                            q05 = wtd.quantile(dwnom1, 1/bootse1, 1/20),
+                            q95 = wtd.quantile(dwnom1, 1/bootse1, 19/20),
+                            N = length(dwnom1))
+
+# Convert the major party variable to a factor variable.
+aggregatedIdeology$majorParty <- factor(aggregatedIdeology$majorParty,
+                                        levels = c("Republican", "Democrat", "Other"))
+
+# All of our stats, calculated "by" our .variables.
+head(aggregatedIdeology)
+```
+
+```{r dwnominate3, fig.width = 9, fig.height = 6}
+# Neat, simple, clean plot of ideological distributions
+p <- ggplot(aggregatedIdeology,
+              aes(x = cong, y = Median, ymin = q05, ymax = q95,
+                  colour = majorParty, alpha = N))
+# Plot the 90% CI, inheritting x, y, colour and alpha.
+p + geom_linerange(aes(ymin = q25, ymax = q75), size = 1) +
+  # Plot the IQR.
+  geom_pointrange(size = 1/2) +
+  scale_colour_brewer(palette = "Set1") +
+  labs(title = "Congressional ideological distribution", x = NULL)
+```
+
+<!-- This example is about [Congressional ideology](http://research.bshor.com/2012/10/31/scoring-the-2012-congressional-candidates/). -->
 
 > __Next__: [Practice](043_practice.html).

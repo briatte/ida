@@ -10,27 +10,52 @@ __Application 2.__ Use the [UN Data Explorer](http://data.un.org/Data.aspx?d=UNO
 Application 2 is shown using data on intentional homicide rates in South America. The data are imported from a [blog example](http://www.quantumforest.com/2012/02/revisiting-homicide-rates/) by Luis A. Apiolaza. Use the `.encoding="TRUE"` option to deal with Unicode characters.
 
 ```{r unodc-data}
-library(RCurl)
 library(ggplot2)
-library(reshape2)
+library(xlsx)
+library(zoo)
+url = "http://www.unodc.org/documents/data-and-analysis/statistics/Homicide/Homicide_data_series.xls"
+if(!file.exists(file <- "data/UNODC.Homicides.xls"))
+  download(, file, mode = "wb")
 
-if(!file.exists("data/unodc2010_extract.csv")) {
-  # Get raw data.
-  unodc <- getURL("http://www.quantumforest.com/wp-content/uploads/2012/02/homicides.csv", .encoding= "UTF-8")
-  # Turn to text.
-  unodc <- textConnection(unodc)
-  # Read lines.
-  unodc <- readLines(unodc)
-  # Convert to CSV.
-  unodc <- read.csv(text = unodc)
-  # Check for folder.
-  if(!file.exists("data")) dir.create("data")
-  # Save as CSV.
-  write.csv(unodc, file = "data/unodc2010_extract.csv", row.names = FALSE)
-}
+# Import XLS, selected columns and rows.
+unodc <- read.xlsx(file, sheetName = "data series", colIndex = c(1:3, 6:22), rowIndex = 7:213)
+# Rename imported variables.
+names(unodc) <- c("Region", "Subregion", "Country", "Homicide", 1995:2010)
+# Inspect top-left data.
+unodc[1:10, 1:5]
 
-# Read as CSV.
-unodc <- read.csv("data/unodc2010_extract.csv")
+# Last observations carried forward for region and subregion.
+unodc[, 1:3] <-na.locf(unodc[, 1:3])
+# Inspect top-left data.
+unodc[1:10, 1:5]
+
+ccode <- c("Australia", "Austria", "Belgium", "Canada", "Denmark",
+         "Finland", "France", "Germany", "Greece", "Hungary",
+         "Ireland", "Italy", "Japan", "Korea", "Luxembourg",
+         "Netherlands", "New Zealand", "Norway", "Portugal", "Spain",
+         "Sweden", "Switzerland", "United Kingdom", "United States")
+
+unodc <- melt(unodc, id = names(unodc)[1:4], variable = "Year")
+str(unodc)
+
+qplot(subset(unodc, Subregion == "Northern Africa"),
+      x = Year, y = Country, size = Count, geom = "point")
+
+# Subset to homicide rates.
+unodc <- subset(unodc, Homicide == "Rate")[, -4]
+# Number of countries per region and subregion.
+with(unodc, table(Region))
+with(unodc, table(Subregion))
+
+
+
+
+unodc <- subset(unodc, Region == "Europe" | Country == "United States of America")
+# Reshape to long.
+unodc <- melt(unodc, id = names(unodc)[1:3], variable_name = "Year")
+# Plot.
+qplot(data = unodc, x = Year, y = value, group = Country, colour = Subregion, se = F, geom = "smooth")
+
 # Check first rows.
 head(unodc)
 # Check final rows.

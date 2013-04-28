@@ -5,7 +5,7 @@
 
 <!-- it's a mess -->
 
-## `for` loops
+## Loops
 
 R understands `for` and `while` loops like many other programming languages. The idea is the same for both operators: allow to repeat an operation a certain number of times. The first example is as trivial as it gets.
 
@@ -36,8 +36,6 @@ for(i in 1:n) {
 sequence
 ```
 
-## `while` loops
-
 A `while` loop operates [almost on the same level](https://en.wikipedia.org/wiki/While_loop). It iterates *until* a condition becomes true, or, if you prefer, *while* a condition is not *yet* true. Be careful: if the condition never becomes true, your loop will iterate [indefinitely](https://en.wikipedia.org/wiki/Infinite_loop).
 
 ```{r while}
@@ -47,6 +45,17 @@ i <- 5
 while(i > 0) {
   print(i <- i - 1)
 }
+```
+
+## Vectorization
+
+Vectorization is a way to replace (most) loops with a more efficient way to handle the data. R contains a lot of vectorized functions that will run [significantly quicker](http://quanttrader.info/public/FasterRCode.pdf) than memory-intensive loops of code. The basic idea is to apply a function to a group of observations rather than telling R to apply that function to $i = { 1, 2, ... n}$, as here:
+
+```{r for-vs-vectorization}
+# The iterative way: square i, square i + 1, square i +2, square i + 3.
+for(i in 1:3) print(i^2)
+# The vectorized way: define i = { 1, 2, 3 } and square each i element.
+(1:3)^2
 ```
 
 ## Extensions

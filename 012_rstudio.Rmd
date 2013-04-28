@@ -165,7 +165,7 @@ qplot(data = iris,
       x = Sepal.Length, 
       y = Petal.Length, 
       color = Species, 
-      size = Petal.Width, 
+      size  = Petal.Width, 
       alpha = I(0.7))
 ```
 
@@ -193,7 +193,7 @@ Help pages open in the bottom-right pane of RStudio. Try these examples out:
 There is also a command to bring up the help pages of an entire package:
 
 ```{r help-packages, eval=FALSE}
-help(package="downloader")
+help(package = "downloader")
 ```
 
 Note, finally, that typing the name of a function without its brackets will also show some form of help, which is generally useful only if you know a bit more about low-level programming in R. Here's a simple example showing how the `median()` function works internally:

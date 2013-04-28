@@ -61,7 +61,7 @@ This first example uses a data frame to store network data. Another approach is 
 library(network)
 library(sna)
 library(ergm)
-source("code/plotg.r")
+source("code/110_plotg.r")
 
 n <- 30
 g <- network(n, directed=FALSE, density=0.05)
@@ -132,13 +132,16 @@ V(g.assocs)$label <- V(g.assocs)$name;
 V(g.assocs)$color <- "Gray";
 V(g.assocs)[unlist(largest.cliques(g.assocs))]$color <- "Red";
 plot(g.assocs, layout=layout.random, vertex.size=4, vertex.label.dist=0);
-# plot(g.assocs, layout=layout.circle, vertex.size=4, vertex.label.dist=0);
+# plot(g.assocs, layout=layout.circle, vertex.size=1, vertex.label.dist=0);
 # plot(g.assocs, layout=layout.fruchterman.reingold, vertex.size=4, vertex.label.dist=0);
 # plot(g.assocs, layout=layout.kamada.kawai, vertex.size=4, vertex.label.dist=0);
 
 # ... and make pretty: 
 # http://rdatamining.wordpress.com/2012/05/17/an-example-of-social-network-analysis-with-r-using-package-igraph/
-V(g.assocs)$degree <- degree(g.assocs)
+V(g.assocs)$label.cex <- 2.2 * V(g.assocs)$degree / max(V(g.assocs)$degree)+ .2
+V(g.assocs)$label.color <- rgb(0, 0, .2, .8)
+V(g.assocs)$frame.color <- NA
+plot(g.assocs, layout = layout.fruchterman.reingold)
 ```
 
 ```{r intheworks, eval=FALSE, include=FALSE}

@@ -3,10 +3,54 @@
 
 # 4. Basic data operators
 
-There is a growing number of online interfaces for data repositories. Have a look, for instance, at [CKAN](http://ckan.org/) and [Data Market](http://datamarket.com/), at [my links](https://github.com/briatte/srqm/wiki/data) or at [Moritz Marbach's links](https://delicious.com/moritz.marbach/data). A very successful interface is the [Gapminder](http://factbased.blogspot.fr/2012/07/convenient-access-to-gapminder-datasets.html) project, which relies on UN data and motion (animated) charts.
+There is a growing number of online interfaces for data repositories. Have a look, for instance, at [CKAN](http://ckan.org/) and [Data Market](http://datamarket.com/), at [my links](https://github.com/briatte/srqm/wiki/data) or at [Quandl](http://www.quandl.com/). A very successful interface is the [Gapminder](http://factbased.blogspot.fr/2012/07/convenient-access-to-gapminder-datasets.html) project, which relies on UN data and motion (animated) charts.
 
-The basic point of today's session will be to open the QOG Basic dataset, and to check whether you can all download data for this course.
+The basic point of today's session will be to open a variety of datasets from different online sources, and to make sure that you know how to convert and import data to prepare it for analysis. The next code block introduces a standard way to check that you have the right packages installed.
 
-Later on, we'll have a look at [World Bank](https://github.com/vincentarelbundock/WDI) datasets (see their [methodology](http://data.worldbank.org/about/data-overview/methodologies) of measurement), and we'll merge QOG and WDI data. Use the `countrycode` package if you need more country code classifications.
+```{r packages, message=FALSE, warning=FALSE}
+# Load packages.
+packages <- c("ggplot2", "WDI")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
+We start by taking a look at [World Bank Indicators](http://data.worldbank.org/about/data-overview/methodologies), using a [dedicated package](https://github.com/vincentarelbundock/WDI). The package comes with the `WDIsearch()` function which you can use to look for other indicators. The example below uses central government debt in percent of gross domestic product for a few high income countries.
+
+```{r WDI-data}
+# Get WDI data.
+wdi <- WDI(country = c("US", "GB", "DE","FR", "GR"), 
+           indicator = "GC.DOD.TOTL.GD.ZS", start = 2005, end = 2011, 
+           extra = TRUE, cache = NULL)
+# Check result.
+str(wdi, vec.len = 1)
+```
+
+The data can be used as such to draw a plot of central government debt in a few countries over the past few years. The `ggplot2` package provides a wealth of options to build, color and annotate plots.
+
+```{r WDI-plot, tidy=FALSE, message=FALSE, warning=FALSE}
+qplot(data = wdi, x = year, y = GC.DOD.TOTL.GD.ZS,
+      colour = country, se = FALSE, geom = c("smooth", "point")) +
+  geom_text(data = subset(wdi, year == 2011), 
+            aes(x = 2011, y = GC.DOD.TOTL.GD.ZS, label = iso2c), hjust = -.5) +
+  scale_x_continuous(breaks = 2005 + 2 * 0:4) +
+  scale_colour_brewer("", palette = "Set1") +
+  labs(title = "Central government debt, total (% of GDP)\n",
+       y = NULL, x = NULL)
+```
+
+To replicate this figure, you will need to save its data into a data table. The standard, universally readable format is comma-separated values (CSV), which can just be saved as a plain text (TXT) file.
+
+```{r WDI-csv-io}
+# Target file location.
+file = "data/WDI.Government.debts.txt"
+# Export CSV file.
+write.csv(wdi, file)
+# Read CSV file again.
+wdi <- read.csv(file)
+```
 
 > Next: [Import/Export](041_dataio.html).

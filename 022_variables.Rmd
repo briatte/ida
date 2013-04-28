@@ -3,32 +3,32 @@
 
 # 2.2. Variables and factors
 
-<!-- not even on factors... -->
-
-In R, everything is an object. The list of objects in memory `ls()` is an object itself, as shown in the example below, which wipes all objects from the workspace:
+In R, everything is an object. The list of objects in memory `ls()` is an object itself, as shown in the example below, which lists and wipes all objects from the workspace:
   
 ```{r clear-workspace, eval=FALSE}
-rm(list=ls());
+# List workspace objects.
+ls()
+# Remove entire workspace.
+rm(list = ls())
 ```
 
 Let's use some real, anonymized data from Autumn 2012. These are the grades from my three mathematics classes in first year. I have removed any student identification, so you have to trust me that these are the real grades. We will use a package to create fake names in replacement.
 
 ```{r mygrades-import}
+# Install downloader package.
+if(!"downloader" %in% installed.packages()[,1]) install.packages("downloader")
+# Load downloader package.
+require(downloader)
+
 # Download the data if needed.
-if (!file.exists("data/grades.txt")) {
-  # Install RCurl package. Remember that R is case-sensitive.
-  install.packages("RCurl")
-  # Load RCurl package.
-  library(RCurl)
+if (!file.exists(file <- "data/grades.txt")) {
   # Locate the data.
   grades <- "https://raw.github.com/briatte/ida/master/data/grades.txt"
   # Download the data.
-  grades <- getURL(grades)
-  # Make the data readable.
-  grades <- textConnection(grades)
+  grades <- download(grades, file, mode = "wb")
 }
 # Load the data.
-grades <- read.table("data/grades.txt", header = TRUE, )
+grades <- read.table("data/grades.txt", header = TRUE)
 # Check result.
 head(grades)
 ```
@@ -37,10 +37,10 @@ Let's add random names.
 
 ```{r grades-with-random-names}
 # Install randomNames package. Remember that R is case-sensitive.
-if(!"randomNames" %in% installed.packages()[,1])
-  install.packages("randomNames")
+if(!"randomNames" %in% installed.packages()[,1]) install.packages("randomNames")
 # Load randomNames package.
-library(randomNames)
+require(randomNames)
+
 # How many rows of data do we have?
 nrow(grades)
 # Let's generate that many random names.
@@ -68,26 +68,27 @@ Data frames are very malleable objects: we can rearrange the variables easily wi
 
 ```{r melt, message=FALSE}
 # Install and load reshape package.
-if(!"reshape" %in% installed.packages()[,1])
-  install.packages("reshape")
-library(reshape)
+if(!"reshape" %in% installed.packages()[,1]) install.packages("reshape")
+require(reshape)
+
 # Reshape data from 'wide' (lots of columns) to 'long' (lots of rows).
 grades <- melt(grades, id.vars = "names")
-# Check result.
-head(grades)
+# Check result to show how each grade is now held on a separate row.
+head(grades[order(grades$names), ])
 ```
 
 Let's finish with a few plots.
 
 ```{r grades-plots}
 # Install and load ggplot2 package.
-if(!"ggplot2" %in% installed.packages()[,1])
-  install.packages("ggplot2")
-library(ggplot2)
+if(!"ggplot2" %in% installed.packages()[,1]) install.packages("ggplot2")
+require(ggplot2)
+
 # Plot all three exams.
 qplot(data = grades, x = value, group = variable, geom = "density")
 # Add color.
-qplot(data = grades, x = value, color = variable, fill = variable, alpha = I(.3), geom = "density")
+qplot(data = grades, x = value, color = variable, fill = variable, 
+      alpha = I(.3), geom = "density")
 ```
 
 Now use the code on this page to:
@@ -96,15 +97,11 @@ Now use the code on this page to:
 
 ```{r nhis-data-import, include=FALSE}
 # Download the data if needed.
-if (!file.exists("data/nhis.txt")) {
-  # Load RCurl package.
-  library(RCurl)
+if (!file.exists(file <- "data/nhis.txt")) {
   # Locate the data.
   nhis <- "https://raw.github.com/briatte/ida/master/data/nhis.txt"
   # Download the data.
-  nhis <- getURL(nhis)
-  # Make the data readable.
-  nhis <- textConnection(nhis)
+  nhis <- download(nhis, file, mode = "wb")
 }
 # Load the data.
 nhis <- read.table("data/nhis.txt", header = TRUE)
@@ -116,7 +113,7 @@ head(nhis)
 
 ```{r nhis-bmi, include=FALSE}
 # Compute BMI vectore.
-bmi <- 703*nhis[ ,4]/nhis[ ,3]^2
+bmi <- 703*nhis[ ,4] / nhis[ ,3]^2
 # Bind to matrix.
 nhis <- cbind(nhis, bmi)
 ```
@@ -132,9 +129,9 @@ qplot(data = nhis, x = bmi, geom = "density")
 
 ```{r nhis-qplot-2, include=FALSE}
 # Another plot. Variable x stands for gender.
-qplot(data = nhis, x = bmi, geom = "density", group = x, color = factor(x))
+qplot(data = nhis, x = bmi, group = x, color = factor(x)), geom = "density")
 # One more plot. Variable y stands for for racial group.
-qplot(data = nhis, x = bmi, geom = "density", group = x, color = factor(x)) +
+qplot(data = nhis, x = bmi, group = x, color = factor(x)), geom = "density") +
   facet_grid(y ~ .)
 ```
 

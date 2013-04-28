@@ -55,16 +55,18 @@ head(x)
 sum(x)
 ```
 
+Re-defining that function under a different name is trivial, except the example below will only accept two elements to show their sum, as defined by the primitive function `+`. The example is trivial insofar as functions are generally designed to capture more complex operations.
+
 ```{r add-function}
-# Define function
-add <- function(x,y) {
+# Define function.
+add <- function(x, y) {
   x + y
 }
 # Example.
-sum(2,4)
+add(2, 4)
 ```
 
-Functional programming focuses on writing functions. Statistical computing courses like [the one taught by Cosma Shalizi](http://www.stat.cmu.edu/~cshalizi/statcomp/) contains tons of interesting examples of such functions. A simple one is shown below to illustrate the principle of recursion.
+Statistical computing courses like [the one taught by Cosma Shalizi](http://www.stat.cmu.edu/~cshalizi/statcomp/) contains tons of interesting examples of such functions. A simple function from that course is shown below to illustrate the principle of recursion in computer code:
 
 ```{r crs-factorial}
 # Calculate a factorial
@@ -85,19 +87,19 @@ my.factorial <- function(n) {
 This course might lead you to write simple functions, but for the moment, let's focus simply on plotting them with the `ggplot2` package, which makes it fairly easy. The example below shows the basic function $y = x$.
 
 ```{r fun-identity}
-qplot(c(0,2), stat="function", fun=identity, geom="point")
+qplot(c(0,2), stat="function", fun = identity, geom = "point")
 ```
 
-Now for the most math-oriented, here's a sine function for your enjoyment.
-
-```{r fun-sin}
-qplot(c(-10,10), stat="function", fun=sin, geom="line")
-```
-
-And finally, a function that will be more useful to us: the exponential.
+Here's a function that will be more useful to us: the exponential.
 
 ```{r fun-exp}
-qplot(c(-10:10), stat="function", fun=exp, geom=c("line","point"))
+qplot(-10:10, stat="function", fun = exp, geom = c("line", "point"))
+```
+
+And finally an example of several embedded functions: the plot first generates a random distribution of $N = 1000$ observations and then draws its empirical cumulative distribution function (ECDF), to which we will come back in due time.
+
+```{r fun-ecdf}
+qplot(rnorm(1000), stat = "ecdf", geom = "step")
 ```
 
 > __Next__: [Conditionals](031_conditionals.html).

@@ -9,7 +9,7 @@ Let's start our session with some revision about opening and preparing data for 
 
 ```{r packages, message=FALSE, warning=FALSE}
 # Load packages.
-packages <- c("ggplot2", "lubridate", "plyr", "reshape", "RColorBrewer", "RCurl")
+packages <- c("ggplot2", "lubridate", "plyr", "reshape2", "RColorBrewer", "RCurl")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -66,7 +66,9 @@ icm$GE <- grepl("RESULT", icm$Sample)
 icm[icm$GE, 2:6]
 ```
 
-A specific aspect of the Guardian/ICM dataset is the presence of dates, which can be converted to be recognized as such. The next code block creates a `Date` variable in the `icm` dataset that will be used in later plots. The `dmy()` function of the `lubridate` package is used to convert the text strings from `dd-mm-yyy` (day-month-year) format into proper dates, called `POSIXct` objects.
+A specific aspect of the Guardian/ICM dataset is the presence of dates, which can be converted to be recognized as such. The next code block creates a `Date` variable in the `icm` dataset that will be used in later plots. The `dmy()` function of the `lubridate` package is used to convert the text strings from `dd-mm-yyy` (day-month-year) format into [proper dates][xkcd-iso], called `POSIXct` objects.
+
+[xkcd-iso]: http://xkcd.com/1179/
 
 ```{r icm-lubridate}
 # Convert dates.

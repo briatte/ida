@@ -7,4 +7,142 @@ The exercise for this week is a quick overview of the main R object classes: vec
 
 This week's exercise is called [`4_browsers.R`](4_browsers.R). Clicking this link will open it in your browser: just __copy-paste the full code into a new R script__, and save it under that name (or one of your choosing) into your `code` folder.
 
+* * *
+
+In this segment, we show how to draw smooth trends of assault deaths in the United States. The data are from the [Bureau of Justice Statistics](http://bjs.ojp.usdoj.gov/). It got shared on the Reddit `/r/datasets/` channel in early 2013.
+
+The mathematics of [smoothed splines](http://www.johnmarquess.com/?p=111) involve several methods of computation. When there is a lot of data, we fit local polynomials with `loess`. When there is less data, as with time series over a few decades, a generalized additive model (`gam`) provides a more robust smoother.
+
+```{r packages, message=FALSE, warning=FALSE}
+# Load packages.
+packages <- c("downloader", "ggplot2", "MASS", "reshape", "scales", "splines")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
+## Step 1: get the data
+
+The routine below will downlod the data and save it for you if you do not already have the data at hand. The first block looks for the BJS data folder and downloads the original data source if necessary.
+
+```{r bjs-zip}
+# Identify ZIP data.
+zip <- "data/htus8008.zip"
+# Download ZIP archive.
+if(!file.exists(zip)) {
+  # Homicide Trends in the United States, 1980-2008.
+  url <- "http://bjs.ojp.usdoj.gov/content/pub/sheets/htus8008.zip"
+  # Download ZIP archive.
+  download(url, zip)
+}
+# Unzip directory.
+if(!file.exists("data/htus8008")) {
+  unzip(zip, exdir = "data/htus8008")
+}
+```
+
+The second block imports one of the CSV files by reading only the valid data lines from it. See the `README` file of the BJS data folder for a list of all series.
+
+```{r bjs-data}
+# Read some data as CSV.
+bjs <- read.csv("data/htus8008/htus8008f42.csv", skip = 11, nrows = 29)
+# Remove last column.
+bjs <- bjs[,1:6]
+# Check first rows.
+head(bjs)
+# Check final rows.
+tail(bjs)
+```
+
+Finally, replace the dots in the name of some weapon types.
+
+```{r bjs-clean}
+# Clean names.
+names(bjs) <- gsub("\\.", " ", names(bjs))
+# Check result.
+names(bjs)
+```
+
+## Step 2: reshape and plot
+
+The next step is to prepare the data by reshaping it to long format, which has one unit of analysis (years), one category of observations (weapon type), and one column of values (homicide counts). We rename the columns to variable names
+
+```{r bjs-prepare, message=FALSE}
+# Reshape to long format.
+bjs <- melt(bjs, id = "Year")
+# Check result.
+head(bjs)
+# Rename variables.
+names(bjs) <- c("Year", "Weapon", "Count")
+# Inspect weapon types.
+levels(bjs$Weapon)
+# Order weapon type by homicide count.
+bjs$Weapon <- with(bjs, reorder(Weapon, -Count, mean))
+```
+
+The plot is easy to set up with `ggplot2`: we set the canvas to represent the homicide counts on the vertical y-axis and the year on the horizontal x-axis, and then plot one colored line per weapon category. There's all sort of tweaks that might apply at that stage of the plot. A simple one is to format the vertical y-scale, to show commas every 1,000 units.
+
+```{r bjs-plot}
+# Plot canvas.
+qplot(data = bjs, y = Count, x = Year, color = Weapon, geom = "point") +
+  geom_line() + ylab("Homicide count") + scale_y_continuous(labels = comma)
+```
+
+## Step 3: tabular statistics
+
+To extract whatever statistic you need from the `bjs` dataset, you need to set up a table for it. The quickest way uses `tapply`. This was first shown in the section on [reshaping](042_reshaping.html) and shown again in the section on [descriptive statistics](061_description.html).
+
+```{r bjs-tapply}
+# Average homicide count by weapon type.
+with(bjs, tapply(Count, Weapon, mean))
+# Full summary statistics for each weapon type.
+with(bjs, tapply(Count, Weapon, summary))
+```
+
+Using `ddply` is a bit more syntax-demanding but offers more functionality.
+
+```{r bjs-table, message=FALSE}
+# Mean and median of homicide counts by weapon type.
+tbl <- ddply(bjs, .(Weapon), summarize, Mean = mean(Count), Median = median(Count))
+# Check result.
+tbl
+```
+
+## Step 4: LOESS smoothing
+
+Let's smooth the series using `ggplot2` to [make it easy](http://docs.ggplot2.org/current/stat_smooth.html). We build a x-y canvas that will plot each weapon type in a different color, and we get the axes and titles ready before plotting.
+
+```{r bjs-loess-canvas}
+# Plot canvas.
+fig <- ggplot(bjs, aes(y = Count, x = Year, group = Weapon, color = Weapon, fill = Weapon))
+# Plot titles and scales.
+fig <- fig + scale_y_continuous(labels = comma) + ylab("Homicide count")
+```
+
+We now add a smoothed curve to the plot canvas, using a [LOESS function][loess].
+
+[loess]: https://en.wikipedia.org/wiki/Local_regression
+
+```{r bjs-loess-curve}
+# Add a LOESS curve.
+fig + geom_smooth()
+# Add faded data points.
+fig + geom_smooth() + geom_point(alpha = I(.3))
+```
+
+## Step 5: cubic spline smoother
+
+A different smoother uses a [generalized additive model][gam] to plot the basic cubic spline of the series (see `?gam` and `?ns` for details). The general idea is to predict each data point of the series $x$ at $t_k$ from the vector of regressors $(t_0, t_1, t_2, ..., t_{k-2}, t_{k-1})$, i.e. from the past values of the series. The `MASS` library provides the `rlm` method, and the `splines` library provides the `ns()` function.
+
+[gam]: https://en.wikipedia.org/wiki/Generalized_additive_model
+
+```{r bjs-spline, message=FALSE, fig.width=12, fig.height=7}
+# Different smoother, 3-length knots.
+fig + geom_smooth(method = "rlm", formula = y ~ ns(x,3)) + 
+  geom_point(alpha = .75, size = 1)
+```
+
 > __Next week__: [Clusters](050_clusters.html).
