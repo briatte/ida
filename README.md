@@ -2,6 +2,14 @@
 
 [Ivaylo Petev](http://ipetev.org/) and [myself](http://f.briatte.org/) use this repository to teach an undergraduate introduction to data analysis. [The course is here](http://f.briatte.org/teaching/ida/). [The syllabus is here](ida/raw/master/syllabus.pdf). It's all very experimental.
 
+The main folder holds R scripts for the IDA course. You can get the scripts from their [online pages](http://f.briatte.org/teaching/ida/) by replacing their `.html` extension by `.R`. There is a [detailed index of the course contents](https://github.com/briatte/ida/wiki/outline) on its wiki, with further stuff on the functions, packages and sources used in the course.
+
+The original R Markdown `.Rmd` files used to put the text and code of the course sessions together are located in the `sources` folder. All files assembled properly with [knitr](http://yihui.name/knitr/) 1.2. The automated knitting routine for the entire course is self-contained to the `index.Rmd` file.
+
+The whole course was coded and taught with [RStudio](http://www.rstudio.com/). The code was ran on R 2.15.2 through R 3.0.0. Most plots use [ggplot2](http://docs.ggplot2.org/current/) code from its non-deprecated syntax base at version 0.9.3.1 (just in case compatibility breaks at some point).
+
+Bits and pieces of the code were posted to [Gist](https://gist.github.com/briatte), [RPubs](http://rpubs.com/briatte) and [Stack Overflow](http://stackoverflow.com/) during development. Thanks to the great R developer and user communities that live online, and which we are now proud to count ourselves in. If you share the spirit of all this, you should join the [Foundation for Open Access Statistics](http://www.foastat.org/).
+
 ## HOWTO
 
 The course is built from a set of files formatted in R Markdown syntax. A few files are called from the `code/` and `data/` folders. Most datasets are downloaded on the fly, so you will need to be online to run this thing properly.

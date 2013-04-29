@@ -7,7 +7,7 @@ This section introduces data import and export (or "I/O", for "input/output") wi
 
 ```{r packages, message=FALSE, warning=FALSE}
 # Load packages.
-packages <- c("ggplot2", "RCurl")
+packages <- c("countrycode", "downloader", "foreign", "ggplot2", "RCurl")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -22,7 +22,7 @@ We are going to use the [Daily Kos Elections' presidential results by congressio
 
 ```{r dk-url, message=FALSE}
 # Create a filename for the dataset.
-file = "data/DKOS.US.0812.txt"
+file = "data/dailykos-votes.txt"
 # Store the address of the spreadsheet.
 link = "https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&output=csv"
 ```
@@ -60,37 +60,45 @@ qplot(data = dkos, x = Obama.2012,
 
 ## The Quality of Government dataset
 
-Here's the code to download a dataset that we will use in future classes. Install the `downloader` package before running the code (by now, you should know how to install a package).
+Here's the code to download the Quality of Government (QOG) dataset that we will use in future classes. Install the `downloader` package before running the code (by now, you should know how to install a package). The first code block will download the QOG codebook if it is not found in the data folder.
 
-```{r QOG-Basic-data, results='hide'}
-require(downloader)
+```{r qog-codebook, results='hide'}
 # Download Quality of Government Basic codebook.
-file = "data/QOG.Basic.codebook.pdf"
+file = "data/qog-codebook.pdf"
 if(!file.exists(file)) {
-  url = "http://www.qogdata.pol.gu.se/codebook/codebook_basic_20120608.pdf"
+  url = "http://www.qogdata.pol.gu.se/codebook/codebook_standard_20110406.pdf"
   download(url, file, mode = "wb")
 }
+```
+
+The next code block checks whether you have the comma-separated values version of the data. If not, it downloads the QOG Standard cross-sectional dataset in Stata format, opens it using the `read.dta()` function from the `foreign` library, and converts it from that source.
+
+```{r qog-data}
 # Download Quality of Government Basic dataset.
-file = "data/QOG.Basic.CS.csv"
+file = "data/qog-cs.txt"
 if(!file.exists(file)) {
-  url = "http://www.qog.pol.gu.se/digitalAssets/1373/1373417_qog_basic_cs_csv_120608.csv"
-  download(url, file, mode = "wb")
+  if(!file.exists(dta <- "data/qog-cs.dta")) {
+    url = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
+    download(url, dta, mode = "wb")
+  }
+  write.csv(read.dta(dta), file)
 }
 # Open local copy.
 qog <- read.csv(file, stringsAsFactors = FALSE, header = TRUE)
 ```
 
-QOG datasets feature a wide range of variables from various sources, including UN data, World Development Indicators and several research datasets. The example below uses data from the Barro and Lee and Maddison studies. Another advantage of Quality of Government data is that it comes with several country identifiers that allow to match external data to it, as we do below by adding continental origin based on ISO-3C country codes.
+QOG datasets feature a wide range of variables from various sources, including UN data, World Development Indicators and several research datasets. The Stata format has the advantage of holding variable and value labels, but we will assume that you have opened the codebook and are working with the full variable definitions.
 
-```{r QOG-Basic-plot}
+The example below uses data from the Barro and Lee and Maddison studies. Another advantage of Quality of Government data is that it comes with several country identifiers that allow to match external data to it, as we do below by adding continental origin based on ISO-3C country codes.
+
+```{r qog-plot}
 # Add geographic continents using UN country codes.
 continent <- factor(countrycode(qog$ccodealp, "iso3c", "continent"))
 # Plot log-GDP/capita and female education, weighted by population (2002).
 qplot(data = qog, y = log(wdi_gdpc), x = bl_asyf25, 
-      colour = continent, size = mad_pop /  10^3, geom = "point") +
+      colour = continent, size = mad_pop / 10^3, geom = "point") +
   scale_size_area(max_size = 24) + scale_colour_brewer(palette = "Set1") +
-  labs(y = "log GDP/capita", x = "Female schooling years") +
-  theme(legend.position = "none")
+  labs(y = "log GDP/capita", x = "Female schooling years")
 ```
 
 ## Scraping
