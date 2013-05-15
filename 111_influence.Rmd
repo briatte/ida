@@ -3,5 +3,106 @@
 
 # 11.1. Measures of influence
 
+Tony Hirst has documented many ways to [examine Twitter networks](http://blog.ouseful.info/tag/twitter/) and content. [One way to do it](http://blog.ouseful.info/2012/10/02/grabbing-twitter-search-results-into-google-refine-and-exporting-conversations-into-gephi/) is to use [Open Refine](http://openrefine.org/) to process the data and then use [Gephi][gephi] to visualize it and [run basic tests](http://blog.ouseful.info/2012/11/09/drug-deal-network-analysis-with-gephi-tutorial/). 
+
+[gephi]: http://gephi.org/
+
+For the sake of software consistency, we will run everything in R, knowing that there are alternatives and that we have time only for a very short overview of what can be done here. We will not have the time to make very elegant plots, but you are free to look at what `ggplot2` can produce in terms of [beautiful network diagrams](http://is-r.tumblr.com/post/38459242505/beautiful-network-diagrams-with-ggplot2).
+
+It used to be pretty straightforward to mine Twitter data with R and the `twitteR` library, and there are nice examples of such exercises on Gaston Sanchez's "[Mining Twitter][gs-mt]" and on the Oxford Internet Institute's "[Network Visualization][oii-nv]". You can still replicate these examples if you authenticate with Twitter, which we will not have the time to do.
+
+[gs-mt]: https://sites.google.com/site/miningtwitter/
+[gs-gh]: https://github.com/gastonstat/Mining_Twitter
+[oii-nv]: http://oxfordinternetinstitute.github.io/InteractiveVis/network/
+[oii-gh]: https://github.com/oxfordinternetinstitute/InteractiveVis
+
+```{r packages, message = FALSE}
+# http://mlg.ucd.ie/aggregation
+# http://mlg.ucd.ie/networks/politics-uk.html
+# http://sigmajs.org/examples/gexf_example.html
+# http://www.inside-r.org/packages/cran/rgexf/docs
+
+require(grid)
+require(network)
+require(ggplot2)
+require(RColorBrewer)
+require(sna)
+```
+
+```{r gc-data}
+# add edgelist example
+x <- read.table("data/gc.ukmps.adjmat.txt", header = TRUE, sep = ";")
+y <- network(x[, -1])
+
+ukmps <- read.table("data/gc.ukmps.nodes.txt", sep = ";", header = TRUE)
+levels(ukmps$community) <- c("Conservative", "Labour", "Lib-Dem", "Other", "SNP")
+```
+
+The code below is a slightly adapted version of [Moritz Marbach's `plotg()` function][mm-plotg] to visualize networks in `ggplot2`. It adds a few graph options and plots the data points (called nodes in social network analysis) in proportion to the sum of their indegree, i.e. incoming links (e.g. mentions and followers), and outdegree, i.e. outgoing links.
+
+[mm-plotg]: http://sumtxt.wordpress.com/2011/07/02/visualizing-networks-with-ggplot2-in-r/
+
+```{r gc-plotg-1, tidy = FALSE}
+plotg <- function(net, value = NULL, classes = NULL, name = "", scheme = NULL,
+                  legend.position = "right", arrow.size = 0.25) {
+  set.vertex.attribute(net, "elements", as.character(classes))
+  # get sociomatrix
+  m <- as.matrix.network.adjacency(net)
+  # get coordinates from Fruchterman-Reingold force-directed placement algorithm
+  plotcord <- data.frame(gplot.layout.fruchtermanreingold(m, NULL)) 
+  colnames(plotcord) = c("X1", "X2")
+  # get edgelist
+  edglist <- as.matrix.network.edgelist(net)
+  edges <- data.frame(plotcord[edglist[,1],], plotcord[edglist[,2],])
+  plotcord$elements <- as.factor(get.vertex.attribute(net, "elements"))
+  # get sum of indegree (incoming links) and outdegree (outgoing links)
+  plotcord$inoutsum <- sapply(net$iel, length) + sapply(net$oel, length)
+  colnames(edges) <- c("X1","Y1","X2","Y2")
+  # get vertice midpoints (not used later on)
+  edges$midX  <- (edges$X1 + edges$X2) / 2
+  edges$midY  <- (edges$Y1 + edges$Y2) / 2
+  # default color scheme
+  if(is.null(scheme)) scheme = brewer.pal(length(unique(classes)), "Set1")
+  # plot the network
+  pnet <- ggplot()  + 
+    # plot vertices (links)
+    geom_segment(aes(x = X1, y = Y1, xend = X2, yend = Y2), 
+                 data = edges, size = 0.25, colour = "grey", 
+                 arrow = arrow(type = "closed", 
+                               length = unit(arrow.size, "cm"))) +
+    # plot nodes (points)
+    geom_point(aes(X1, X2, colour = elements, size = inoutsum),
+               data = plotcord, alpha = 0.75) +
+    # color the nodes
+    scale_colour_manual(name, values = scheme) +
+    scale_x_continuous(breaks = NULL) + 
+    scale_y_continuous(breaks = NULL) +
+    scale_size_area("Connections") +
+    # discard default grid + titles in ggplot2
+    theme(
+      panel.background = element_rect(fill = "white"),
+      panel.grid = element_blank(),
+      axis.title = element_blank(),
+      legend.key = element_rect(colour = "white"),
+      legend.position = legend.position
+    )
+  return(print(pnet))
+}
+```
+
+```{r gc-network-auto, cache = TRUE, fig.width = 9, fig.height = 9}
+# Color scheme.
+ukmps.colors <- brewer.pal(6, "Set1")[c(2, 1, 5, 4, 6)]
+# Function call.
+plotg(y, classes = ukmps$community, name = "Party", scheme = ukmps.colors)
+```
+
+The method used here to position the data points into a [force-directed graph](https://en.wikipedia.org/wiki/Force-based_algorithms) is the Fruchterman-Reingold algorithm. The algorithm contains a random component at its initial stage and therefore generates a different result on each run. Run the following function several times to view the same network under other layouts.
+
+```{r gc-network-inline, cache = TRUE, echo = FALSE, fig.width = 3, fig.height = 3}
+plotg(y, classes = ukmps$community, legend.position = "none", arrow.size = 0, scheme = ukmps.colors)
+plotg(y, classes = ukmps$community, legend.position = "none", arrow.size = 0, scheme = ukmps.colors)
+plotg(y, classes = ukmps$community, legend.position = "none", arrow.size = 0, scheme = ukmps.colors)
+```
 
 > __Next__: [Mining an online network](112_twitter.html).

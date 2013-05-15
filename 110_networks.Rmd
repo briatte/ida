@@ -3,11 +3,17 @@
 
 # 11. Networks
 
+-0 random network / Grey's Anatomy / bipartite
+-1 edges / twitter networks / diseasome
+-2 words
+
+http://is-r.tumblr.com/post/37901909845/everything-is-a-network-featuring-the-sna-package
+
 Networks are a common aspect of your daily life, and since you have been logging your network of friends and colleagues on services like Facebook or [LinkedIn](http://inmaps.linkedinlabs.com/), there are tons of data available. There is also a large amount of research on networks with [tough questions](http://masi.cscs.lsa.umich.edu/~crshalizi/weblog/773.html), such as the analytical difference between homophily (connecting to those like us) and contagion (becoming like our connections). We will stick to description and simple measures of influence.
 
 There are several software options for network analysis, like [Gephi](https://gephi.org/), [Pajek](http://quanti.hypotheses.org/512/) or [VOSON](http://voson.anu.edu.au/) (for hyperlink networks). We will stay in R and use the `sna` and `igraph` libraries, which use [different but compatible formats](http://groupefmr.hypotheses.org/363) to store network data. Some examples will be taken from [Baptiste Coulmont's graphs](http://coulmont.com/index.php?s=igraph) of small cliques.
 
-## Network visualization
+## A random network
 
 ```{r setup-networks, echo=FALSE, message=FALSE}
 require(igraph)
@@ -55,105 +61,15 @@ The network is drawn with the `igraph` library. The plot function processes the 
 plot(graph.data.frame(rnet[rnet$friendship==1,], directed=F), main="Purely Random Connections")
 ```
 
-This first example uses a data frame to store network data. Another approach is to use a sociomatrix, i.e. a matrix of dimension $n * n$ that directly reflects network structure by coding for the absence or presence of a tie as 0 or 1. The `network` library offers that functionality.
+## A fictional network
 
-```{r marbach-ggplot2-network, eval=FALSE, include=FALSE}
-library(network)
-library(sna)
-library(ergm)
-source("code/110_plotg.r")
+http://www.r-bloggers.com/grey%E2%80%99s-anatomy-network-of-sexual-relations/
 
-n <- 30
-g <- network(n, directed=FALSE, density=0.05)
-classes <- rbinom(n,1,0.5) + rbinom(n,1,0.5) + rbinom(n,1,0.5)
-set.vertex.attribute(g, "elements", classes)
+## A real-world network
 
-plotg(g)
-```
+Finally, for a real-world example of network data, turn to Solomon Messing's analysis of [U.S. student affiliations](https://solomonmessing.wordpress.com/2012/09/30/working-with-bipartiteaffiliation-network-data-in-r/). The next pages show other examples to illustrate [measures of influence][111] and [word associations as networks][112].
 
-See the [full-fledged example](https://rulesofreason.wordpress.com/2012/11/05/network-visualization-in-r-with-the-igraph-package/).
-
-Let's now turn to real-world data of [U.S. student affiliations](https://solomonmessing.wordpress.com/2012/09/30/working-with-bipartiteaffiliation-network-data-in-r/).
-
-```{r messing-1, echo=FALSE}
-# Load the "igraph" library
-library(igraph)
-
-# (0) Fetch the source files.
-if(!file.exists("data/mcfarland"))
-  dir.create("data/mcfarland")
-if(!file.exists("data/mcfarland/mag_act96.txt"))
-  download.file("http://dl.dropbox.com/u/25710348/snaimages/mag_act96.txt",
-                "data/mcfarland/mag_act96.txt")
-if(!file.exists("data/mcfarland/mag_act97.txt"))
-  download.file("http://dl.dropbox.com/u/25710348/snaimages/mag_act97.txt",
-                "data/mcfarland/mag_act97.txt")
-if(!file.exists("data/mcfarland/mag_act98.txt"))
-  download.file("http://dl.dropbox.com/u/25710348/snaimages/mag_act98.txt",
-                "data/mcfarland/mag_act98.txt")
-
-# (1) Read in the data files, NA data objects coded as "na" 
-magact96 = read.delim("data/mag_act96.txt", na.strings = "na")
-magact97 = read.delim("data/mag_act97.txt", na.strings = "na")
-magact98 = read.delim("data/mag_act98.txt", na.strings = "na")
-```
-
-There are also ways to [plot network data over maps](http://flowingdata.com/2011/05/11/how-to-map-connections-with-great-circles/), if your data contains vertices of the form $(x_1, y_1) - (x_2,y_2)$ (start-end points) that can be plotted by latitude and longitude.
-
-## Networks of word associations
-
-This section brings a bit of text mining to network analysis, as we will [turn word associations into network ties](http://blog.ynada.com/303) and visualize the result.
-
-```{r puschmann-text-as-network, eval=FALSE, include=FALSE}
-library(tm)
-# Julian Assange, UN address, September 2012.
-# URL: http://wikileaks.org/Transcript-of-Julian-Assange.html
-loc <- "data/assange.txt"
-txt <- scan(file=loc, what="char", sep="\n", encoding="UTF-8");
-
-words <- unlist(strsplit(gsub("[[:punct:]]", " ", tolower(txt)), "[[:space:]]+"));
-g.start <- 1;
-g.end <- length(words) - 1;
-assocs <- matrix(nrow=g.end, ncol=2)
-
-for (i in g.start:g.end)
-{
-  assocs[i,1] <- words[i];
-  assocs[i,2] <- words[i+1];
-#   print(paste("Pass #", i, " of ", g.end, ". ", "Node word is ", toupper(words[i]), ".", sep=""));
-}
-
-# Remove associations to common English words.
-assocs <- subset(assocs,!(assocs[,1] %in% stopwords("en")))
-assocs <- subset(assocs,!(assocs[,2] %in% stopwords("en")))
-
-g.assocs <- graph.data.frame(assocs, directed=F);
-V(g.assocs)$label <- V(g.assocs)$name;
-V(g.assocs)$color <- "Gray";
-V(g.assocs)[unlist(largest.cliques(g.assocs))]$color <- "Red";
-plot(g.assocs, layout=layout.random, vertex.size=4, vertex.label.dist=0);
-# plot(g.assocs, layout=layout.circle, vertex.size=1, vertex.label.dist=0);
-# plot(g.assocs, layout=layout.fruchterman.reingold, vertex.size=4, vertex.label.dist=0);
-# plot(g.assocs, layout=layout.kamada.kawai, vertex.size=4, vertex.label.dist=0);
-
-# ... and make pretty: 
-# http://rdatamining.wordpress.com/2012/05/17/an-example-of-social-network-analysis-with-r-using-package-igraph/
-V(g.assocs)$label.cex <- 2.2 * V(g.assocs)$degree / max(V(g.assocs)$degree)+ .2
-V(g.assocs)$label.color <- rgb(0, 0, .2, .8)
-V(g.assocs)$frame.color <- NA
-plot(g.assocs, layout = layout.fruchterman.reingold)
-```
-
-```{r intheworks, eval=FALSE, include=FALSE}
-# in progress
-# V(g.assocs)$label.cex <- 2.2 * V(g.assocs)$degree / max(V(g.assocs)$degree)+ .2
-# V(g.assocs)$label.color <- rgb(0, 0, .2, .8)
-# V(g.assocs)$frame.color <- NA
-# egam <- (log(E(g.assocs)$weight)+.4) / max(log(E(g.assocs)$weight)+.4)
-# E(g.assocs)$color <- rgb(.5, .5, 0, egam)
-# E(g.assocs)$width <- egam
-
-# http://www.r-bloggers.com/grey%E2%80%99s-anatomy-network-of-sexual-relations/
-```
+[111]: 111_influence.html
+[112]: 112_networkds.html
 
 > __Next__: [Influence](111_influence.html).
