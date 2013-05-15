@@ -77,23 +77,24 @@ a[title = "Course index"] { /* small top link to contents */
 		------
 */
 
-img { /* all images are resized to 540px width */
+img { /* all images have 504px / 72 dpi = 7in width and by default */
 	width: 504px;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-img[alt = "large"] { /* large images go up to 800px width */
-	width: 100%;
-	display: inline;
-	border: 1px solid gray;
+img[alt *= "border"] { /* add border */
+  border: 1px solid gray;
 }
 
-img[alt = "inline"] { /* inline images */
+img[alt *= "auto"] { /* override width */
+	width: 100%;
+}
+
+img[alt *= "inline"] { /* override with and alignment */
 	width: auto;
 	display: inline;
-	border: 1px solid gray;
 }
 
 /*

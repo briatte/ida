@@ -7,6 +7,7 @@ It features some mathematics and statistics as well as some statistical computin
 You will need a laptop with an Internet connection to follow the class.
 
 ```{r prepare-folder, include=FALSE, message=FALSE}
+rm(list = ls())
 # course directory
 setwd("~/Documents/Teaching/IDA/")
 # backup code
@@ -20,12 +21,11 @@ file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.md$"))
 require(knitr)
 # get files
 all <- dir(pattern="[0-9]+(.*).Rmd")
-#all <- all[1:34] # sequence is 2 + session number * 4 
+all <- all[1:18] # sequence is 2 + session number * 4 
 # knitr setup
-opts_chunk$set(fig.path = "plots/", comment = NA, fig.width = 7, fig.height = 5.3)
+opts_chunk$set(fig.path = "plots/", comment = NA, dpi = 100, fig.width = 7, fig.height = 5.3)
 # go go go
 lapply(all, FUN = function(x) {
-  rm(list = ls())
   if(substr(x, 0, 2) != "00")
     purl(x, documentation = 0, output = paste0("code/", gsub("Rmd", "R", x)))
   knit2html(x)
@@ -197,42 +197,42 @@ __Reading:__ Teetor, ch. 14. Focus on detrending and read ARIMA only if you plan
 
 ## 10. [Visualization in space: Maps][100]
 
-__Reading:__ B. Sue Bell *et al.*, "[Current practices in spatial analysis of cancer data mapping health statistics to inform policymakers and the public](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1647272/)", 2006.
+**Special guest**: [Joël Gombin][jg] on reproducible science.
 
-- [Choropleth maps][101]
-- [Spatial dependence][102]
-- **Special guest**: [Joël Gombin][jg] on open science
+[jg]: http://www.joelgombin.fr
+
+<!-- __Reading:__ B. Sue Bell *et al.*, "[Current practices in spatial analysis of cancer data mapping health statistics to inform policymakers and the public](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1647272/)", 2006. -->
+
+- [Geocoding][101]
+- [Choropleths][102]
+<!-- - [Practice][103] -->
 
 [100]: 100_maps.html
-[101]: 101_choropleths.html
-[102]: 102_spatialdep.html
-[jg]: http://www.joelgombin.fr
+[101]: 101_geocoding.html
+[102]: 102_choropleths.html
 
 * * *
 
 ## 11. [Networks][110]
 
-__Reading:__ David Siegel, "[Social Networks in Comparative Perspective](http://opensiuc.lib.siu.edu/cgi/viewcontent.cgi?article=1045&context=pn_wp)", 2011.
+<!-- __Reading:__ David Siegel, "[Social Networks in Comparative Perspective](http://opensiuc.lib.siu.edu/cgi/viewcontent.cgi?article=1045&context=pn_wp)", 2011. -->
+
+**Special guest**: [Alexandre Léchenet][al] on data-driven journalism.
+
+[al]: http://alphoenix.net
 
 - [Measures of influence][111]
-- [Mining an online network][112]
-- **Special guest**: [Alexandre Léchenet][al] on data journalism
+- [Network(d)s][112]
 
 [110]: 110_networks.html
 [111]: 111_influence.html
-[112]: 112_twitter.html
-[al]: http://alphoenix.net
-
+[112]: 112_networkds.html
 
 * * *
 
 ## 12. [Data-driven advances][120]
 
-__Final session__: the last special guest [Samuel Goëta][sg], who will talk about open government in the [Distinguished Lecture Series][dls-talk].
-
-- What is data-driven journalism?
-- What is open data/government?
-- What is reproducible science?
+__Special guest:__: [Samuel Goëta][sg] will speak in the [Distinguished Lecture Series][dls-talk] on open data and open government.
 
 [120]: 120_data.html
 [sg]: http://coulisses-opendata.com
