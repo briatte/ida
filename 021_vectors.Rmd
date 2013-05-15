@@ -3,6 +3,9 @@
 
 # 2.1. Vectors and matrices
 
+[qf-subset]: http://www.quantumforest.com/2013/05/subsetting-data/
+[gs-matrix]: https://gastonsanchez.wordpress.com/2012/08/30/cheat-sheet-of-matrix-operations-in-r/
+
 In R, almost everything is a *vector*. If it's not a vector, it might be a special kind of vector. When something is not a vector, then it's not data and is probably some form of *function*.
 
 What is a vector? A vector is an ordered list of $k$ things. The first thing is item #1 of the vector, the second thing is item #2 and so on. Here's a sequence of $k = 4$ integer values:
@@ -21,20 +24,18 @@ x <- c(1:4)
 is.vector(x)
 ```
 
-So vectors are just lists of values. The values must be of the same type: you cannot mix numbers and text, for instance. If you do, R will convert all items of the vector to a single type (which R calls "mode).
+So vectors are just lists of values. The values must be of the same type: you cannot mix numbers and text, for instance. If you do, R will convert (recycle) all items of the vector to a single type, or "mode", like `numeric` or `character` if there are text elements in the vector.
 
 ```{r vector-items}
 # A vector of numbers.
 x <- c(4, 6, 8)
 # A vector of strings, i.e. characters, i.e. text.
 y <- c("alea", "jacta", "est")
-# A 'mixed' vector will be automatically converted.
+# A 'mixed' vector will be automatically recycled.
 z <- c(4, "a")
 ```
 
-You can see the different types of your objects in the Workspace.
-
-The examples below are also vectors:
+You can see the different types of your objects in the Workspace. The examples below are also vectors:
 
 ```{r vector-ubiquity}
 # Also a vector.
@@ -46,18 +47,12 @@ z <- 1
 # Check.
 is.vector(z)
 # What about...
-m <- cbind(1:3,4:6)
+m <- cbind(1:3, 4:6)
 # What type (or class) is that?
 class(m)
 ```
 
-Okay, that's a *matrix*. A vector is a $1 \times k$ unidimensional matrix. 
-
-So in fact, in R, everything is a matrix, or some special kind of a matrix.
-
-Welcome to R.
-
-Before we move on, also note something: we are going to introduce a lot of terminology below, but we will be relatively liberal in how we use it. This is not a scientific computing class, and we are not computer scientists. We just need to make sure that we grasp the essentials.
+Okay, that's a *matrix*. A vector is a $1 \times k$ unidimensional matrix. So in fact, in R, everything is a matrix, or some special kind of a matrix. Welcome to R. Note that we are going to introduce a lot of terminology below, but this is not a scientific computing class, and we are not computer scientists. We just need to make sure that we grasp the essentials.
 
 ## Working with vectors
 
@@ -95,7 +90,7 @@ exam[1]
 # Select more than one element by listing which values you want.
 exam[1:3]
 # Select a vector of values: show grades of students no. 1, 2, 3 and 5.
-exam[c(1:3,5)]
+exam[c(1:3, 5)]
 # In context, it does makes more sense to simply exclude student no. 4's grade.
 exam[-4]
 # Vectors can be logical.
@@ -104,9 +99,18 @@ exam >= 10
 exam[exam >= 10]
 ```
 
-What is shown here is important: in R, everything is an object. Here, `exam` is an object, just like the list of values that you want to show from it. This logic is everywhere in R. It is harder to learn than less flexible syntaxes, but it provides a lot of power to the user.
+What is shown here is important: in R, everything is an object. Here, `exam` is an object, just like the list of values that you want to show from it. This logic is everywhere in R. It is harder to learn than less flexible syntaxes, but it provides a lot of power to the user. Here's a simple example that creates a logical vector to indicate whether the exam grade is under average:
 
-Think, for instance, of how you can associate a Body Mass Index value with its category (underweight, normal, overweight obese). You could code these categories as a vector of numbers, and as a vector of text labels. Then, you could find which values are below or above a certain value. Here's the [code solution](https://raw.github.com/briatte/ida/master/code/22_bmi_logic.R), using the same BMI function as we just looked at.
+```{r exam-logical}
+# Create a logical vector.
+is_under_average <- exam < 10
+# Get grades under average.
+exam[is_under_average]
+# Get grades above average.
+exam[!is_under_average]
+```
+
+The magic here is that `exam` and `is_under_average` are *two separate elements*, although that brings marvel only to the eyes of those who are fascinated by vectorization: in practice, you will often end up binding the two objects together into a multidimensional vector like a matrix or a data frame, which we cover in the rest of this session.
 
 ## Working with matrixes
 
@@ -147,7 +151,7 @@ grades
 colMeans(grades)
 ```
 
-You can further explore the matrix by inspecting its dimensions and providing names to its rows and columns. These operations are covered in Gaston Sanchez's [cheat sheet of matrix operations](https://gastonsanchez.wordpress.com/2012/08/30/cheat-sheet-of-matrix-operations-in-r/), which you can add to your course bookmarks.
+You can further explore the matrix by inspecting its dimensions and providing names to its rows and columns. These operations are covered in Gaston Sanchez's [cheat sheet of matrix operations][gs-matrix], which you can add to your course bookmarks.
 
 ```{r matrix-dimensions}
 # How many rows?
@@ -166,7 +170,7 @@ rownames(grades) <- id
 grades
 ```
 
-Let's now select elements from the matrix: as with vectors, you have to use square brackets, but since there two dimensions, you have to specify at least one of them. The syntax is "r x c" by convention: the first value specifies rows, the second columns.
+Let's now select elements from the matrix: as with vectors, you have to use square brackets, but since there two dimensions, you have to specify at least one of them. The syntax is "r x c" by convention: the first value specifies rows, the second columns. Understanding this system is crucial because it will guide many [subsetting][qf-subset] operations when we work with datasets.
 
 ```{r matrix-exploration}
 # First row, second cell.

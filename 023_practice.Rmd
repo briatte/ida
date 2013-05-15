@@ -3,34 +3,31 @@
 
 # 2.3. Practice
 
-<!-- see rewrite tag -->
+<p class="info"><strong>Instructions:</strong> this week's exercise is called <code><a href="2_bmi.R">2_bmi.R</a></code>. Download or copy-paste that file into a new R script, then open it and run it with the working directory set as the <code>IDA</code> folder. If you download the script, make sure that your browser preserved its <code>.R</code> file extension.</p>
 
-The exercise for this week is a quick overview of the main R object classes: vectors, matrices, data frames and factors. Each class will be useful to manipulate data in the next sessions, so make sure that you are familiar enough with them.
+```{r run-exercise, include = FALSE, results = 'hide'}
+source("code/2_bmi.R")
+```
 
-Remember that a lot of what we cover here, especially with regards to the basic functioning of R, is also covered in many other tutorials. If you enjoy video tutorials, those by Anthony Damico are short and efficient: try his [2-minute approach to arithmetic in R](http://www.screenr.com/hyT8).
+The exercise for this week is a quick overview of the main R object classes: vectors, matrices, data frames and factors. Each class will be useful to manipulate data in the next sessions, so make sure that you are familiar enough with them. The rest of this page documents the exercise and expands on what you learn from it.
 
-## Body Mass Index
+## Computing the Body Mass Index
 
-This week's exercise is called [`2_bmi.R`](https://raw.github.com/briatte/ida/master/code/2_bmi.R). Clicking this link will open it in your browser: just __copy-paste the full code into a new R script__, and save it under that name (or one of your choosing) into your `code` folder.
 
-All instructions from last week apply. If you download the script, make sure that your browser preserved its `.R` file extension. And of course, do not forget the handbook readings. Next week, we continue manipulating objects and delve a bit deeper into programming full-fledged functions.
-
-<!-- rewrite from here -->
-
-A very important aspect of R syntax is *assignment*. To put some values into an object, you need two things, separated by a right-left arrow (or by a single equal sign if you prefer). The example below creates an object that holds my Body Mass Index, and then evaluates its normality.
+An important aspect of R syntax is *assignment*. As we saw previously, to put some values into an object, you need two things, separated by a right-left arrow (or by a single equal sign if you prefer). The example below creates an object that holds my Body Mass Index (BMI), and then evaluates if it sits in the "normal" range.
 
 ```{r my-bmi}
 # Compute my Body Mass Index.
 bmi <- round(703*134 / (70^2), 1)
 # Create a text object (called a string).
-assessment <- "normal"
+assessment = "normal"
 # Modify the assessment statement if BMI is below 18 or above 25.
-if(bmi < 18) assessment <- "below normal"
-if(bmi > 25) assessment <- "above normal"
+if(bmi < 18) assessment = "below normal"
+if(bmi > 25) assessment = "above normal"
 cat("My BMI is approximately", bmi, ", which is", assessment)
 ```
 
-In fact, it would make more sense to write a Body Mass Index *function*, which is not very difficult if you can survive the additional brackets. We will come back shortly to writing functions next week.
+In fact, it would make more sense to write a Body Mass Index *function*, which is not very difficult if you can survive the additional brackets. We will come back shortly to writing functions next week, but here's a quick example of a BMI function.
 
 ```{r bmi-function}
 # A simple Body Mass Index function.
@@ -48,6 +45,21 @@ bmi(weight = 134, height = 70)
 bmi(weight = 134, height = 70, digits = 0)
 ```
 
-The exercise shows how to create the `bmi.quetelet` function that computes the BMI in its [original metric units](https://en.wikipedia.org/wiki/Body_mass_index), so that you can compute your own value. It also shows you how to plot that single variable function.
+## Computing Quételet's BMI function
+
+The exercise shows how to create the `bmi.quetelet` function that computes the BMI in its [original metric units](https://en.wikipedia.org/wiki/Body_mass_index), so that you can compute your own value. 
+
+```{r bmi-quetelet}
+# Quételet's BMI function in kg/m.
+bmi.quetelet
+# My current BMI (AFAIK!) in kg/m.
+bmi.quetelet(60, 1.75)
+```
+
+## Course reminders
+
+Remember that a lot of what we cover here, especially with regards to the basic functioning of R, is also covered in many other tutorials. If you enjoy video tutorials, those by Anthony Damico are short and efficient: try his [2-minute approach to arithmetic in R](http://www.screenr.com/hyT8).
+
+Most importantly, do not forget the textbook readings. Next week, we continue manipulating objects and delve a bit deeper into programming full-fledged functions: reading from textbooks will train you in performing these operations.
 
 > __Next week__: [Functions](030_functions.html).

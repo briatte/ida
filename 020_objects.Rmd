@@ -3,13 +3,15 @@
 
 # 2. Objects
 
-<!-- some reorganization needed from "let's review syntax" to the end -->
+[wolfram]: https://www.wolframalpha.com/
 
 One of the first things that you want to learn in R is to manipulate objects. In R, an object can be many things: a number, a piece of text, a function, a series of values, a dataset… Let's start with the very fundamentals.
 
-R can manipulate numbers. You certainly suspect that R can compute things pretty much like a scientific calculator or like [Wolfram Alpha](https://www.wolframalpha.com/). For that matter, the following are valid mathematical expressions in R, and the results they return are numerical in nature:
+## Manipulating scalars
 
-```{r calc, results='hide'}
+Let's start with numbers, as you certainly expect R to work like a scientific calculator or like [Wolfram Alpha][wolfram]. The following examples show some mathematical expressions in R. The results they return are numeric in nature and are sometimes called scalars because they fit on a scale, the real number line $\mathbb{R}$.
+
+```{r calc, results = 'hide'}
 # Addition.
 1 + 2
 # Brackets.
@@ -22,11 +24,13 @@ R can manipulate numbers. You certainly suspect that R can compute things pretty
 class(7^2)
 ```
 
-These commands have created objects of a particular class: numeric objects. Train yourself by computing, for instance, $3^3 - 4$ and $e^2$. If you need help to find out how to code an exponential in R, just look for help with `?exp`.
+These commands have created objects of a particular class: numeric objects. Train yourself by computing, for instance, $3^3 - 4$ and $e^2$. If you need help to find out how to code an exponential in R, just look for help with `??exponential`. Note that positive infinity is a number, but try dividing infinity by infinity and the class of the result will be `NaN` (Not a Number).
 
-From mathematics, you also know about logical statements, which can only be true or not-true (false). You can ask R to evaluate a given expression by submitting it as a logical expression, and R will respond with either `TRUE` or `FALSE`:
+## Evaluating logical statements
 
-```{r logical, results='hide'}
+From mathematics, you also know about logical statements, which can only be true or not-true (false). You can ask R to evaluate a given expression by submitting it as a logical expression, and R will respond with a Boolean statement, either `TRUE` or `FALSE`. The next examples will create objects of another class: logical objects.
+
+```{r logical, results = 'hide'}
 # A simple logical test with the natural logarithm.
 log(1) > 0
 # Guess why this result differs from the one above.
@@ -41,7 +45,7 @@ log(1) != 1
 class(1 > 1)
 ```
 
-These commands have created objects of another class: logical objects.
+## Joining text strings
 
 You might also remember manipulating text, or "strings", from our first session. There are several ways to have R "paste" and concatenate strings together, which is useful as soon as you are manipulating data like names or dates. Here are some examples:
 
@@ -51,12 +55,14 @@ You might also remember manipulating text, or "strings", from our first session.
 # Now "pasted" from its elements.
 paste("Hello", "R", "World", "!")
 # Now through raw concatenation.
-cat("Hello", "R", "World", "!")
+cat("Hello", "R", "World", "!\n")
 # And so on. These objects are...
 class("some text")
 ```
 
-R can also handle complex objects that hold more than one value. The example below defines a simple sequence of integer values $(1, 2, 3)$, computes its sum and product, and then compares them with each other:
+## Manipulating vectors
+
+Finally, R can handle multidimensional objects that hold more than one value. In fact, even single results are handled as such: in R, the scalar `r 2` is a one-dimensional numeric vector. The example below defines a simple sequence of integer values $(1, 2, 3)$, computes its sum and product, and then compares them with each other:
 
 ```{r calc-vector, results='hide'}
 # Create a sequence of integers.
@@ -69,7 +75,9 @@ prod(1:3)
 sum(1:3) == prod(1:3)
 ```
 
-The sequence defined above is called a numeric vector. It shows up in your Workspace, along with an indication that it contains integer values and has a dimension of 3. The rest of this session will train you at manipulating such objects.
+The `r 1:3` sequence used above is called a numeric vector. It shows up in your Workspace, along with an indication that it contains integer values and has a dimension of 3. The rest of this session will show you how to manipulate such objects.
+
+## Fixing R syntax
 
 Before we go further into manipulating objects, here's a quick tour of R syntax. You will inevitably make mistakes when writing R commands, which is fine -- nothing (bad) happens when you do. To correct a mistake, simply press `UpArrow` (&uarr;) to go back into your last console input and fix it.
 
@@ -81,7 +89,7 @@ print(Hello World!)
 print("Hello World")
 ```
 
-R syntax can be a bit strange. For some (probably good) reason, the `install.packages` command takes quotes, whereas the `library` command does not.
+R syntax can be a bit strange: for example, for some (probably good) reason, the `install.packages` command takes quotes, whereas the `library` command does not. Quotes can be single or double and are sometimes optional.
 
 ```{r quotes-strangeness, eval=FALSE}
 # This needs quotes.
@@ -90,27 +98,25 @@ install.packages("ggplot2")
 library(ggplot2)
 # But it can.
 library("ggplot2")
-# There's also another (less noisy) way to load packages.
-require(RCurl)
+# Here's a less noisy way to load packages.
+require(ggplot2)
 # Thankfully, it also accepts quotes.
-require("RCurl")
-# Oh, and single quotes can work too...
-library('ggplot2')
-# ... And that covers the whole spectrum of quotes strangeness.
-require('RCurl')
+require("ggplot2")
+# Oh, and single quotes will work too.
+require('ggplot2')
 ```
 
-Note that brackets are omnipresent in R syntax: every function (or command) will require them. The bits written inside the brackets and separated by commas are called arguments. The `cat` command, for instance, accepts any number of arguments.
+Note that brackets are omnipresent in R syntax: every function (or command) will require them. The bits written inside the brackets and separated by commas are called arguments. The `paste0()` function, for instance, accepts any number of arguments. It concatenates (joins) elements into a single character vector, without inserting spaces between them like the `paste()` function does.
 
 ```{r cat}
 # Print some text, the full date and some text again, with no separators.
-cat("Hello World! Today is ", date(), ".", sep = "")
+paste0("Hello World! Today is ", date(), ".")
 ```
+
+The syntax of each command requires a bit of memorization, and lots of practice. Nobody types functional code in R without going through cycles of trial-and-error with it. Programming requires some discipline, some logic and a lot of patience.
 
 A final thing: it is good practice to write code in a certain style. For example, R is insensitive to extra blank space, but it is good practice to use blank space only when it helps to align elements. The [Google R Style Guide](https://google-styleguide.googlecode.com/svn/trunk/google-r-style.html) is a good starting point to learn a few common conventions.
 
 Let's now turn to manipulating simple things in R.
-
-The syntax of each command requires a bit of memorization, and lots of practice. Nobody types functional code in R without going through cycles of trial-and-error with it. Programming requires some discipline, some logic and a lot of patience.
 
 > __Next__: [Vectors and matrices](021_vectors.html).
