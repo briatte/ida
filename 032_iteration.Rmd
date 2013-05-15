@@ -3,40 +3,39 @@
 
 # 3.2. Iteration
 
-<!-- it's a mess -->
+[042]: 042_reshaping.html
+[112]: 112_networkds.html
+[wiki-for]: https://en.wikipedia.org/wiki/For_loop
+[wiki-birthday]: https://en.wikipedia.org/wiki/Birthday_problem#Understanding_the_problem
+[wiki-while]: https://en.wikipedia.org/wiki/While_loop
+[wiki-inf-loop]: https://en.wikipedia.org/wiki/Infinite_loop
+[wiki-brute-force]: https://en.wikipedia.org/wiki/Brute_force_(disambiguation)
+[qt-vectorization]: http://quanttrader.info/public/FasterRCode.pdf
+[xb-usingfor]: https://xianblog.wordpress.com/2013/02/22/le-monde-puzzle-809/
+[cran-foreach]: http://cran.r-project.org/web/packages/foreach/index.html
+[jb-birthday]: https://gist.github.com/jbryer/1712710
 
 ## Loops
 
-R understands `for` and `while` loops like many other programming languages. The idea is the same for both operators: allow to repeat an operation a certain number of times. The first example is as trivial as it gets.
+R understands `for()` and `while()` loops like many other programming languages. The idea is the same for both operators: allow to repeat an operation a certain number of times. The first example is as trivial as it gets: the loop creates one line of output [for each][wiki-for] value of $n = (1, 2, 3)$ passed through `i`. The final element of the string concatenation, `\n`, is a line break.
 
 ```{r for}
 # Set the counter.
-n <- 3
+n = 3
 # Loop n times.
 for(i in 1:n) {
-  cat("Hello!", i, "\n")
+  cat("Sheep #", i, "\n")
 }
 ```
 
-The next example shows how to build a sequence of integers through a `for` loop. Explain the output.
+This example can be easily replaced by a one-line approach that goes straight to applying the function to the three elements of the vector `i`, `r 1:3`. This is possible because the `paste()` function is vectorized. We are introducing this idea straight away because it will replace our apparent need for looping in many circumstances.
 
-```{r r-for-vector}
-# Set the counter.
-n <- 9
-# Create an empty vector.
-sequence <- NULL
-# Loop over 9 values.
-for(i in 1:n) {
-  # Add i to the sequence.
-  sequence <- c(sequence, i)
-  # Mean of the sequence.
-  print(mean(sequence))
-}
-# Show final result.
-sequence
+```{r for-replacement}
+# Vectorized approach.
+paste("Sheep #", 1:3)
 ```
 
-A `while` loop operates [almost on the same level](https://en.wikipedia.org/wiki/While_loop). It iterates *until* a condition becomes true, or, if you prefer, *while* a condition is not *yet* true. Be careful: if the condition never becomes true, your loop will iterate [indefinitely](https://en.wikipedia.org/wiki/Infinite_loop).
+A `while()` loop operates [almost on the same level][wiki-while] as a `for()` loop: it iterates *until* a condition becomes false, or, if you prefer, *while* a condition is true. Be careful: if the condition never becomes false, your loop will iterate [indefinitely][wiki-inf-loop]. This approach is used only under uncertainty conditions that we can safely skip here.
 
 ```{r while}
 # Set the counter.
@@ -47,23 +46,59 @@ while(i > 0) {
 }
 ```
 
+A more common situation of uncertainty is when you are looking for the solution of a "find-a-number" game, which you might be able to solve by trying out all possible numbers through a loop. This is the '[brute-force][wiki-brute-force]' approach, which might be less entertaining than trying to [solve the game][xb-usingfor] in the first place.
+
+Because loops proceed by sequential exhaustion ("do that to $x$", "do it again to $x+1$", "do it again…"), they can become computationally intensive when they iterate through large arrays of values. At that stage, your code needs to be optimized and you might actually need to use several computer processors to parallelize the computing jobs of a loop with the [`foreach` package][cran-foreach].
+
 ## Vectorization
 
-Vectorization is a way to replace (most) loops with a more efficient way to handle the data. R contains a lot of vectorized functions that will run [significantly quicker](http://quanttrader.info/public/FasterRCode.pdf) than memory-intensive loops of code. The basic idea is to apply a function to a group of observations rather than telling R to apply that function to $i = { 1, 2, ... n}$, as here:
+Vectorization is a way to replace (most) loops with a more efficient way to handle the data. R contains a lot of vectorized functions that will run [significantly quicker][qt-vectorization] than memory-intensive loops of code. The basic idea is to apply a function to a group of observations rather than telling R to apply that function to $i = { 1, 2, ... n}$, as here:
 
 ```{r for-vs-vectorization}
-# The iterative way: square i, square i + 1, square i +2, square i + 3.
+# The iterative way: square i, square i + 1, square i + 2, square i + 3.
 for(i in 1:3) print(i^2)
 # The vectorized way: define i = { 1, 2, 3 } and square each i element.
 (1:3)^2
 ```
 
-## Extensions
+The group of observations is the vector `r 1:3`. This is made possible by the support for vector arguments in the square function. Many functions accept vectors as arguments, which makes it possible to compute things efficiently. The next code block shows two functions [by Jason Bryer][jb-birthday] that will accept any vector of numeric arguments for $n$.
 
-You can do amusing things with loops, like [solving number games](https://xianblog.wordpress.com/2013/02/22/le-monde-puzzle-809/). However, as the author of the example writes, it is probably more fun to find the math trick behnd the puzzle than to 'brute-force' the game by trying out all possible numbers through a loop.
+```{r birthday-functions}
+# Solver for the birthday problem between two random dates.
+birthday <- function(n) { 
+  1 - exp( - n^2 / (2 * 365) )
+}
+# Solver for the birthday problem applied to a single date.
+myBirthday <- function(n) {
+	1 - ( (365 - 1) / 365 ) ^ n
+}
+```
 
-Loops have this 'brutal' aspect that actually make them quite unpopular, and they can become memory-hungry when they iterate a lot. R instead privileges the vectorization of iterated functions through [`apply` procedures](http://badhessian.org/loops-matrices-and-apply-functions/) that can often do what you might want to do with a loop.
+These functions are solvers for the [birthday problem][wiki-birthday]: the first one computes the likelihood that two people in a sample of $n$ units share the same day of birth in the year, and the second one computes the likelihood that no birthday is equal to a single date. Both functions are applicable to vectors of increasingly large values, showing how both likelihoods vary in $\mathbb{R}^{+}$.
 
-There is another way to deal more efficiently with loops, which is to run them over several computer processors. If you are running a dual-core computer, you can run loops as parallel computing jobs with the [`foreach` package](http://cran.r-project.org/web/packages/foreach/index.html).
+```{r birthday-vectors}
+# Similar birthdays likelihood function for x = 1 2 3 4.
+birthday(1:4)
+# Single birthday likelihood function for x = 1 2 3 4.
+myBirthday(1:4)
+```
+
+Using that property of the functions, we feed them 200 values and assemble the result as a dataset for plotting. The likelihood of seeing the same birthday twice approaches $1$ at the speed given by $\lim_{n \to \infty} 1 - ( \frac{365 - 1}{365} ) ^ n$, which is exponentialy quick but much less than the likelihood function for any two similar birthdays, a likely event in a classroom-size sample.
+
+```{r birthday-plot-auto, fig.width = 9, fig.height = 6.8, tidy = FALSE}
+require(reshape)
+# Set x values.
+n = 200
+# Create values data frame.
+df = data.frame(n = 1:n, AnyTwoSame = birthday(1:n), SameAsMine = myBirthday(1:n))
+# Collapse the data on x values.
+df = melt(df, id = "n")
+# Plot both functions.
+qplot(data = df, x = n, y = value, colour = variable, geom = "line") + 
+  scale_colour_brewer("", palette = "Set1") +
+  labs(x = "Number of people in group", y = "Probability of each function")
+```
+
+This application of vectorization features a related operation, where the data is "collapsed" by "melting" it to a single column of unique values. We come back to such vectorized operations next week to [reshape][042] datasets by groups, and an example of vectorizing to simplify a coding situation is shown [much later on][112].
 
 > __Next__: [Practice](033_practice.html).
