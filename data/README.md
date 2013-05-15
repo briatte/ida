@@ -50,7 +50,6 @@ To sort:
 | `data/gc.ukmps.nodes.txt`   | Greene and Cunningham's Twitter network data on UK MPs, c. 2012    | 11.3 |
 
 | `wdi.births.2005.txt`       | World Bank fertility rates and GDP/capita for 2005 | 7.0 |
-(*) these files were preprocessed and are self-contained to the course.
 
 Unassigned for now:
 
@@ -58,3 +57,5 @@ Unassigned for now:
 | `bostonmarathon.tweets.txt` | Twitter data circulated on Reddit, 2013      |
 | `jrc.list.txt`              | JRC list |
 | `assange.txt` (*)           | Plain text from a speech by Julian Assange |
+
+(*) these files were preprocessed and are self-contained to the course.

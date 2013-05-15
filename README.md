@@ -16,16 +16,17 @@ If you share the spirit of all this, you should consider joining the [Foundation
 
 The course is built from a set of files formatted in R Markdown syntax. A few files are called from the `code/` and `data/` folders. Most datasets are downloaded on the fly, so you will need to be online to run this thing properly.
 
-* `knitr` geeks: the course is meant to fly as HTML: compile the whole thing by running `index.Rmd`. This is how the routine goes on my end:
-  * knitting `syllabus.Rmd` will first clean up the workspace and all files but `.Rmd` files
+* `.Rprofile` nerds: [check the code](https://github.com/briatte/ida/blob/master/.Rprofile) to help with the course pages:
+  * `ida.load()`: load a set of packages after installing them if needed
+	* `ida.links()`: get R Markdown links in a set of files
+  * `ida.scan()`: find which packages are used in a set of scripts
+  * `ida.prep()`: download course scripts and run the functions above
+* `knitr` geeks: the course is meant to fly as HTML: compile the whole thing by running `ida.build(12)`. This is how the routine goes on my end:
+  * `ida.build()` will first clean up all files but `.Rmd` files
   * it will then run all `.Rmd` scripts, producing `.R` and `.html` files
-  * these files are finally copied to my GitHub Pages folder, which I then commit and sync
-* `.Rprofile` nerds: [check the code](https://github.com/briatte/ida/blob/master/.Rprofile). I have coded a few things to help with accessing course pages:
-  * `ida.load()` is a function to load a set of packages after installing them if needed
-  * `ida.scan()` is a function to find which packages are used in a set of scripts
-  * `ida.prep()` is a function to download course scripts and run the functions above.
-* Typography lovers: the course pages use [Open Sans](https://www.google.com/webfonts#UsePlace:use/Collection:Open+Sans) and [Signika Negative](https://www.google.com/webfonts#UsePlace:use/Collection:Signika+Negative) from Google Web Fonts, where you can also download them.
-  * CSS widths need to be adjusted to better fit the plots.
+  * the files are copied to my GitHub Pages folder, which I then commit and sync
+* Typography lovers: the course pages use [Open Sans](https://www.google.com/webfonts#UsePlace:use/Collection:Open+Sans) and [Signika Negative](https://www.google.com/webfonts#UsePlace:use/Collection:Signika+Negative) from Google Web Fonts.
+  * CSS widths are sometimes adjusted to better fit the plots.
   * Flash embeds (Vimeo and Youtube videos) are 500px-wide.
   * Code chunks should show up nicely formatted by `knitr`.
 
@@ -33,22 +34,21 @@ Everything above got done on a MacBook Air running OS X 10.8 using Google Chrome
 
 ## HISTORY
 
-__Apr-2013:__ added a lot of course content and cleaner plots. Also adding the [R-2013-Lyon](R-2013-Lyon) folder that contains our conference presentation of the course.
+__May-2013__: added more course content and better resolution (100dpi) for all plots.
 
-__Mar-2013:__ the course structure has been reviewed: less files, more code, tons of new examples and exercises. Let us know if you like it, or if anything breaks!
+__Apr-2013:__ added a lot of course content and cleaner plots. Also adding the [R-2013-Lyon](R-2013-Lyon) folder for a conference presentation on the course.
 
-__Feb-2013:__ the `.Rprofile` functions are now much more efficient, and the `knitr` routine has been slightly improved. The code is getting tidier in the early sessions.
+__Mar-2013:__ reviewed course structure: less files, more code, tons of new examples and exercises.
 
-__Jan-2013:__ all files are now chained to each other via navigational links. The `.Rprofile` starter file contains a utility to install and load packages. First code release.
+__Feb-2013:__ more efficient `.Rprofile` functions and improved `knitr` routine, tidier code on the early sessions.
+
+__Jan-2013:__ first release.
 
 ## TODO
 
-* Code:
-  * straighten up usage of download routines with `downloader` and `RCurl`
-  * acknowledge authors in `code/README` for all additional functions
-* Course:
-  * tidy up code for all sessions
-  * add setup instructions and homework (exercises, assignments, grading scheme)
+* finish writing up examples
+* tidy up code for all sessions
+* add coursework instructions
 
 > First release: January 2013.  
-> Last revised: April 2013.
+> Last revised: May 2013.

@@ -3,48 +3,9 @@
 # Introduction to Data Analysis
 
 This course is an introduction to analyzing data with the [R](http://www.r-project.org/) software. 
-It features some mathematics and statistics as well as some statistical computing and data visualization. 
-You will need a laptop with an Internet connection to follow the class.
+It features some mathematics and statistics as well as some statistical computing and data visualization. You will need a laptop with an Internet connection to follow the class.
 
-```{r prepare-folder, include=FALSE, message=FALSE}
-rm(list = ls())
-# course directory
-setwd("~/Documents/Teaching/IDA/")
-# backup code
-zip(paste("admin/backup", Sys.Date(), "zip", sep = "."), dir(pattern = ".Rmd"))
-# clean up
-file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.html$"))
-file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.md$"))
-```
-
-```{r run-course, include=FALSE, message=FALSE}
-require(knitr)
-# get files
-all <- dir(pattern="[0-9]+(.*).Rmd")
-all <- all[1:18] # sequence is 2 + session number * 4 
-# knitr setup
-opts_chunk$set(fig.path = "plots/", comment = NA, dpi = 100, fig.width = 7, fig.height = 5.3)
-# go go go
-lapply(all, FUN = function(x) {
-  if(substr(x, 0, 2) != "00")
-    purl(x, documentation = 0, output = paste0("code/", gsub("Rmd", "R", x)))
-  knit2html(x)
-})
-# get HTML
-html <- dir(pattern="(index|[0-9]{3,}_\\w{1,}).html|style.css")
-# get code
-code <- dir("code", pattern="([0-9]{1,}_\\w+).R$")
-# set path
-path <- "~/Documents/Code/Websites/briatte.github.com/teaching/ida"
-# copy to website
-file.copy(html, path, overwrite = TRUE)
-if(length(code) > 0) file.copy(paste0("code/", code), path, overwrite = TRUE)
-# clean up
-file.remove(gsub("Rmd", "md", all))
-file.remove(gsub("Rmd", "html", all))
-```
-
-- [Syllabus][syllabus] (PDF)
+- [Syllabus][syllabus]
 - [Introduction][001]
 - [Readings][002]
 
@@ -205,11 +166,12 @@ __Reading:__ Teetor, ch. 14. Focus on detrending and read ARIMA only if you plan
 
 - [Geocoding][101]
 - [Choropleths][102]
-<!-- - [Practice][103] -->
+- [Practice][103]
 
 [100]: 100_maps.html
 [101]: 101_geocoding.html
 [102]: 102_choropleths.html
+[103]: #
 
 * * *
 
@@ -223,10 +185,12 @@ __Reading:__ Teetor, ch. 14. Focus on detrending and read ARIMA only if you plan
 
 - [Measures of influence][111]
 - [Network(d)s][112]
+- [Practice][113]
 
 [110]: 110_networks.html
 [111]: 111_influence.html
 [112]: 112_networkds.html
+[113]: #
 
 * * *
 
@@ -235,6 +199,7 @@ __Reading:__ Teetor, ch. 14. Focus on detrending and read ARIMA only if you plan
 __Special guest:__: [Samuel Goëta][sg] will speak in the [Distinguished Lecture Series][dls-talk] on open data and open government.
 
 [120]: 120_data.html
+
 [sg]: http://coulisses-opendata.com
 [dls-talk]: https://www.facebook.com/events/123760981144191/
 

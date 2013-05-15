@@ -1,5 +1,5 @@
 ##
-## IDA STARTUP FILE 0.3 (2013-02-26)
+## IDA STARTUP FILE 0.4 (2013-05-15)
 ##
 
 require(utils, quietly = TRUE)
@@ -34,6 +34,66 @@ if("ggplot2" %in% installed.packages()[,1]) {
     axis.title.y = element_text(angle = 90, vjust = -.25),
     axis.title.x = element_text(vjust = -1)
   )
+}
+
+##
+## ida.build(): knit the course from R Markdown to HTML
+##
+
+ida.build <- function(session = 0, backup = TRUE, html = TRUE) {
+  require(knitr)
+  
+  # knitr setup
+  opts_chunk$set(fig.path = "plots/", 
+                 comment = NA, 
+                 dpi = 100, 
+                 fig.width = 7, 
+                 fig.height = 5.3)
+  
+  # set paths
+  repo <- "/Users/fr/Documents/Teaching/IDA"
+  path <- "/Users/fr/Documents/Code/Websites/briatte.github.com/teaching/ida"
+  bkup <- paste("admin/backup/ida", Sys.Date(), "zip", sep = ".")
+  
+  # set course directory
+  setwd(path)
+  setwd(repo)
+  stopifnot(getwd() == repo)
+  
+  # backup code
+  if(backup) zip(bkup, dir(pattern = ".Rmd"))
+  
+  # clean up
+  file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.html$"))
+  file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.md$"))
+  
+  # get files
+  all <- dir(pattern="[index|0-9]+(.*).Rmd")
+  all <- all[1:(2 + 4*session)]
+  
+  # run course
+  lapply(all, FUN = function(x) {
+    # do not script the first pages or the index
+    if(!substr(x, 0, 2) %in% c("00", "in"))
+      purl(x, documentation = 0, output = paste0("code/", gsub("Rmd", "R", x)))
+    # htmlify
+    knit2html(x)
+  })
+
+  if(html) {
+    # collect HTML
+    html <- dir(pattern="(index|[0-9]{3,}_\\w{1,}).html|style.css")
+    # collect code
+    code <- dir("code", pattern="([0-9]{1,}_\\w+).R$")
+    
+    # copy to website
+    file.copy(html, path, overwrite = TRUE)
+    if(length(code)) file.copy(paste0("code/", code), path, overwrite = TRUE)
+    
+    # clean up
+    file.remove(gsub("Rmd", "md", all))
+    file.remove(gsub("Rmd", "html", all))
+  }
 }
 
 ##
