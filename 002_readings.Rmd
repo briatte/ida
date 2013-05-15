@@ -3,21 +3,25 @@
 
 # Readings
 
-This section documents the list of handbooks and optional readings that you can find in the course syllabus. We cover [online help](03_links.html) and [internal R documentation](13_help.html) at later stages.
+This section documents the list of handbooks and optional readings that you can find in the [course syllabus][syllabus]. We will cover [internal R documentation][012] and [online help][013] in the early stages of the course itself.
+
+[syllabus]: https://github.com/briatte/ida/raw/master/syllabus.pdf
+[012]: 012_rstudio.html
+[013]: 013_practice.html
 
 ## Course handbooks
 
- [![inline](images/book-kabacoff.jpg)](http://www.manning.com/kabacoff/) [![inline](images/book-teetor.gif)](http://shop.oreilly.com/product/9780596809164.do) [![inline](images/book-urdan.jpg)](http://www.routledge.com/books/details/9780415872911/)
+ [![border-inline](images/book-kabacoff.jpg)](http://www.manning.com/kabacoff/) [![border-inline](images/book-teetor.gif)](http://shop.oreilly.com/product/9780596809164.do) [![border-inline](images/book-urdan.jpg)](http://www.routledge.com/books/details/9780415872911/)
 
 - Robert Kabacoff, *[R in Action](http://www.manning.com/kabacoff/)* (Manning 2011)
 - Paul Teetor, *[R Cookbook](http://shop.oreilly.com/product/9780596809164.do)* (O'Reilly 2011)
 - Timothy Urdan, *[Statistics in Plain English](http://www.routledge.com/books/details/9780415872911/)* (Routledge 2010)
 
-Handbook chapters are assigned weekly to establish a learning baseline, and independent study of online material is greatly encouraged. All chapters should be read *after* each session.
+Handbook chapters are assigned weekly to establish a learning baseline, and independent study of online material is greatly encouraged. All chapters should be read *after* each session to expand on the course material.
 
 ## Additional readings
 
-[![inline](images/book-chang.gif)](http://shop.oreilly.com/product/0636920023135.do) [![inline](images/book-pace.jpg)](http://www.apress.com/9781430245544) [![inline](images/book-yau.png)](http://book.flowingdata.com/)
+[![border-inline](images/book-chang.gif)](http://shop.oreilly.com/product/0636920023135.do) [![border-inline](images/book-pace.jpg)](http://www.apress.com/9781430245544) [![border-inline](images/book-yau.png)](http://book.flowingdata.com/)
 
 - Winston Chang, *[R Graphics Cookbook](http://shop.oreilly.com/product/0636920023135.do)* (O'Reilly 2012)
 - Larry Pace, *[Beginning R](http://www.apress.com/9781430245544)* (Apress 2012)
@@ -31,16 +35,16 @@ Finally, these books go further than what we will explore, but serve as good exa
 
 ## Tutorials
 
-There's tons of R tutorials out there. [Here's a good one](https://files.nyu.edu/dm141/public/tutdoc/R_intro/html/Introduction%20to%20R.xhtml). [Here's another good one](http://compdiag.molgen.mpg.de/ngfn/docs/2003/jan/R-intro.pdf). In these pages, we do our best to document the R software by example, but you are very welcome to find more relevant resources that better fit your interests.
+This course is our best effort to document empirical data analysis with R by example, but you are very welcome to find more relevant resources that better fit your interests. There's tons of R tutorials out there: [here's a good one](https://files.nyu.edu/dm141/public/tutdoc/R_intro/html/Introduction%20to%20R.xhtml), and [here's another good one](http://compdiag.molgen.mpg.de/ngfn/docs/2003/jan/R-intro.pdf).
 
-These tutorials will teach you something new every time you read them:
+From our experience, these tutorials will teach you something new every time you read them:
 
 - Winston Chang, [Cookbook for R](http://wiki.stdout.org/rcookbook/) (very good on graphics)
 - Robert Kabacoff, [Quick-R](http://www.statmethods.net/) (our favourite reference)
 - Chi Yau, [R-Tutor](http://www.r-tutor.com/) (includes basic and more complex techniques)
 - UCLA, [Resources to help you learn and use R](http://www.ats.ucla.edu/stat/r/) (stats and more)
 
-You can see from the links above that R is being taught a bit everywhere in the United States and increasingly in Europe. There are a few initiatives in France, including courses at Sciences Po and a [user group](https://fltaur.wordpress.com/) run by [Ensae](http://www.ensae.fr/) and [Insee](http://www.insee.fr/fr/) users.
+You can see from the links above that R is being taught a bit everywhere in the United States and increasingly in Europe. There are a few initiatives in France, including courses at Sciences Po and a few R user groups (RUGs), like the [Fl\tauR](https://fltaur.wordpress.com/) group run by [Ensae](http://www.ensae.fr/) and [Insee](http://www.insee.fr/fr/) users.
 
 If you like video tutorials, we will link to a few of them, and in particular:
 
@@ -51,10 +55,12 @@ If you like video tutorials, we will link to a few of them, and in particular:
 
 ## Blogs
 
-In addition to R tutorials, there are [R blogs](http://www.r-bloggers.com/) and online communities where R users can share questions and answers about the software. Check out [Cross Validated](http://stats.stackexchange.com/questions/tagged/r) and [Stack Overflow](http://stackoverflow.com/questions/tagged/r), and feel free to sign up (mention the course if you request help on homework).
+In addition to R tutorials, there are [R blogs](http://www.r-bloggers.com/) and online communities like [Stack Overflow](http://stackoverflow.com/questions/tagged/r) where R users can share questions and answers about the software. Check also a few data and stats communities like [Cross Validated](http://stats.stackexchange.com/questions/tagged/r) or the [/r/datasets][reddit-datasets] channel at Reddit.
+
+[reddit-datasets]: [reddit-datasets]: http://www.reddit.com/r/datasets
 
 The visualization component of the course can be explored through [Alberto Cairo's selection of resources](http://www.thefunctionalart.com/2012/10/recommended-readings-for-infographics.html) in that area, which branches with infographics. The most passionate are referred to John P. Boyd's teaching notes on [Scientific Visualization and Information Architecture](http://www-personal.umich.edu/~jpboyd/ENG503.html).
 
-The [SRQM blog](http://srqm.tumblr.com/), created for [another course](http://f.briatte.org/teaching/quanti/), does its best to deliver a regular amount of illustrated links on statistical analysis for the social sciences as well as on data visualization and other related themes.
+Last, the [SRQM blog](http://srqm.tumblr.com/), created for [another course](http://f.briatte.org/teaching/quanti/) that we teach together with Ivaylo, does its best to deliver a regular amount of illustrated links on statistical analysis for the social sciences as well as on data visualization and other related themes.
 
 > __Next__: [Setup](010_setup.html).
