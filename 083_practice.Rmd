@@ -11,15 +11,15 @@
 [imf-weo]: http://www.imf.org/external/pubs/ft/weo/2012/02/pdf/text.pdf
 [imf-data]: https://raw.github.com/briatte/ida/master/data/imf.weo.2012.txt
 
-<p class="info"><strong>Instructions:</strong> you should work on this exercise with one or two other classmates. Run the entire code as you read through this page in order to replicate the plots and model, and then write a <strong>one-page answer</strong> to the final question on the relevance of the IMF analysis. Refer to your handbook readings for additional explanations on linear regression.</p>
+<p class="info"><strong>Instructions:</strong> this week's exercise is called <code><a href="8_imf.R">8_imf.R</a></code>. Download or copy-paste that file into a new R script, then open it and run it with the working directory set as the <code>IDA</code> folder. If you download the script, make sure that your browser preserved its <code>.R</code> file extension.</p>
 
-```{r imf-exercise, include=FALSE, message=FALSE}
+```{r imf-exercise, include = FALSE, message = FALSE}
 source("code/8_imf.R")
 ```
 
-This week's exercise is based on an article published by Chris Giles in the *Financial Times*. In "[Robustness of IMF data scrutinised][ft-giles-1]" (October 12, 2012), Giles raises an issue with recent IMF data on the relationship between fiscal consolidation (i.e. austerity politics) and growth forecasts. This graph expresses the gist of the problem:
+This week's exercise is based on an article published by Chris Giles in the *Financial Times*. In "[Robustness of IMF data scrutinised][ft-giles-1]" (October 12, 2012), Giles raises an issue with recent IMF data on the relationship between fiscal consolidation (i.e. austerity politics) and growth forecasts. The graphs below express the gist of the problem:
 
-[![FT graph](http://im.ft-static.com/content/images/42f72894-14b6-11e2-8cf2-00144feabdc0.img)][ft-giles-1]
+[![FT graph auto](http://im.ft-static.com/content/images/42f72894-14b6-11e2-8cf2-00144feabdc0.img)][ft-giles-1]
 
 The main theme here is the size of the (Keynesian) [fiscal multipliers][ft-fm] applied by governments in reaction to the current economic crisis. Giles further documented the issue in a blog post, "[Has the IMF proved multipliers are really large? (wonkish)][ft-giles-2]", in which he explains being puzzled by the following graph, taken from the last [IMF World Economic Outlook report][imf-weo] (p. 43):
 
@@ -27,38 +27,38 @@ The main theme here is the size of the (Keynesian) [fiscal multipliers][ft-fm] a
 
 In a later post, "[The IMF and multipliers, again][ft-giles-3]" (January 7, 2013), Giles explains that the controversy over that graph led to additional analysis that put the original diagnostic of the World Economic Outlook report into question. Let's run our own analysis, which uses the IMF data provided by Giles and draws on the [replication code by Chris Hanretty][hanretty].
 
-## Step 1: preparation
+## Step 1: Preparation
 
-Form student teams or groups and read all references cited above. Then create the `imf` dataset by downloading the [`8_imf.R`](8_imf.R) script: install any missing packages and run the first segment of the code (alternately, just download the [`imf.weo.2012.txt`][imf-data] dataset). The segment ends with a scatterplot called `imf.plot` that replicates the base structure of the IMF graph:
+Start by reading all references cited above, then create the `imf` dataset by downloading the [`8_imf.R`](8_imf.R) script: install any missing packages and run the first segment of the code (alternately, just download the [`imf.weo.2012.txt`][imf-data] dataset). The segment ends with a scatterplot called `imf.plot` that replicates the base structure of the IMF graph:
 
-```{r imf-plot, echo=FALSE}
+```{r imf-plot, fig.width = 8, fig.height = 6, echo = FALSE}
 imf.plot
 ```
 
 The simple linear equation that is being run here is of the form $Y = \alpha + \beta X + \epsilon$, where $Y = \delta_{\text{growth forecast error}}$, $X = \delta_{\text{structural balance}}$ and $\beta$ is the estimated average size of the fiscal multiplier. Chris Giles' argument is that the estimation of $\beta$ by the IMF is not robust to the inclusion of additional data and/or to the exclusion of outliers.
 
-## Step 2: replication
+## Step 2: Replication
 
 Turn now to the simple linear regression component of the script and execute the model. The results will be stored into the `imf.lm` object. The regression coefficient for the $\delta_{\text{structural balance}}$ should be, as reported by Chris Giles, somewhere near `r round(coef(imf.lm)[2], 2)`. Take some time to analyze that result substantively, using the sources mentioned above.
 
-```{r ols, echo=FALSE}
+```{r ols, echo = FALSE}
 summary(imf.lm)
 ```
 
 The script offers a few more graphs at that stage, including one that overlays a simple regression line and a 95% confidence interval to the raw data. The plot below also shows the residuals of the regression model, and at that stage, you should be able to intuitively detect which countries are going to be outliers:
 
-```{r loess, echo=FALSE}
+```{r ols-plot, fig.width = 8, fig.height = 6, echo = FALSE}
 imf.plot + geom_smooth(method = "lm", fill = "steelblue", alpha = .2) +
   geom_segment(x = imf$D_struct_bal, xend = imf$D_struct_bal, 
                y = imf$D_growth, yend = fitted.values(imf.lm),
                linetype = "dashed", color = "red")
 ```
 
-## Step 3: diagnostics
+## Step 3: Diagnostics
 
 The debate between Chris Giles and the IMF revolves in large part around the presence of outliers in the data. We will instead focus on the results of the simple linear regression model and diagnose which countries are outliers to the overall trend from there. Run the third component of the script until you reach that residuals-versus-fitted-values plot:
 
-```{r rvf, echo=FALSE}
+```{r rvf-plot, fig.width = 8, fig.height = 6, echo = FALSE}
 imf.rvfplot + geom_point(aes(color = rdist), size = 18, alpha = .3) + 
   scale_colour_gradient2(name = "Residual\ndistance", 
                          low = "green", mid = "orange", high = "red",
@@ -67,13 +67,17 @@ imf.rvfplot + geom_point(aes(color = rdist), size = 18, alpha = .3) +
 
 Finally, take a closer look at some outliers. The IMF uses Cook's distance to detect them, so we have included Cook's $D$ in the script, and as Chris Giles notes, New Zealand, which was originally excluded from the IMF analysis, is among the outliers. Sweden will also show up if you use standardized residuals instead of Cook's $D$:
 
-```{r outliers, echo=FALSE}
+```{r outliers-plot, fig.width = 8, fig.height = 6, echo = FALSE}
 imf.rvfplot + aes(y = rsta) + labs(y = "Standardized residuals") +
   geom_hline(y = c(-2, 2), linetype = "dotted") + 
   geom_point(data = subset(imf.rvf, outlier1 == TRUE), 
              color = "red", size = 18, alpha = .4)
 ```
 
-The script concludes by looking at the normality of the outliers. To finish the exercise, you might want to try running the original model without them, in order to get your own battery of results and make up your mind about the original IMF analysis: __assess whether the IMF was correct in its estimation of the average size of the fiscal multiplier__.
+## Coursework
+
+Form a group with one or two other classmates, and run again through the code in order to replicate the plots and model results together. The script concludes by looking at the normality of the outliers: to finish the exercise, write the code to run the original model without them, in order to get your own battery of results and make up your mind about the original IMF analysis
+
+To report on your work, write a _one-page_ report on your analysis, in which you explain what you have learnt from reading the initial IMF results, what you coded to complement that analysis, and what you can finally conclude about __whether the IMF was correct in its estimation of the average size of the fiscal multiplier__.
 
 > __Next week__: [Visualization in time: Time series](090_ts.html).

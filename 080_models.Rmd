@@ -15,13 +15,13 @@ Models are commonly used for all sorts of purposes that revolve around several d
 # Load downloader package.
 require(downloader)
 # Identify the data file.
-dataset = "data/olympics.2012.txt"
+data = "data/olympics.2012.txt"
 # Identify the data source.
-file = "https://raw.github.com/briatte/ida/master/data/Olympics.100m.txt"
+url = "https://raw.github.com/briatte/ida/master/data/Olympics.100m.txt"
 # Download the data if needed.
-if(!file.exists(dataset)) download(file, dataset)
+if(!file.exists(data)) download(url, data, mode = "wb")
 # Read the data.
-olympics <- read.table(dataset, stringsAsFactors=FALSE)
+olympics <- read.table(data, stringsAsFactors=FALSE)
 # Check result.
 head(olympics)
 ```

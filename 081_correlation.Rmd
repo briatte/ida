@@ -14,10 +14,11 @@ Let's start with the simplest form of a linear relationship between two continuo
 # Load downloader package.
 require(downloader)
 # Target source.
-source <- "https://raw.github.com/jeromyanglim/oecd_life_analysis/master/oecd-life.csv"
+url = "https://raw.github.com/jeromyanglim/oecd_life_analysis/master/oecd-life.csv"
+# Target file.
+file = "data/OECD.Better.Life.txt"
 # Download the dataset.
-if(!file.exists(file <- "data/OECD.Better.Life.txt"))
-  download(source, file, mode = "wb")
+if(!file.exists(file)) download(url, file, mode = "wb")
 # Import the CSV file.
 oecd <- read.csv(file, sep = "\t", stringsAsFactors = FALSE)[1:36, ]
 ```
