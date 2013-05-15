@@ -8,7 +8,9 @@ The original R Markdown `.Rmd` files used to put the text and code of the course
 
 The whole course was coded and taught with [RStudio](http://www.rstudio.com/). The code was ran on R 2.15.2 through R 3.0.0. Most plots use [ggplot2](http://docs.ggplot2.org/current/) code from its non-deprecated syntax base at version 0.9.3.1 (just in case compatibility breaks at some point).
 
-Bits and pieces of the code were posted to [Gist](https://gist.github.com/briatte), [RPubs](http://rpubs.com/briatte) and [Stack Overflow](http://stackoverflow.com/) during development. Thanks to the great R developer and user communities that live online, and which we are now proud to count ourselves in. If you share the spirit of all this, you should join the [Foundation for Open Access Statistics](http://www.foastat.org/).
+Bits and pieces of the code were posted to [Gist](https://gist.github.com/briatte), [RPubs](http://rpubs.com/briatte) and [Stack Overflow](http://stackoverflow.com/) during development. Thanks to the great R developer and user communities that live online, and which we are now proud to count ourselves in.
+
+If you share the spirit of all this, you should consider joining the [Foundation for Open Access Statistics](http://www.foastat.org/) and check out places like [OpenCPU](https://public.opencpu.org/), the [Open Knowledge Foundation](http://okfn.org/) and more generally initiatives in open access, open data, open source and open science.
 
 ## HOWTO
 
