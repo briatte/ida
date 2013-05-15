@@ -37,10 +37,30 @@ if("ggplot2" %in% installed.packages()[,1]) {
 }
 
 ##
+## ida.links(): list all Markdown links in a list of pages
+##
+
+ida.links <- function(x = NULL, detail = FALSE) {
+  if(is.null(x)) x = dir(pattern = "*.Rmd")
+  # parse
+  links <- sapply(x, FUN = function(x) {
+    conn <- file(x)
+    text <- readLines(conn, warn = FALSE)
+    text <- text[grepl("(\\[[a-z-]+\\]): http(.*)", text)]
+    close(conn)
+    text
+  })
+  # format
+  if(!detail)
+    links <- unique(unlist(links))
+  return(links)
+}
+
+##
 ## ida.scan(): find all packages called in a list of scripts
 ##
 
-ida.scan <- function(x = FALSE, detail = FALSE) {
+ida.scan <- function(x = NULL, detail = FALSE) {
   # paths
   if(!is.character(x))
     x <- paste("code", dir(path = "code", pattern="[0-9]+(.*)\\.R"), sep = "/")
