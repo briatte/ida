@@ -3,9 +3,20 @@
 
 # 4. Basic data operators
 
-There is a growing number of online interfaces for data repositories. Have a look, for instance, at [CKAN](http://ckan.org/) and [Data Market](http://datamarket.com/), at [my links](https://github.com/briatte/srqm/wiki/data) or at [Quandl](http://www.quandl.com/). A very successful interface is the [Gapminder](http://factbased.blogspot.fr/2012/07/convenient-access-to-gapminder-datasets.html) project, which relies on UN data and motion (animated) charts.
+[ckan]: http://ckan.org/
+[cb]: http://colorbrewer2.org/
+[ct]: http://crantastic.org/
+[ct-onlinedata]: http://crantastic.org/tags/onlineData
+[dm]: http://datamarket.com/
+[dm-api]: https://github.com/DataMarket/rdatamarket#readme
+[ggplot2]: http://docs.ggplot2.org/current/
+[ggplot2-scale]: http://docs.ggplot2.org/current/scale_continuous.html
+[ggplot2-theme]: http://docs.ggplot2.org/current/theme.html
+[quandl]: http://www.quandl.com/
+[quandl-r]: http://www.quandl.com/help/packages/r
+[us-oa]: http://blogstats.wordpress.com/2013/05/10/managing-government-information-as-an-asset/
 
-The basic point of today's session will be to open a variety of datasets from different online sources, and to make sure that you know how to convert and import data to prepare it for analysis. The next code block introduces a standard way to check that you have the right packages installed.
+Today's session will show how to open a variety of datasets from different online sources, and to make sure that you know how to convert and import data to prepare it for analysis. The next code block introduces a standard way to check that you have the right packages installed for this page's code: you will find identical blocks on every other course page.
 
 ```{r packages, message=FALSE, warning=FALSE}
 # Load packages.
@@ -18,7 +29,20 @@ packages <- lapply(packages, FUN = function(x) {
 })
 ```
 
-We start by taking a look at [World Bank Indicators](http://data.worldbank.org/about/data-overview/methodologies), using a [dedicated package](https://github.com/vincentarelbundock/WDI). The package comes with the `WDIsearch()` function which you can use to look for other indicators. The example below uses central government debt in percent of gross domestic product for a few high income countries.
+<!-- [my links](https://github.com/briatte/srqm/wiki/data) -->
+
+## Getting data from within R
+
+A few years ago, the [Gapminder](http://factbased.blogspot.fr/2012/07/convenient-access-to-gapminder-datasets.html) initiative used elegant motion charts to call for the liberation of UN data. Such calls for open data have been met by limited but tangible initiatives to put data online, with specific attention to [open access][us-oa] formats and programming facilities (API).
+
+Today, there is a growing ecology of online data repositories and [data APIs for R][so-datR]: have a look, for instance, at [CKAN][ckan], at [Data Market][dm] and its [API][dm-api], or at [Quandl](http://www.quandl.com/) and its [R package][quandl-r], at [FAOSTAT](http://cran.r-project.org/web/packages/FAOSTAT/), at the [onlineData][ct-onlinedata] tag at [CRANtastic][ct]…
+
+As a means of introduction, let's take a look at the [World Bank Indicators][wdi], using the [dedicated `WDI` package][gh-wdi]. The package comes with good documentation and the `WDIsearch()` function, which you can use to look for indicators straight from R. The example below will download [central government debt][wdi-cgd] in percent of gross domestic product for a few high income countries.
+
+[so-datR]: http://stats.stackexchange.com/questions/12670/data-apis-feeds-available-as-packages-in-r
+[wdi]: http://data.worldbank.org/about/data-overview/methodologies
+[wdi-r]: https://github.com/vincentarelbundock/WDI
+[wdi-cgd]: http://data.worldbank.org/indicator/GC.DOD.TOTL.GD.ZS
 
 ```{r WDI-data}
 # Get WDI data.
@@ -29,28 +53,38 @@ wdi <- WDI(country = c("US", "GB", "DE","FR", "GR"),
 str(wdi, vec.len = 1)
 ```
 
-The data can be used as such to draw a plot of central government debt in a few countries over the past few years. The `ggplot2` package provides a wealth of options to build, color and annotate plots.
+The data can be used as such to draw a plot of central government debt in a few countries over the past few years. The `ggplot2` package provides a wealth of options to build, color and annotate such plots: the example below shows how to plot smoothed trends of governmental central debt over time for each country in the data, using a custom [ColorBrewer][cb] scheme to color the lines.
 
-```{r WDI-plot, tidy=FALSE, message=FALSE, warning=FALSE}
-qplot(data = wdi, x = year, y = GC.DOD.TOTL.GD.ZS,
+```{r WDI-plot-1-auto, fig.width = 10, fig.height = 6, tidy = FALSE, warning = FALSE, message = FALSE}
+# Smoothed time series plot.
+g = qplot(data = wdi, x = year, y = GC.DOD.TOTL.GD.ZS,
       colour = country, se = FALSE, geom = c("smooth", "point")) +
-  geom_text(data = subset(wdi, year == 2011), 
-            aes(x = 2011, y = GC.DOD.TOTL.GD.ZS, label = iso2c), hjust = -.5) +
-  scale_x_continuous(breaks = 2005 + 2 * 0:4) +
-  scale_colour_brewer("", palette = "Set1") +
-  labs(title = "Central government debt, total (% of GDP)\n",
-       y = NULL, x = NULL)
+  scale_colour_brewer("Country", palette = "Set1") +
+  labs(title = "Central government debt, total (% GDP)\n", y = NULL, x = NULL)
+# View result.
+g
 ```
 
-To replicate this figure, you will need to save its data into a data table. The standard, universally readable format is comma-separated values (CSV), which can just be saved as a plain text (TXT) file.
+The [`ggplot2`][ggplot2] syntax used in the example above is easily adaptable to create other plots, as you can just add new graphical elements to it. The next code block picks up the `g` graph object and adds countries as text labels at the end of the time series, rather than as a separate legend. More tweaking is needed in the [scales][ggplot2-scale] and [theme][ggplot2-theme] options.
+
+```{r wdi-plot-2-auto, fig.width = 10, fig.height = 6, tidy = FALSE, warning = FALSE, message = FALSE}
+g + geom_text(data = subset(wdi, year == 2011), 
+            aes(x = 2011.25, y = GC.DOD.TOTL.GD.ZS, label = country), hjust = 0) +
+  scale_x_continuous(lim = c(2005, 2012.5)) +
+  theme(legend.position = "none", panel.grid.minor = element_blank())
+```
+
+To replicate these figures, you will need to save its data into a data table. The standard, universally readable format is comma-separated values (CSV), which can just be saved as a plain text (TXT) file. Our steps to downloading data will often involve saving both the original data source and a "local" plain text copy in this format, to avoid relying on proprietary formats.
 
 ```{r WDI-csv-io}
 # Target file location.
-file = "data/WDI.Government.debts.txt"
+file = "data/wdi.govdebt.0511.txt"
 # Export CSV file.
 write.csv(wdi, file)
 # Read CSV file again.
 wdi <- read.csv(file)
 ```
+
+In the case of the WDI data that we fetched here, saving was pretty straightforward because the data came through a specific API. In real life, importing, converting and preparing data for analysis can be much more messy, so we will take the time to see many different ways to get data in and out of R, from plain text tables to Microsoft Excel spreadsheets and other common tabular formats.
 
 > Next: [Import/Export](041_dataio.html).

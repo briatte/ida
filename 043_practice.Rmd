@@ -3,146 +3,133 @@
 
 # 4.3. Practice
 
-The exercise for this week is a quick overview of the main R object classes: vectors, matrices, data frames and factors. Each class will be useful to manipulate data in the next sessions, so make sure that you are familiar enough with them.
+[bshor-data]: http://research.bshor.com/2012/10/31/individual-2012-congressional-candidate-scores/
+[bshor-iep]: http://research.bshor.com/2012/10/31/generating-the-2012-congressional-candidate-scores/
+[bshor-detail]: http://research.bshor.com/2012/10/31/scoring-the-2012-congressional-candidates/
+[cb]: http://colorbrewer2.org/
+[cs-split-apply-combine]: http://www.stat.cmu.edu/~cshalizi/statcomp/lectures/12/lecture-12.pdf
+[ds-reshape]: http://is-r.tumblr.com/post/34556058683/ggtutorial-day-1-using-reshape
+[ds-mutate]: http://is-r.tumblr.com/post/34288940225/congressional-ideology-by-state
+[ds-plyr]: http://is-r.tumblr.com/post/33765462561/the-distribution-of-ideology-in-the-u-s-house-with
+[dw-source]: http://voteview.org/dwnominate.asp
+[gs-aggr]: https://gastonsanchez.wordpress.com/2012/06/28/5-ways-to-do-some-calculation-by-groups/ 
+[hw-plyr]: http://www.jstatsoft.org/v40/i01/paper
+[jb-summarize]: http://www.slideshare.net/jeffreybreen/grouping-summarizing-data-in-r
+[ns-apply]: http://nsaunders.wordpress.com/2010/08/20/a-brief-introduction-to-apply-in-r/
+[so-apply]: http://stackoverflow.com/a/7141669/635806
 
-This week's exercise is called [`4_browsers.R`](4_browsers.R). Clicking this link will open it in your browser: just __copy-paste the full code into a new R script__, and save it under that name (or one of your choosing) into your `code` folder.
+<p class="info"><strong>Instructions:</strong> this week's exercise is called <code><a href="4_congress.R">4_congress.R</a></code>. Download or copy-paste that file into a new R script, then open it and run it with the working directory set as the <code>IDA</code> folder. If you download the script, make sure that your browser preserved its <code>.R</code> file extension.</p>
 
-* * *
-
-In this segment, we show how to draw smooth trends of assault deaths in the United States. The data are from the [Bureau of Justice Statistics](http://bjs.ojp.usdoj.gov/). It got shared on the Reddit `/r/datasets/` channel in early 2013.
-
-The mathematics of [smoothed splines](http://www.johnmarquess.com/?p=111) involve several methods of computation. When there is a lot of data, we fit local polynomials with `loess`. When there is less data, as with time series over a few decades, a generalized additive model (`gam`) provides a more robust smoother.
-
-```{r packages, message=FALSE, warning=FALSE}
-# Load packages.
-packages <- c("downloader", "ggplot2", "MASS", "reshape", "scales", "splines")
-packages <- lapply(packages, FUN = function(x) {
-  if(!require(x, character.only = TRUE)) {
-    install.packages(x)
-    library(x, character.only = TRUE)
-  }
-})
+```{r run-exercise, include = FALSE, results = 'hide'}
+source("code/4_congress.R")
 ```
 
-## Step 1: get the data
+This week's applications use a combination of `plyr` and `ggplot2` functions to show how vectorization works to aggregate and reshape data in R. We do not need to cover [all options][so-apply], but we can survey some essential ones, as [Neil Saunders][ns-apply] and [Jeffrey Breen][jb-summarize] did in tutorials that help realizing how useful these operations are to manipulate datasets with R.
 
-The routine below will downlod the data and save it for you if you do not already have the data at hand. The first block looks for the BJS data folder and downloads the original data source if necessary.
+## Grouping observations to plot 
 
-```{r bjs-zip}
-# Identify ZIP data.
-zip <- "data/htus8008.zip"
-# Download ZIP archive.
-if(!file.exists(zip)) {
-  # Homicide Trends in the United States, 1980-2008.
-  url <- "http://bjs.ojp.usdoj.gov/content/pub/sheets/htus8008.zip"
-  # Download ZIP archive.
-  download(url, zip)
+The data for our first application are estimates of Congressional ideology compiled by [Boris Shor][bshor-data] for the U.S. House of Representatives in 2012. The data are downloaded in XLSX and saved in a plain text comma-separated file. The variables stored in the dataset are documented in the [online codebook][bshor-data]) and stored in a `data.frame` object:
+
+```{r bshor-data}
+# Check result.
+head(data[, 1:9])
+```
+
+We now have loaded some data where each row is a single observation, namely a member of the U.S. House of Representatives in 2012. Each member has been assigned an [ideal point estimate][bshor-iep] of his or her ideological stance in Congress, from liberal (-) to conservative (+). This methodology provides a measure of [party polarization][bshor-detail] in Congress, if we aggregate Congressmen by party.
+
+Aggregating by party involves doing the following: determine all possible values taken by the `party` variable (and limiting ourselves to the first two in this case), get the data for just one party at a time, and compute the average ideological score in that group. This whole operation can be tiresomely carried with a loop, as below, but that is precisely the kind of approach that we will avoid later on.
+
+```{r bshor-naive-loop}
+# The naive approach: loop over levels, subset the data, compute the scores.
+for(i in levels(data$party)) {
+  # Create a subset of the data for that party.
+  d = subset(data, party == i)
+  # Compute the mean ideal estimate point.
+  cat(i, nrow(d), mean(d$score, na.rm = TRUE), "\n")
 }
-# Unzip directory.
-if(!file.exists("data/htus8008")) {
-  unzip(zip, exdir = "data/htus8008")
-}
 ```
 
-The second block imports one of the CSV files by reading only the valid data lines from it. See the `README` file of the BJS data folder for a list of all series.
+This loop first determines the vector of party names `r levels(data$party)` (Democrat, Republican, Independent) and then painfully extracts the number of observations and mean ideological score for each party. This type of looping is easily avoided by using the vector of party names to split the data, apply a mean function to the splitted parts and combine it back to shape:
 
-```{r bjs-data}
-# Read some data as CSV.
-bjs <- read.csv("data/htus8008/htus8008f42.csv", skip = 11, nrows = 29)
-# Remove last column.
-bjs <- bjs[,1:6]
-# Check first rows.
-head(bjs)
-# Check final rows.
-tail(bjs)
+[![Split-Apply-Combine](images/split-apply-combine-shalizi.png)][cs-split-apply-combine]
+
+The exercise shows how to use the `tapply()` function, which returns one mean value (third argument) based on ideological score (first argument) for each group of observations formed by party membership (second argument). The `tapply()` syntax is pretty straightforward, but it can also follow two alternative syntaxes using `aggregate` or `by()` with data frames:
+
+```{r bshor-tapply}
+# Simple aggregation with tapply().
+tapply(data$score, data$party, mean)
+# The by() version for data frames with factors.
+by(data$score, data$party, mean)
+# The aggregate() version with formula notation.
+aggregate(score ~ party, data = data, FUN = "mean")
 ```
 
-Finally, replace the dots in the name of some weapon types.
+We can decompose what is happening here by calling another `apply()` function that allows to explain each step. In the `sapply()` example below, we write up an arbitrary function that extracts the mean ideological scores of one party after the other in the vector of unique party names. This example shows how much simplification work is being done in a command like `tapply()`.
 
-```{r bjs-clean}
-# Clean names.
-names(bjs) <- gsub("\\.", " ", names(bjs))
-# Check result.
-names(bjs)
+```{r bshor-lapply}
+sapply(levels(data$party), function(x) { 
+  this.party = which(data$party == x)
+  mean(data$score[this.party]) })
 ```
 
-## Step 2: reshape and plot
+Aggregating by groups also works visually, as we will see several times during the course from next week onwards, as we look into `ggplot2` syntax for plots where we want to visually discriminate some groups. The exercise ends on an example of that principle to stack the distributions of Congressional ideology by party. Distributions are important statistical functions studied later in the course.
 
-The next step is to prepare the data by reshaping it to long format, which has one unit of analysis (years), one category of observations (weapon type), and one column of values (homicide counts). We rename the columns to variable names
-
-```{r bjs-prepare, message=FALSE}
-# Reshape to long format.
-bjs <- melt(bjs, id = "Year")
-# Check result.
-head(bjs)
-# Rename variables.
-names(bjs) <- c("Year", "Weapon", "Count")
-# Inspect weapon types.
-levels(bjs$Weapon)
-# Order weapon type by homicide count.
-bjs$Weapon <- with(bjs, reorder(Weapon, -Count, mean))
+```{r bshor-distributions, fig.width = 9, fig.height = 6, include = FALSE}
+# RColorBrewer codes for blue, red, gray.
+party.colors = brewer.pal(9, "Set1")[c(2, 1, 9)]
+# Stacked distributions, colored by party.
+qplot(data = data, x = score, fill = party, colour = party, 
+      position = "stack", alpha = I(.75), geom = "density") + 
+  scale_fill_manual("Party", values = party.colors) +
+  scale_colour_manual("Party", values = party.colors)
 ```
 
-The plot is easy to set up with `ggplot2`: we set the canvas to represent the homicide counts on the vertical y-axis and the year on the horizontal x-axis, and then plot one colored line per weapon category. There's all sort of tweaks that might apply at that stage of the plot. A simple one is to format the vertical y-scale, to show commas every 1,000 units.
+The graph implicitly groups observations by assigning different `fill` and `colour` attributes to each group of variable `party`. These groups are assigned colors that were previously extracted from [ColorBrewer][cb] palette `Set1`, using the `brewer.pal()` function of the `RColorBrewer` package to extract the nine set colors and select the blue (#2), red (#1) and grey (#9) tints.
 
-```{r bjs-plot}
-# Plot canvas.
-qplot(data = bjs, y = Count, x = Year, color = Weapon, geom = "point") +
-  geom_line() + ylab("Homicide count") + scale_y_continuous(labels = comma)
+## Summarizing more complex aggregate data
+
+We continue to look at ideology in the U.S. Congress by plotting the [DW-NOMINATE][dw-source] index, using an example [adapted from David Sparks][ds-plyr]. Unlike the cross-sectional estimate for 2012 that we just used, this index is available for several years and therefore requires a more advanced reshaping strategy that splits the data by three groups: Congressional session, year, and party.
+
+Exploring this dataset is easy if you need simple measures like raw frequencies. Here, for instance, is the number of different observations in the data for each major party affiliation, and the average DW-NOMINATE score in each group, obtained through formula notation with the `aggregate()` function. 
+
+```{r dwnominate-table-aggregate}
+# Raw frequencies (N) by party.
+table(dw$majorParty)
+# Mean DW-NOMINATE score by party.
+aggregate(dwnom1 ~ majorParty, dw, mean)
 ```
 
-## Step 3: tabular statistics
+The exercise show more ways to do [calculations by groups][gs-aggr] at that stage and then turns to the `ddply()` function from the `plyr` package to aggregate the observations by major party within each congressional session, which makes for a more complex pattern than those seen so far. The crux is the `.variables` separator that groups the observations by Congress and major party.
 
-To extract whatever statistic you need from the `bjs` dataset, you need to set up a table for it. The quickest way uses `tapply`. This was first shown in the section on [reshaping](042_reshaping.html) and shown again in the section on [descriptive statistics](061_description.html).
-
-```{r bjs-tapply}
-# Average homicide count by weapon type.
-with(bjs, tapply(Count, Weapon, mean))
-# Full summary statistics for each weapon type.
-with(bjs, tapply(Count, Weapon, summary))
+```{r dwnominate-ddply, tidy = FALSE, eval = FALSE}
+# David Sparks' transformation to session-party measurements, using plyr for the
+# ddply() function and Hmisc for the weighted wtd.functions.
+dw.aggregated <- ddply(.data = dw,
+                       .variables = .(cong, majorParty),
+                       .fun = summarise,
+                       Median = wtd.quantile(dwnom1, 1/bootse1, 1/2),
+                       q25 = wtd.quantile(dwnom1, 1/bootse1, 1/4),
+                       q75 = wtd.quantile(dwnom1, 1/bootse1, 3/4),
+                       q05 = wtd.quantile(dwnom1, 1/bootse1, 1/20),
+                       q95 = wtd.quantile(dwnom1, 1/bootse1, 19/20),
+                       N = length(dwnom1))
 ```
 
-Using `ddply` is a bit more syntax-demanding but offers more functionality.
+What happens here is a three-dimensional split of the data, first by Congressional session, then by political party. This operation is one of seven possible transformations in such settings. Hadley Wickham's `plyr` package is a set of commands like `ddply()` to implement these transformations, which he calls "[The Split-Apply-Combine Strategy for Data Analysis][hw-plyr]" and illustrates as goes:
 
-```{r bjs-table, message=FALSE}
-# Mean and median of homicide counts by weapon type.
-tbl <- ddply(bjs, .(Weapon), summarize, Mean = mean(Count), Median = median(Count))
-# Check result.
-tbl
+![Split-Apply-Combine, by Hadley Wickham](images/split-apply-combine-wickham.png)
+
+The cube slices show the different split-ups that can be accomplished when you combine three variables (dimensions). In our example, the result is a dataset that contains a single observation by party (Democrat, Republican, Independent) and by Congress (1-111th), with its value being the median DW-NOMINATE score of that group. The results below are the results for the most recent Congress:
+
+```{r dwnominate-111th-congress}
+# Median DW-NOMINATE score of parties in the 111th Congress.
+dw.aggregated[dw.aggregated$cong == 111, ]
 ```
 
-## Step 4: LOESS smoothing
+The following plot derives from the combination of this strategy to a `ggplot` setting, where filling and colouring elements to reflect membership to a certain grouping in the data is straightforward. For more plots of Congressional ideology, check what David Sparks has done with reshaping to [cast, melt][ds-reshape] and [mutate][ds-mutate] a dataset containing identical data.
 
-Let's smooth the series using `ggplot2` to [make it easy](http://docs.ggplot2.org/current/stat_smooth.html). We build a x-y canvas that will plot each weapon type in a different color, and we get the axes and titles ready before plotting.
-
-```{r bjs-loess-canvas}
-# Plot canvas.
-fig <- ggplot(bjs, aes(y = Count, x = Year, group = Weapon, color = Weapon, fill = Weapon))
-# Plot titles and scales.
-fig <- fig + scale_y_continuous(labels = comma) + ylab("Homicide count")
-```
-
-We now add a smoothed curve to the plot canvas, using a [LOESS function][loess].
-
-[loess]: https://en.wikipedia.org/wiki/Local_regression
-
-```{r bjs-loess-curve}
-# Add a LOESS curve.
-fig + geom_smooth()
-# Add faded data points.
-fig + geom_smooth() + geom_point(alpha = I(.3))
-```
-
-## Step 5: cubic spline smoother
-
-A different smoother uses a [generalized additive model][gam] to plot the basic cubic spline of the series (see `?gam` and `?ns` for details). The general idea is to predict each data point of the series $x$ at $t_k$ from the vector of regressors $(t_0, t_1, t_2, ..., t_{k-2}, t_{k-1})$, i.e. from the past values of the series. The `MASS` library provides the `rlm` method, and the `splines` library provides the `ns()` function.
-
-[gam]: https://en.wikipedia.org/wiki/Generalized_additive_model
-
-```{r bjs-spline, message=FALSE, fig.width=12, fig.height=7}
-# Different smoother, 3-length knots.
-fig + geom_smooth(method = "rlm", formula = y ~ ns(x,3)) + 
-  geom_point(alpha = .75, size = 1)
+```{r dwnominate-plot, fig.width = 9, fig.height = 6, include = FALSE}
+p
 ```
 
 > __Next week__: [Clusters](050_clusters.html).

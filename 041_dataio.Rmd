@@ -5,9 +5,9 @@
 
 This section introduces data import and export (or "I/O", for "input/output") with R.
 
-```{r packages, message=FALSE, warning=FALSE}
+```{r packages, message = FALSE, warning = FALSE}
 # Load packages.
-packages <- c("countrycode", "downloader", "foreign", "ggplot2", "RCurl")
+packages <- c("countrycode", "downloader", "foreign", "ggplot2", "RCurl", "XML")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -16,13 +16,13 @@ packages <- lapply(packages, FUN = function(x) {
 })
 ```
 
-## Downloading a CSV file
+## Downloading a Google Spreadsheet
 
 We are going to use the [Daily Kos Elections' presidential results by congressional district for the 2012 and 2008 elections](http://www.dailykos.com/story/2012/11/19/1163009/-Daily-Kos-Elections-presidential-results-by-congressional-district-for-the-2012-2008-elections?detail=hide), for which the data is accessible as a [Google spreadsheet](https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&single=true&gid=0&output=html). The [Google Docs API documentation](http://code.google.com/apis/spreadsheets/) tells us that we can get the data in CSV format through a URL request that includes the identifier key of the spreadsheet and the format specification `output=csv`.
 
 ```{r dk-url, message=FALSE}
 # Create a filename for the dataset.
-file = "data/dailykos-votes.txt"
+file = "data/dailykos.votes.0812.txt"
 # Store the address of the spreadsheet.
 link = "https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&output=csv"
 ```
@@ -58,13 +58,13 @@ qplot(data = dkos, x = Obama.2012,
       fill = Party, colour = Party, alpha = I(.75), geom = "density")
 ```
 
-## The Quality of Government dataset
+## Downloading files
 
 Here's the code to download the Quality of Government (QOG) dataset that we will use in future classes. Install the `downloader` package before running the code (by now, you should know how to install a package). The first code block will download the QOG codebook if it is not found in the data folder.
 
 ```{r qog-codebook, results='hide'}
 # Download Quality of Government Basic codebook.
-file = "data/qog-codebook.pdf"
+file = "data/qog.codebook.pdf"
 if(!file.exists(file)) {
   url = "http://www.qogdata.pol.gu.se/codebook/codebook_standard_20110406.pdf"
   download(url, file, mode = "wb")
@@ -74,10 +74,11 @@ if(!file.exists(file)) {
 The next code block checks whether you have the comma-separated values version of the data. If not, it downloads the QOG Standard cross-sectional dataset in Stata format, opens it using the `read.dta()` function from the `foreign` library, and converts it from that source.
 
 ```{r qog-data}
-# Download Quality of Government Basic dataset.
-file = "data/qog-cs.txt"
+# Download Quality of Government Standard dataset.
+file = "data/qog.cs.txt"
 if(!file.exists(file)) {
-  if(!file.exists(dta <- "data/qog-cs.dta")) {
+  dta = "data/qog.cs.dta"
+  if(!file.exists(dta)) {
     url = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
     download(url, dta, mode = "wb")
   }
@@ -91,22 +92,118 @@ QOG datasets feature a wide range of variables from various sources, including U
 
 The example below uses data from the Barro and Lee and Maddison studies. Another advantage of Quality of Government data is that it comes with several country identifiers that allow to match external data to it, as we do below by adding continental origin based on ISO-3C country codes.
 
-```{r qog-plot}
+```{r qog-plot-auto, warning = FALSE, fig.width = 11, fig.height = 8.3}
 # Add geographic continents using UN country codes.
-continent <- factor(countrycode(qog$ccodealp, "iso3c", "continent"))
+qog$continent = factor(countrycode(qog$ccodealp, "iso3c", "continent"))
 # Plot log-GDP/capita and female education, weighted by population (2002).
-qplot(data = qog, y = log(wdi_gdpc), x = bl_asyf25, 
+qplot(data = qog, y = log(wdi_gdpc), x = bl_asy25f, 
       colour = continent, size = mad_pop / 10^3, geom = "point") +
-  scale_size_area(max_size = 24) + scale_colour_brewer(palette = "Set1") +
+  scale_colour_brewer("Continent\n", palette = "Set1") +
+  scale_size_area("Population\n", max_size = 24) + 
   labs(y = "log GDP/capita", x = "Female schooling years")
 ```
 
 ## Scraping
 
-For our purposes, scraping is the idea of taking information from online sources and to process it into a dataset. [Zarino Zappia](https://scraperwiki.com/profiles/zarino/), the creator of the ScraperWiki website, has written great examples of such scrapers in the Python programming language, as with his [scraper of Occupy protest locations](https://scraperwiki.com/scrapers/occupy_protest_locations/) (using Wikipedia sources; see also the [chronological map](https://views.scraperwiki.com/run/occupy_protest_locations_1/) based on the data).
+For our purposes, scraping is the idea of taking information from online sources and to process it into a dataset. [Zarino Zappia][sw-zz], the creator of the [ScraperWiki][sw] website, has written great examples of such scrapers in the Python programming language, as with his [scraper of Occupy protest locations][sw-ows-1] using Wikipedia sources (see also the [chronological map][sw-ows-2] based on the data).
 
-Let's replicate one of his examples and scrape the [life expectancy index](http://hdrstats.undp.org/en/indicators/72206.html) calculated by the United Nations. The [Python scraper](https://scraperwiki.com/scrapers/un_life_expectancy_scores/) can be emulated in R at low programming cost.
+[sw]: https://scraperwiki.com/
+[sw-zz]: https://scraperwiki.com/profiles/zarino/
+[sw-ms]: https://scraperwiki.com/scrapers/multiple_sclerosis_tweets_and_locations/
+[sw-ows-1]: https://scraperwiki.com/scrapers/occupy_protest_locations/
+[sw-ows-2]: https://views.scraperwiki.com/run/occupy_protest_locations_1/
 
-Examples: scraping [RealClearPolitics](http://is-r.tumblr.com/post/36059986744/gathering-realclearpolitics-polling-trends-with-xml) and [Wikipedia](http://is-r.tumblr.com/post/36945206190/using-xml-to-grab-tables-from-the-web) with `XML`. Read on how scraping and [data APIs](http://stats.stackexchange.com/questions/12670/data-apis-feeds-available-as-packages-in-r) makes [data sociology](http://quanti.hypotheses.org/647/) possible. Here's a nice example: [scraping Craigslist](http://quanti.hypotheses.org/724/) (in French).
+The same principle can be used to get data from [sources like Twitter][sw-ms]. An interesting time series can be created [from a Twitter account logging Beijing pollution data][bc-tap-1]. There was a [pollution peak][bc-tap-2] in January 2013, and the city [looked like][bj] *Blade Runner* with [more fog][ss]; staying in Beijing then amounted to [smoking 1.5 to 3 cigarettes a day][ss-smok].
+
+[bc-tap-1]: http://brainchronicle.blogspot.co.uk/2012/07/twitter-analysis-of-air-pollution-in.html
+[bc-tap-2]: http://brainchronicle.blogspot.fr/2013/01/air-quality-analysis-from-beijing.html
+[bj]: http://kateoplis.tumblr.com/post/40555052298/nope-this-is-not-a-still-from-blade-runner-its
+[ss]: http://simplystatistics.org/2013/01/14/welcome-to-the-smog-ocalypse/
+[ss-smok]: http://simplystatistics.org/2011/12/14/smoking-is-a-choice-breathing-is-not/
+
+Unfortunately, the Twitter API is now less open than it used to be, so we will not be able to access the data publicly. I have saved the results of a [recent scrape][beijing-scraper] for your viewing pleasure, as the U.S. Embassy has not turned the logging machine down even when pressured so. Read first on the [Air Quality Index][aqi] (AQI) used to measure pollution information.
+
+[beijing-scraper]: 4_twitter.R
+[aqi]: http://airnow.gov/index.cfm?action=aqibasics.aqi
+
+```{r twitter-pollution}
+# Target data source.
+file = "data/beijing.aqi.2013.txt"
+if(!file.exists(file)) download("", file)
+# Read. CSV file.
+bp <- read.csv(file, stringsAsFactors = FALSE)
+# Check result.
+head(bp)
+bp$time = strptime(bp$time, format = "%Y-%m-%d %T")
+ggplot(data = bp, aes(x = time, y = PM)) +
+  geom_line(color = "gray80") +
+  geom_point(color = "blue", alpha = .5) +
+  geom_smooth(fill = "lightblue") +
+  labs(x = NULL, y = "Fine particles (PM2.5) 24hr avg")
+```
+
+What we can easily do, however, is some scraping of [XML][ds-xml] and [HTML][ds-html] content with the `XML` package. Once you know how to do that, you can scrape many different contents, like [Craigslist][dss-craigslist], and experiment with what the authors of that example have termed [data sociology][dss-datasociol] (note: the links are written in French by co-blogging friends).
+
+[dss-datasociol]: http://quanti.hypotheses.org/647/
+[dss-craigslist]: http://quanti.hypotheses.org/724/
+[ds-xml]: http://is-r.tumblr.com/post/36059986744/gathering-realclearpolitics-polling-trends-with-xml
+[ds-html]: http://is-r.tumblr.com/post/36945206190/using-xml-to-grab-tables-from-the-web
+
+We'll first use scraping on a Wikipedia entry on the [Arab Spring][wiki-as]. Have a look at the source: the main table contains a column called "Death toll" in its header, which is a property that we can call through an XPath expression ([XPath][xpath] is a syntax that matches XML and HTML syntax nodes). We then recode the outcomes of the Arab Spring mobilizations to three categories.
+
+[xpath]: http://www.w3.org/TR/xpath/
+
+```{r xml, tidy = FALSE}
+html <- htmlParse("http://en.wikipedia.org/wiki/Arab_Spring")
+html <- xpathApply(html, "//table/tr/th[contains(text(), 'Death toll')]/../..")[[1]]
+data <- readHTMLTable(html)
+str(data)
+data$outcome <- as.numeric(data$Situation)
+data$outcome <- cut(data$outcome, 
+                    breaks = c(1, 2, 5, 7), include.lowest = TRUE, 
+                    labels = c("Protests", "Concessions", "Revolt"))
+```
+
+We will match the countries from the Arab Spring to ISO-3C country codes identical to those in the QOG dataset and many other sources. The operation is possible through the `countrycode` package, a very helpful utility if you ever need to work on multiple country-level sources as we are here.
+
+```{r countrycode}
+# Assign country codes.
+data$ccodealp <- countrycode(data[, 1], "country.name", "iso3c")
+# Store unique regions.
+continents <- countrycode(data$ccodealp, "iso3c", "continent")
+```
+
+Finally, we download the time series of the QOG dataset that we previously downloaded in cross-section format. Both formats serve different purposes. The `countrycode()` command can also add regional and continental categories to country data.
+
+```{r qog-data-ts}
+# Download Quality of Government Standard dataset (time series).
+file = "data/qog.ts.txt"
+if(!file.exists(file)) {
+  dta = "data/qog.ts.dta"
+  if(!file.exists(dta)) {
+    url = "http://www.qogdata.pol.gu.se/data/qog_std_ts.dta"
+    download(url, dta, mode = "wb")
+  }
+  write.csv(read.dta(dta), file)
+}
+# Open local copy.
+qog <- read.csv(file, stringsAsFactors = FALSE, header = TRUE)
+# Merge and keep unmatched QOG countries.
+data <- merge(data, qog, by = "ccodealp", all.y = TRUE)
+# Add continents.
+data$continent <- countrycode(data$ccodealp, "iso3c", "continent")
+```
+
+We finally plot the result of our scrape, merge and split procedures.
+
+```{r arab-spring-plot-auto, warning = FALSE, message = FALSE}
+data <- subset(data, continent %in% unique(continents)[-3])
+ggplot(data = data[data$year > 1960, ], aes(x = year, y = wdi_fr, group = ccodealp)) +
+  geom_smooth(data = subset(data, is.na(outcome)), fill = "grey90", colour = "grey90", size = 2) +
+  geom_smooth(data = subset(data, !is.na(outcome)), aes(fill = outcome, colour = outcome), size = 2) +
+  scale_fill_manual(values = c("Protests" = "yellow", "Concessions" = "orange", "Revolt" = "Red")) +
+  scale_colour_manual(values = c("Protests" = "yellow", "Concessions" = "orange", "Revolt" = "Red")) +
+  facet_wrap(~ continent, nrow = 2)
+```
 
 > __Next__: [Reshapes and aggregates](042_reshaping.html).
