@@ -7,16 +7,24 @@ Working with R is easier when you run it through [RStudio](http://rstudio.org/),
 
 ## Installation
 
-Use [this link](http://www.rstudio.com/ide/download/desktop) to download RStudio. Installation should then be pretty straightforward. You will be installing the Desktop version -- the other one is for running RStudio on a server, while you will be running it as a desktop program.
+Use [this link][rs-dl] to download RStudio. Installation should then be pretty straightforward. You will be installing the Desktop version -- the other one is for running RStudio on a server, while you will be running it as a desktop program.
 
-RStudio comes with [excellent documentation](http://www.rstudio.com/ide/docs/) available through the Help menu. The same menu will also show you [keyboard shortcuts](http://www.rstudio.com/ide/docs/using/keyboard_shortcuts), which will quickly come in handy. The sections below cover only the essentials, which should be enough to get you started.
+[rs-dl]: http://www.rstudio.com/ide/download/desktop
+
+RStudio comes with [excellent documentation][rs-docs] available through the Help menu. The same menu will also show you [keyboard shortcuts][rs-kb], which will quickly come in handy. The sections below cover only the essentials, which should be enough to get you started.
+
+[rs-docs]: http://www.rstudio.com/ide/docs/
+[rs-kb]: http://www.rstudio.com/ide/docs/using/keyboard_shortcuts
 
 A few more things about the RStudio software:
 
-- __Rstudio requires a 64-bit processor.__ Mac OS X users with older 32-bit processors from circa 2009 will have to use an old version that is not available from the website any more—just ask us for it if you are using an old MacBook model.
+- __Rstudio requires a 64-bit processor.__ Users with older 32-bit processors like older Apple MacBooks from circa 2009 will have to use an old version that is not available from the website any more. Ask us for it _right now_.
 - __RStudio is frequently improved__—it was actually updated on the day we started the class! You can choose to update it periodically, or you can stick with the version of RStudio that you installed: it should not have any impact on the course.
 - __RStudio can crash from time to time.__ It might sometimes have to "abort your R session", which means crashing R without crashing RStudio itself. Please let us know when that happens. You will generally be able to quickly restart a new R session.
-- __RStudio is very quickly developing__ into a powerhouse for R, with [more features](http://www.rstudio.com/ide/) than we will be able to show. One of the most recent developments allows to [build web applications](http://www.rstudio.com/shiny/) on top of R code, directly from RStudio.
+- __RStudio is very quickly developing__ into a powerhouse for R, with [more features][rs-ide] than we will be able to show. One of the most recent developments allows to [build web applications][rs-shiny] on top of R code, directly from RStudio.
+
+[rs-ide]: http://www.rstudio.com/ide/
+[rs-shiny]: http://www.rstudio.com/shiny/
 
 ## Interface
 
@@ -24,7 +32,7 @@ When you open RStudio for the first time, you see something like the screenshot 
 
 [![RStudio interface.](images/rstudio-interface-1.png)](images/rstudio-interface-1.png)
 
-The red circle designates the Console window, where you get to type commands and see their results. The blue circle designates the Workspace, where your objects appear. The purple circle designates a bunch of other windows for files, plots, packages and help.
+The red circle designates the Console window, where you get to type functions and see their results. The blue circle designates the Workspace, where your objects appear. The purple circle designates a bunch of other windows for files, plots, packages and help.
 
 ## Running scripts
 
@@ -59,7 +67,7 @@ Let's now save the script. Click the "Files" tab in the bottom-right pane. Choos
 
 ![RStudio working directory.](images/rstudio-setwd.png)
 
-The working directory is the default location on your computer where R looks for stuff. RStudio copied that location to the Console when you completed the step described above, as if you had run the `setwd` command, which sets the working directory to a given folder:
+The working directory is the default location on your computer where R looks for stuff. RStudio copied that location to the Console when you completed the step described above, as if you had run the `setwd()` function, which sets the working directory to a given folder:
 
 ```{r setwd, eval=FALSE}
 setwd("~/Documents/Teaching/IDA")
@@ -81,17 +89,19 @@ Now that the script is saved, take a minute to explore its code by navigating it
 
 Your goal for the first month of class is actually to get as much practice with keyboard navigation and shortcuts as you can, so that you get used to running code from a script file while tinkering it from the Console.
 
-A nifty feature of RStudio (and R) in that regard is tab auto-completion. Type in the first letters of a command and press `Tab`: possible command names will appear. The example below shows how to reach the `install.packages()` command through tab auto-completion:
+A nifty feature of RStudio (and R) in that regard is tab auto-completion. Type in the first letters of a function and press `Tab`: possible function names will appear. The example below shows how to reach the `install.packages()` function through tab auto-completion:
 
 ![RStudio auto-completion.](images/rstudio-autocompletion.png)
 
-To get the auto-completion window to open, just type in a few letters like `ins` and then (gently) hit the `Tab` key. The auto-completion feature also shows you the basic command description and syntax, which you can also get in the documentation pages.
+To get the auto-completion window to open, just type in a few letters like `ins` and then (gently) hit the `Tab` key. The auto-completion feature also shows you the basic function description and syntax, which you can also get in the documentation pages.
 
 ## Packages
 
-R is extremely modular: it comes with a set of "base" commands that can be supplemented with user-contributed commands, often installed through the [CRAN](http://cran.r-project.org/) online central repository from which you previously downloaded R itself.
+R is extremely modular: it comes with a set of "base" functions that can be supplemented with user-contributed ones, most often installed through the [CRAN][cran] online central repository from which you previously downloaded R itself. This is a core feature of R, as its open source nature has encouraged the development of thousands of user-contributed packages.
 
-This is a core feature of R, as its open source nature has encouraged the development of thousands of user-contributed commands. Let's first take a look at which packages come with R by default, and where the packages are installed:
+[cran]: http://cran.r-project.org/
+
+Let's first take a look at which packages come with R by default and where packages are installed:
 
 ```{r default-packages}
 # See the default packages.
@@ -100,7 +110,7 @@ getOption("defaultPackages")
 .libPaths()
 ```
 
-Remember that R is case sensitive: the commands above require that the `O` in `getOption` and `P` in `libPaths` are typed in uppercase. Also note the unusual starting dot at the beginning of the `.libPaths()` function.
+Remember that R is case sensitive: the functions above require that the `O` in `getOption()` and `P` in `.libPaths()` are typed in UPPERCASE. Also note the somewhat unusual trailing dot at the beginning of the `.libPaths()` function: if you omit to type `.` to call the `.libPaths()` function, R will return an error.
 
 Let's install a few packages straight away. To do that quickly, your best option is simply to copy-paste the code below into a new R script, and to run it as you previously did with the random heatmap example.
 
@@ -114,20 +124,22 @@ if(length(list))
   lapply(list, install.packages, repos = "http://cran.us.r-project.org")
 ```
 
-Note that the last two lines should be run together to work as intended. The result will be a lot of red ink: R is going to diagnose which of these packages you do not yet have installed, and then install them. You need to be online for this to work.
+Note that the last two lines form a logical statement and should be run together (i.e. consecutively) to work as intended. The result will be a lot of red ink: R is going to diagnose which of these packages you do not yet have installed, and then install them. You need to be online for this to work. Please ask us for help if you encounter any difficulties at that stage.
 
-Once installed, the additional packages can be loaded (initialized) with the `library()` or `require()` commands. Each package brings its own functionalities: `ggplot2` package is used for [plotting neat graphics](http://ggplot2.org/), `downloader` is used to download data from online sources, etc.
+Once installed, the additional packages can be loaded (initialized) with the `library()` or `require()` functions. Each package brings its own functionalities: `ggplot2` package is used for [plotting neat graphics][ggplot2], `downloader` is used to download data from online sources. You will have to initialize the packages every time that you use their functions in R, as shown here:
+
+[ggplot2]: http://ggplot2.org/
 
 ```{r load-packages, results='hide'}
 # Load ggplot2 package.
 library(ggplot2)
 # Load downloader package.
-library(downloader)
+require(downloader)
 ```
 
-The "loading ..." messages that you might get by running the commands above are not errors but simply a sign that other packages are loaded at the same time in the background. R prints errors, messages and warnings (non-fatal errors) in the same color, which is indeed confusing.
+The "loading ..." messages that you might get by running the functions above are not errors but simply a sign that other packages are loaded at the same time in the background. R prints errors, messages and warnings (non-fatal errors) in the same color, which is indeed confusing. This is one of R's idiosyncracies: you cannot trust the colors, as red ink does not always stand for "problem".
 
-This is one of R's idiosyncracies: you cannot trust the colors. Red ink does always not stand for "problem", just like no result can mean that everything went alright, which is a rather behaviour in programming environments.
+A possibility is that you get _no result at all_, and this is behaviour is generalizable from installing packages to executing code overall: when you run a function, no result can be good news and mean that everything wnet alright. Reversely, getting a result does _not_ mean that it systematically is the correct one (your function could contain a mistake, for instance).
 
 ## Drawing and saving plots
 
@@ -143,23 +155,29 @@ if(!require(ggplot2)) {
 }
 ```
 
-We'll be looking at some example data included in the R software. The data describes [Edgar Anderson's set of fifty flowers](http://stat.ethz.ch/R-manual/R-patched/library/datasets/html/iris.html), studied by famous statistician Ronald Fisher in an article published in 1936. The data itself were collected by Edgar Anderson and published a year before.
+[iris]: http://stat.ethz.ch/R-manual/R-patched/library/datasets/html/iris.html
+
+We'll be looking at some example data included in the R software. The data describes [Edgar Anderson's set of fifty flowers][iris], studied by famous statistician Ronald Fisher in an article published in 1936. The data itself were collected by Edgar Anderson and published a year before. The `head()` function shows you the top rows of the data:
 
 ```{r ggplot2-load-data}
 # Look at first rows of a default dataset.
 head(iris)
 ```
 
-Let's now use the 'quick plot' functionality of the `ggplot2` package. The [`qplot()` function](http://docs.ggplot2.org/current/qplot.html) requires three arguments here: the data to use, one variable to plot on the horizontal x-axis, and another to plot on the vertical y-axis. The order of the arguments is, as usual, irrelevant, as long as you identify `x` and `y` properly in the function call.
+[qplot]: http://docs.ggplot2.org/current/qplot.html
+
+Let's now use the 'quick plot' functionality of the `ggplot2` package. The [`qplot()` function][qplot] requires three arguments here: the data to use, one variable to plot on the horizontal x-axis, and another to plot on the vertical y-axis. The order of the arguments is, as usual, irrelevant, as long as you identify `x` and `y` properly in the function call.
 
 ```{r ggplot2-qplot}
 # Quick plot.
 qplot(data = iris, x = Sepal.Length, y = Petal.Length)
 ```
 
-We will come back to how `ggplot2` works in due time (here's [another quick introduction](http://inundata.org/2013/04/10/a-quick-introduction-to-ggplot2/) showing more plots if you want a preview). For the moment, let's simply improve the plot by adding a bunch of options that will add some color, sizing and transparency effects to the plot that opened in the bottom-right pane.
+[ggplot2-tutorial]: http://inundata.org/2013/04/10/a-quick-introduction-to-ggplot2/
 
-```{r ggplot2-3, tidy=FALSE}
+We will come back to how `ggplot2` works in due time (here's [another quick introduction][ggplot2-tutorial] showing more plots if you want a preview). For the moment, let's simply improve the plot by adding a bunch of options that will add some color, sizing and transparency effects to the plot that opened in the bottom-right pane. The next code block is just one long declaration to do that:
+
+```{r ggplot2-3, tidy = FALSE}
 # Select all lines below to run properly.
 qplot(data = iris, 
       x = Sepal.Length, 
@@ -169,7 +187,10 @@ qplot(data = iris,
       alpha = I(0.7))
 ```
 
-This plot can be saved to PNG (a [bitmap](https://en.wikipedia.org/wiki/Raster_graphics) format) or PDF (a [vector](https://en.wikipedia.org/wiki/Vector_graphics) format) from the Export menu. You will want to use PNG if you are saving the plot for screen viewing, e.g. posting on a Web page. Otherwise, you will prefer to export the plot as PDF, as shown below.
+[wiki-raster]: https://en.wikipedia.org/wiki/Raster_graphics
+[wiki-vector]: https://en.wikipedia.org/wiki/Vector_graphics
+
+This plot can be saved to PNG (a [bitmap][wiki-raster] format) or PDF (a [vector][wiki-vector] format) from the Export menu. You will want to use PNG if you are saving the plot for screen viewing, e.g. posting on a Web page. Otherwise, you will prefer to export the plot as PDF, as shown below.
 
 ![RStudio export plot.](images/rstudio-save-plot.png)
 
@@ -177,33 +198,33 @@ RStudio will open a window to ask you for a few details, such as the filename fo
 
 ## Help pages
 
-Type in `help.start()` to access the index of documentation pages in R. The documentation is only that helpful, so looking for help online is frequent practice. Finding help is a skill in itself, and there's an etiquette to [asking questions online](https://www.youtube.com/watch?v=ZFaWxxzouCY).
-
-If you do not understand a specific command, then type its name with a question mark in front of it, as in `?c`. If that does not work, or if you are looking for keyword, type two question marks in front of it, as in `??heatmap`, to perform a fuzzy search.
+Type in `help.start()` to access the index of documentation pages in R. If you do not understand a specific function like `qplot()`, then type its name with a question mark in front of it, as in `?qplot`. If that does not work, search with keywords by typing two question marks, as in `??heatmap`, to perform a fuzzy search that will match documentation from all installed packages.
 
 Help pages open in the bottom-right pane of RStudio. Try these examples out:
 
-```{r help-commands, eval=FALSE, tidy=FALSE}
-# Command help.
+```{r help-calls, eval=FALSE, tidy=FALSE}
+# Function help.
 ?setwd
 # Keyword search.
 ??heatmap
-```
-
-There is also a command to bring up the help pages of an entire package:
-
-```{r help-packages, eval=FALSE}
+# Package docs.
 help(package = "downloader")
 ```
 
-Note, finally, that typing the name of a function without its brackets will also show some form of help, which is generally useful only if you know a bit more about low-level programming in R. Here's a simple example showing how the `median()` function works internally:
+R documentation pages contain precise instructions on the syntax of each function: cover the "Description", "Usage" and "Arguments" sections first, and turn to the "Details" section if the text sends you to it. Always check out the "Examples" section, which might (or might not, hence textbooks and tutorials) lead you to understand how the function works in context.
+
+Reading technical documentation is a skill in itself, and not everything can be answered from there, so looking for help elsewhere is frequent practice. Note, however, that this is also a skill in itself and that there is an etiquette to getting help online: if you plan to use R-help or Stack Overflow to ask questions, turn first to [Roger Peng][rp-help], [Jeromy Anglim][ja-qa] or [Eric Raymond][er-qa].  
+
+[rp-help]: https://www.youtube.com/watch?v=ZFaWxxzouCY
+[er-qa]: http://catb.org/~esr/faqs/smart-questions.html
+[ja-qa]: http://jeromyanglim.blogspot.com.au/2011/03/how-to-ask-me-statistics-question.html
+
+Note, finally, that typing the name of a function without its brackets will also show some form of help, which is generally useful only if you know a bit more about low-level programming in R. Here's a simple example showing how the `median()` function works internally, from which you can learn that it allows an option called `na.rm` and belongs to the base `stats` package preinstalled in R:
 
 ```{r help-function}
 median
 ```
 
-R documentation pages contain precise instructions on the syntax of each command: read the "Description", "Usage" and "Arguments" sections first, then skmi the (not always useful) "Details". Always check out the "Examples" section.
-
-Do not hate the documentation: _everyone_ finds it difficult to read, and there are good reasons why the technical documentation is written how it is. It is not really meant to teach you R but rather to document it like a flight manual documents a plane: as fully and exactly as possible.
+Last, do not hate the documentation: _everyone_ finds it difficult to read, and there are good reasons why the technical documentation is written how it is. It is not really meant to teach you R but rather to document it like a flight manual documents a plane: as fully and exactly as possible.
 
 > __Next__: [Practice](013_practice.html).

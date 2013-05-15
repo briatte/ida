@@ -3,57 +3,87 @@
 
 # 1.1. Installing R
 
-[R](http://www.r-project.org/) is a software that uses a specific language to manipulate statistical objects. Researchers and statisticians are [increasingly](http://r4stats.com/articles/popularity/) adopting R as their software of choice, and the R user base goes well beyond academia. Many [R User Groups](http://www.r-bloggers.com/RUG/) exist on a [worldwide scale](http://blog.revolutionanalytics.com/local-r-groups.html).
+[R][r] is a software that uses a specific language to manipulate statistical objects. Researchers and statisticians are [increasingly][r-pop] adopting R as their software of choice, and the R user base goes well beyond academia. Many [R User Groups][r-ug] exist on a [worldwide scale][ra-ug]. There is a [huge R community online][pb-rsoc].
 
-There is a [huge R community online](http://www.burns-stat.com/r-and-social-media/), and some people *really* like R. This very enthusiastic user is [Anthony Damico](https://github.com/ajdamico), a [prolific](http://www.ajdamico.com/p/work.html) and [proficient](http://www.asdfree.com/) analyst of U.S. survey data working at the Kaiser Family Foundation. His video mentions other programming and statistical languages:
+[r]: http://www.r-project.org/
+[r-pop]: http://r4stats.com/articles/popularity/
+[r-ug]: http://www.r-bloggers.com/RUG/
+[ra-ug]: http://blog.revolutionanalytics.com/local-r-groups.html
+
+Some people *really* like R. This very enthusiastic user is [Anthony Damico][ajd], a [prolific][ajd-gh] and [proficient][ajd-asdfree] analyst of U.S. survey data working at the Kaiser Family Foundation. This short video is a good introduction to the spirit of R and also mentions other programming and statistical languages:
+
+[ajd]: http://www.ajdamico.com/
+[ajd-asdfree]: http://www.asdfree.com/
+[ajd-gh]: https://github.com/ajdamico
+[pb-rsoc]: http://www.burns-stat.com/r-and-social-media/
 
 <iframe src="http://player.vimeo.com/video/52999628?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
-The R language has its [roots](http://www.burns-stat.com/pages/Present/infernoishR_annotated.pdf) in the S language developed by AT&T, which also developed the C language. It is not the only language available for statistical analysis: there are [many others](http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/), and you might have also heard about SAS, SPSS or Stata, or even Matlab and Python.
+The R language has its [roots][pb-r] in the S language developed by AT&T, which also developed the C language. It is not the only domain-specific language available for statistical analysis: there are [many others][boc-comp], and you might have also heard about software like SAS, SPSS or Stata, or even applications of statistics with mathematical software and scripting languages like Java or Python.
 
-R is as free as it is powerful, but it comes with [some drawbacks](http://badhessian.org/seven-reasons-to-use-r-for-social-network-analysis-and-three-reasons-against/). Its major disadvantage is that its learning curve is pretty steep. Do not worry: we will review as many examples as we need to make it work, and we will give you code to help creating your own.
+[pb-r]: http://www.burns-stat.com/pages/Present/infernoishR_annotated.pdf
+[boc-comp]: http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/
+
+R itself is [free and open software][r-lic], as most of its extensions. It is as free as it is powerful, but it comes with [some drawbacks][bh-drawbacks]. Its major disadvantage is that its learning curve is pretty steep. Do not worry: we will review as many examples as we need to make it work, and we will give you code to help creating your own.
+
+[r-lic]: http://www.r-project.org/Licenses/
+[bh-drawbacks]: http://badhessian.org/seven-reasons-to-use-r-for-social-network-analysis-and-three-reasons-against/
 
 ## Installation
 
-Now, download  and install the latest version of R. You will need admin privileges on your computer (i.e. the user login and password) to do so. R is free and available for all platforms. It does not take a lot of memory to install and use.
+Now, download and install the latest version of R. You will need admin privileges on your computer (i.e. the user login and password) to do so. The software costs nothing, is available for all common platforms, and does not take a lot of memory to install. The exact download link depends on your operating system and geographic location:
 
-The R development team maintains [a website](http://www.r-project.org/), but you will download R from a different source based in the United States. The exact download link depends on your operating system:
+[cran-us-mac]: http://cran.us.r-project.org/bin/macosx/
+[cran-us-win]: http://cran.us.r-project.org/bin/windows/base/
+[gd-install-mac]: https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21
+[rp-install-mac]: https://www.youtube.com/watch?v=Icawuhf0Yqo
+[rp-install-win]: https://www.youtube.com/watch?v=mfGFv-iB724
+[ajd-install-win]: http://www.screenr.com/kzT8
+[r-win]: https://www.youtube.com/watch?v=Lc2sgDTzrV8
 
-- __For Mac OS X__, [download from this link](http://cran.us.r-project.org/bin/macosx/), double-click it, say "OK" to all installation steps. You can also watch [this video tutorial](https://www.youtube.com/watch?v=Icawuhf0Yqo) by Roger Peng for help, or [this video tutorial](https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21) by Gordon Davis, which also covers RStudio.
-- __For Windows__, [download from this link](http://cran.us.r-project.org/bin/windows/base/), which also has a few help pages. [This video tutorial](https://www.youtube.com/watch?v=mfGFv-iB724) by Roger Peng and [this video tutorial](http://www.screenr.com/kzT8) by Anthony Damico can help with the installation. You might also consider [using a few custom options](https://www.youtube.com/watch?v=Lc2sgDTzrV8) when running R on Windows.
+- __For Mac OS X__, [download from this link][cran-us-mac], double-click it and press "OK" on all installation steps. For help, see [this video tutorial][rp-install] by Roger Peng, or [this other one][gd-install-mac] by Gordon Davis, which also covers RStudio.
+- __For Windows__, [download from this link][cran-us-win], which also comes with a few help pages. [This video tutorial][rp-install-win] by Roger Peng and [another one][ajd-install-win] by Anthony Damico can help with the installation, and you might also want to [use a few custom options][r-win].
 
-Do not worry if you do not manage to install R (or RStudio, the next software that you will have to install) on your own. Just download the program to your hard drive, and we will guide you through installation in class.
+Do not worry if you do not manage to install R (or RStudio, the next software that you will have to install) on your own. Just download the program to your hard drive, and we will quickly guide you through installation in class. Note in passing that this course never really sanctions you for failing at doing something, only for not trying seriously enough in the first place.
 
 ## Commands
 
-Open R and locate the blinking cursor preceded by a `>` at the bottom of the R Console window. This is where you will type commands and read their results. You might be already familiar with that process if you have ever used a Command Line Interface (CLI) before.
+Open R and locate the blinking cursor preceded by a `>` at the bottom of the R Console window. This is where you will type commands and read their results. You might be already familiar with that process if you have ever used a Command Line Interface (CLI) before. The logic of entering commands is vaguely similar to asking elaborate queries in a versatile search engine like [DuckDuckGo][ddg].
 
-Type the following lines in R and press Enter to execute, or "run", their commands. You should skip the lines that start with a `#` (hash) symbol and show in a different color than the rest of the code: these lines are comments, which R will ignore if you try to run them.
+[ddg]: https://duckduckgo.com/goodies
+
+Let's try running a few commands in the R console by typing the following lines in R and pressing Enter at the end of each line to execute, or "run", their commands. You should skip the lines that start with a `#` (hash) symbol and show in a different color than the rest of the code: these lines are comments, which R will ignore if you try to run them.
 
 ```{r very-first-commands, results='hide'}
 # A string of characters.
 "Hello R World!"
+# A function that returns a string.
+date()
 # A numeric result.
 1 + 2
 # A logical statement.
 1 / (2 + 3) == .2
 # A vector of integers.
 1:3
+# A function that returns a matrix.
+as.matrix(1:3)
 ```
 
-If you get an error message in red ink at any point, it means that you have run into a syntax error: press &uarr; (UpArrow) to go back to your last command, check your typing against the original shown here, correct it, and press Enter to try it again.
+__If you get an error message__ in red ink at any point, it means that you have run into a syntax error: press &uarr; (UpArrow) to go back to your last command, check your typing against the original shown here, correct it, and press Enter to try it again. This is not a trick, it is a routine feature of programming environments: you will have to do this more than once!
 
-The next section tells you a few more things about R syntax.
+The next sections explain a few more things about objects and assignment. We will come back to brackets and commas later, when we study functions, which is the name that we will give to R commands hereinafter (even though this is not a functional programming course, we will try to stick to formal terminology).
 
 ## Syntax
 
-You might have run into errors in the example above if you typed anything else than the code provided. That is because R, just like every other programming language, requires that you follow a precise syntax. You might have run into these errors in particular:
+You might have run into errors in the example above if you typed anything else than the code provided. That is because R, just like every other programming language, requires that you follow a precise syntax. Any familiarity with mathematical notation, and especially matrix notation, will help you at that stage, but everyone has to go through some learning curve to get R syntax right.
+
+You might have run into these errors in particular:
 
 - __Forgetting quotes around text.__ R requires that you enclose text into single or double quotes, as to specify that it is text that you are typing, and not the name of an object. Try typing `hello` without quotes to see what an error message looks like in R.
 - __Double equal signs in logical expressions.__ One of the commands in the example above is a logical statement and therefore requires that you type _two_ equal signs instead of just one as you would in common mathematics. R uses the single equal sign for assignment.
 - __Typing UPPERCASE instead of lowercase.__ Note, finally, that R is case sensitive: lowercase and UPPERCASE letters are interpreted differently, and therefore cannot be used interchangeably. Lowercase is the common default, but UPPERCASE is also used from time to time.
 
-Try the example below to see how changing the case can affect a given command:
+Try the example below to see how changing the case can affect a given input:
 
 ```{r letters}
 # A vector of lowercase letters.
@@ -71,13 +101,11 @@ seq(from = 1, to = 3, by = .5)
 order(1:3, decreasing = TRUE)
 ```
 
-Whitespace is technically ignored by R, so leaving space after a comma, for example, is not important for the successful execution of a command. Forgetting a comma or a closing bracket, however, will end up in a syntax error.
-
-The next section tells you a bit more about objects and assignment, which were both mentioned in the explanations above. We will come back to brackets and commas later, when we study functions. 
+Whitespace is technically ignored by R, so leaving space after a comma, for example, is not important for successful execution. Forgetting a comma or a closing bracket, however, will end up in a syntax error, and you will inevitably spend some time "debugging" your code by removing typos and other inadequacies.
 
 ## Assignment
 
-Type each command below in their order of appearance. The commands will _not_ produce any (immediate) result, which is normal: just carry on. If you are uncomfortable with using the `<-` symbol, you can type `=` instead: the two symbols are equivalent in R.
+Type the lines below in their order of appearance. The code block formed by these commands can also be copy-pasted in R, but we will show you a more robust way to run code later on. The commands will _not_ produce any visible result, which is normal: just carry on, and prepare yourself to the general eventuality that in programming, successful operations do not always end with visible output.
 
 ```{r assign}
 # Create an object called x.
@@ -86,7 +114,11 @@ x <- "Hello"
 y <- "World"
 ```
 
-This example shows you how to assign a value to an object in R. The basic operator `<-` assigns the values `"Hello"` and `"World"` to the objects `x` and `y`. We will now bind these objects together into the object `z` with the `c()` command.
+These examples show you how to assign a value to an object in R. The basic operator `<-` assigns the values `"Hello"` and `"World"` to the objects `x` and `y` respectively. If you are uncomfortable with using the `<-` symbol, you can type `=` instead: the two symbols are (almost) equivalent in R, although `<-` [always means assignment][jm-assign] and is therefore used more or less consistently.
+
+[jm-assign]: http://www.win-vector.com/blog/2013/04/prefer-for-assignment-in-r/
+
+We will now bind these objects together into the object `z` with the `c()` function:
 
 ```{r combine}
 # Combine x and y into a vector called z.
@@ -102,12 +134,16 @@ print(z)
 z
 ```
 
-R syntax is very much like German or Latin syntax: a bit counter-intuitive at first, but flawlessly logical. It takes a lot of practice to feel at ease with it, but it will never fail you. Just work through every example in the next pages to learn it step by step.
+Note that the order of execution was crucial to the last examples, because the `z` object did not exist before you created it. Generally speaking, code execution is defined by the principle that you are running lines in a certain order (hence the line numbers in all programming environments), just like you would with text or music notation.
+
+All in all, R syntax is very much like German or Latin syntax: a bit counter-intuitive at first, but highly logical in nature. It takes a lot of practice to feel at ease with it, but it will rarely fail you. Just work through every example in the next pages to learn it step by step, and make sure to execute _all_ code blocks in order to make sure that you get the appropriate results.
 
 ## Exit
 
-You can quit R like any other application or by typing `q()` from the command line interface. You might be asked whether you want to save the R session that you started by creating the `x`, `y` and `z` objects in your Workspace (more on that later). You do not need to do so.
+You can quit R like any other application or by typing `q()` from the command line interface. You might be asked whether you want to save the R work session that you started by creating the `x`, `y` and `z` objects in your environment. You do not need to do so here, and nothing dramatic will happen if you do, in which R will simply save a small invisible file on your hard drive.
 
-R can do a lot of things, including [waiting for you to make coffee](http://vimeo.com/43305640). A big drawback of R, however, is its barebones interface. We will fix that by installing a software that "pilots" R through better menus and windows.
+R can do a lot of things, including [waiting for you to make coffee][r-coffee]. A big drawback of R, however, is its barebones interface. We will fix that by installing the RStudio software to "pilot" R through better menus and windows. Turn to the next page for instructions to do so and for a quick guide to two of R's main strengths, user-contributed packages and elegant plotting facilities.
+
+[r-coffee]: http://vimeo.com/43305640
 
 > __Next__: [Installing RStudio](012_rstudio.html).

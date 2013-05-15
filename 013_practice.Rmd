@@ -3,50 +3,87 @@
 
 # 1.3. Practice
 
-Let's be entirely honest here: even programmers often [find R difficult](http://www.johndcook.com/R_language_for_programmers.html), or even [hellish](http://www.burns-stat.com/pages/Tutor/R_inferno.pdf), to learn. It is very powerful and flexible, but it has a steep learning curve. If you find yourself at a loss with R, remember that you are not alone (and somebody might hear you scream).
-
-To learn R without bleeding through your ears, you should do three things:
-
-1. __Turn to your handbooks.__ Chapters from Teetor and Kabacoff have been assigned weekly: check the [course index](index.html) for the reading list.
-2. __Turn to online tutorials__, like the [two-minute screencasts](http://www.twotorials.com/) by Anthony Damico, which are both fun and instructive. His 'twotorials' use R but you can easily run them in RStudio.
-3. __Run the course exercises__, as advertised below, after you are done reading the other pages from the same session. We try to offer simple code and lots of examples.
-
-## Folder architecture
-
-The exercises for this course require that you keep things tidy inside your working directory. Start by making sure that you understand, from reading the previous pages, what the working directory is, and how to set it in RStudio.
-
-We recommended that you simply call your working directory `IDA`. You will now need to create two folders inside it:
-
-- __A `code` folder to archive the course exercises.__ You can move all previously created scripts, and create all future scripts, in there. Even when you run a script from that folder, your working directory should stay the `IDA` folder. 
-- __A `data` folder to archive the course datasets.__ This is more of a requirement than the previous step, because our scripts assume that this is where you store the data, and will therefore look for it. _You will later run into errors if you do not create that directory_.
-
-All scripts in this class assume that you have this folder architecture in place inside your working directory. You can actually get R to create the folders for you and move all your existing scripts in there, by running this code snippet:
-
-```{r tidy-folders, tidy=FALSE}
-if(!grepl("IDA$", getwd()))
-  warning("Not sure whether the working directory is really ",
-          "the IDA folder...", "\nCarrying on anyway...")
-if(!file.exists("code")) dir.create("code")
-if(!file.exists("data")) dir.create("data")
-if(length(scripts <- list.files(".", ".R$"))) {
-  message("Moving files to code folder:\n", paste(scripts, collapse = "\n"))
-  file.copy(scripts, "code")
-  file.remove(scripts)
-}
+```{r hello-code, include = FALSE, results = 'hide'}
+# ran for code check and consistency
+source("code/1_hello.R")
 ```
-
-## "Hello, R World" (redux)
 
 Now that you are fully set up to work in RStudio, you get to download your first exercise and run the entire code while reading the comments along the way. This exercise will teach you a few more things about keyboard shortcuts, R syntax, and trivia like this:
 
 ```{r bye-bye-bye}
-rep("See you next week!", 10)
+rep("See you next week!", 6)
 ```
 
-The exercise is called [`1_hello.R`](1_hello.R). Clicking this link will open it in your browser: just __copy-paste the full code into a new R script__, and save it under that name (or one of your choosing) into your `code` folder.
+<p class="info"><strong>Instructions:</strong> this week's exercise is called <code><a href="1_hello.R">1_hello.R</a></code>. Download or copy-paste that file into a new R script, then open it and run it with the working directory set as the <code>IDA</code> folder. If you download the script, make sure that your browser preserved its <code>.R</code> file extension.</p>
 
-Be careful if you opt instead for __downloading the script directly from your browser__: some browsers might try to save it as HTML or plain text instead of a R script. In that case, make sure to rename the file properly with a `.R` file extension.
+Be careful if you decide to __download the script directly from your browser__, which is what most users do by simply clicking links instead of right-clicking the link to save the source. Your browser might try to save R scripts as HTML (`.html`) or plain text (`.txt`): in that case, make sure to rename the file properly with a `.R` file extension.
 
-Finally, do not forget to __read the assigned handbook chapters__ for next week: they will teach you more about the R interface, and they also cover things like the working directory in more depth, in case you need additional clarifications. Enjoy.
+Once you are done with the exercise, please turn to the final setup instructions below.
+
+## Folder architecture
+
+The exercises for this course require that you keep things tidy inside your working directory. Start by making sure that you understand, from reading the previous pages, what the working directory is, and how to set it in RStudio. We recommended that you simply call your working directory `IDA`. You will then need to __create two folders__ inside it:
+
+- __A `code` folder__ to archive the course exercises. You can move all previously created scripts, and create all future scripts, in there. _Even when you run a script from that folder, make sure that your working directory stays the `IDA` folder._ 
+- __A `data` folder__ to archive the course datasets. This as much a requirement as the previous step, because our scripts assume that this is where you store the data, and will therefore look for it. _You will run into errors if you do not create that directory_.
+
+All scripts in this class assume that you have this folder architecture in place inside your working directory. You can ask R to create the folders for you. First, check that the working directory is the `IDA` folder by typing `getwd()`. If not, change it with the 'Session' menu of RStudio or the 'Misc' menu in R. Then run the following lines:
+
+```{r tidy-folders, tidy=FALSE}
+# Check the working directory.
+if(!grepl("IDA$", getwd()))
+  warning("Not sure whether the working directory is really ",
+          "the IDA folder...", "\nCarrying on anyway...")
+# Create folders if necessary.
+if(!file.exists("code")) dir.create("code")
+if(!file.exists("data")) dir.create("data")
+```
+
+## Security notice
+
+The code above will warn you if the working directory does not end with "IDA" and then create two folders. Notice that R can easily create, copy or move files and folders: it also has the same ability to destroy them, by removal or overwrite, _just as if you were doing it by hand_. If you are running Linux, you know that and you can [prevent running into issues][jo-rapp].
+
+[jo-rapp]: https://github.com/jeroenooms/RAppArmor
+
+The code block below illustrates what is meant here: it will move any `.R` script that might be lying around in your main `IDA` folder to the `code` subfolder, as to insist on keeping your files tidy. You can run this code safely because the `scripts` object, which is a list of files ending in `.R` matched by a [regular expression][regex], is identical at the copying and removal stages:
+
+[regex]: http://stat.ethz.ch/R-manual/R-patched/library/base/html/regex.html
+
+```{r tidy-files, tidy = FALSE}
+# Match filenames ending in .R in the working directory.
+regex <- list.files(".", ".R$")
+# This variable will be 0 (FALSE) if nothing is matched.
+clean <- length(regex)
+# Move .R scripts to code/ subfolder.
+if(clean) {
+  message("Moving files to code folder:\n", paste(scripts, collapse = "\n"))
+  file.copy(scripts, "code")
+  file.remove(scripts)
+} else {
+  message("No R script was found lying around.")
+}
+```
+
+If you ever plan to run R code without full understanding of what the code might accomplish, first consider whether you really want to do that, and give a second look at the code and its source. Then consider using a "sandboxed" environment like [the one at Rapporter.net][hackme] to check the code without any possible effect on your system.
+
+[hackme]: http://hackme.rapporter.net/
+
+## Additional help
+
+Last, let's be entirely honest here: even trained people can find R [difficult][jdc-r], if not [infernal][pb-hell], to learn. R is powerful and flexible, but it has a steep learning curve. If you find yourself at a loss with R, remember that you are not alone (and somebody might hear you scream). To learn R without bleeding through your ears, this course suggests that you follow these three steps:
+
+1. __Read the course pages__ from this week onwards. Every session is made of four pages that end on a practical replication assignment. We have done our best to offer simple code and lots of examples.
+2. __Turn to your textbooks.__ Chapters from Teetor and Kabacoff have been assigned weekly: check the [course index](index.html) for the reading list, and make sure to try out a few more examples.
+3. __Turn to online tutorials__, like the [two-minute screencasts][ajd-tt] by Anthony Damico, which are both fun and instructive. His 'twotorials' use R and you can easily run them in RStudio.
+
+[jdc-r]: http://www.johndcook.com/R_language_for_programmers.html
+[pb-hell]: http://www.burns-stat.com/pages/Tutor/R_inferno.pdf
+[ajd-tt]: http://www.twotorials.com/
+
+The course itself is documented in more detail on its [wiki][ida-wiki]. You might also turn to the `README` files that were written for the course [code][ida-code] and [datasets][ida-data] if you need additional details on the contents and examples of each session, which will give you an overview of the material that we will survey in our time together.
+
+[ida-wiki]: https://github.com/briatte/ida/wiki
+[ida-code]: https://github.com/briatte/ida/#readme
+[ida-data]: https://github.com/briatte/ida/tree/master/data#readme
 
 > __Next week__: [Objects](020_objects.html).
