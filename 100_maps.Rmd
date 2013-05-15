@@ -3,19 +3,47 @@
 
 # 10. Visualization in space: Maps
 
-Spatial visualization can be [pretty complex](http://youtu.be/XU6-krsDviY), because you have to manipulate learn new measures that apply in geographic contexts. We will stick to simply [viewing some data on a map](http://is-r.tumblr.com/post/35200999886/make-your-own-electoral-map).
+```{r packages, message = FALSE, warning = FALSE}
+# Load packages.
+packages <- c("countrycode", "ggplot2", "maps")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
+Spatial visualization can be [pretty complex](http://youtu.be/XU6-krsDviY), because you have to manipulate learn new measures that apply in geographic contexts. We will stick to simply [viewing some data on a map][ds-map].
+
+[ds-map]: http://is-r.tumblr.com/post/35200999886/make-your-own-electoral-map
 
 Here's a quick method:
 
-```{r easy-map}
-library(maps)
-library(ggplot2)
+```{r map-data}
+# Get world map coordinates from the maps package.
 eu <- map_data("world", zoom = 4)
-qog <- read.csv("data/qog_cs.csv", sep = ";", stringsAsFactors = FALSE)
+# Download Quality of Government Standard dataset.
+file = "data/qog.cs.txt"
+if(!file.exists(file)) {
+  dta = "data/qog.cs.dta"
+  if(!file.exists(dta)) {
+    url = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
+    download(url, dta, mode = "wb")
+  }
+  write.csv(read.dta(dta), file)
+}
+# Open local copy.
+qog <- read.csv(file, stringsAsFactors = FALSE, header = TRUE)
+# Add geographic continents using UN country codes.
+qog$continent = factor(countrycode(qog$ccodealp, "iso3c", "continent"))
+```
+
+```{r map-ggplot2}
 qog <- with(qog, data.frame(
   region = cname,
-  fertility = wdi_fr, stringsAsFactors = FALSE))
-eu <- merge(eu, qog, all.x = TRUE, by.x = "region", by.y = "region")
+  fertility = wdi_fr))
+eu <- merge(eu, qog, by = "region", all.x = TRUE)
 qplot(data = eu, x = long, y = lat, group = group, fill = fertility, geom = "polygon")
 ```
 

@@ -5,8 +5,8 @@
 
 Most of the work can be [done with ggmap](http://www.milanor.net/blog/?p=534). Let's plot [airport traffic](http://www.milanor.net/blog/?p=594), using an online tutorial by Max Marchi. It shows how to plot geocoded airports and additional information on Google Maps, from R.
 
-```{r packages}
-packages <- c("ggmap", "plyr")
+```{r packages, message = FALSE}
+packages <- c("downloader", "ggmap", "plyr")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -18,13 +18,15 @@ packages <- lapply(packages, FUN = function(x) {
 ```{r airports-data}
 # Prepare the data.
 url = "http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/airports.dat"
-if(!file.exists(file <- "data/OF.Airports.txt")) download(url, file, mode = "wb")
+file = "data/openflight-airports.txt"
+if(!file.exists(file)) download(url, file, mode = "wb")
 airports <- read.csv(file, header = FALSE)
 names(airports) <- c("ID", "name", "city", "country", "IATA_FAA", "ICAO", "lat", "lon", "altitude", "timezone", "DST")
 str(airports)
 # Prepare more data.
 url = "http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/routes.dat"
-if(!file.exists(file <- "data/OF.Routes.txt")) download(url, file, mode = "wb")
+file = "data/openflight-routes.txt"
+if(!file.exists(file)) download(url, file, mode = "wb")
 routes <- read.csv(file, header = FALSE)
 names(routes) <- c("airline", "airlineID", "sourceAirport", "sourceAirportID", "destinationAirport", "destinationAirportID", "codeshare", "stops", "equipment")
 str(routes)
@@ -86,5 +88,7 @@ ggmap(map) +
   scale_size_area(breaks = sqrt(seq), labels = seq, name = "Routes") +
   facet_grid(. ~ type)
 ```
+
+There are also ways to [plot network data over maps](http://flowingdata.com/2011/05/11/how-to-map-connections-with-great-circles/), if your data contains vertices of the form $(x_1, y_1) - (x_2,y_2)$ (start-end points) that can be plotted by latitude and longitude.
 
 > __Next__: [Choropleth maps](102_choropleths.html).
