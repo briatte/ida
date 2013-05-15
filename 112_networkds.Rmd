@@ -1,0 +1,73 @@
+<style>@import url(style.css);</style>
+[Introduction to Data Analysis](index.html "Course index")
+
+# 11.2. Network(d)s (networks of words)
+
+## Networks of word associations
+
+This section brings a bit of text mining to network analysis, as we will [turn word associations into network ties](http://blog.ynada.com/303) and visualize the result.
+
+```{r puschmann-text-as-network}
+library(tm)
+library(igraph)
+# Julian Assange, UN address, September 2012.
+# URL: http://wikileaks.org/Transcript-of-Julian-Assange.html
+loc <- "data/assange.txt"
+txt <- scan(file=loc, what="char", sep="\n", encoding="UTF-8");
+
+words <- unlist(strsplit(gsub("[[:punct:]]", " ", tolower(txt)), "[[:space:]]+"));
+g.start <- 1;
+g.end <- length(words) - 1;
+assocs <- matrix(nrow = g.end, ncol=2)
+
+for (i in g.start:g.end)
+{
+  assocs[i,1] <- words[i];
+  assocs[i,2] <- words[i + 1];
+  print(paste("Pass #", i, " of ", g.end, ". ", "Node word is ", toupper(words[i]), ".", sep=""));
+}
+
+associate <- function(x) {
+  y = c(words[x], words[x + 1])
+  if(!TRUE %in% (y %in% c("", stopwords("en")))) y
+}
+assocs <- do.call(rbind, sapply(1:(length(words) - 1), associate))
+
+# [iteration][032] [032]: 032_iteration.html
+# [bh-apply]: http://badhessian.org/loops-matrices-and-apply-functions/
+
+
+# Remove associations to common English words.
+assocs <- subset(assocs,!(assocs[,1] %in% stopwords("en")))
+assocs <- subset(assocs,!(assocs[,2] %in% stopwords("en")))
+
+g.assocs <- graph.data.frame(assocs, directed=F);
+V(g.assocs)$label <- V(g.assocs)$name;
+V(g.assocs)$color <- "Gray";
+V(g.assocs)[unlist(largest.cliques(g.assocs))]$color <- "Red";
+# plot(g.assocs, layout=layout.random, vertex.size=4, vertex.label.dist=0);
+# plot(g.assocs, layout=layout.circle, vertex.size=1, vertex.label.dist=0);
+# plot(g.assocs, layout=layout.fruchterman.reingold, vertex.size=4, vertex.label.dist=0);
+# plot(g.assocs, layout=layout.kamada.kawai, vertex.size=4, vertex.label.dist=0);
+
+# ... and make pretty: 
+# http://rdatamining.wordpress.com/2012/05/17/an-example-of-social-network-analysis-with-r-using-package-igraph/
+V(g.assocs)$label.cex <- 2.2 * V(g.assocs)$degree / max(V(g.assocs)$degree)+ .2
+V(g.assocs)$label.color <- rgb(0, 0, .2, .8)
+V(g.assocs)$frame.color <- NA
+plot(g.assocs, layout = layout.fruchterman.reingold)
+```
+
+```{r intheworks, eval=FALSE, include=FALSE}
+# in progress
+# V(g.assocs)$label.cex <- 2.2 * V(g.assocs)$degree / max(V(g.assocs)$degree)+ .2
+# V(g.assocs)$label.color <- rgb(0, 0, .2, .8)
+# V(g.assocs)$frame.color <- NA
+# egam <- (log(E(g.assocs)$weight)+.4) / max(log(E(g.assocs)$weight)+.4)
+# E(g.assocs)$color <- rgb(.5, .5, 0, egam)
+# E(g.assocs)$width <- egam
+```
+
+http://www.statsblogs.com/2012/05/17/an-example-of-social-network-analysis-with-r-using-package-igraph/
+
+> __Next week__: [Data-driven advances](120_data.html).
