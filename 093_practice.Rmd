@@ -14,8 +14,9 @@ library(ggplot2)
 library(xlsx)
 library(zoo)
 url = "http://www.unodc.org/documents/data-and-analysis/statistics/Homicide/Homicide_data_series.xls"
-if(!file.exists(file <- "data/UNODC.Homicides.xls"))
-  download(, file, mode = "wb")
+file = "data/UNODC.Homicides.xls"
+if(!file.exists(file))
+  download(url, file, mode = "wb")
 
 # Import XLS, selected columns and rows.
 unodc <- read.xlsx(file, sheetName = "data series", colIndex = c(1:3, 6:22), rowIndex = 7:213)

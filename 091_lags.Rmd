@@ -29,79 +29,115 @@ Let's first get the data for this example from [Emmanuel Saez](http://elsa.berke
 
 ```{r ps-data-download}
 # Target data link.
-link = "http://elsa.berkeley.edu/~saez/TabFig2011prel.xls"
+url = "http://elsa.berkeley.edu/~saez/TabFig2011prel.xls"
 # Target data file.
-file = "data/Piketty.Saez.2011.xls"
+xls = "data/piketty.saez.2011.xls"
 # Download dataset.
-if (!file.exists(file)) {
+if (!file.exists(xls)) {
   message("Dowloading the data...")
   # Download spreadsheet.
-  download(link, file, mode = "wb")
+  download(url, xls, mode = "wb")
 }
 ```
 
-The first segment of data that we want to use is the income share of the top 1% income earners (excluding capital gains), which is Table A1 in the [Excel spreadsheet](http://elsa.berkeley.edu/~saez/TabFig2011prel.xls). The `xlsx` package makes it easy to select what rows and columns we want to import. The "Piketty-Saez" dataset of income shares is then reshaped to long format.
+The first segment of data that we want to use is the income share of the top 1% income earners (excluding capital gains), which is Table A1 in the [Excel spreadsheet][ps-source]. The `xlsx` package makes it easy to select what rows and columns we want to import (see [Peter Carl's tutorial][carl-xlsx] for an extensive demo of the package).
+
+[ps-source]: http://elsa.berkeley.edu/~saez/TabFig2011prel.xls
+[carl-xlsx]: http://www.r-bloggers.com/writing-from-r-to-excel-with-xlsx/
 
 ```{r ps-shares-data}
-# Import from XLS format.
-ps_share <- read.xlsx(file, sheetName = "Table A1", 
-                      rowIndex = c(4, 6:104), colIndex = 1:7)
+file = "data/piketty.saez.2011.share.txt"
+if(!file.exists(file)) {
+  # Import from XLS format.
+  ps.share <- read.xlsx(xls, sheetName = "Table A1",
+                        rowIndex = c(4, 6:104), colIndex = 1:7)
+  # Save local copy.
+  write.csv(ps.share, file, row.names = FALSE)
+}
+# Read CSV file.
+ps.share = read.csv(file)
 # Check result.
-str(ps_share)
+str(ps.share)
+```
+
+The "Piketty-Saez" dataset of income shares is then reshaped to long format.
+
+```{r ps-shares-prepare}
 # Change variable names.
-names(ps_share) <- c("Year", "Top 10%", "Top 5%", "Top 1%", "Top 0.5%", "Top 0.1%", "Top 0.01%")
+names(ps.share) <- c("Year", paste0("Top ", c(10, 5, 1, 0.5, 0.1, 0.01), "%"))
 # Reshape to long format.
-ps_share <- melt(ps_share, id = "Year", variable_name = "Fractile")
+ps.share <- melt(ps.share, id = "Year", variable_name = "Fractile")
 # Drop missing data.
-ps_share <- na.omit(ps_share)
+ps.share <- na.omit(ps.share)
 # Check result.
-head(ps_share)
+head(ps.share)
+# Clean up 
 ```
 
 Let's produce a first plot showing all top fractile income shares, colored by income fractile. This plot shows some of the same data as Figure 1 in the original Piketty-Saez paper: it reveals a "U"-shaped trend, starting with a general contraction of the income share of top income earners at the end of World War II, and followed by an expansion in recent decades.
 
-```{r ps-shares}
+```{r ps-shares-auto, fig.width = 9, fig.height = 6.8}
 # Time series plot.
-qplot(data = ps_share, x = Year, y = value, color = Fractile, geom = "line") + 
-  labs(y = NULL, x = NULL, title = "U.S. top income shares (%)\n")
+qplot(data = ps.share, x = Year, y = value / 100, color = Fractile, geom = "line") + 
+  labs(y = NULL, x = NULL, title = "U.S. top income shares (%)") +
+  geom_text(data = subset(ps.share, Year == 2011), aes(x = 2013, label = Fractile, hjust = 0)) +
+  scale_x_continuous(lim = c(1911, 2031), breaks = seq(1910, 2010, by = 20)) +
+  scale_y_continuous(labels = percent) +
+  theme(legend.position = "none")
 ```
 
 The rate of increase in income shares over the recent years is different for each income fractile: some top incomes have grown their shares quicker than others. To visualize the event, we extract a different spreadsheet holding real income levels (including capital gains) for the lowest 90%, top 10% and top 1% income fractiles. The years are added manually due to an import error with the Excel format.
 
 ```{r ps-incomes-data}
-# Import from XLS format.
-ps_income <- read.xlsx(file, sheetName = "Table_Incomegrowth", 
-                       rowIndex = c(2, 5:103), colIndex = c(10, 5, 3))
-# Add years manually.
-ps_income <- cbind(1913:2011, ps_income)
+file = "data/piketty.saez.2011.income.txt"
+if(!file.exists(file)) {
+  # Import from XLS format.
+  ps.income <- read.xlsx(xls, sheetName = "Table_Incomegrowth", 
+                         rowIndex = c(2, 5:103), colIndex = c(10, 5, 3))
+  # Add years manually.
+  ps.income <- cbind(1913:2011, ps.income)
+  # Save local copy.
+  write.csv(ps.income, file, row.names = FALSE)
+}
+# Read CSV file.
+ps.income = read.csv(file)
 # Check result.
-str(ps_income)
+str(ps.income)
+```
+
+```{r ps-incomes-prepare}
 # Change variable names.
-names(ps_income) <- c("Year", "Top 10%", "Top 1%", "Bottom 90%")
+names(ps.income) <- c("Year", "Top 10%", "Top 1%", "Bottom 90%")
 # Reshape to long format.
-ps_income <- melt(ps_income, id = "Year", variable_name = "Fractile")
+ps.income <- melt(ps.income, id = "Year", variable_name = "Fractile")
 # Drop missing data.
-ps_income <- na.omit(ps_income)
+ps.income <- na.omit(ps.income)
 # Check result.
-head(ps_income)
+head(ps.income)
 ```
 
 The plots for real income growth in the United States show a sharp difference for top earners versus the rest of the population -- the "99%" of Occupy Wall Street, if you prefer: the difference in income growth is much more pronounced for those higher on the income scale. This graph circulated on several [blogs](http://crookedtimber.org/2009/04/13/reducing-inequality-whats-the-problem/) in the early months of the current financial crisis.
 
-```{r ps-incomes-plot}
+```{r ps-incomes-auto, fig.width = 9, fig.height = 6.8}
 # Plot in real dollar units.
-qplot(data = ps_income, x = Year, y = value, color = Fractile, geom = "line") +
-  labs(y = NULL, x = NULL, title = "Real income growth in the United States\n") +
-  scale_y_continuous(labels = dollar)
+qplot(data = ps.income, x = Year, y = value, color = Fractile, geom = "line") +
+  labs(y = NULL, x = NULL, title = "Real income growth in the United States") +
+  geom_text(data = subset(ps.income, Year == 2011), aes(x = 2013, label = Fractile, hjust = 0)) +
+  scale_x_continuous(lim = c(1911, 2031), breaks = seq(1910, 2010, by = 20)) +
+  scale_y_continuous(labels = dollar) +
+  theme(legend.position = "none")
 ```
 
 One [problematic](http://lanekenworthy.net/2008/03/09/the-best-inequality-graph/) aspect of this graph  is that the metric income scale eschews any change at the bottom of the graph: the bottom 90% income earners seem to enjoy no income growth over the entire time period. Using a logarithmic scale of base 10 for real income corrects for that issue by plotting income by $10^1, 10^2, ..., 10^k$ dollar units.
 
-```{r ps-incomes-log10}
+```{r ps-incomes-log10-auto, fig.width = 9, fig.height = 6.8}
 # Plot in log10 dollar units.
-qplot(data = ps_income, x = Year, y = value, color = Fractile, geom = "line") +
-  labs(y = NULL, x = NULL, title = "Real income growth in the United States\n") +
-  scale_y_log10(labels = dollar)
+qplot(data = ps.income, x = Year, y = value, color = Fractile, geom = "line") +
+  labs(y = NULL, x = NULL, title = "Real income growth in the United States") +
+  geom_text(data = subset(ps.income, Year == 2011), aes(x = 2013, label = Fractile, hjust = 0)) +
+  scale_x_continuous(lim = c(1911, 2031), breaks = seq(1910, 2010, by = 20)) +
+  scale_y_log10(labels = dollar) +
+  theme(legend.position = "none")
 ```
 
 Even by doing so, income inequality is clearly apparent and growing over the recent period, due to stagnating income levels in the income fractiles that do not rely on larger capital gains. One way to show this is to switch to growth rates of the form $\frac{W_{t}}{W_{t-1} - 1}$, which brings us to the core of the topic: lagged values.
@@ -153,45 +189,49 @@ t(cbind(df, lag(df, -1), diff(df)))
 
 Going back to the Piketty-Saez data, we start by calculating the growth rate for each series from its lagged values. The graph uses line ranges, [colored](https://learnr.wordpress.com/2009/05/18/ggplot2-three-variable-time-series-panel-chart/) in blue when the growth rate is positive and red when the growth rate is negative.
 
-```{r ps-incomes-rate, tidy=FALSE, warning=FALSE}
+```{r ps-incomes-rate-auto, fig.width = 9, fig.height = 6.8, tidy = FALSE, warning = FALSE}
 # Add lagged series.
-ps_income <- ddply(ps_income, .(Fractile), transform,
+ps.income <- ddply(ps.income, .(Fractile), transform,
                    lagged = c(NA, value[-length(value)]))
 # Create growth rate.
-ps_income$rate <- with(ps_income, (value / lagged) - 1)
+ps.income$rate <- with(ps.income, (value / lagged) - 1)
 # Plot real income growth rates.
-qplot(data = ps_income, 
+qplot(data = ps.income, 
       ymin = 0, ymax = rate, x = Year, geom = "linerange") +
   geom_hline(y = 0, color = "gray") +
   aes(color = ifelse(rate > 0, "positive", "negative")) +
   scale_colour_manual("", values = c("positive" = "blue", "negative" = "red")) +
   scale_y_continuous(labels = percent) +
-  facet_grid(Fractile ~ .)
+  facet_grid(Fractile ~ .) +
+  labs(x = NULL, y = NULL, title = "Real income growth rate") +
+  theme(legend.position = "none")
 ```
 
-Note that the rate of change is mathematically equivalent to taking the ratio of the derivative by the function: the relative rate of change is $\frac{f'(x)}{f(x)}$, and the percentage rate of change is $100 \cdot \frac{f'(x)}{f(x)}$. What we now want to compute is the actual change, using the differences of each series divided by $x_{t-1}$. The scales of each plot facet are particularly telling:
+Note that the rate of change is mathematically equivalent to taking the ratio of the derivative by the function: the relative rate of change is $\frac{f'(x)}{f(x)}$, and the percentage rate of change is $100 \cdot \frac{f'(x)}{f(x)}$. What we now want to compute is the actual change, using the differences of each series divided by $x_{t-1}$. The scaling of the plot facets is particularly telling:
 
-```{r ps-incomes-diff, tidy=FALSE, warning=FALSE}
+```{r ps-incomes-diff-auto, fig.width = 9, fig.height = 6.8, tidy = FALSE, warning = FALSE}
 # Add differenced series.
-ps_income <- ddply(ps_income, .(Fractile), transform,
+ps.income <- ddply(ps.income, .(Fractile), transform,
                    Difference = c(NA, diff(value)))
-# Plot real income percentage changes.
-qplot(data = ps_income, 
+# Plot real income changes.
+qplot(data = ps.income, 
       ymin = 0, ymax = Difference, x = Year, geom = "linerange") +
   geom_hline(y = 0, color = "gray") +
   aes(color = ifelse(rate > 0, "positive", "negative")) +
   scale_colour_manual("", values = c("positive" = "blue", "negative" = "red")) +
   scale_y_continuous(labels = dollar) +
-  facet_grid(Fractile ~ ., scale = "free_y")
+  facet_grid(Fractile ~ ., scale = "free_y") +
+  labs(x = NULL, y = NULL, title = "Changes in real income") +
+  theme(legend.position = "none")
 ```
 
 ## Detrending
 
 The previous plots show how a time series at $x_{t}$ can be lagged by taking $x_{t-1}$ into account. The final step is to take many lags into account to control for autocorrelation, i.e. the full series of correlations $\rho_k$ with $k = 1, 2, ..., k$ lags, in order to detrend the data. This is done by regressing the data onto its time index, for which an example follows.
 
-```{r ps-detrend, tidy=FALSE, warning=FALSE}
+```{r ps-detrend-auto, fig.width = 9, fig.height = 6.8, tidy=FALSE, warning=FALSE}
 # Subsetting to top 1% incomes.
-ps_top1 <- subset(ps_income, Fractile=="Top 1%")
+ps_top1 <- subset(ps.income, Fractile=="Top 1%")
 # Create a time series.
 ps_top1 <- with(ps_top1, zoo(value, Year))
 # Check result.
@@ -201,20 +241,14 @@ m <- lm(coredata(ps_top1) ~ index(ps_top1))
 # Plot the residuals.
 qplot(ymin = 0, ymax = resid(m), x = index(ps_top1), geom = "linerange") +
   aes(color = ifelse(resid(m) > 0, "positive", "negative")) +
-  scale_color_manual("Residuals\n", 
-                     values = c("positive" = "red", "negative" = "blue")) +
+  scale_color_manual("", values = c("positive" = "blue", "negative" = "red")) +
   scale_y_continuous(label = dollar) +
-  labs(x = NULL, title = "Detrended series of top 1% income growth\n")
+  labs(x = NULL, title = "Detrended series of top 1% income growth") +
+  theme(legend.position = "none")
 ```
 
 The model clearly shows one thing: the series is not stationary, insofar as its past values fail to predict large amounts of its present values, even by very large margins. The last fifteen years are [particularly remarkable](http://www.vanityfair.com/society/features/2011/05/top-one-percent-201105) in that respect: while some of the rise in income inequality has been absorbed by the model, the most recent years are robust to detrending.
 
 Teetor, ch. 14.13-14.21, further explains how to model a time series from its past values, using plots and elements similar to those shown here. There is also a great book and R package by [Shumway and Stoffer](http://www.stat.pitt.edu/stoffer/tsa3/), which goes into greater length about linear time series (and the nonlinear book is forthcoming this year).
-
-## Another example: pollution in Beijing
-
-An interesting time series can be created [from Twitter, using Beijing pollution data](http://brainchronicle.blogspot.co.uk/2012/07/twitter-analysis-of-air-pollution-in.html). There was a [pollution peak](http://brainchronicle.blogspot.fr/2013/01/air-quality-analysis-from-beijing.html) in January 2013, and the city [looks like](http://kateoplis.tumblr.com/post/40555052298/nope-this-is-not-a-still-from-blade-runner-its) *Blade Runner*, except worse because of its ongoing [Smog-ocalypse](http://simplystatistics.org/2013/01/14/welcome-to-the-smog-ocalypse/), which makes staying in Beijing like [smoking between one and half and three cigarettes a day](http://simplystatistics.org/2011/12/14/smoking-is-a-choice-breathing-is-not/).
-
-Unfortunately, the Twitter API is now less open as it used to be, so we will not be able to access the data as easily as it was in the recent past.
 
 > __Next__: [Smoothing](092_smoothing.html).

@@ -3,7 +3,9 @@
 
 # 9.2. Smoothing
 
-To test a few smoothing algorithms, we are going to mimick the [Quandl API][q-api] by scraping and downloading short time .
+To test a few smoothing algorithms, we are going to mimick the [Quandl API][q-api] by scraping and downloading short time ####.
+
+http://www.quandl.com/help/r
 
 ```{r packages, message=FALSE, warning=FALSE}
 # Load packages.
@@ -20,10 +22,10 @@ packages <- lapply(packages, FUN = function(x) {
 
 ```{r quandl-scrape}
 # 
-link = "http://www.quandl.com/api/v1/datasets/STATCHINA/E0403.csv?&trim_start=1952-12-31&trim_end=2011-12-31&sort_order=desc"
+url = "http://www.quandl.com/api/v1/datasets/STATCHINA/E0403.csv?&trim_start=1952-12-31&trim_end=2011-12-31&sort_order=desc"
 file = "data/china.txt"
 # Download
-if(!file.exists(file)) download(link, file, mode = "wb")
+if(!file.exists(file)) download(url, file, mode = "wb")
 # Read data, skipping row numbers.
 data <- read.csv(file)
 # Fix names.
@@ -50,6 +52,19 @@ qplot(data = subset(data, Population %in% c("Primary", "Secondary", "Tertiary"))
       position = "stack", geom = "area") + 
     scale_y_continuous(labels = comma) + labs(y = "Million")
 ```
+
+## Step 4: LOESS smoothing
+
+## Step 5: cubic spline smoother
+
+The mathematics of [smoothed splines](http://www.johnmarquess.com/?p=111) involve several methods of computation. When there is a lot of data, we fit local polynomials with `loess`. When there is less data, as with time series over a few decades, a generalized additive model (`gam`) provides a more robust smoother.
+
+Let's smooth the series using `ggplot2` to [make it easy](http://docs.ggplot2.org/current/stat_smooth.html). We build a x-y canvas that will plot each weapon type in a different color, and we get the axes and titles ready before plotting. We now add a smoothed curve to the plot canvas, using a [LOESS function][wiki-loess].
+
+A different smoother uses a [generalized additive model][wiki-gam] to plot the basic cubic spline of the series (see `?gam` and `?ns` for details). The general idea is to predict each data point of the series $x$ at $t_k$ from the vector of regressors $(t_0, t_1, t_2, ..., t_{k-2}, t_{k-1})$, i.e. from the past values of the series. The `MASS` library provides the `rlm` method, and the `splines` library provides the `ns()` function.
+
+[wiki-loess]: https://en.wikipedia.org/wiki/Local_regression
+[wiki-gam]: https://en.wikipedia.org/wiki/Generalized_additive_model
 
 Note how the change in smoothing algorithm affects the aspect of the curve for handguns. On the same topic, see [Kieran Healy's plots and code](https://github.com/kjhealy/assault-deaths) on state-by-state trends and the United States vers other OECD countries.
 

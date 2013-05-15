@@ -26,7 +26,7 @@ The data source is imported [from *The Guardian Data Blog*](http://www.guardian.
 # Target data link.
 link = "https://docs.google.com/spreadsheet/pub?key=0AonYZs4MzlZbcGhOdG0zTG1EWkVPOEY3OXRmOEIwZmc&output=csv"
 # Target data file.
-file = "data/ICM.polls.txt"
+file = "data/icm.polls.8413.txt"
 ```
 
 The next code block then quickly checks for the existence of the file on disk, downloads and converts the data to CSV format if it is not found, and opens it with strings (text characters) left as such. The download procedure is handled by the `RCurl` package through an unsigned SSL connection, and its result requires to be converted from raw to structured text, and then to comma-separated values.
@@ -100,6 +100,12 @@ icm <- melt(icm, id = c("Date", "GE"), variable_name = "Party")
 # Check result.
 head(icm)
 ```
+
+The operations above leave us with correctly 'timed' data. It becomes very important to know how to work with dates if you frequently analyze quaterly data (as with [college enrollments][bryer]) or with even more fine-grained time series, like stock values (see, e.g., [Moritz Marbach's analysis][marbach] of the relationship between the Frankfurt DAX index and German federal elections).
+
+[bryer]: http://www.r-bloggers.com/cut-dates-into-quarters/
+[marbach]: http://rpubs.com/sumtxt/dax-volatility
+
 
 ## Plotting time series
 
@@ -194,7 +200,5 @@ Now that we have some idea of how to represent time series visually, let's turn 
 [091]: 091_lags.html
 [092]: 092_smoothing.html
 [093]: 093_practice.html
-
-* [Is the German market sensitive to federal elections?](http://rpubs.com/sumtxt/dax-volatility)
 
 > __Next__: [Autocorrelation](091_lags.html).
