@@ -1,0 +1,75 @@
+"Country","Date started","Status of protests","Outcome","Death toll","Situation"
+"Tunisia","02010-12-1818 December 2010","Government overthrown on 14 January 2011","Overthrow of Zine El Abidine Ben Ali; Ben Ali flees into exile in Saudi Arabia
+Resignation of Prime Minister Ghannouchi[93]
+Dissolution of the political police[94]
+Dissolution of the RCD, the former ruling party of Tunisia and liquidation of its assets[95]
+Release of political prisoners[96]
+Elections to a Constituent Assembly on 23 October 2011[97]","7002338000000000000338[98]","E Government overthrown"
+"Algeria","02010-12-2929 December 2010","Ended in January 2012","Lifting of the 19-year-old state of emergency[99][100]","70008000000000000008[101]","B Major protests"
+"Jordan","02011-01-1414 January 2011","Ongoing","On February 2011, King Abdullah II dismisses Prime Minister Rifai and his cabinet[102]
+On October 2011, Abdullah dismisses Prime Minister Bakhit and his cabinet after complaints of slow progress on promised reforms[103]
+On April 2012, as the protests continues, Al-Khasawneh resigned, and the King appoints Fayez al-Tarawneh as the new Prime Minister of Jordan[104]
+On October 2012, King Abdullah dissolves the parliament for new early elections, and appoints Abdullah Ensour as the new Prime Minister of Jordan[105]","70003000000000000003[106]","C Protests and governmental changes"
+"Oman","02011-01-1717 January 2011","Ended in May 2011","Economic concessions by Sultan Qaboos[107][108]
+Dismissal of ministers[109][110]
+Granting of lawmaking powers to Oman's elected legislature[111]","7000400000000000000 2â6[112][113][114]","C Protests and governmental changes"
+"Egypt","02011-01-2525 January 2011","Government overthrown on 11 February 2011, protests ongoing","Overthrow of Hosni Mubarak; Mubarak sentenced to life in prison for ordering the killing of protesters
+Resignation of Prime Minister(s) Nazif and Shafik[115]
+Assumption of power by the Armed Forces[116]
+Suspension of the Constitution, dissolution of the Parliament[117]
+Disbanding of State Security Investigations Service[118]
+Dissolution of the NDP, the former ruling party of Egypt and transfer of its assets to the state[56]
+Prosecution of Mubarak, his family and his former ministers[119][120][121]
+Lifting of the 31-year-old state of emergency[122]
+Democratic election held to replace Mubarak as the new president of Egypt; Mohamed Morsi elected and inaugurated[123]","7002846000000000000846[60]","E Government overthrown,
+protests ongoing"
+"Yemen","02011-01-2727 January 2011","Government overthrown on 27 February 2012","Overthrow of Ali Abdullah Saleh; Saleh granted immunity from prosecution
+Resignation of Prime Minister Mujawar
+Resignation of MPs from the ruling party[124]
+Occupation of several areas of Yemeni territory by al-Qaeda and Houthi rebels
+Restructure of the military forces by sacking several of its leaders[125]
+Approval of Saleh's immunity from prosecution by Yemeni legislators[126]
+Presidential election held to replace Saleh as the new president of Yemen; Abd Rabbuh Mansur Al-Hadi elected and inaugurated","70032000000000000002,000[127]","E Government overthrown"
+"Djibouti","02011-01-2828 January 2011","Ended in March 2011","","70002000000000000002[128]","A Minor protests"
+"Somalia","02011-01-2828 January 2011","Ended in June 2012","","70002000000000000002[128]","A Minor protests"
+"Sudan","02011-01-3030 January 2011","Ongoing","President Bashir announces he will not seek another term in 2015[129]","700114000000000000014[130][131][132]","A Minor protests"
+"Iraq","02012-12-2323 December 2012","Ongoing","Prime Minister Maliki announces that he will not run for a 3rd term;[133]
+Resignation of provincial governors and local authorities[134]","700111000000000000011[135]","B Major protests"
+"Bahrain","02011-02-1414 February 2011","Ongoing","Economic concessions by King Hamad[136]
+Release of political prisoners[137]
+Negotiations with Shia representatives[138]
+GCC intervention at the request of the Government of Bahrain
+Head of the National Security Apparatus removed from post[139]
+Formation of a committee to implement BICI report recommendations[140]","7002120000000000000120[141]","D Sustained civil disorder and government changes"
+"Libya","02011-02-1717 February 2011","Government overthrown on 23 August 2011","Overthrow of Muammar Gaddafi; Gaddafi killed by rebel forces
+Government defeated by armed revolt with UN-mandated military intervention[142]
+Assumption of interim control by the National Transitional Council
+Beginning of sporadic low-level fighting and clashes[143]
+Elections to a General National Congress on 7 July 2012","7004325000000000000 25,000-30,000+ [144]","E Government overthrown"
+"Kuwait","02011-02-1919 February 2011","Ongoing","Resignation of Prime Minister Nasser Mohammed Al-Ahmed Al-Sabah[145]
+Dissolution of the Parliament[146]","50000000000000000000[147]","C Protests and governmental changes"
+"Morocco","02011-02-2020 February 2011","Ended in MarchâApril 2012","Political concessions by King Mohammed VI;[148]
+Referendum on constitutional reforms;
+Respect to civil rights and an end to corruption[149]","70006000000000000006[150]","C Protests and governmental changes"
+"Mauritania","02011-02-2525 February 2011","Ongoing","","70003000000000000003[151]","A Minor protests"
+"Lebanon","02011-02-2727 February 2011","Ended in December 2011","","50000000000000000000","D Protests and governmental changes"
+"Saudi Arabia","02011-03-1111 March 2011","Ongoing","Economic concessions by King Abdullah[152][153]
+Male-only municipal elections held 29 September 2011[154][155]
+King Abdullah announces women's approval to vote and be elected in 2015 municipal elections and to be nominated to the Shura Council[156]","700123000000000000023[157]","A Minor protests"
+"Syria","02011-03-1515 March 2011","Ongoing","Release of some political prisoners[158][159]
+End of Emergency Law
+Dismissal of Provincial Governors[160][161]
+Battles between the Syrian government's army and the Free Syrian Army in many governorates.
+Resignations from Parliament[162]
+Resignation of the Government[163]
+Large defections from the Syrian army and clashes between soldiers and defectors[164]
+Formation of the Free Syrian Army
+The Free Syrian Army Takes controls of large swathes of land across Syria.
+Formation of the Syrian National Council[165]
+Syria suspended from the Arab League
+Several countries recognize Syrian government in exile","7004940000000000000 94,000+[166]","Ongoing civil war"
+"Iranian Khuzestan","02011-04-1515 April 2011","Ended on 18 April 2011","","700112000000000000012","B Major protests"
+"Israeli border areas","02011-05-1515 May 2011","Ended on 5 June 2011","","7001350000000000000 30â40[167][168]","B Major protests"
+"Palestine","02012-09-044 September 2012","Ongoing","Salam Fayyad states that he is ""'willing to resign""[169]
+Fayyad ultimately resigns on 13 April 2013. [170]","50000000000000000000","A Minor protests"
+"Total death toll:","98,408â103,421+ (International estimate, ongoing)","",NA,NA,NA
