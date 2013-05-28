@@ -140,13 +140,13 @@ ida.scan <- function(x = NULL, detail = FALSE) {
 }
 
 ##
-## ida.load(): load a package, installing it if needed
+## ida.load(): load a package, installing it if needed (for R 3.0.0)
 ##
 
 ida.load <- function(x, load = TRUE, silent = FALSE) {
   # install
   if(!suppressMessages(suppressWarnings(require(x, character.only = TRUE)))) {
-    dl <- try(install.packages(x), silent = TRUE)
+    dl <- try(install.packages(x), quiet = TRUE)
     if(class(dl) == "try-error")
       stop("The package ", x, "could not be downloaded.")
   }
