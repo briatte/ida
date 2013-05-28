@@ -3,115 +3,196 @@
 
 # 9.3. Practice
 
-__Application 1.__ Use any time series from the Bureau of Justics Statistics and plot your own smoothed trend. The routine above has downloaded and unzipped all 1980-2008 spreadsheets to your `data/` folder.
+In this exercise, we will recreate a plot that showed up in many places, including a [talk][ak] by the chairman of the U.S. Council of Economic Advisors in early 2012.
 
-__Application 2.__ Use the [UN Data Explorer](http://data.un.org/Data.aspx?d=UNODC&f=tableCode%3a1) and the code below to download and extract UN data on worldwide homicide rates. Produce plots of geographical regions.
+[ak]: http://www.slideshare.net/whitehouse/the-rise-and-consequences-of-inequality-in-the-united-states-charts
 
-Application 2 is shown using data on intentional homicide rates in South America. The data are imported from a [blog example](http://www.quantumforest.com/2012/02/revisiting-homicide-rates/) by Luis A. Apiolaza. Use the `.encoding="TRUE"` option to deal with Unicode characters.
-
-```{r unodc-data}
-library(ggplot2)
-library(xlsx)
-library(zoo)
-url = "http://www.unodc.org/documents/data-and-analysis/statistics/Homicide/Homicide_data_series.xls"
-file = "data/UNODC.Homicides.xls"
-if(!file.exists(file))
-  download(url, file, mode = "wb")
-
-# Import XLS, selected columns and rows.
-unodc <- read.xlsx(file, sheetName = "data series", colIndex = c(1:3, 6:22), rowIndex = 7:213)
-# Rename imported variables.
-names(unodc) <- c("Region", "Subregion", "Country", "Homicide", 1995:2010)
-# Inspect top-left data.
-unodc[1:10, 1:5]
-
-# Last observations carried forward for region and subregion.
-unodc[, 1:3] <-na.locf(unodc[, 1:3])
-# Inspect top-left data.
-unodc[1:10, 1:5]
-
-ccode <- c("Australia", "Austria", "Belgium", "Canada", "Denmark",
-         "Finland", "France", "Germany", "Greece", "Hungary",
-         "Ireland", "Italy", "Japan", "Korea", "Luxembourg",
-         "Netherlands", "New Zealand", "Norway", "Portugal", "Spain",
-         "Sweden", "Switzerland", "United Kingdom", "United States")
-
-unodc <- melt(unodc, id = names(unodc)[1:4], variable = "Year")
-str(unodc)
-
-qplot(subset(unodc, Subregion == "Northern Africa"),
-      x = Year, y = Country, size = Count, geom = "point")
-
-# Subset to homicide rates.
-unodc <- subset(unodc, Homicide == "Rate")[, -4]
-# Number of countries per region and subregion.
-with(unodc, table(Region))
-with(unodc, table(Subregion))
-
-
-
-
-unodc <- subset(unodc, Region == "Europe" | Country == "United States of America")
-# Reshape to long.
-unodc <- melt(unodc, id = names(unodc)[1:3], variable_name = "Year")
-# Plot.
-qplot(data = unodc, x = Year, y = value, group = Country, colour = Subregion, se = F, geom = "smooth")
-
-# Check first rows.
-head(unodc)
-# Check final rows.
-tail(unodc)
-# Plot main distribution.
-qplot(unodc$rate, geom = "histogram", bin = 5) + xlab("Distribution of homicide rates") + ylab("N")
+```{r packages, message=FALSE, warning=FALSE}
+# Load packages.
+packages <- c("downloader", "ggplot2", "reshape", "scales", "xlsx", "zoo")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
 ```
 
-Some summary statistics can be obtained from a `ddply` transformation, as shown above. The example below shows the average, minimum and maximum homicide rate per country. Use the `na.rm = TRUE` option for the mean-min-max functions.
+Let's first get the data for this example from [Emmanuel Saez](http://elsa.berkeley.edu/~saez/), who published several articles on income inequality with Thomas Piketty in the recent years. The data for their work on [income inequality in the United States](http://elsa.berkeley.edu/~saez/pikettyqje.pdf), first published in 2003, has since been updated to cover all years from 1913 to 2011.
 
-```{r unodc-table, message=FALSE}
-# Load the plyr library.
-library(plyr)
-# Mean and median of homicide counts.
-tbl <- ddply(unodc, .(country), summarise, mean = round(mean(rate, na.rm = TRUE),1), min = min(rate, na.rm = TRUE), max = max(rate, na.rm = TRUE))
+```{r ps-data-download}
+# Target data link.
+url = "http://elsa.berkeley.edu/~saez/TabFig2011prel.xls"
+# Target data file.
+xls = "data/piketty.saez.2011.xls"
+# Download dataset.
+if (!file.exists(xls)) {
+  message("Dowloading the data...")
+  # Download spreadsheet.
+  download(url, xls, mode = "wb")
+}
+```
+
+The first segment of data that we want to use is the income share of the top 1% income earners (excluding capital gains), which is Table A1 in the [Excel spreadsheet][ps-source]. The `xlsx` package makes it easy to select what rows and columns we want to import (see [Peter Carl's tutorial][carl-xlsx] for an extensive demo of the package).
+
+[ps-source]: http://elsa.berkeley.edu/~saez/TabFig2011prel.xls
+[carl-xlsx]: http://www.r-bloggers.com/writing-from-r-to-excel-with-xlsx/
+
+```{r ps-shares-data}
+file = "data/piketty.saez.2011.share.txt"
+if(!file.exists(file)) {
+  # Import from XLS format.
+  ps.share <- read.xlsx(xls, sheetName = "Table A1",
+                        rowIndex = c(4, 6:104), colIndex = 1:7)
+  # Save local copy.
+  write.csv(ps.share, file, row.names = FALSE)
+}
+# Read CSV file.
+ps.share = read.csv(file)
 # Check result.
-tbl
+str(ps.share)
 ```
 
-You could actually plot that table, using a pointrange plot with some additional information about the minimum and maximum crime rates experienced in each country over the past decades. The code also shows the use of a heatmap on a time series.
+The "Piketty-Saez" dataset of income shares is then reshaped to long format.
 
-```{r unodc-plot}
-# Load the reshape library.
-library(reshape)
-# Reorder levels.
-tbl$country <- with(tbl, reorder(country, mean))
-# Plot it.
-fig <- ggplot(tbl, aes(x = country, y = mean, ymin = min, ymax = max))
-# Add pointrange lines.
-fig <- fig + geom_pointrange()
-# Pivot graph.
-fig <- fig + coord_flip()
-# Add titles.
-fig <- fig + ylab("Homicide rates 1995-2010\n(min-max ranges, dot at mean)") + xlab("")
-# Add minimum and maximum on the plot.
-fig + 
-  geom_text(label = round(tbl$max, 0), y = tbl$max, hjust = -.25, size = 4) + 
-  geom_text(label = round(tbl$min, 0), y = tbl$min, hjust = 1.25, size = 4)
-# Heatmap.
-ggplot(unodc, aes(x = year, y = country, fill = rate)) + geom_tile() + scale_fill_gradient(low="white", high="red", name = "Homicide rate") + theme_bw()
-```
-
-There's plenty of other ways to look at the data. Make sure to plot a smoothed trend. I stopped coding at the one below.
-
-```{r unodc-spline, warning=FALSE}
-# Load MASS package (provides "rlm" function).
-library(MASS)
-# Load splines package (provides "ns" function).
-library(splines)
-# Plot canvas.
-fig <- ggplot(unodc, aes(y = rate, x = year, group = country, color = country, fill = country))
-# Spline, 2-length knots.
-fig <- fig + geom_smooth(method="rlm", formula = y ~ ns(x, 2), alpha = .25)
+```{r ps-shares-prepare}
+# Change variable names.
+names(ps.share) <- c("Year", paste0("Top ", c(10, 5, 1, 0.5, 0.1, 0.01), "%"))
+# Reshape to long format.
+ps.share <- melt(ps.share, id = "Year", variable_name = "Fractile")
+# Drop missing data.
+ps.share <- na.omit(ps.share)
 # Check result.
-fig + ylab("Homicide rate per 100,000 population") + xlab("Year")
+head(ps.share)
+# Clean up 
 ```
+
+Let's produce a first plot showing all top fractile income shares, colored by income fractile. This plot shows some of the same data as Figure 1 in the original Piketty-Saez paper: it reveals a "U"-shaped trend, starting with a general contraction of the income share of top income earners at the end of World War II, and followed by an expansion in recent decades.
+
+```{r ps-shares-auto, fig.width = 9, fig.height = 6.8}
+# Time series plot.
+qplot(data = ps.share, x = Year, y = value / 100, color = Fractile, geom = "line") + 
+  labs(y = NULL, x = NULL, title = "U.S. top income shares (%)") +
+  geom_text(data = subset(ps.share, Year == 2011), aes(x = 2013, label = Fractile, hjust = 0)) +
+  scale_x_continuous(lim = c(1911, 2031), breaks = seq(1910, 2010, by = 20)) +
+  scale_y_continuous(labels = percent) +
+  theme(legend.position = "none")
+```
+
+The rate of increase in income shares over the recent years is different for each income fractile: some top incomes have grown their shares quicker than others. To visualize the event, we extract a different spreadsheet holding real income levels (including capital gains) for the lowest 90%, top 10% and top 1% income fractiles. The years are added manually due to an import error with the Excel format.
+
+```{r ps-incomes-data}
+file = "data/piketty.saez.2011.income.txt"
+if(!file.exists(file)) {
+  # Import from XLS format.
+  ps.income <- read.xlsx(xls, sheetName = "Table_Incomegrowth", 
+                         rowIndex = c(2, 5:103), colIndex = c(10, 5, 3))
+  # Add years manually.
+  ps.income <- cbind(1913:2011, ps.income)
+  # Save local copy.
+  write.csv(ps.income, file, row.names = FALSE)
+}
+# Read CSV file.
+ps.income = read.csv(file)
+# Check result.
+str(ps.income)
+```
+
+```{r ps-incomes-prepare}
+# Change variable names.
+names(ps.income) <- c("Year", "Top 10%", "Top 1%", "Bottom 90%")
+# Reshape to long format.
+ps.income <- melt(ps.income, id = "Year", variable_name = "Fractile")
+# Drop missing data.
+ps.income <- na.omit(ps.income)
+# Check result.
+head(ps.income)
+```
+
+The plots for real income growth in the United States show a sharp difference for top earners versus the rest of the population -- the "99%" of Occupy Wall Street, if you prefer: the difference in income growth is much more pronounced for those higher on the income scale. This graph circulated on several [blogs](http://crookedtimber.org/2009/04/13/reducing-inequality-whats-the-problem/) in the early months of the current financial crisis.
+
+```{r ps-incomes-auto, fig.width = 9, fig.height = 6.8}
+# Plot in real dollar units.
+qplot(data = ps.income, x = Year, y = value, color = Fractile, geom = "line") +
+  geom_text(data = subset(ps.income, Year == 2011), 
+            aes(x = 2013, label = Fractile, hjust = 0)) +
+  scale_x_continuous(lim = c(1911, 2031), breaks = seq(1910, 2010, by = 20)) +
+  scale_y_continuous(labels = dollar) +
+  labs(y = NULL, x = NULL, title = "Real income growth in the United States") +
+  theme(legend.position = "none")
+```
+
+One [problematic](http://lanekenworthy.net/2008/03/09/the-best-inequality-graph/) aspect of this graph  is that the metric income scale eschews any change at the bottom of the graph: the bottom 90% income earners seem to enjoy no income growth over the entire time period. Using a logarithmic scale of base 10 for real income corrects for that issue by plotting income by $10^1, 10^2, ..., 10^k$ dollar units.
+
+```{r ps-incomes-log10-auto, fig.width = 9, fig.height = 6.8}
+# Plot in log10 dollar units.
+qplot(data = ps.income, x = Year, y = value, color = Fractile, geom = "line") +
+  geom_text(data = subset(ps.income, Year == 2011), 
+            aes(x = 2013, label = Fractile, hjust = 0)) +
+  scale_x_continuous(lim = c(1911, 2031), breaks = seq(1910, 2010, by = 20)) +
+  scale_y_log10(labels = dollar) +
+  labs(y = NULL, x = NULL, title = "Real income growth in the United States") +
+  theme(legend.position = "none")
+```
+
+Even by doing so, income inequality is clearly apparent and growing over the recent period, due to stagnating income levels in the income fractiles that do not rely on larger capital gains. One way to show this is to switch to growth rates of the form $\frac{W_{t}}{W_{t-1} - 1}$, which brings us to the core of the topic: lagged values.
+
+We start by calculating the growth rate for each series from its lagged values. The graph uses line ranges, [colored](https://learnr.wordpress.com/2009/05/18/ggplot2-three-variable-time-series-panel-chart/) in blue when the growth rate is positive and red when the growth rate is negative.
+
+```{r ps-incomes-rate-auto, fig.width = 9, fig.height = 6.8, tidy = FALSE, warning = FALSE}
+# Add lagged series.
+ps.income <- ddply(ps.income, .(Fractile), transform,
+                   lagged = c(NA, value[-length(value)]))
+# Create growth rate.
+ps.income$rate <- with(ps.income, (value / lagged) - 1)
+# Plot real income growth rates.
+qplot(data = ps.income, 
+      ymin = 0, ymax = rate, x = Year, geom = "linerange") +
+  geom_hline(y = 0, color = "gray") +
+  aes(color = ifelse(rate > 0, "positive", "negative")) +
+  scale_colour_manual("", values = c("positive" = "blue", "negative" = "red")) +
+  scale_y_continuous(labels = percent) +
+  facet_grid(Fractile ~ .) +
+  labs(x = NULL, y = NULL, title = "Real income growth rate") +
+  theme(legend.position = "none")
+```
+
+The scaling of the plot facets is particularly telling:
+
+```{r ps-incomes-diff-auto, fig.width = 9, fig.height = 6.8, tidy = FALSE, warning = FALSE}
+# Add differenced series.
+ps.income <- ddply(ps.income, .(Fractile), transform,
+                   Difference = c(NA, diff(value)))
+# Plot real income changes.
+qplot(data = ps.income, 
+      ymin = 0, ymax = Difference, x = Year, geom = "linerange") +
+  geom_hline(y = 0, color = "gray") +
+  aes(color = ifelse(rate > 0, "positive", "negative")) +
+  scale_colour_manual("", values = c("positive" = "blue", "negative" = "red")) +
+  scale_y_continuous(labels = dollar) +
+  facet_grid(Fractile ~ ., scale = "free_y") +
+  labs(x = NULL, y = NULL, title = "Changes in real income") +
+  theme(legend.position = "none")
+```
+
+```{r ps-detrend-auto, fig.width = 9, fig.height = 6.8, tidy=FALSE, warning=FALSE}
+# Subsetting to top 1% incomes.
+ps_top1 <- subset(ps.income, Fractile=="Top 1%")
+# Create a time series.
+ps_top1 <- with(ps_top1, zoo(value, Year))
+# Check result.
+str(ps_top1)
+# Detrend the series.
+m <- lm(coredata(ps_top1) ~ index(ps_top1))
+# Plot the residuals.
+qplot(ymin = 0, ymax = resid(m), x = index(ps_top1), geom = "linerange") +
+  aes(color = ifelse(resid(m) > 0, "positive", "negative")) +
+  scale_color_manual("", values = c("positive" = "blue", "negative" = "red")) +
+  scale_y_continuous(label = dollar) +
+  labs(x = NULL, title = "Detrended series of top 1% income growth") +
+  theme(legend.position = "none")
+```
+
+The model clearly shows one thing: the series is not stationary, insofar as its past values fail to predict large amounts of its present values, even by very large margins. The last fifteen years are [particularly remarkable](http://www.vanityfair.com/society/features/2011/05/top-one-percent-201105) in that respect: while some of the rise in income inequality has been absorbed by the model, the most recent years are robust to detrending.
 
 > __Next week__: [Visualization in space: Maps](100_maps.html).

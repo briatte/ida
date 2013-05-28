@@ -44,7 +44,7 @@ require(reshape)
 require(XML)
 ```
 
-The next code block anticipates on next week's session: it downloads and converts the data to a plain text file. Many thanks to Juba for a [slight optimization][so-juba] in the data cleaning routine.
+The next code block anticipates on next week's session: it downloads and converts data from a Wikipedia table, and then saves it to a plain text file. Many thanks to Juba for a [slight optimization][so-juba] in the data cleaning routine, at the point where we use the `gsub()` function to remove percentage symbols from the values.
 
 ```{r browsers-data}
 # Target file.
@@ -72,7 +72,9 @@ if(!file.exists(file)) {
 }
 ```
 
-The data can now be loaded from the hard drive and prepared for analysis. Our first step is to convert dates to proper date objects, which will avoid plotting issues.
+The data can now be loaded from the hard drive and prepared for analysis. Our first step is to convert dates to proper date objects, which will avoid plotting issues. This process uses time code format for day-month-year, `%d %B %Y`, where `%d` is the day of month, `%B` the full month name and `%Y` the year with century. This process is explored again when we get to time series in [Session 9][090].
+
+[090]: 090_ts.html
 
 ```{r browsers-load}
 # Load from CSV.
@@ -103,8 +105,8 @@ ggplot(melt, aes(x = Date)) + labs(y = NULL, x = NULL) +
             color = "white", position = "stack") + 
   geom_smooth(data = HHI, aes(y = HHI, linetype = "HHI"), 
               se = FALSE, color = "black", size = 1) +
-  scale_fill_brewer("Browser\nusage\nshare", palette = "Set1") +
-  scale_linetype_manual(name = "Herfindhal-\nHirschman\nIndex", 
+  scale_fill_brewer("Browser\nusage\nshare\n", palette = "Set1") +
+  scale_linetype_manual(name = "Herfindhal-\nHirschman\nIndex\n", 
                         values = c("HHI" = "dashed"))
 ```
 

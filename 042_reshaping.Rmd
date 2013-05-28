@@ -49,7 +49,9 @@ csi.melted <- melt(csi, id = "YEAR")
 names(csi.melted) <- c("MonthYear", "City", "IndexValue")
 ```
 
-The `MonthYear` variable is given a `01-` prefix to make it the first day of each month, and that result is converted into a date, which is required for optimal plotting. This process uses time code format for day-month-year, `%d-%b-%y`, where `%b`, for example, is the abbreviated month. This process is explored again when we come to study time series in [Session 9](090_ts.html).
+The `MonthYear` variable is given a `01-` prefix to make it the first day of each month, and that result is converted into a date, which is required for optimal plotting. This process uses time code format for day-month-year, `%d-%b-%y`, where `%d` is the day, `%b` the abbreviated month and `%y` the year without century. This process is explored again when we get to time series in [Session 9][090].
+
+[090]: 090_ts.html
 
 ```{r csi-fix-date}
 # Convert dates.

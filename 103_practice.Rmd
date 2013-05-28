@@ -1,6 +1,17 @@
 ## 10.3. Google Maps
 
-We have a special guest today, so the practice is for your pure enjoyment at home. The techniques described below require a [Google account](http://www.google.com/accounts/). Let's hope they don't "retire" that service too, because Google has a ton of useful tools for mapping stuff.
+[mg-lexp]: http://lamages.blogspot.fr/2012/03/change-in-life-expectancy-animated-with.html
+[gm]: http://www.gapminder.org/
+[gmc]: https://developers.google.com/chart/interactive/docs/gallery/motionchart
+[gmc-tos]: https://developers.google.com/chart/terms
+[gvis]: https://code.google.com/p/google-motion-charts-with-r/
+[gvis-article]: http://google-motion-charts-with-r.googlecode.com/files/RJournal_2011-2_Gesmann%2Bde~Castillo.pdf
+
+```{r}
+require(googleVis)
+```
+
+We have a special guest in class today, so the practice session is for your pure enjoyment at home. The techniques described below require a [Google account](http://www.google.com/accounts/). Let's hope they don't "retire" that service too, because Google has a ton of useful tools for mapping stuff.
 
 ## Intensity maps
 
@@ -8,10 +19,36 @@ The easiest tool is probably the [intensity map](http://www.gastonsanchez.com/pr
 
 [Quick maps from Google Charts data](http://spatialanalysis.co.uk/2011/02/using-r-to-map-with-google-chart-tools/) and [Google Maps API control](http://andy.egge.rs/research.html).
 
-- From [Gapminder](http://www.gapminder.org/)...
-- ... to [Google Motion Charts](https://developers.google.com/chart/interactive/docs/gallery/motionchart) ...
-- ... to [Google Motion Charts in R](https://code.google.com/p/google-motion-charts-with-r/).
+# Google Motion Charts
 
-An example with [life expectancy](http://lamages.blogspot.fr/2012/03/change-in-life-expectancy-animated-with.html). Note: you have to allow your browser to load 'insecure' Flash content to see the results. In Google Chrome, click the shield icon shown in the right segment of your address bar.
+[Google Motion Charts][gmc] are animated plots that look like the ones at [Gapminder][gm]. It is possible to create these plots [directly from R][gvis-article] with the [`googleVis`][gvis] package, which also requires installing the `RJSONIO` package to communicate with the Google API. This section shows a quick example [inspired][mg-lexp] by the creator of `googleVis`, Markus Gesmann.
+
+To make sure that the functions in this section render properly in your Internet browser, you will have to allow it to load 'insecure' Flash content, otherwise you will not see any result in the plots. To do so in Google Chrome, click the 'shield' icon shown in the right segment of your address bar. You will also need to agree with the [Terms of Service][gmc-tos] that apply to that API.
+
+You might want to start with a demo to test your settings. The demo uses the `WDI` package to download life expectancy, population counts and fertility rates over time. The demo is hard-coded into the `googleVis` package and therefore only requires a one-line call to replicate. If your browser is not showing much or anything at all, check your settings again.
+
+```{r, eval = FALSE}
+demo(WorldBank)
+```
+
+```{r, results = 'asis'}
+op <- options(gvis.plot.tag='chart')
+M <- gvisMotionChart(Fruits, 'Fruit', 'Year',
+         options=list(width=400, height=350))
+plot(M)
+```
+
+```{r geovis, eval = FALSE, echo = FALSE}
+## Using the google visualization API with R
+rates$Country <- countrycode(rates$Country, "country.name", "iso2c")
+
+Geo = gvisGeoMap(rates, locationvar = "Country", numvar = "Homicide rate",
+               options = list(height = 350,
+                              dataMode = 'regions',
+                              colors='[0x1A9850, 0xD9EF8B, 0xFEE08B, 0xFC8D59, 0xD73027]'))
+
+plot(Geo)
+Geo
+```
 
 > __Next week__: [Networks](110_networks.html).

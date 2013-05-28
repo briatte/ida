@@ -3,19 +3,20 @@
 
 # 1.1. Installing R
 
-[R][r] is a software that uses a specific language to manipulate statistical objects. Researchers and statisticians are [increasingly][r-pop] adopting R as their software of choice, and the R user base goes well beyond academia. Many [R User Groups][r-ug] exist on a [worldwide scale][ra-ug]. There is a [huge R community online][pb-rsoc].
+[R][r] is an [increasingly popular][bm-pop] software that uses a specific language to manipulate statistical objects. The R user base goes well beyond academia, and many [R User Groups][rb-ug] exist on a [worldwide scale][ra-ug]. R users form a [large online community][pb-rsoc] and many [collaborative tools][nr-coll] exist to help analysts share their R work.
 
 [r]: http://www.r-project.org/
-[r-pop]: http://r4stats.com/articles/popularity/
-[r-ug]: http://www.r-bloggers.com/RUG/
+[bm-pop]: http://r4stats.com/articles/popularity/
+[rb-ug]: http://www.r-bloggers.com/RUG/
 [ra-ug]: http://blog.revolutionanalytics.com/local-r-groups.html
+[nr-coll]: http://www.noamross.net/blog/2013/1/7/collaborating-with-r.html
+[pb-rsoc]: http://www.burns-stat.com/r-and-social-media/
 
 Some people *really* like R. This very enthusiastic user is [Anthony Damico][ajd], a [prolific][ajd-gh] and [proficient][ajd-asdfree] analyst of U.S. survey data working at the Kaiser Family Foundation. This short video is a good introduction to the spirit of R and also mentions other programming and statistical languages:
 
 [ajd]: http://www.ajdamico.com/
 [ajd-asdfree]: http://www.asdfree.com/
 [ajd-gh]: https://github.com/ajdamico
-[pb-rsoc]: http://www.burns-stat.com/r-and-social-media/
 
 <iframe src="http://player.vimeo.com/video/52999628?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 

@@ -16,7 +16,7 @@ require(downloader)
 # Target source.
 url = "https://raw.github.com/jeromyanglim/oecd_life_analysis/master/oecd-life.csv"
 # Target file.
-file = "data/OECD.Better.Life.txt"
+file = "data/oecd.bli.2011.txt"
 # Download the dataset.
 if(!file.exists(file)) download(url, file, mode = "wb")
 # Import the CSV file.

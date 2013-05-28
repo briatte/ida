@@ -26,10 +26,10 @@ Multiple linear regression can be used to [model presidential approval][kenworth
 # Load packages.
 require(downloader)
 require(foreign)
-data = "data/Hibbs.2012.txt"
+data = "data/hibbs.2012.txt"
 # Download the data.
 if(!file.exists(data)) {
-  file = "data/Hibbs.2012.dta"
+  file = "data/hibbs.2012.dta"
 	url = "http://www.douglas-hibbs.com/HibbsArticles/HIBBS-OBAMA-FORECAST-27July2012-WEBPOST.dta"
   if(!file.exists(file)) download(url, file, mode = "wb")
   write.csv(read.dta(file), data)
@@ -45,17 +45,16 @@ source("code/vwreg.r")
 ```
 
 ```{r vwreg2, eval=FALSE, echo=FALSE, results='hide'}
-# Download the data.
-file = "data/qog_basic_cs.txt"
-if(!file.exists(file)) {
-  message("Downloading the data...")
-  # Target file.
-	url = "http://www.qog.pol.gu.se/digitalAssets/1373/1373417_qog_basic_cs_csv_120608.csv"
-  # Download local copy.
-  download(url, file, mode = "wb")
+# Download Quality of Government Standard dataset.
+link = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
+file = "data/qog.cs.dta"
+data = "data/qog.cs.txt"
+if(!file.exists(data)) {
+  if(!file.exists(file)) download(link, file, mode = "wb")
+  write.csv(read.dta(data), file)
 }
-# Open local dataset.
-qog <- read.csv(file)
+# Read local copy.
+qog <- read.csv(data, stringsAsFactors = FALSE)
 
 p1 <- vwReg(wdi_fr ~ bl_asyf25 + I(bl_asyf25^2), qog, method=lm)
 

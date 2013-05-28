@@ -7,7 +7,7 @@ This section introduces data import and export (or "I/O", for "input/output") wi
 
 ```{r packages, message = FALSE, warning = FALSE}
 # Load packages.
-packages <- c("countrycode", "downloader", "foreign", "ggplot2", "RCurl", "XML")
+packages <- c("countrycode", "downloader", "foreign", "ggplot2", "plyr", "RCurl", "XML")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -50,17 +50,18 @@ str(dkos)
 
 We finally inspect the result by looking at the structure of the dataset with `str` and the first few rows of data with `head`. We finally build a quick plot showing the distribution of Obama vote shares in congressional districts held by Democrat and Republican congressmen.
 
-```{r dk-inspection}
+```{r dk-plot-auto, warning = FALSE, fig.width = 11, fig.height = 8.3}
 # List first data rows.
 head(dkos)
 # Plot distribution of Obama vote share.
 qplot(data = dkos, x = Obama.2012, 
-      fill = Party, colour = Party, alpha = I(.75), geom = "density")
+      fill = Party, colour = Party, alpha = I(.75), geom = "density") +
+  labs(y = "Density", x = "Obama vote share in 2012")
 ```
 
-## Downloading files
+## Downloading and converting files
 
-Here's the code to download the Quality of Government (QOG) dataset that we will use in future classes. Install the `downloader` package before running the code (by now, you should know how to install a package). The first code block will download the QOG codebook if it is not found in the data folder.
+This sections shows how to download the Quality of Government (QOG) dataset, which we will use in future sessions. Install the `downloader` package before running the code (by now, you should know how to install a package). The first code block will download the QOG codebook if it is not found in the data folder.
 
 ```{r qog-codebook, results='hide'}
 # Download Quality of Government Basic codebook.
@@ -71,21 +72,19 @@ if(!file.exists(file)) {
 }
 ```
 
-The next code block checks whether you have the comma-separated values version of the data. If not, it downloads the QOG Standard cross-sectional dataset in Stata format, opens it using the `read.dta()` function from the `foreign` library, and converts it from that source.
+The next code block checks whether you have the comma-separated values version of the data. If not, it downloads the QOG Standard cross-sectional dataset in Stata format, opens it using the `read.dta()` function from the `foreign` library, and converts it from that source. 'Cross-sectional' means that the data has only one observation per unit of analysis (countries, in this case).
 
-```{r qog-data}
+```{r qog-data-cs}
 # Download Quality of Government Standard dataset.
-file = "data/qog.cs.txt"
-if(!file.exists(file)) {
-  dta = "data/qog.cs.dta"
-  if(!file.exists(dta)) {
-    url = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
-    download(url, dta, mode = "wb")
-  }
-  write.csv(read.dta(dta), file)
+link = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
+file = "data/qog.cs.dta"
+data = "data/qog.cs.txt"
+if(!file.exists(data)) {
+  if(!file.exists(file)) download(link, file, mode = "wb")
+  write.csv(read.dta(data), file)
 }
-# Open local copy.
-qog <- read.csv(file, stringsAsFactors = FALSE, header = TRUE)
+# Read local copy.
+qog <- read.csv(data, stringsAsFactors = FALSE)
 ```
 
 QOG datasets feature a wide range of variables from various sources, including UN data, World Development Indicators and several research datasets. The Stata format has the advantage of holding variable and value labels, but we will assume that you have opened the codebook and are working with the full variable definitions.
@@ -100,12 +99,15 @@ qplot(data = qog, y = log(wdi_gdpc), x = bl_asy25f,
       colour = continent, size = mad_pop / 10^3, geom = "point") +
   scale_colour_brewer("Continent\n", palette = "Set1") +
   scale_size_area("Population\n", max_size = 24) + 
-  labs(y = "log GDP/capita", x = "Female schooling years")
+  labs(y = "log GDP/capita", x = "Female schooling years") +
+  theme(legend.key = element_rect(colour = "white"))
 ```
+
+This plot would be much more informative as an animated graph; we will come back to this.
 
 ## Scraping
 
-For our purposes, scraping is the idea of taking information from online sources and to process it into a dataset. [Zarino Zappia][sw-zz], the creator of the [ScraperWiki][sw] website, has written great examples of such scrapers in the Python programming language, as with his [scraper of Occupy protest locations][sw-ows-1] using Wikipedia sources (see also the [chronological map][sw-ows-2] based on the data).
+For our purposes, scraping is the idea of taking information from online sources and to process it into a dataset. [Zarino Zappia][sw-zz], the creator of the [ScraperWiki][sw] website, has written great examples of such scrapers in the Python programming language, as with his [scraper][sw-ows-1] and [chronological map][sw-ows-2] of Occupy protest locations, using Wikipedia sources.
 
 [sw]: https://scraperwiki.com/
 [sw-zz]: https://scraperwiki.com/profiles/zarino/
@@ -113,97 +115,84 @@ For our purposes, scraping is the idea of taking information from online sources
 [sw-ows-1]: https://scraperwiki.com/scrapers/occupy_protest_locations/
 [sw-ows-2]: https://views.scraperwiki.com/run/occupy_protest_locations_1/
 
-The same principle can be used to get data from [sources like Twitter][sw-ms]. An interesting time series can be created [from a Twitter account logging Beijing pollution data][bc-tap-1]. There was a [pollution peak][bc-tap-2] in January 2013, and the city [looked like][bj] *Blade Runner* with [more fog][ss]; staying in Beijing then amounted to [smoking 1.5 to 3 cigarettes a day][ss-smok].
-
-[bc-tap-1]: http://brainchronicle.blogspot.co.uk/2012/07/twitter-analysis-of-air-pollution-in.html
-[bc-tap-2]: http://brainchronicle.blogspot.fr/2013/01/air-quality-analysis-from-beijing.html
-[bj]: http://kateoplis.tumblr.com/post/40555052298/nope-this-is-not-a-still-from-blade-runner-its
-[ss]: http://simplystatistics.org/2013/01/14/welcome-to-the-smog-ocalypse/
-[ss-smok]: http://simplystatistics.org/2011/12/14/smoking-is-a-choice-breathing-is-not/
-
-Unfortunately, the Twitter API is now less open than it used to be, so we will not be able to access the data publicly. I have saved the results of a [recent scrape][beijing-scraper] for your viewing pleasure, as the U.S. Embassy has not turned the logging machine down even when pressured so. Read first on the [Air Quality Index][aqi] (AQI) used to measure pollution information.
-
-[beijing-scraper]: 4_twitter.R
-[aqi]: http://airnow.gov/index.cfm?action=aqibasics.aqi
-
-```{r twitter-pollution}
-# Target data source.
-file = "data/beijing.aqi.2013.txt"
-if(!file.exists(file)) download("", file)
-# Read. CSV file.
-bp <- read.csv(file, stringsAsFactors = FALSE)
-# Check result.
-head(bp)
-bp$time = strptime(bp$time, format = "%Y-%m-%d %T")
-ggplot(data = bp, aes(x = time, y = PM)) +
-  geom_line(color = "gray80") +
-  geom_point(color = "blue", alpha = .5) +
-  geom_smooth(fill = "lightblue") +
-  labs(x = NULL, y = "Fine particles (PM2.5) 24hr avg")
-```
-
-What we can easily do, however, is some scraping of [XML][ds-xml] and [HTML][ds-html] content with the `XML` package. Once you know how to do that, you can scrape many different contents, like [Craigslist][dss-craigslist], and experiment with what the authors of that example have termed [data sociology][dss-datasociol] (note: the links are written in French by co-blogging friends).
+R can handle scraping of [XML][ds-xml] and [HTML][ds-html] content with the `XML` package. Once you know how to do that, you can scrape many different contents, like [Craigslist][dss-craigslist], and experiment with what the authors of that example have termed [data sociology][dss-datasociol] (_note:_ the links are written in French by two friends).
 
 [dss-datasociol]: http://quanti.hypotheses.org/647/
 [dss-craigslist]: http://quanti.hypotheses.org/724/
 [ds-xml]: http://is-r.tumblr.com/post/36059986744/gathering-realclearpolitics-polling-trends-with-xml
 [ds-html]: http://is-r.tumblr.com/post/36945206190/using-xml-to-grab-tables-from-the-web
 
-We'll first use scraping on a Wikipedia entry on the [Arab Spring][wiki-as]. Have a look at the source: the main table contains a column called "Death toll" in its header, which is a property that we can call through an XPath expression ([XPath][xpath] is a syntax that matches XML and HTML syntax nodes). We then recode the outcomes of the Arab Spring mobilizations to three categories.
+Here's a quick example: go the [World Chess Federation][fide]'s website, which holds ratings for several thousands of registered chess players. Search for GrandMaster players, and familiarize yourself with the table that the search returns (the variables are explained at the bottom). We are going to save these tables into a dedicated folder.
+
+[fide]: http://ratings.fide.com/advseek.phtml
+
+```{r fide-folder, warning = FALSE}
+files = "data/fide"
+if(!file.exists(files)) dir.create(files)
+```
+
+Notice how the table is split over several pages that share almost the same address (URL), which can be defined as the `url` object below. The only parameter that changes from one page to the other is the final `offset` value, which starts at `0` and ends at `1400` by increments of 100 (the number of players shown on each page). We will therefore create a sequence to fit that presentation.
+
+```{r fide-setup}
+# Link to each table.
+url = "http://ratings.fide.com/advaction.phtml?title=g&offset="
+# Link parameter.
+i <- seq(0, 1400, 100)
+```
+
+We are now going to scrape that table from the HTML code of the web pages. The next code block retrieves that code and applies an [XPath][xpath] expression to select the second table of class `contentpaneopen` on each page, which corresponds to the players table in the HTML source code. We subset the table by dropping a few rows and one column, and then save it to CSV format.
 
 [xpath]: http://www.w3.org/TR/xpath/
 
-```{r xml, tidy = FALSE}
-html <- htmlParse("http://en.wikipedia.org/wiki/Arab_Spring")
-html <- xpathApply(html, "//table/tr/th[contains(text(), 'Death toll')]/../..")[[1]]
-data <- readHTMLTable(html)
-str(data)
-data$outcome <- as.numeric(data$Situation)
-data$outcome <- cut(data$outcome, 
-                    breaks = c(1, 2, 5, 7), include.lowest = TRUE, 
-                    labels = c("Protests", "Concessions", "Revolt"))
-```
+_Note that the next code block can take a little while to run, depending on your processor speed and bandwidth capacity. Our own tests on modern equipment took a maximum of one minute._
 
-We will match the countries from the Arab Spring to ISO-3C country codes identical to those in the QOG dataset and many other sources. The operation is possible through the `countrycode` package, a very helpful utility if you ever need to work on multiple country-level sources as we are here.
-
-```{r countrycode}
-# Assign country codes.
-data$ccodealp <- countrycode(data[, 1], "country.name", "iso3c")
-# Store unique regions.
-continents <- countrycode(data$ccodealp, "iso3c", "continent")
-```
-
-Finally, we download the time series of the QOG dataset that we previously downloaded in cross-section format. Both formats serve different purposes. The `countrycode()` command can also add regional and continental categories to country data.
-
-```{r qog-data-ts}
-# Download Quality of Government Standard dataset (time series).
-file = "data/qog.ts.txt"
-if(!file.exists(file)) {
-  dta = "data/qog.ts.dta"
-  if(!file.exists(dta)) {
-    url = "http://www.qogdata.pol.gu.se/data/qog_std_ts.dta"
-    download(url, dta, mode = "wb")
+```{r fide-scrape, message = FALSE}
+data <- lapply(i, FUN = function(x) {
+  # Define filename.
+  file = paste0(files, "/fide.table.", x, ".txt")
+  # Scrape if needed.
+  if(!file.exists(file)) {
+    message("Downloading data to ", file)
+    # Parse HTML.
+    html <- htmlParse(paste0(url, x))
+    # Select second table.
+    html <- xpathApply(html, "//table[@class='contentpaneopen']")[[2]]
+    # Import table.
+    data <- readHTMLTable(html, skip.rows = 1:3, header = TRUE)[, -1]
+    # Save as CSV.
+    write.csv(data, file, row.names = FALSE)
+  } else {
+    message("Skipping table #", x)
   }
-  write.csv(read.dta(dta), file)
-}
-# Open local copy.
-qog <- read.csv(file, stringsAsFactors = FALSE, header = TRUE)
-# Merge and keep unmatched QOG countries.
-data <- merge(data, qog, by = "ccodealp", all.y = TRUE)
-# Add continents.
-data$continent <- countrycode(data$ccodealp, "iso3c", "continent")
+})
 ```
 
-We finally plot the result of our scrape, merge and split procedures.
+The code above is verbose and economical: it will skip existing files, and it will tell you what it needs to download. If you already have all data tables in the `fide` folder of your `data` folder, try deleting one file from it and run the code again to see how it works. When you are done running the code, you will need to assemble all tables together, which is what we do below.
 
-```{r arab-spring-plot-auto, warning = FALSE, message = FALSE}
-data <- subset(data, continent %in% unique(continents)[-3])
-ggplot(data = data[data$year > 1960, ], aes(x = year, y = wdi_fr, group = ccodealp)) +
-  geom_smooth(data = subset(data, is.na(outcome)), fill = "grey90", colour = "grey90", size = 2) +
-  geom_smooth(data = subset(data, !is.na(outcome)), aes(fill = outcome, colour = outcome), size = 2) +
-  scale_fill_manual(values = c("Protests" = "yellow", "Concessions" = "orange", "Revolt" = "Red")) +
-  scale_colour_manual(values = c("Protests" = "yellow", "Concessions" = "orange", "Revolt" = "Red")) +
-  facet_wrap(~ continent, nrow = 2)
+```{r fide-data}
+# Import tables into a list.
+data <- lapply(paste0(files, "/", dir(files)), read.csv)
+# Convert list to data frame.
+data <- rbind.fill(data)
+# Remove rows with no player.
+data <- data[!is.na(data$Name), ]
+# Check result.
+tail(data)
+```
+
+Note the use of the `rbind.fill()` function to [efficiently][rbind] collapse the list of dataframes contained in the object producted by the `lapply()` function, which itself reads through all `fide` filenames in the `fide` data folder. Finally, here's the distribution of FIDE ratings by sex and birth cohort, based on `r nrow(data)` GrandMaster players.
+
+[rbind]: http://rcrastinate.blogspot.fr/2013/05/the-rbinding-race-for-vs-docall-vs.html
+
+```{r fide-plot-auto, warning = FALSE, fig.width = 9, fig.height = 6.8}
+data$cohort <- cut(data$B.Year, 
+              breaks = seq(1919, 1999, 10), 
+              labels = seq(1920, 1999, 10))
+qplot(data = subset(data, !is.na(cohort)), 
+      x = cohort, y = Rtg, fill = S, alpha = I(.5),
+      geom = "boxplot") +
+	scale_fill_brewer("Sex\n", palette = "Set1") +
+	labs(x = "Birth cohort", y = "FIDE standard rating")
 ```
 
 > __Next__: [Reshapes and aggregates](042_reshaping.html).

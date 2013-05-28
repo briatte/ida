@@ -66,8 +66,8 @@ ggplot(melt, aes(x = Date)) + labs(y = NULL, x = NULL) +
             color = "white", position = "stack") + 
   geom_smooth(data = HHI, aes(y = HHI, linetype = "HHI"), 
               se = FALSE, color = "black", size = 1) +
-  scale_fill_brewer("Browser\nusage\nshare", palette = "Set1") +
-  scale_linetype_manual(name = "Herfindhal-\nHirschman\nIndex", 
+  scale_fill_brewer("Browser\nusage\nshare\n", palette = "Set1") +
+  scale_linetype_manual(name = "Herfindhal-\nHirschman\nIndex\n", 
                         values = c("HHI" = "dashed"))
 
 

@@ -50,7 +50,7 @@ wdi <- WDI(country = c("US", "GB", "DE","FR", "GR"),
            indicator = "GC.DOD.TOTL.GD.ZS", start = 2005, end = 2011, 
            extra = TRUE, cache = NULL)
 # Check result.
-str(wdi, vec.len = 1)
+str(wdi)
 ```
 
 The data can be used as such to draw a plot of central government debt in a few countries over the past few years. The `ggplot2` package provides a wealth of options to build, color and annotate such plots: the example below shows how to plot smoothed trends of governmental central debt over time for each country in the data, using a custom [ColorBrewer][cb] scheme to color the lines.
@@ -58,7 +58,7 @@ The data can be used as such to draw a plot of central government debt in a few 
 ```{r WDI-plot-1-auto, fig.width = 10, fig.height = 6, tidy = FALSE, warning = FALSE, message = FALSE}
 # Smoothed time series plot.
 g = qplot(data = wdi, x = year, y = GC.DOD.TOTL.GD.ZS,
-      colour = country, se = FALSE, geom = c("smooth", "point")) +
+          colour = country, se = FALSE, geom = c("smooth", "point")) +
   scale_colour_brewer("Country", palette = "Set1") +
   labs(title = "Central government debt, total (% GDP)\n", y = NULL, x = NULL)
 # View result.
@@ -68,23 +68,37 @@ g
 The [`ggplot2`][ggplot2] syntax used in the example above is easily adaptable to create other plots, as you can just add new graphical elements to it. The next code block picks up the `g` graph object and adds countries as text labels at the end of the time series, rather than as a separate legend. More tweaking is needed in the [scales][ggplot2-scale] and [theme][ggplot2-theme] options.
 
 ```{r wdi-plot-2-auto, fig.width = 10, fig.height = 6, tidy = FALSE, warning = FALSE, message = FALSE}
-g + geom_text(data = subset(wdi, year == 2011), 
-            aes(x = 2011.25, y = GC.DOD.TOTL.GD.ZS, label = country), hjust = 0) +
+g + geom_text(data = subset(wdi, year == 2011),
+              aes(x = 2011.25, y = GC.DOD.TOTL.GD.ZS, label = country), 
+              hjust = 0) +
   scale_x_continuous(lim = c(2005, 2012.5)) +
   theme(legend.position = "none", panel.grid.minor = element_blank())
 ```
 
-To replicate these figures, you will need to save its data into a data table. The standard, universally readable format is comma-separated values (CSV), which can just be saved as a plain text (TXT) file. Our steps to downloading data will often involve saving both the original data source and a "local" plain text copy in this format, to avoid relying on proprietary formats.
+## Reading and saving plain text
 
-```{r WDI-csv-io}
+To replicate these figures, you will need to save its data into a data table. The standard, universally readable format is comma-separated values (CSV), which can be saved with a plain text (TXT) file extension. Our steps to downloading data will often involve saving both the original data source and a "local" plain text copy in this format, to minimize reliance on proprietary formats.
+
+```{r wdi-csv-1}
 # Target file location.
 file = "data/wdi.govdebt.0511.txt"
 # Export CSV file.
-write.csv(wdi, file)
+write.csv(wdi, file, row.names = FALSE)
 # Read CSV file again.
 wdi <- read.csv(file)
 ```
 
-In the case of the WDI data that we fetched here, saving was pretty straightforward because the data came through a specific API. In real life, importing, converting and preparing data for analysis can be much more messy, so we will take the time to see many different ways to get data in and out of R, from plain text tables to Microsoft Excel spreadsheets and other common tabular formats.
+Comma-separated values will be our standard, so that we can always use the `read.csv()` function to read our data. Note that the `row.names = FALSE` option will avoid saving the generally useless row numbers into the first column of the file, and that we could also use the `read.table()` function with the `sep = ","` and `header = TRUE` options to import CSV data with variable names on top:
+
+```{r wdi-csv-2}
+# Alternative CSV import.
+wdi <- read.table(file, sep = ",", header = TRUE)
+# Check result.
+str(wdi)
+```
+
+Note, finally, that by default, R will apply factors to columns with character data on import, which means that we will often use `read.csv()` with the `stringsAsFactors = FALSE` option when we want to import raw text data. There are many more options to explore, like UTF-8 encoding or using quotes to enclose the values, but our data I/O routine handles these by default.
+
+In the case of the WDI data that we fetched here, saving was pretty straightforward because the data came through a specific API. In real life, importing, converting and preparing data for analysis can be much more messy, so we will now take the time to see many different ways to get data in and out of R, from plain text tables to Microsoft Excel spreadsheets and other common tabular formats.
 
 > Next: [Import/Export](041_dataio.html).
