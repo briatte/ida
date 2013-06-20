@@ -179,7 +179,7 @@ The first map shows the swing in vote share, and the next ones show the actual v
 
 ```{r dw-map-choropleth-auto, fig.width = 12, fig.height = 6.6}
 # Choropleth map for Obama swing vote.
-g + aes(fill = quantize(Swing, q = 5)) + 
+g + aes(fill = quantize(Swing)) + 
   ggtitle("Swing (2012 - 2008) Obama vote share\n")
 # Choropleth map for Obama vote share, 2008.
 g + aes(fill = quantize(Obama08)) + 
