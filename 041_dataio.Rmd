@@ -18,7 +18,11 @@ packages <- lapply(packages, FUN = function(x) {
 
 ## Downloading a Google Spreadsheet
 
-We are going to use the [Daily Kos Elections' presidential results by congressional district for the 2012 and 2008 elections](http://www.dailykos.com/story/2012/11/19/1163009/-Daily-Kos-Elections-presidential-results-by-congressional-district-for-the-2012-2008-elections?detail=hide), for which the data is accessible as a [Google spreadsheet](https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&single=true&gid=0&output=html). The [Google Docs API documentation](http://code.google.com/apis/spreadsheets/) tells us that we can get the data in CSV format through a URL request that includes the identifier key of the spreadsheet and the format specification `output=csv`.
+We are going to use the [Daily Kos Elections' presidential results by congressional district for the 2012 and 2008 elections][dk], for which the data is accessible as a [Google spreadsheet][dk-gs]. The [Google Docs API documentation][gdocs] tells us that we can get the data in CSV format through a URL request that includes the identifier key of the spreadsheet and the format specification `output=csv`.
+
+[dk]: http://www.dailykos.com/story/2012/11/19/1163009/-Daily-Kos-Elections-presidential-results-by-congressional-district-for-the-2012-2008-elections?detail=hide
+[dk-gs]: https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&single=true&gid=0&output=html
+[gdocs]: http://code.google.com/apis/spreadsheets/
 
 ```{r dk-url, message=FALSE}
 # Create a filename for the dataset.
@@ -27,7 +31,9 @@ file = "data/dailykos.votes.0812.txt"
 link = "https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&output=csv"
 ```
 
-We now need to get the data from that address, using the `getURL` command from the `RCurl` package to fetch the online spreadsheet from the `dk.link` object in which we stored the link. The `ssl.verifypeer` option is required to [avoid an issue](http://christophergandrud.blogspot.fr/2012/06/update-to-data-on-github-post-solution.html) with the SSL certification used by `HTTPS` links.
+We now need to get the data from that address, using the `getURL` command from the `RCurl` package to fetch the online spreadsheet from the `dk.link` object in which we stored the link. The `ssl.verifypeer` option is required to [avoid an issue][cg] with the SSL certification used by `HTTPS` links.
+
+[cg]: http://christophergandrud.blogspot.fr/2012/06/update-to-data-on-github-post-solution.html
 
 Note that the `getURL()` command is in a conditional statement that avoids downloading the same file again and again if you already have it.
 
@@ -48,31 +54,45 @@ dkos <- read.csv(file, stringsAsFactors = FALSE)
 str(dkos)
 ```
 
-We finally inspect the result by looking at the structure of the dataset with `str` and the first few rows of data with `head`. We finally build a quick plot showing the distribution of Obama vote shares in congressional districts held by Democrat and Republican congressmen.
+We finally inspect the result by looking at the structure of the dataset with `str` and the first few rows of data with `head`. The plot shows the [regression line][ggplot2-abline] [two-dimensional density curves][ggplot2-density2d] of the Obama vote share in congressional districts held by Democrat and Republican congressmen in 2008 and 2012.
 
-```{r dk-plot-auto, warning = FALSE, fig.width = 11, fig.height = 8.3}
+[ggplot-abline]: http://docs.ggplot2.org/current/geom_abline.html
+[ggplot-density2d]: http://docs.ggplot2.org/current/geom_dotplot.html
+
+```{r dk-plot-auto, tidy = FALSE, warning = FALSE, fig.width = 11, fig.height = 8.3}
 # List first data rows.
 head(dkos)
-# Plot distribution of Obama vote share.
-qplot(data = dkos, x = Obama.2012, 
-      fill = Party, colour = Party, alpha = I(.75), geom = "density") +
-  labs(y = "Density", x = "Obama vote share in 2012")
+# Plot data points with regression line and density curves.
+qplot(data = dkos, y = Obama.2012, x = Obama.2008, 
+      colour = Party, size = I(2), geom = "point") + 
+  geom_abline(alpha = .5) + 
+  geom_density2d() +
+  scale_x_continuous(lim = c(0, 100)) + 
+  scale_y_continuous(lim = c(0, 100))
 ```
+
+The overall trend is clearly interpretable, and you can easily spot some "safe states" for each party, as well as some "swing states". There are a few exceptions, like Joseph Cao, the sole Republican to vote with the Democrats on Barack Obama's health care reform (although he [opposed the final version][wiki-cao] of the bill over concerns about abortion).
+
+[wiki-cao]: https://en.wikipedia.org/wiki/Joseph_Cao#Health_care
 
 ## Downloading and converting files
 
-This sections shows how to download the Quality of Government (QOG) dataset, which we will use in future sessions. Install the `downloader` package before running the code (by now, you should know how to install a package). The first code block will download the QOG codebook if it is not found in the data folder.
+This sections shows how to download the [Quality of Government (QOG)][qog] dataset, which we will use in future sessions. QOG datasets feature a wide range of variables from various sources, including UN data, World Development Indicators and several datasets compiled by academic researchers. We are going to use the [QOG Standard dataset][qog-std].
+
+[qog]: http://www.qog.pol.gu.se/
+[qog-std]: http://www.qog.pol.gu.se/data/datadownloads/qogstandarddata/
+
+The first code block will start by downloading the QOG codebook if it is not found in the `data` folder. Install the `downloader` package prior to running the code (by now, you should know how to install a package). Note that we first store the target locations for the data, that is, the link to its online location, and its desired download location on disk.
 
 ```{r qog-codebook, results='hide'}
-# Download Quality of Government Basic codebook.
+# Target locations.
+link = "http://www.qogdata.pol.gu.se/data/Codebook_QoG_Std15May13.pdf"
 file = "data/qog.codebook.pdf"
-if(!file.exists(file)) {
-  url = "http://www.qogdata.pol.gu.se/codebook/codebook_standard_20110406.pdf"
-  download(url, file, mode = "wb")
-}
+# Download Quality of Government Basic codebook.
+if(!file.exists(file)) download(link, file, mode = "wb")
 ```
 
-The next code block checks whether you have the comma-separated values version of the data. If not, it downloads the QOG Standard cross-sectional dataset in Stata format, opens it using the `read.dta()` function from the `foreign` library, and converts it from that source. 'Cross-sectional' means that the data has only one observation per unit of analysis (countries, in this case).
+The next code block checks whether you have the comma-separated values version of the data. If not, it downloads the QOG Standard cross-sectional dataset in Stata format, opens it using the `read.dta()` function from the `foreign` library, and converts it from that source. The Stata format has the advantage of holding variable and value labels; we will keep it as a backup.
 
 ```{r qog-data-cs}
 # Download Quality of Government Standard dataset.
@@ -81,17 +101,17 @@ file = "data/qog.cs.dta"
 data = "data/qog.cs.txt"
 if(!file.exists(data)) {
   if(!file.exists(file)) download(link, file, mode = "wb")
-  write.csv(read.dta(data), file)
+  write.csv(read.dta(file), data)
 }
 # Read local copy.
 qog <- read.csv(data, stringsAsFactors = FALSE)
 ```
 
-QOG datasets feature a wide range of variables from various sources, including UN data, World Development Indicators and several research datasets. The Stata format has the advantage of holding variable and value labels, but we will assume that you have opened the codebook and are working with the full variable definitions.
+'Cross-sectional' means that the data has only one observation per unit of analysis, which are countries in this case. 'Cross-sectional time series' would hold the same data, but for repeated observations over time, such as the fertility rate of each country in 1970, 1971, and so on. Consult the QOG codebook for more details the data.
 
-The example below uses data from the Barro and Lee and Maddison studies. Another advantage of Quality of Government data is that it comes with several country identifiers that allow to match external data to it, as we do below by adding continental origin based on ISO-3C country codes.
+The concluding example below uses data from economic historians Barro and Lee and Maddison. Another advantage of Quality of Government data is that it comes with several country identifiers that allow to match external data to it, as we do below by adding continental origin based on ISO-3C country codes with the `countrycode` package.
 
-```{r qog-plot-auto, warning = FALSE, fig.width = 11, fig.height = 8.3}
+```{r qog-plot-auto, tidy = FALSE, warning = FALSE, fig.width = 11, fig.height = 8.3}
 # Add geographic continents using UN country codes.
 qog$continent = factor(countrycode(qog$ccodealp, "iso3c", "continent"))
 # Plot log-GDP/capita and female education, weighted by population (2002).
@@ -99,8 +119,7 @@ qplot(data = qog, y = log(wdi_gdpc), x = bl_asy25f,
       colour = continent, size = mad_pop / 10^3, geom = "point") +
   scale_colour_brewer("Continent\n", palette = "Set1") +
   scale_size_area("Population\n", max_size = 24) + 
-  labs(y = "log GDP/capita", x = "Female schooling years") +
-  theme(legend.key = element_rect(colour = "white"))
+  labs(y = "log GDP/capita", x = "Female schooling years")
 ```
 
 This plot would be much more informative as an animated graph; we will come back to this.
@@ -147,7 +166,7 @@ We are now going to scrape that table from the HTML code of the web pages. The n
 _Note that the next code block can take a little while to run, depending on your processor speed and bandwidth capacity. Our own tests on modern equipment took a maximum of one minute._
 
 ```{r fide-scrape, message = FALSE}
-data <- lapply(i, FUN = function(x) {
+fide <- lapply(i, FUN = function(x) {
   # Define filename.
   file = paste0(files, "/fide.table.", x, ".txt")
   # Scrape if needed.
@@ -171,28 +190,34 @@ The code above is verbose and economical: it will skip existing files, and it wi
 
 ```{r fide-data}
 # Import tables into a list.
-data <- lapply(paste0(files, "/", dir(files)), read.csv)
+fide <- lapply(paste0(files, "/", dir(files)), read.csv)
 # Convert list to data frame.
-data <- rbind.fill(data)
+fide <- rbind.fill(fide)
 # Remove rows with no player.
-data <- data[!is.na(data$Name), ]
+fide <- fide[!is.na(fide$Name), ]
 # Check result.
-tail(data)
+tail(fide)
 ```
 
 Note the use of the `rbind.fill()` function to [efficiently][rbind] collapse the list of dataframes contained in the object producted by the `lapply()` function, which itself reads through all `fide` filenames in the `fide` data folder. Finally, here's the distribution of FIDE ratings by sex and birth cohort, based on `r nrow(data)` GrandMaster players.
 
 [rbind]: http://rcrastinate.blogspot.fr/2013/05/the-rbinding-race-for-vs-docall-vs.html
 
-```{r fide-plot-auto, warning = FALSE, fig.width = 9, fig.height = 6.8}
-data$cohort <- cut(data$B.Year, 
+```{r fide-plot-auto, tidy = FALSE, warning = FALSE, fig.width = 9, fig.height = 6.8}
+# Determine birth cohort (decades).
+fide$cohort <- cut(fide$B.Year, 
               breaks = seq(1919, 1999, 10), 
               labels = seq(1920, 1999, 10))
-qplot(data = subset(data, !is.na(cohort)), 
+# Plot ratings over age and sex.
+qplot(data = subset(fide, !is.na(cohort)), 
       x = cohort, y = Rtg, fill = S, alpha = I(.5),
       geom = "boxplot") +
 	scale_fill_brewer("Sex\n", palette = "Set1") +
 	labs(x = "Birth cohort", y = "FIDE standard rating")
 ```
+
+You should now be able to determine how far chess is in its demographic transition towards "player parity", and whether that turn is affecting the overall standard ratings of FIDE members. A student once had the great idea to throw in these ratings with economic performance variables: check out [the results][leung]!
+
+[leung]: http://www.chessbase.com/news/2011/Explaining%20Chess%20Success.pdf
 
 > __Next__: [Reshapes and aggregates](042_reshaping.html).

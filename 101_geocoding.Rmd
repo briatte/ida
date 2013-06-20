@@ -3,7 +3,10 @@
 
 # 10.1. Geocoded information
 
-Most of the work can be [done with ggmap](http://www.milanor.net/blog/?p=534). Let's plot [airport traffic](http://www.milanor.net/blog/?p=594), using an online tutorial by Max Marchi. It shows how to plot geocoded airports and additional information on Google Maps, from R.
+Most of the geocoding work that we want to show here can be [done with `ggmap`][milanor-ggmap], a map extension to `ggplot2` that uses Google Maps or other services to provide geocoded map backgrounds.
+
+[milanor-ggmap]: http://www.milanor.net/blog/?p=534
+[wb-aid]: http://aiddata.org/content/index/AidData-Raw/geocoded-data
 
 ```{r packages, message = FALSE}
 packages <- c("downloader", "ggmap", "plyr")
@@ -15,80 +18,60 @@ packages <- lapply(packages, FUN = function(x) {
 })
 ```
 
-```{r airports-data}
-# Prepare the data.
-url = "http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/airports.dat"
-file = "data/openflight-airports.txt"
-if(!file.exists(file)) download(url, file, mode = "wb")
-airports <- read.csv(file, header = FALSE)
-names(airports) <- c("ID", "name", "city", "country", "IATA_FAA", "ICAO", "lat", "lon", "altitude", "timezone", "DST")
-str(airports)
-# Prepare more data.
-url = "http://openflights.svn.sourceforge.net/viewvc/openflights/openflights/data/routes.dat"
-file = "data/openflight-routes.txt"
-if(!file.exists(file)) download(url, file, mode = "wb")
-routes <- read.csv(file, header = FALSE)
-names(routes) <- c("airline", "airlineID", "sourceAirport", "sourceAirportID", "destinationAirport", "destinationAirportID", "codeshare", "stops", "equipment")
-str(routes)
+Let's plot [World Bank projects in Africa][wb-aid].
+ 
+```{r africa-data}
+# Get the data.
+url = "http://aiddata.org/weceem_uploads/_ROOT/File/geocoding/AllWorldBank_IBRDIDA.zip"
+zip = "data/wb.projects.zip"
+txt = "data/wb.projects.txt"
+csv = "data/AllWorldBank_IBRDIDA.csv"
+if(!file.exists(zip)) download(url, zip, mode = "wb")
+if(!file.exists(csv)) unzip(zip, exdir = "data")
+# Subset to Africa.
+wb = read.csv(csv)
+wb = subset(wb, Region == "AFRICA")
+# Plain text copy.
+if(!file.exists(txt)) write.csv(wb, txt)
+# Inspect variables.
+v = c("Project.ID", "Latitude", "Longitude", "Country", "Total.Amt")
+head(wb)[v]
 ```
 
-```{r map-europe}
-# Create a simple map of Europe, using Google Maps.
-map <- get_map(location = 'Europe', zoom = 4)
-ggmap(map)
+The next step involves injecting some information from an online map bank into R. The `get_map` function calls the [Open Street Map][osm] API, which returns a `ggmap` raster object that you can pass to `ggmap`. That map can be overplotted with geocododed information, as shown below with aid projects from the World Bank, colored by country and sized by total amount of funding.
 
-# Plot the data by passing coordinates.
+```{r africa-osm-auto, warning = FALSE, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE, cache = TRUE}
+# Get OpenStreetMap data.
+map =  get_map(location = 'Africa', zoom = 4, source = "osm")
+# Plot World Bank projects.
 ggmap(map) + 
-  geom_point(data = airports, aes(x = lon, y = lat), 
-             color = "orangered", alpha = .5)
+  geom_point(data = wb, 
+             aes(x = Longitude, y = Latitude, color = Country, size = Total.Amt),
+             alpha = .3) + 
+  scale_size_area(max_size = 8) + 
+  theme(legend.position = "none")
 ```
 
-```{r}
-# Aggregate trips into number of departures and arrivals.
-departures <- ddply(routes, .(sourceAirportID), "nrow")
-names(departures)[2] <- "flights"
-arrivals <- ddply(routes, .(destinationAirportID), "nrow")
-names(arrivals)[2] <- "flights"
+The `get_map` function puts more than one map service at your fingertips: here's an example with the [Stamen watercolor][stamen] map. This map still uses a different color for each country and has a few more plot options to remove the unnecessary axis and title information. It would be easy to write a quick map function to avoir recoding each plot (have a try).
 
-# Create datasets by matching data to airports.
-airportD <- merge(airports, departures, by.x = "ID", by.y = "sourceAirportID")
-airportA <- merge(airports, arrivals, by.x = "ID", by.y = "destinationAirportID")
+[stamen]: http://content.stamen.com/watercolor_process
 
-# Plot airports proportionally to the square root of flights.
-ggmap(map) +
-  geom_point(data = airportD, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5)
+```{r africa-stamen-auto, warning = FALSE, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE, cache = TRUE}
+# Get OpenStreetMap data.
+ton = get_map(location = 'Africa', zoom = 4, source = "stamen", maptype = "watercolor")
+# Plot World Bank projects.
+ggmap(ton) + 
+  geom_point(data = wb, 
+             aes(x = Longitude, y = Latitude, color = Country, size = Total.Amt)) + 
+  scale_size_area(max_size = 8) +
+  labs(y = NULL, x = NULL) +
+  theme(axis.text = element_blank(), 
+        axis.ticks = element_blank(),
+        legend.position = "none")
 ```
 
+If you geodata consists of routes, like flights, it contains vertices of the form $(x_1, y_1) - (x_2,y_2)$ (start-end points) that can be plotted by latitude and longitude. If you need to visualize these ties, there are ways to [plot network data over maps][yau-circles] with a different R package. We will quickly return to network data next week, in a simpler context.
 
-```{r}
-# Prepare a sequence to pass to square root legends.
-seq <- c(1, 5, 10, 50, 100, 500)
-
-# Adjust the legend.
-ggmap(map) +
-  geom_point(data = airportD, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5) +
-  scale_size_area(breaks = sqrt(seq), labels = seq, name = "Departing routes")
-```
-
-```{r}
-# Combine departures and arrivals in a single dataset.
-airportD$type <- "Departures"
-airportA$type <- "Arrivals"
-airportDA <- rbind(airportD, airportA)
-
-# Map the data.
-ggmap(map) +
-  geom_point(data = airportDA, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5)
-```
-
-```{r}
-# Adjust the legend and separate by type of flight.
-ggmap(map) +
-  geom_point(data = airportDA, aes(x = lon, y = lat, size = sqrt(flights)), alpha = .5) +
-  scale_size_area(breaks = sqrt(seq), labels = seq, name = "Routes") +
-  facet_grid(. ~ type)
-```
-
-There are also ways to [plot network data over maps](http://flowingdata.com/2011/05/11/how-to-map-connections-with-great-circles/), if your data contains vertices of the form $(x_1, y_1) - (x_2,y_2)$ (start-end points) that can be plotted by latitude and longitude.
+[yau-circles]: http://flowingdata.com/2011/05/11/how-to-map-connections-with-great-circles/
 
 > __Next__: [Choropleth maps](102_choropleths.html).

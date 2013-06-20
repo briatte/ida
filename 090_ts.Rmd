@@ -138,7 +138,7 @@ titles <- labs(title= "Guardian/ICM voting intentions polls\n",
 
 The ICM polling data can now be plotted as a time series of estimated party support, using the `Party` variable and the `ukcolors` option to determine the color of each series. We start with a `ggtplot2` object that uses a [`line` geometry][ggplot2-line] to connect observations over time, passing the graph options defined previously. The line break `\n` at the end of the title adds a margin.
 
-```{r icm-lines}
+```{r icm-lines-auto, message = FALSE}
 # Time series lines.
 qplot(data = icm, y = value, x = Date, color = Party, geom = "line") + 
   colors + titles
@@ -146,7 +146,7 @@ qplot(data = icm, y = value, x = Date, color = Party, geom = "line") +
 
 A more detailed visualization shows the actual data points at a reduced, factorized size `I(.75)`, along with a smoothed trend of each series. The [`smooth` geometry][ggplot2-smooth] will select its own method for smoothing the series, namely a [LOESS estimator][loess]. The `se` option to show its confidence interval is dropped, and the same graph options as before are passed for consistency.
 
-```{r icm-points}
+```{r icm-points-auto, message = FALSE}
 # Scatterplot.
 qplot(data = icm, y = value, x = Date, 
       color = Party, size = I(.75), geom = "point") +
@@ -156,7 +156,7 @@ qplot(data = icm, y = value, x = Date,
 
 Another visualization consists in stacking the entire series and showing it as an [area][ggplot2-area] of a common space representing 100% of voting intentions. Be careful with interpretation here: the electorate changes from an election to another, and voting intentions are not votes. Slight errors appear at the top of the graph due to rounding approximations in the polling data.
 
-```{r icm-stacked}
+```{r icm-stacked-auto, message = FALSE}
 # Stacked area plot.
 qplot(data = icm, y = value, x = Date,
       color = Party, fill = Party, stat="identity", geom = "area") + 
@@ -165,7 +165,7 @@ qplot(data = icm, y = value, x = Date,
 
 The graph possibly contains excess information by assuming that voting intentions are volatile enough to express meaningful monthly variations. To show the same pattern with less data, we [aggregate the data][gs] by averaging over years. The `year()` function from the `lubridate` package and the `ddply()` function from the `plyr` package show one possible way to achieve this result.
 
-```{r icm-bars}
+```{r icm-bars-auto, message = FALSE}
 # Stacked bar plot.
 qplot(data = ddply(icm, .(Year = year(Date), Party), summarise, value = mean(value)), 
       fill = Party, color = Party, x = Year, y = value, 
@@ -177,7 +177,7 @@ qplot(data = ddply(icm, .(Year = year(Date), Party), summarise, value = mean(val
 
 You might also want to take advantage of the general elections results alone to plot actual vote shares. The slightly more complex line plot below shows them by subsetting the data to `GE` observations, by extracting their year with the `year()` function of the `lubridate` package, by plotting a white dot where they are located, and by overimposing the year in small text above that white space.
 
-```{r icm-ges}
+```{r icm-ges-auto, message = FALSE}
 # Plotting only general elections.
 qplot(data = icm[icm$GE, ], y = value, x = Date, 
       color = Party, size = I(.75), geom = "line") +

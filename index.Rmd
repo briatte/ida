@@ -166,12 +166,13 @@ __Reading:__ Teetor, ch. 14. Focus on detrending and read ARIMA only if you plan
 
 - [Geocoding][101]
 - [Choropleths][102]
-- [Practice][103]
 
 [100]: 100_maps.html
 [101]: 101_geocoding.html
 [102]: 102_choropleths.html
-[103]: #
+
+<!-- [Links][103] (read at home)
+[103]: 103_practice.html -->
 
 * * *
 
@@ -183,14 +184,15 @@ __Reading:__ Teetor, ch. 14. Focus on detrending and read ARIMA only if you plan
 
 [al]: http://alphoenix.net
 
-- [Measures of influence][111]
+- [Influence][111]
 - [Network(d)s][112]
-- [Practice][113]
 
 [110]: 110_networks.html
 [111]: 111_influence.html
 [112]: 112_networkds.html
-[113]: #
+
+<!-- [Links][113] (read at home)
+[113]: 113_practice.html  -->
 
 * * *
 

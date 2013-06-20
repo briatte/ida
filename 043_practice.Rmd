@@ -26,6 +26,12 @@ source("code/4_congress.R")
 
 This week's applications use a combination of `plyr` and `ggplot2` functions to show how vectorization works to aggregate and reshape data in R. We do not need to cover [all options][so-apply], but we can survey some essential ones, as [Neil Saunders][ns-apply] and [Jeffrey Breen][jb-summarize] did in tutorials that help realizing how useful these operations are to manipulate datasets with R.
 
+The exercise looks at estimates of Congressional ideology.
+
+```{r iep-plot-auto, echo = FALSE, fig.height = 7}
+g
+```
+
 ## Grouping observations to plot 
 
 The data for our first application are estimates of Congressional ideology compiled by [Boris Shor][bshor-data] for the U.S. House of Representatives in 2012. The data are downloaded in XLSX and saved in a plain text comma-separated file. The variables stored in the dataset are documented in the [online codebook][bshor-data]) and stored in a `data.frame` object:
@@ -128,7 +134,7 @@ dw.aggregated[dw.aggregated$cong == 111, ]
 
 The following plot derives from the combination of this strategy to a `ggplot` setting, where filling and colouring elements to reflect membership to a certain grouping in the data is straightforward. For more plots of Congressional ideology, check what David Sparks has done with reshaping to [cast, melt][ds-reshape] and [mutate][ds-mutate] a dataset containing identical data.
 
-```{r dwnominate-plot, fig.width = 9, fig.height = 6, include = FALSE}
+```{r dwnominate-plot-auto, fig.width = 9, fig.height = 6, echo = FALSE, cache = TRUE}
 p
 ```
 

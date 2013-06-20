@@ -3,6 +3,17 @@
 
 # 8.1. Linear correlation
 
+```{r packages, message = FALSE, warning = FALSE}
+# Load packages.
+packages <- c("arm", "car", "countrycode", "downloader", "ggplot2")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
 [anglim]: https://github.com/jeromyanglim/oecd_life_analysis/blob/master/oecd-life.md
 [oecd-bli]: http://www.oecdbetterlifeindex.org/
 [sanchez]: https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
@@ -11,8 +22,6 @@
 Let's start with the simplest form of a linear relationship between two continuous variables. The following example uses data from the [OECD Better Life Index][oecd-bli], which is available for 36 countries, and draws on code by [Jeromy Anglim][anglim]. We drop the last row of the data on import, as it does not represent a country (it holds the OECD average figures).
 
 ```{r oecd-data, message=FALSE}
-# Load downloader package.
-require(downloader)
 # Target source.
 url = "https://raw.github.com/jeromyanglim/oecd_life_analysis/master/oecd-life.csv"
 # Target file.
@@ -33,8 +42,6 @@ oecd[-1] <- as.numeric(gsub("[^0-9.]", "", as.matrix(oecd[-1])))
 Let's finally add country codes to the data, which will be useful to plot the data. The `countrycode` package can convert country names to ISO-3C three-letter acronyms. We conclude the data preparation by checking on a few columns of the finalized dataset. The entire list of variables is available, as usual, through the `names()` function.
 
 ```{r oecd-codes, message=FALSE}
-# Load countrycode package.
-require(countrycode)
 # Add country codes.
 oecd$iso3c <- countrycode(oecd$COUNTRY, "country.name", "iso3c")
 # Check result.
@@ -45,7 +52,7 @@ head(oecd)[c(1, 4, 6, 13, 26)]
 
 Our first example of a linear relationship will consider the association between water quality and life expectancy. We work under the basic assumption that access to safe water contributes either directly or indirectly to decreasing the burden of disease in the general population, therefore leading to higher longevity. We plot both variables and their means.
 
-```{r oecd-lifeexp, tidy=FALSE}
+```{r oecd-lifeexp-auto, tidy = FALSE}
 # Compute average life expectancy.
 ymean <- mean(oecd$Life.expectancy)
 # Compute average water quality.
@@ -61,7 +68,7 @@ g
 
 The association between both variables is imperfect, but a majority of countries are situated in the top-right and bottom-left quadrant: when water quality increases, life expectancy increases, and vice versa. This corresponds to a positive correlation. The two other quadrants would instead correspond to a negative correlation. Both are shown below in different colors.
 
-```{r oecd-quadrants, tidy=FALSE}
+```{r oecd-quadrants-auto, tidy = FALSE}
 # Create a dummy denoting positive or negative correlation.
 bottom.left <- (oecd$Water.quality < xmean) & (oecd$Life.expectancy < ymean)
 top.right   <- (oecd$Water.quality > xmean) & (oecd$Life.expectancy > ymean)
@@ -75,7 +82,7 @@ g + geom_point(size=16, alpha = .4, aes(color = correlation)) +
 
 A simpler way to express the association is to fit a smoothed trend through the data. What then appears is an approximate line that goes through the bottom-left quadrant, then through the intersection of the means, and then through the top-right quadrant. This trend confirms that the data shows an 'upward', positive, linear correlation.
 
-```{r oecd-loess, message=FALSE}
+```{r oecd-loess-auto, message = FALSE, tidy = FALSE}
 g + geom_smooth(fill = "green", color = "forestgreen", alpha = .2)
 ```
 
@@ -98,16 +105,14 @@ with(oecd, cor(Life.expectancy, Water.quality))
 
 It is customary to build huge correlation tables out of all continuous variables of a dataset to see what correlations exists throughout the data (see, e.g., Kabacoff 7.3). It is also customary to test these correlations for statistical significance (see, e.g. Teetor 9.17). We suggest instead opting for graphical options (see also Chang 13.1). An example appears below :
 
-```{r oecd-correlation-plot, message=FALSE}
-# Load arm package.
-require(arm)
+```{r oecd-correlation-plot}
 # Absolute correlation plot.
 corrplot(oecd[-c(1, 26)], color = TRUE)
 ```
 
 The plot shows, for instance, that the correlation between job security and the employment rate is very low, contrary to claims that high job security threatens the creation of jobs in the private sector. Be careful when reading the matrix: all correlations are shown in absolute value, so negative correlations show as positive ones, as with this example:
 
-```{r oecd-negative-correlation, message=FALSE, warning=FALSE, tidy=FALSE}
+```{r oecd-negative-correlation-auto, warning = FALSE, message = FALSE, tidy = FALSE}
 # Compute correlation coefficient.
 with(oecd, cor(Life.Satisfaction, Long.term.unemployment.rate, use = "complete.obs"))
 # Plot with smoothed trend.
@@ -125,8 +130,6 @@ We will finish this section by returning to scatterplots. There are several ways
 ```{r oecd-scatterplot-matrix, message=FALSE}
 # Scatterplot matrix.
 pairs(oecd[c(15:17, 25)])
-# Load car package.
-require(car)
 # More sophisticated output.
 scatterplotMatrix(oecd[c(15:17, 25)], smoother=NULL)
 ```

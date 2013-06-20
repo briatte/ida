@@ -3,9 +3,13 @@
 
 # 10. Visualization in space: Maps
 
+Let's [stick some data on a map][ds-map].
+
+[ds-map]: http://is-r.tumblr.com/post/35200999886/make-your-own-electoral-map
+
 ```{r packages, message = FALSE, warning = FALSE}
 # Load packages.
-packages <- c("countrycode", "ggplot2", "maps")
+packages <- c("countrycode", "downloader", "foreign", "ggplot2", "maps", "RColorBrewer")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -14,37 +18,89 @@ packages <- lapply(packages, FUN = function(x) {
 })
 ```
 
-Spatial visualization can be [pretty complex](http://youtu.be/XU6-krsDviY), because you have to manipulate learn new measures that apply in geographic contexts. We will stick to simply [viewing some data on a map][ds-map].
+We will use [Quality of Government][qog] data, for which the country codes are standardized, and a rather old map of the world where a few countries need to be renamed to be matched to QOG country names. 
 
-[ds-map]: http://is-r.tumblr.com/post/35200999886/make-your-own-electoral-map
+[qog]: http://www.qog.pol.gu.se/
 
-Here's a quick method:
-
-```{r map-data}
+```{r qog-data}
 # Get world map coordinates from the maps package.
-eu <- map_data("world", zoom = 4)
+w <- map_data("world", zoom = 4)
+# Fix a few country names.
+w$region[which(w$region == "USA")] = "United States"
+w$region[which(w$region == "UK")] = "United Kingdom"
+w$region[which(w$region == "USSR")] = "Russia"
+w$region[which(w$region == "Zaire")] = "Congo, Democratic Republic"
+w$region[which(w$region == "North Korea")] = "Korea, North"
+w$region[which(w$region == "South Korea")] = "Korea, South"
+# Remove Antarctica.
+w <- subset(w, !region %in% c("Antarctica", "Greenland"))
 # Download Quality of Government Standard dataset.
-file = "data/qog.cs.txt"
-if(!file.exists(file)) {
-  dta = "data/qog.cs.dta"
-  if(!file.exists(dta)) {
-    url = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
-    download(url, dta, mode = "wb")
-  }
-  write.csv(read.dta(dta), file)
+link = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
+file = "data/qog.cs.dta"
+data = "data/qog.cs.txt"
+if(!file.exists(data)) {
+  if(!file.exists(file)) download(link, file, mode = "wb")
+  write.csv(read.dta(file), data)
 }
-# Open local copy.
-qog <- read.csv(file, stringsAsFactors = FALSE, header = TRUE)
-# Add geographic continents using UN country codes.
-qog$continent = factor(countrycode(qog$ccodealp, "iso3c", "continent"))
+# Read local copy.
+qog <- read.csv(data, stringsAsFactors = FALSE)
 ```
 
-```{r map-ggplot2}
-qog <- with(qog, data.frame(
-  region = cname,
-  fertility = wdi_fr))
-eu <- merge(eu, qog, by = "region", all.x = TRUE)
-qplot(data = eu, x = long, y = lat, group = group, fill = fertility, geom = "polygon")
+Here's a quick function to plot Quality of Government data. The first part extracts a variabl based on the argument passed to the function, along with (cleaned up) country names. The second part matches this data to the map, based on the `region` identifier of the world map data. The ast part plots the data by longitude and latitude, using a 'whitened' `ggplot2` theme.
+
+```{r qog-map, tidy = FALSE}
+qog.map <- function(x) {
+  # Extract QOG variables.
+  data <- with(qog, data.frame(
+    country = gsub(" (\\(.*)", "", cname),
+    variable = qog[, which(names(qog) == x)]))
+  # Match QOG data to map.
+  w$fill <- with(data, by(variable, country, mean))[w$region]
+  set1 = brewer.pal(9, "Set1")
+  # Plot over blank theme.
+  p = qplot(data = w, x = long, y = lat,
+            group = group, fill = fill, geom = "polygon")
+  p = p + scale_fill_gradient2("",
+                               low = set1[1], mid = set1[6], high = set1[3], 
+                               midpoint = mean(w$fill, na.rm = TRUE),
+                               na.value = set1[9])
+  p = p + theme(axis.text = element_blank(),
+                axis.ticks = element_blank(),
+                panel.grid = element_blank())
+  p = p + labs(y = NULL, x = NULL)
+  return(p)  
+}
+```
+
+You can pass any QOG variable name to the function, although its matching method will only support continuous variables, as shown below with an additive index of human rights by [Cingranelli and Richards][ciri]. The default color [gradient][ggplot2-gradient] uses [ColorBrewer][cb]'s `Set1` scheme and goes from green (low) to yellow (at midpoint) to red (high) by default.
+
+[ciri]: http://www.humanrightsdata.org/
+[cb]: http://colorbrewer2.org/
+
+```{r qog-map-example-1-auto, fig.width = 12, fig.height = 6.6, tidy = FALSE}
+# Plot a simple QOG map.
+qog.map("ciri_empinx_new") + 
+  labs(title = "CIRI Empowerment Rights Index (0-14) in 2009")
+```
+
+You can bypass the function's colors by overriding its `ggplot2` fill scale. The example below uses a color gradient of [Crayola colors][sss-crayola] that were coded for R by Matt Blackwell (check out Harvard's Social Science Statistics blog for other goodies, like this [elementary Google Maps][sss-googlemap] function by Andy Eggers).
+
+[ggplot2-gradient]: http://docs.ggplot2.org/current/scale_gradient.html
+[sss-crayola]: http://blogs.iq.harvard.edu/sss/archives/2011/02/crayola_colors.shtml
+[sss-googlemap]: http://blogs.iq.harvard.edu/sss/archives/2008/04/google_charts_f_1.shtml
+
+```{r qog-map-example-2-auto, fig.width = 12, fig.height = 6.6, tidy = FALSE, message = FALSE}
+# Get Crayola colors from a personal copy.
+source_url("https://raw.github.com/gist/5813759", prompt = FALSE)
+# Plot with Crayola color gradient.
+qog.map("wdi_the") + 
+  labs(title = "Total health expenditure (% of GDP) in 2009") +
+  scale_fill_gradient2("", 
+                       low = crayola["Blue Green"], 
+                       high = crayola["Sunset Orange"], 
+                       mid = crayola["Yellow"], 
+                       midpoint = mean(qog$wdi_the, na.rm = TRUE), 
+                       na.value = crayola["Gray"])
 ```
 
 > __Next__: [Choropleth maps](101_choropleth.html).

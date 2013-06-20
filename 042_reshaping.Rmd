@@ -11,7 +11,7 @@ Datasets do not always come in the exact form in which we want to analyze them: 
 
 Both examples below are based on the `ggplot2` and `reshape` packages.
 
-```{r packages, message=FALSE, warning=FALSE}
+```{r packages, message = FALSE, warning = FALSE}
 # Load packages.
 packages <- c("downloader", "ggplot2", "plyr", "reshape", "scales")
 packages <- lapply(packages, FUN = function(x) {
@@ -104,8 +104,10 @@ if(!file.exists(zip)) {
   # Download ZIP archive.
   download(url, zip, mode = "wb")
 }
+# Identify ZIP folder.
+"data/htus8008"
 # Unzip archive.
-if(!file.exists(dir)) unzip(zip, exdir = "data/htus8008")
+if(!file.exists(dir)) unzip(zip, exdir = dir)
 ```
 
 The second code block imports one of the CSV files by reading only the valid data lines from it. See the `README` file of the BJS data folder for a list of all series, and open a few files to see how they are structured. The code block also does a bit of data cleaning: it removes the last (empty) column and replaces the dots in the names of some columns with spaces. It ends on routine data checks.

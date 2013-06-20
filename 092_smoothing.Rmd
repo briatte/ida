@@ -9,7 +9,7 @@ http://www.quandl.com/help/r
 
 ```{r packages, message=FALSE, warning=FALSE}
 # Load packages.
-packages <- c("changepoint", "downloader", "ggplot2", "lubridate", "plyr", "reshape")
+packages <- c("changepoint", "downloader", "ggplot2", "lubridate", "plyr", "reshape", "XML")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -131,7 +131,7 @@ g + geom_segment(data = means,
 
 ```{r tww-cpt}
 cpt <- cpt.mean(data$mu, method = 'PELT')
-seg <- data.frame(cpt = attr(m, "param.est"))
+seg <- data.frame(cpt = attr(cpt, "param.est"))
 seg$xmax <- attr(cpt, "cpts")
 seg$xmin <- c(0, seg$xmax[-length(seg$xmax)])
 

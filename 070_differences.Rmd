@@ -52,7 +52,7 @@ wdi$Continent <- countrycode(wdi$iso2c, "iso2c", "continent")
 wdi <- na.omit(wdi)
 ```
 
-```{r wdi-plot-codes}
+```{r wdi-plot-codes-auto}
 # Scatterplot of fertility and GDP per capita with country codes and continents.
 qplot(data = wdi, y = SP.DYN.TFRT.IN, x = log(NY.GDP.PCAP.CD), 
       color = Continent, label = iso3c, size = I(4), geom = "text") +

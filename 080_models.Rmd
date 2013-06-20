@@ -3,6 +3,17 @@
 
 # 8. Linear models
 
+```{r packages, message=FALSE, warning=FALSE}
+# Load packages.
+packages <- c("downloader", "ggplot2")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
 [gesmann-1]: http://lamages.blogspot.fr/2012/08/london-olympics-100m-mens-sprint-results.html
 [gesmann-2]: http://lamages.blogspot.co.uk/2012/07/london-olympics-and-prediction-for-100m.html
 [silver]: http://fivethirtyeight.blogs.nytimes.com/
@@ -12,16 +23,14 @@ This session focuses on (linear) models. The first section covers computation an
 Models are commonly used for all sorts of purposes that revolve around several definitions of prediction. Ordinary language defines prediction as forecasting: the ability to estimate something that is not yet in the data. A simple example would be Markus Gesmann's [prediction of London Olympics 100m men's sprint results][gesmann-1]. Let's load his data:
 
 ```{r olympics-data, message=FALSE}
-# Load downloader package.
-require(downloader)
 # Identify the data file.
-data = "data/olympics.2012.txt"
+file = "data/olympics.2012.txt"
 # Identify the data source.
-url = "https://raw.github.com/briatte/ida/master/data/Olympics.100m.txt"
+link = "https://raw.github.com/briatte/ida/master/data/olympics.2012.txt"
 # Download the data if needed.
-if(!file.exists(data)) download(url, data, mode = "wb")
+if(!file.exists(file)) download(link, file, mode = "wb")
 # Read the data.
-olympics <- read.table(data, stringsAsFactors=FALSE)
+olympics <- read.table(file, stringsAsFactors = FALSE)
 # Check result.
 head(olympics)
 ```
@@ -29,8 +38,6 @@ head(olympics)
 In [his code][gesmann-1], Markus Gesmann uses a log-linear model to predict the 2012 sprint result from the series of past results, using all data from 1900 to today. To understand [this model][gesmann-2], we take a quick look at the sprinter results and add a LOESS curve to the plot, which provides a smoothed trend of the series:
 
 ```{r olympics-scatterplot, message=FALSE}
-# Load ggplot2 package.
-require(ggplot2)
 # Scatterplot of sprinter results.
 g <- qplot(data = olympics, y = Result, x = Year)
 # Show plot with LOESS curve.

@@ -1,5 +1,5 @@
 ##
-## IDA STARTUP FILE 0.4 (2013-05-15)
+## IDA STARTUP FILE 0.5 (2013-05-28)
 ##
 
 require(utils, quietly = TRUE)
@@ -32,7 +32,8 @@ if("ggplot2" %in% installed.packages()[,1]) {
     plot.margin = unit(c(1, 1, 1, 1), "cm"),
     plot.title = element_text(face = "bold", vjust = 1),
     axis.title.y = element_text(angle = 90, vjust = -.25),
-    axis.title.x = element_text(vjust = -1)
+    axis.title.x = element_text(vjust = -1),
+    legend.key = element_rect(colour = "white")
   )
 }
 
@@ -40,7 +41,7 @@ if("ggplot2" %in% installed.packages()[,1]) {
 ## ida.build(): knit the course from R Markdown to HTML
 ##
 
-ida.build <- function(session = 0, backup = TRUE, html = TRUE) {
+ida.build <- function(start = 5, end = 46, backup = TRUE, html = TRUE) {
   require(knitr)
   
   # knitr setup
@@ -68,8 +69,8 @@ ida.build <- function(session = 0, backup = TRUE, html = TRUE) {
   file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.md$"))
   
   # get files
-  all <- dir(pattern="[index|0-9]+(.*).Rmd")
-  all <- all[1:(2 + 4*session)]
+  all <- dir(pattern = "[index|0-9]+(.*).Rmd")
+  all <- all[start:end]
   
   # run course
   lapply(all, FUN = function(x) {

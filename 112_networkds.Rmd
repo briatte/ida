@@ -1,73 +1,79 @@
 <style>@import url(style.css);</style>
 [Introduction to Data Analysis](index.html "Course index")
 
-# 11.2. Network(d)s (networks of words)
+# 11.2. Network(d)s
 
-## Networks of word associations
+This section brings a bit of text mining into network analysis, as we will turn word associations into network ties (networks of word associations) and visualize the result. The code draws on the ideas of [Cornelius Puschmann][ynada], and the example data is [Julian Assange's][assange] address at the United Nations in September 2012.
 
-This section brings a bit of text mining to network analysis, as we will [turn word associations into network ties](http://blog.ynada.com/303) and visualize the result.
+[assange]: http://wikileaks.org/Transcript-of-Julian-Assange.html
+[ynada]: http://blog.ynada.com/303
 
-```{r puschmann-text-as-network}
-library(tm)
-library(igraph)
-# Julian Assange, UN address, September 2012.
-# URL: http://wikileaks.org/Transcript-of-Julian-Assange.html
-loc <- "data/assange.txt"
-txt <- scan(file=loc, what="char", sep="\n", encoding="UTF-8");
-
-words <- unlist(strsplit(gsub("[[:punct:]]", " ", tolower(txt)), "[[:space:]]+"));
-g.start <- 1;
-g.end <- length(words) - 1;
-assocs <- matrix(nrow = g.end, ncol=2)
-
-for (i in g.start:g.end)
-{
-  assocs[i,1] <- words[i];
-  assocs[i,2] <- words[i + 1];
-  print(paste("Pass #", i, " of ", g.end, ". ", "Node word is ", toupper(words[i]), ".", sep=""));
-}
-
-associate <- function(x) {
-  y = c(words[x], words[x + 1])
-  if(!TRUE %in% (y %in% c("", stopwords("en")))) y
-}
-assocs <- do.call(rbind, sapply(1:(length(words) - 1), associate))
-
-# [iteration][032] [032]: 032_iteration.html
-# [bh-apply]: http://badhessian.org/loops-matrices-and-apply-functions/
-
-
-# Remove associations to common English words.
-assocs <- subset(assocs,!(assocs[,1] %in% stopwords("en")))
-assocs <- subset(assocs,!(assocs[,2] %in% stopwords("en")))
-
-g.assocs <- graph.data.frame(assocs, directed=F);
-V(g.assocs)$label <- V(g.assocs)$name;
-V(g.assocs)$color <- "Gray";
-V(g.assocs)[unlist(largest.cliques(g.assocs))]$color <- "Red";
-# plot(g.assocs, layout=layout.random, vertex.size=4, vertex.label.dist=0);
-# plot(g.assocs, layout=layout.circle, vertex.size=1, vertex.label.dist=0);
-# plot(g.assocs, layout=layout.fruchterman.reingold, vertex.size=4, vertex.label.dist=0);
-# plot(g.assocs, layout=layout.kamada.kawai, vertex.size=4, vertex.label.dist=0);
-
-# ... and make pretty: 
-# http://rdatamining.wordpress.com/2012/05/17/an-example-of-social-network-analysis-with-r-using-package-igraph/
-V(g.assocs)$label.cex <- 2.2 * V(g.assocs)$degree / max(V(g.assocs)$degree)+ .2
-V(g.assocs)$label.color <- rgb(0, 0, .2, .8)
-V(g.assocs)$frame.color <- NA
-plot(g.assocs, layout = layout.fruchterman.reingold)
+```{r packages, message=FALSE}
+packages <- c("downloader", "ggplot2", "network", "tm")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
 ```
 
-```{r intheworks, eval=FALSE, include=FALSE}
-# in progress
-# V(g.assocs)$label.cex <- 2.2 * V(g.assocs)$degree / max(V(g.assocs)$degree)+ .2
-# V(g.assocs)$label.color <- rgb(0, 0, .2, .8)
-# V(g.assocs)$frame.color <- NA
-# egam <- (log(E(g.assocs)$weight)+.4) / max(log(E(g.assocs)$weight)+.4)
-# E(g.assocs)$color <- rgb(.5, .5, 0, egam)
-# E(g.assocs)$width <- egam
+Our first step is to read the text file, to extract all words from the speech, and to extract all associations like "welcome to" or "fine deeds". We replace Cornelius Puschmann's original code by a functional approach to the job, using one the many R [apply][bh-apply] functions (`sapply` being from the `plyr` package) for the main word association routine.
+
+[032]: 032_iteration.html
+[bh-apply]: http://badhessian.org/loops-matrices-and-apply-functions/
+
+```{r puschmann}
+build.corpus <- function(x, skip = 0) {
+  # Read the text source.
+  src = scan(x, what = "char", sep = "\n", encoding = "UTF-8", skip = skip)
+  # Extract all words.
+  txt = unlist(strsplit(gsub("[[:punct:]]", " ", tolower(src)), "[[:space:]]+"))
+  # Function to create word nodes.
+  associate <- function(x) {
+    y = c(txt[x], txt[x + 1])
+    if(!TRUE %in% (y %in% c("", stopwords("en")))) y
+    }
+  # Build word network.
+  net = do.call(rbind, sapply(1:(length(txt) - 1), associate))
+  # Return network object.
+  return(network(net))
+}
+# Example data.
+net = build.corpus("data/assange.txt")
 ```
 
-http://www.statsblogs.com/2012/05/17/an-example-of-social-network-analysis-with-r-using-package-igraph/
+The word network is plotted as a very sparse network, trimmed to associations of non-trivial words that appear at least three times in the speech. Trivial words are removed by matching them to the list of English stopwords found in the `tm` package. We again use the `ggnet` function, but [have a look][rdm-igraph] at the `igraph` package for an alternative.
+
+[rdm-igraph]: http://rdatamining.wordpress.com/2012/05/17/an-example-of-social-network-analysis-with-r-using-package-igraph/
+
+```{r plot-assange-auto, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE, cache = TRUE, warning = FALSE}
+# Load ggnet function.
+code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
+source_url(code, prompt = FALSE)
+# Plot with ggnet.
+ggnet(net, weight = "degree", subset = 3,
+      alpha = 1, segment.color = "grey", label = TRUE, vjust = - 2,
+      legend = "none")
+```
+
+Since the corpus was created out of a simple function call, we can now find any corpus, prepare it and plot it in just a few lines. The next example is a plot of word associations in [Corey Doctorow's][gh-doctorow] speech to the Chaos Communication Congress in December 2011. Try running the same graph on any plain text speech file (here's one by [Barack Obama][bo]).
+
+[gh-doctorow]: https://github.com/jwise/28c3-doctorow/blob/master/transcript.md
+[bo]: http://librarian.net/dnc/speeches/obama.txt
+
+```{r plot-obama-auto, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE, cache = TRUE, warning = FALSE}
+# Target locations
+link = "https://raw.github.com/jwise/28c3-doctorow/master/transcript.md"
+file = "data/doctorow.txt"
+# Download speech.
+if(!file.exists(file)) download(link, file)
+# Build corpus.
+net = build.corpus(file, skip = 37)
+# Plot with ggnet.
+ggnet(net, weight = "degree", subset = 3,
+      alpha = 1, segment.color = "grey", label = TRUE, vjust = - 2,
+      legend = "none")
+```
 
 > __Next week__: [Data-driven advances](120_data.html).

@@ -68,10 +68,11 @@ aggregate(score ~ party, data = data, FUN = "mean")
 # RColorBrewer codes for blue, red, gray.
 party.colors = brewer.pal(9, "Set1")[c(2, 1, 9)]
 # Stacked distributions, colored by party.
-qplot(data = data, x = score, fill = party, colour = party, 
+g <- qplot(data = data, x = score, fill = party, colour = party, 
       position = "stack", alpha = I(.75), geom = "density") + 
   scale_fill_manual("Party", values = party.colors) +
   scale_colour_manual("Party", values = party.colors)
+g
 
 
 # Data preparation: DW-NOMINATE time series (1-111th Congress)

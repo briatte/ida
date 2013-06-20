@@ -108,7 +108,7 @@ Now use the code on this page to:
 1. Download [this data extract from the U.S. National Health Interview Survey 2005](https://raw.github.com/briatte/ida/master/data/nhis.2005.txt). Use `RCurl` as shown above. Call the data `nhis`.
 
 ```{r nhis-data-import, include=FALSE}
-file = "data/nhis.txt"
+file = "data/nhis.2005.txt"
 # Download the data if needed.
 if (!file.exists(file)) {
   # Locate the data.
