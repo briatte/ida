@@ -4,6 +4,10 @@ The `data` folder hosts a few of the course datasets. The data are generally dow
 
 | name                        | description                                                        | Session |
 |:----------------------------|:-------------------------------------------------------------------|:--------|
+| | no data                                                                                        | 1.0 |
+| | no data                                                                                        | 1.1 |
+| | no data                                                                                        | 1.2 |
+| | no data                                                                                        | 1.3 |
 | | no data                                                                                        | 2.0 |
 | | no data                                                                                        | 2.1 |
 | `grades.2012.txt` (*)       | Anonymized student grades from an Autumn 2012 math course          | 2.2 |
@@ -23,17 +27,17 @@ The `data` folder hosts a few of the course datasets. The data are generally dow
 | `bshor.congress.2012.txt`   | Boris Shor's U.S. Congressional ideal estimated points, 2012       | 4.3 (practice) |
 | `dwnominate.txt`            | DW-NOMINATE scores for all U.S. Congressional sessions (dta, 6MB)  | 4.3 (practice) |
 | | no data                                                                                        | 5.0 |
-| | work needed | 5.1 |
-| | work needed | 5.2 |
-| | work needed | 5.3 |
-| | work needed | 6.0 |
-| | work needed | 6.1 |
-| | work needed | 6.2 |
-| | work needed | 6.3 |
+| | ... | 5.1 |
+| | ... | 5.2 |
+| | ... | 5.3 |
+| | ... | 6.0 |
+| | ... | 6.1 |
+| | ... | 6.2 |
+| | ... | 6.3 |
 | `wdi.births.2005.txt`       | World Bank fertility rates and GDP/capita for 2005 | 7.0 |
-| | work needed | 7.1 |
-| | work needed | 7.2 |
-| | work needed | 7.3 |
+| | ... | 7.1 |
+| | ... | 7.2 |
+| | ... | 7.3 |
 | `olympics-100m.txt`         | Olympics 100 m sprinters data from Markus Gessman                  | 8.0 |
 | `oecd.bli.2011.txt`         | OECD Better Life Index, 2011                                       | 8.1 |
 | | work needed | 8.2 |
