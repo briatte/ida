@@ -65,6 +65,16 @@ a:hover {
 	text-decoration: underline;
 }
 
+a[href = "/"] {
+  text-decoration: none;
+  color: #000;
+}
+
+a[href = "/"]:hover:after {
+  content: " (in the works…)";
+  color: #666;
+}
+
 a[title = "Course index"] { /* small top link to contents */
   display: block;
   color: #666;

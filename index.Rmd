@@ -87,10 +87,10 @@ __Readings:__ Kabacoff, ch. 14, and Teetor, ch. 13.4, 13.6 and 13.9.
 - [Principal components][052]
 - [Practice][053]
 
-[050]: 050_clusters.html
-[051]: 051_heatmaps.html
-[052]: 052_pca.html
-[053]: 053_practice.html
+[050]: / "050_clusters.html"
+[051]: / "051_heatmaps.html"
+[052]: / "052_pca.html"
+[053]: / "053_practice.html"
 
 * * *
 
@@ -102,10 +102,10 @@ __Readings:__ Kabacoff, ch. 6, Teetor, ch. 10, and Urdan, ch. 4-6. See also Urda
 - [Density functions][062]
 - [Practice][063]
 
-[060]: 60_distributions.html
-[061]: 061_description.html
-[062]: 062_density.html
-[063]: 063_practice.html
+[060]: / "60_distributions.html"
+[061]: / "061_description.html"
+[062]: / "062_density.html"
+[063]: / "063_practice.html"
 
 * * *
 
@@ -117,10 +117,10 @@ __Readings:__ Kabacoff, ch. 7, Teetor, ch. 9, and Urdan, ch. 7, 9 and 14.
 - [Significance tests][072]
 - [Practice][073]
 
-[070]: 070_differences.html
-[071]: 071_intervals.html
-[072]: 072_tests.html
-[073]: 073_practice.html
+[070]: / "070_differences.html"
+[071]: / "071_intervals.html"
+[072]: / "072_tests.html"
+[073]: / "073_practice.html"
 
 * * *
 
