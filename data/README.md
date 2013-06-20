@@ -47,20 +47,19 @@ The `data` folder hosts a few of the course datasets. The data are generally dow
 | | work needed | 11.0 |
 | `frmps.nodes.txt`           | French MPs on Twitter in 2013 (course dataset)                     | 11.1 |
 | `frmps.network.txt`         | Links between French MPs on Twitter in 2013 (course dataset)       | 11.1 |
-| `assange.txt` (*)           | Plain text from a speech by Julian Assange in 2012                 | 11.2 |
-| `doctorow.txt`              | Plain text from a speech by Corey Doctorow in 2011                 | 11.2 |
+| `assange.txt` (*)           | Speech by Julian Assange in 2012                                   | 11.2 |
+| `doctorow.txt`              | Speech by Corey Doctorow in 2011                                   | 11.2 |
 | | no data                                                                                        | 12.0 |
 
-... add UNODC data
-... add somewhere:
+... not yet in:
 
 | `reinhart-rogoff.txt`       | Reinhart and Rogoff replication data from Thomas Herndon *et al.*  | |
 | `uselect-bartels-4812.txt`  | Larry Bartel's data for a U.S. presidential election plot          | 8.2 (rajouter) |
 | `hibbs.4812.txt`            | Douglas Hibbs' U.S. presidential election dataset, 2012            | 8.2 (a priori) |
-| `qog.ts.2011.txt`           | Quality of Government Standard time series, 6 April 2011           | 4.1 |
-| `china-sectors.txt`         | official China sectoral employment 1952-2011, from Quandl          | 9.1 |
+| `qog.ts.txt`                | Quality of Government Standard time series, 15 May 2013            | 4.1 |
+| `china-sectors.txt`         | Official China sectoral employment 1952-2011, from Quandl          | 9.1 |
 | `us.recessions.4807.txt`    | BLS employment figures for NBER recession months, 1948-2013        | 9.2 |
 
-US and UK politics information is scraped from Wikipedia but not saved.
+Some stuff gets scraped from Wikipedia and is not saved.
 
 (*) Files marked with an asterisk required heavy preprocessing or authentification to download, and are self-contained to the course. All other files were first downloaded in their native format and then saved as plain text comma-separated values. The data preparation code appears in the course pages.
