@@ -116,7 +116,7 @@ states.list = states.list[-which(grepl("columbia", states.list))]
 # Subset to map states (sorry Alaska).
 dw = subset(dw, tolower(State) %in% states.list)
 # Transpose data to map dataset.
-states.data$Swing   <- by(dw$Obama_Swing, states.list, mean)[states.data$region]
+states.data$SwingBO <- by(dw$Obama_Swing, states.list, mean)[states.data$region]
 states.data$Obama08 <- by(dw$Obama_VS_08, states.list, mean)[states.data$region]
 states.data$Obama12 <- by(dw$Obama_VS_12, states.list, mean)[states.data$region]
 
@@ -124,12 +124,9 @@ states.data$Obama12 <- by(dw$Obama_VS_12, states.list, mean)[states.data$region]
 
 # Prepare quintile function.
 quantize <- function(x, q = 5) {
-  cut(x, breaks = quantile(round(x), probs = 0:q/q, na.rm = TRUE), 
-      include.lowest = TRUE)
+  return(cut(x, breaks = quantile(round(x), probs = 0:q/q, na.rm = TRUE), 
+      include.lowest = TRUE))
 }
-map.swing = aes(fill = quantize(Swing))
-map.obama08 = aes(fill = quantize(Obama08))
-map.obama12 = aes(fill = quantize(Obama12))
 # Common map elements.
 g <- ggplot(states.data, aes(x = long, y = lat, group = group)) +
   geom_polygon(colour = "white") + coord_map(project = "conic", lat0 = 30) +
@@ -142,8 +139,8 @@ g <- ggplot(states.data, aes(x = long, y = lat, group = group)) +
 
 
 # Choropleth maps.
-g + map.swing #+ ggtitle("Swing (2012 - 2008) Obama vote share\n")
-g + map.obama08 #+ ggtitle("Obama vote share, 2008\n")
-g + map.obama12 #+ ggtitle("Obama vote share, 2012\n")
+g + aes(fill = quantize(SwingBO)) + ggtitle("Swing in the Obama vote share")
+g + aes(fill = quantize(Obama08)) + ggtitle("Obama vote share, 2008")
+g + aes(fill = quantize(Obama12)) + ggtitle("Obama vote share, 2012")
 
 
