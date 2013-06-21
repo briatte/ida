@@ -49,10 +49,13 @@ ggmap(map) +
              aes(x = Longitude, y = Latitude, color = Country, size = Total.Amt),
              alpha = .3) + 
   scale_size_area(max_size = 8) + 
-  theme(legend.position = "none")
+  labs(y = NULL, x = NULL) +
+  theme(axis.text = element_blank(), 
+        axis.ticks = element_blank(),
+        legend.position = "none")
 ```
 
-The `get_map` function puts more than one map service at your fingertips: here's an example with the [Stamen watercolor][stamen] map. This map still uses a different color for each country and has a few more plot options to remove the unnecessary axis and title information. It would be easy to write a quick map function to avoir recoding each plot (have a try).
+The `get_map` function puts more than one map service at your fingertips: here's an example with the [Stamen watercolor][stamen] map. The map still uses a different color for each country and passes the same plot options to remove the unnecessary axis and title information. It would be easy to write a quick map function to avoir recoding each plot (have a try).
 
 [stamen]: http://content.stamen.com/watercolor_process
 

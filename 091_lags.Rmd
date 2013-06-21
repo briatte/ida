@@ -24,7 +24,7 @@ The same principle can be used to get data from [sources like Twitter][sw-ms]. A
 
 Unfortunately, the Twitter API is now less open than it used to be, so we will not be able to access the data publicly. I have saved the results of a [recent scrape][beijing-scraper] for your viewing pleasure, as the U.S. Embassy has not turned the logging machine down even when pressured so. Read first on the [Air Quality Index][aqi] (AQI) used to measure pollution information.
 
-[beijing-scraper]: 4_twitter.R
+[beijing-scraper]: 9_twitter.R
 [aqi]: http://airnow.gov/index.cfm?action=aqibasics.aqi
 
 ```{r twitter-pollution}
