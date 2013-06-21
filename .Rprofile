@@ -41,7 +41,7 @@ if("ggplot2" %in% installed.packages()[,1]) {
 ## ida.build(): knit the course from R Markdown to HTML
 ##
 
-ida.build <- function(start = 5, end = 46, backup = TRUE, html = TRUE) {
+ida.build <- function(start = 5, end = 44, backup = TRUE, html = TRUE) {
   require(knitr)
   
   # knitr setup
@@ -70,10 +70,9 @@ ida.build <- function(start = 5, end = 46, backup = TRUE, html = TRUE) {
   
   # get files
   all <- dir(pattern = "[index|0-9]+(.*).Rmd")
-  all <- all[start:end]
-  
+
   # run course
-  lapply(all, FUN = function(x) {
+  lapply(all[start:end], FUN = function(x) {
     # do not script the first pages or the index
     if(!substr(x, 0, 2) %in% c("00", "in"))
       purl(x, documentation = 0, output = paste0("code/", gsub("Rmd", "R", x)))

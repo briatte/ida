@@ -152,7 +152,7 @@ states.list = states.list[-which(grepl("columbia", states.list))]
 # Subset to map states (sorry Alaska).
 dw = subset(dw, tolower(State) %in% states.list)
 # Transpose data to map dataset.
-states.data$Swing   <- by(dw$Obama_Swing, states.list, mean)[states.data$region]
+states.data$SwingBO <- by(dw$Obama_Swing, states.list, mean)[states.data$region]
 states.data$Obama08 <- by(dw$Obama_VS_08, states.list, mean)[states.data$region]
 states.data$Obama12 <- by(dw$Obama_VS_12, states.list, mean)[states.data$region]
 ```
@@ -162,12 +162,9 @@ The plot is going to show quintiles of the Obama swing from 2008 to 2012. To mak
 ```{r dw-map-functions, tidy = FALSE}
 # Prepare quintile function.
 quantize <- function(x, q = 5) {
-  cut(x, breaks = quantile(round(x), probs = 0:q/q, na.rm = TRUE), 
-      include.lowest = TRUE)
+  return(cut(x, breaks = quantile(round(x), probs = 0:q/q, na.rm = TRUE), 
+      include.lowest = TRUE))
 }
-map.swing = aes(fill = quantize(Swing))
-map.obama08 = aes(fill = quantize(Obama08))
-map.obama12 = aes(fill = quantize(Obama12))
 # Common map elements.
 g <- ggplot(states.data, aes(x = long, y = lat, group = group)) +
   geom_polygon(colour = "white") + coord_map(project = "conic", lat0 = 30) +
@@ -182,9 +179,9 @@ The first map shows the swing in vote share, and the next ones show the actual v
 
 ```{r dw-map-choropleth-auto, fig.width = 12, fig.height = 6.6}
 # Choropleth maps.
-g + map.swing #+ ggtitle("Swing (2012 - 2008) Obama vote share\n")
-g + map.obama08 #+ ggtitle("Obama vote share, 2008\n")
-g + map.obama12 #+ ggtitle("Obama vote share, 2012\n")
+g + aes(fill = quantize(SwingBO)) + ggtitle("Swing in the Obama vote share")
+g + aes(fill = quantize(Obama08)) + ggtitle("Obama vote share, 2008")
+g + aes(fill = quantize(Obama12)) + ggtitle("Obama vote share, 2012")
 ```
 
 David Sparks has also posted code for [simpler maps][ds-simplemaps] with less data wrangling, and [chloropleth maps][ds-choropleth] with more precise data. In the future, there's a chance that he will also post his code for [isarithmic map][ds-isarithmic] that look like this:
