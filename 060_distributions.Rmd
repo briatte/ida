@@ -1,8 +1,0 @@
-<style>@import url(style.css);</style>
-[Introduction to Data Analysis](index.html "Course index")
-
-# 6. Distributions
-
-[Histograms and kernel density](http://flowingdata.com/2012/05/15/how-to-visualize-and-compare-distributions/), using [`geom_density`](http://www.ling.upenn.edu/~joseff/avml2012/#Section_1.5.4.3).
-
-> __Next__: [Descriptive statistics](061_description.html).

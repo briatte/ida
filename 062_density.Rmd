@@ -1,6 +1,0 @@
-<style>@import url(style.css);</style>
-[Introduction to Data Analysis](index.html "Course index")
-
-# 6.2. Density
-
-> __Next__: [Practice](063_practice.html).

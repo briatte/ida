@@ -1,8 +1,0 @@
-<style>@import url(style.css);</style>
-[Introduction to Data Analysis](index.html "Course index")
-
-# 7.2. Significance tests
-
-Coming.
-
-> __Next__: [Practice](073_practice.html).
