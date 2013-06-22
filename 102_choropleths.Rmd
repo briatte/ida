@@ -122,7 +122,7 @@ The final plot follows. It confirms that Obama won by protecting the battlegroun
 
 [ns-elastic]: http://fivethirtyeight.blogs.nytimes.com/2012/05/21/swing-voters-and-elastic-states/
 
-```{r dw-jackman-plot, warning = FALSE}
+```{r dw-jackman-auto, warning = FALSE, fig.width = 12, fig.height = 12}
 # Swing vs. Vote Share, weighted by Electoral College Votes.
 ggplot(dw, aes(y = Obama_Swing, x = Obama_VS_08)) +
   geom_rect(xmin = 50, xmax = Inf, ymin = -Inf, ymax = Inf,
@@ -159,29 +159,31 @@ states.data$Obama12 <- by(dw$Obama_VS_12, states.list, mean)[states.data$region]
 
 The plot is going to show quintiles of the Obama swing from 2008 to 2012. To make the code shorter, the quintiles are calculated by a short function, and the plots use a common `ggplot2` structure. Most of the graph options are set to make the plot blank. The coordinates of the plot are made conic to curve the map correctly.
 
-```{r dw-map-functions, tidy = FALSE}
-# Prepare quintile function.
-quantize <- function(x, q = 5) {
-  return(cut(x, breaks = quantile(round(x), probs = 0:q/q, na.rm = TRUE), 
-      include.lowest = TRUE))
+```{r dw-map-choropleth-auto, fig.width = 12, fig.height = 6.6, tidy = FALSE}
+# Choropleth map function.
+ggchoro <- function(x, q = 5, title = NULL) {
+  x = states.data[, x]
+  states.data$q = cut(x, breaks = quantile(round(x), 
+                                           probs = 0:q/q, 
+                                           na.rm = TRUE),
+                      include.lowest = TRUE)
+  ggplot(states.data, 
+         aes(x = long, 
+             y = lat, 
+             group = group, 
+             fill = q)) +
+    geom_polygon(colour = "white") + 
+    coord_map(project = "conic", lat0 = 30) +
+    scale_fill_brewer("", palette = "RdYlBu") +
+    labs(y = NULL, x = NULL, title = title) +
+    theme(panel.border = element_rect(color = "white"), 
+          axis.text = element_blank(),
+          axis.ticks = element_blank()) 
 }
-# Common map elements.
-g <- ggplot(states.data, aes(x = long, y = lat, group = group)) +
-  geom_polygon(colour = "white") + coord_map(project = "conic", lat0 = 30) +
-  scale_fill_brewer("", palette = "RdYlBu") +
-  labs(y = NULL, x = NULL) +
-  theme(panel.border = element_rect(color = "white"), 
-        axis.text = element_blank(),
-        axis.ticks = element_blank())
-```
-
-The first map shows the swing in vote share, and the next ones show the actual vote shares.
-
-```{r dw-map-choropleth-auto, fig.width = 12, fig.height = 6.6}
 # Choropleth maps.
-g + aes(fill = quantize(SwingBO)) + ggtitle("Swing in the Obama vote share")
-g + aes(fill = quantize(Obama08)) + ggtitle("Obama vote share, 2008")
-g + aes(fill = quantize(Obama12)) + ggtitle("Obama vote share, 2012")
+ggchoro("SwingBO", title = "Swing in the Obama vote share")
+ggchoro("Obama08", title = "Obama vote share, 2008")
+ggchoro("Obama12", title = "Obama vote share, 2012")
 ```
 
 David Sparks has also posted code for [simpler maps][ds-simplemaps] with less data wrangling, and [chloropleth maps][ds-choropleth] with more precise data. In the future, there's a chance that he will also post his code for [isarithmic map][ds-isarithmic] that look like this:

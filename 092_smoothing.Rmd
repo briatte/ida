@@ -3,13 +3,9 @@
 
 # 9.2. Smoothing
 
-To test a few smoothing algorithms, we are going to mimick the [Quandl API][q-api] by scraping and downloading short time ####.
-
-http://www.quandl.com/help/r
-
-```{r packages, message=FALSE, warning=FALSE}
+```{r packages, message = FALSE, warning = FALSE}
 # Load packages.
-packages <- c("changepoint", "downloader", "ggplot2", "lubridate", "plyr", "reshape", "XML")
+packages <- c("changepoint", "downloader", "ggplot2", "MASS", "reshape", "splines", "XML")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -18,44 +14,7 @@ packages <- lapply(packages, FUN = function(x) {
 })
 ```
 
-[q-api]: http://www.quandl.com/api
-
-```{r quandl-scrape}
-# 
-link = "http://www.quandl.com/api/v1/datasets/STATCHINA/E0403.csv?&trim_start=1952-12-31&trim_end=2011-12-31&sort_order=desc"
-file = "data/china.sectors.5211.txt"
-# Download
-if(!file.exists(file)) download(link, file, mode = "wb")
-# Read data, skipping row numbers.
-data <- read.csv(file, stringsAsFactors = FALSE)
-# Fix names.
-names(data) <- c("Year", "Active", "Employed", "Primary", "Secondary", "Tertiary",
-                 "P1", "P2", "P3")
-# Reshape.
-data <- melt(data, id = "Year", variable = "Industry")
-# Turn years to proper dates.
-data$Year <- ymd(data$Year)
-```
-
-```{r plot}
-# Working population, millions
-qplot(data = subset(data, Industry %in% c("Primary", "Secondary", "Tertiary")),
-      y = value / 10^2, x = year(Year), colour = Industry, fill = Industry,
-      position = "stack", geom = "area") +
-  labs(y = "Million Employees")
-```
-
-```{r plot2}
-#
-qplot(data = subset(data, Population %in% c("Primary", "Secondary", "Tertiary")),
-      y = value / 10^3, x = Year, colour = Population, fill = Population,
-      position = "stack", geom = "area") + 
-    scale_y_continuous(labels = comma) + labs(y = "Million")
-```
-
-## Changepoints
-
-The next example is based on online ratings of TV shows. The example was first coded at [Diffuse Prior][dp-geoscpt], and Andy at [Premier Soccer Stats][pss-geoscpt] have even coded it as an [interactive graph][pss-shiny] with [Shiny][shiny]. We'll start by scraping the data [from GEOS][tww-geos]. The series under scrutiny is Aaron Sorkin's _The West Wing_.
+This example is based on online ratings of TV shows. It was first coded at [Diffuse Prior][dp-geoscpt], and Andy at [Premier Soccer Stats][pss-geoscpt] have even coded it as an [interactive graph][pss-shiny] with [Shiny][shiny]. We'll start by scraping the data [from GEOS][tww-geos]. The series under scrutiny is Aaron Sorkin's _The West Wing_.
 
 [dp-geoscpt]: http://diffuseprior.wordpress.com/2013/04/30/kalkalash-pinpointing-the-moments-the-simpsons-became-less-cromulent/
 [pss-geoscpt]: http://www.premiersoccerstats.com/wordpress/?p=1380
@@ -105,8 +64,8 @@ data$season <- factor(data$season)
 
 The final plot uses 95% and 99% confidence intervals to visualize (some of the) uncertainty.
 
-```{r tww-plot}
-g <- qplot(data = data, x = X, y = mu, colour = season, geom = "point") + 
+```{r tww-plot-auto, fig.width = 12, fig.height = 9, tidy = FALSE}
+g = qplot(data = data, x = X, y = mu, colour = season, geom = "point") + 
   geom_linerange(aes(ymin = mu - 1.96*se, ymax = mu + 1.96*se), alpha = .5) +
   geom_linerange(aes(ymin = mu - 2.58*se, ymax = mu + 2.58*se), alpha = .5) +
   scale_colour_brewer("Season", palette = "Set1") +
@@ -118,7 +77,7 @@ g
 
 The plot would be more useful with average ratings per season, which are easy to retrieve with the `ddply()` function. The minimum and maximum episode numbers are also computed to be able to plot horizontal segments for each season. Since we saved the previous plot as a `ggplot2` object, adding the lines only requires to code the extra graphical element and add it on top of the saved elements.
 
-```{r tww-means}
+```{r tww-means-auto, fig.width = 12, fig.height = 9, tidy = FALSE}
 # Compute season means.
 means <- ddply(data, .(season), summarise, 
       mean = mean(mu), 
@@ -129,13 +88,23 @@ g + geom_segment(data = means,
                  aes(x = xmin, xend = xmax, y = mean, yend = mean))
 ```
 
-```{r tww-cpt}
+## Changepoints
+
+If your aim is to find abrupt variations in the series, use a changepoint algorithm, like the one below from the [`changepoint][cpt] library.
+
+[cpt]: http://cran.r-project.org/web/packages/changepoint/index.html
+
+```{r tww-cpt-auto, fig.width = 12, fig.height = 9, tidy = FALSE}
+# Compute changepoints with PELT algorithm.
 cpt <- cpt.mean(data$mu, method = 'PELT')
+# Extract results.
 seg <- data.frame(cpt = attr(cpt, "param.est"))
 seg$xmax <- attr(cpt, "cpts")
 seg$xmin <- c(0, seg$xmax[-length(seg$xmax)])
-
-g + geom_segment(data = seg, aes(x = xmin, xend = xmax, y = mean, yend = mean), color = "black")
+# Plot.
+g + geom_segment(data = seg, 
+                 aes(x = xmin, xend = xmax, y = mean, yend = mean), 
+                 color = "black")
 ```
 
 By the way, if you find a way to predict this kind of data, [let Netflix know][nfp] and [submit your work early][nfp-nyt].
@@ -145,32 +114,51 @@ By the way, if you find a way to predict this kind of data, [let Netflix know][n
 
 ## Smoothing: LOESS and cubic splines
 
-```{r libs}
-# Load MASS package (provides "rlm" function).
-library(MASS)
-# Load splines package (provides "ns" function).
-library(splines)
-```
+Let's now smooth the series. The base plots will all use the same data, to which we are going to overlay a trendline computed through different methods.
 
-```{r smoothers}
-g <- qplot(data = data, x = X, y = mu, alpha = I(0.5), geom = "line") + 
-  geom_hline(y = mean(data$mu), linetype = "dashed") +
+```{r smoothers-base, tidy = FALSE}
+# General plot function.
+g = qplot(data = data,
+          x = X,
+          y = mu,
+          alpha = I(0.5),
+          geom = "line") + 
   scale_x_continuous(breaks = seq(1, 156, 22)) +
   labs(y = "Mean rating", x = "Episode")
-
-g + geom_smooth(fill = "steelblue", se = FALSE) + aes(colour = season, y = c(0, diff(mu)))
-g + geom_smooth(method="rlm", formula = y ~ ns(x, 8))
 ```
 
-The mathematics of [smoothed splines](http://www.johnmarquess.com/?p=111) involve several methods of computation. When there is a lot of data, we fit local polynomials with `loess`. When there is less data, as with time series over a few decades, a generalized additive model (`gam`) provides a more robust smoother.
+The simplest ways to smooth the data is to use local polynomials, which we apply to the scores of each season, and then to their detrended values. The more complex smoothing method uses [splines][jm-splines] and is inspired by [Kieran Healy's code][kjh-guns] for state-by-state homicide trends in the USA and other OECD countries. It is used only in the last plot.
 
-Let's smooth the series using `ggplot2` to [make it easy](http://docs.ggplot2.org/current/stat_smooth.html). We build a x-y canvas that will plot each weapon type in a different color, and we get the axes and titles ready before plotting. We now add a smoothed curve to the plot canvas, using a [LOESS function][wiki-loess].
+[kjh-guns]: https://github.com/kjhealy/assault-deaths
+[jm-splines]: http://www.johnmarquess.com/?p=111
 
-A different smoother uses a [generalized additive model][wiki-gam] to plot the basic cubic spline of the series (see `?gam` and `?ns` for details). The general idea is to predict each data point of the series $x$ at $t_k$ from the vector of regressors $(t_0, t_1, t_2, ..., t_{k-2}, t_{k-1})$, i.e. from the past values of the series. The `MASS` library provides the `rlm` method, and the `splines` library provides the `ns()` function.
+```{r smoothers-auto, fig.width = 12, fig.height = 9, message = FALSE, tidy = FALSE}
+# LOESS smoother for each season.
+g + 
+  geom_smooth(se = FALSE) + 
+  geom_hline(y = mean(data$mu), linetype = "dashed") +
+  aes(colour = season)
+# LOESS smoother for the detrended values.
+g + 
+  geom_smooth(se = FALSE) + 
+  geom_hline(aes(y = mean(diff(mu))), linetype = "dashed") +
+  aes(colour = season, y = c(0, diff(mu)))
+# Cubic splines for the full series.
+g + 
+  geom_smooth(method = "rlm", se = FALSE, formula = y ~ ns(x, 8)) +
+  geom_hline(y = mean(data$mu), linetype = "dashed")
+```
 
-[wiki-loess]: https://en.wikipedia.org/wiki/Local_regression
-[wiki-gam]: https://en.wikipedia.org/wiki/Generalized_additive_model
+The information provided by the cubic splines is almost identical to what we learnt from the changepoints: the series has three periods, due to one drop in audience ratings.
 
-Note how the change in smoothing algorithm affects the aspect of the curve for handguns. On the same topic, see [Kieran Healy's plots and code](https://github.com/kjhealy/assault-deaths) on state-by-state trends and the United States vers other OECD countries.
+```{r splines-cpt-auto, fig.width = 12, fig.height = 9, message = FALSE, tidy = FALSE}
+# Cubic splines and changepoints.
+g + 
+  geom_smooth(method = "rlm", se = FALSE, formula = y ~ ns(x, 8)) +
+  geom_hline(y = mean(data$mu), linetype = "dashed") + 
+  geom_segment(data = seg, 
+               aes(x = xmin, xend = xmax, y = mean, yend = mean), 
+               color = "black")
+```
 
 > __Next__: [Practice](093_practice.html).

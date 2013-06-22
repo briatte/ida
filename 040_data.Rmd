@@ -3,6 +3,7 @@
 
 # 4. Basic data operators
 
+[gapminder]: http://factbased.blogspot.fr/2012/07/convenient-access-to-gapminder-datasets.html
 [ckan]: http://ckan.org/
 [cb]: http://colorbrewer2.org/
 [ct]: http://crantastic.org/
@@ -15,6 +16,7 @@
 [quandl]: http://www.quandl.com/
 [quandl-r]: http://www.quandl.com/help/packages/r
 [us-oa]: http://blogstats.wordpress.com/2013/05/10/managing-government-information-as-an-asset/
+[faostat]: http://cran.r-project.org/web/packages/FAOSTAT/
 
 Today's session will show how to open a variety of datasets from different online sources, and to make sure that you know how to convert and import data to prepare it for analysis. The next code block introduces a standard way to check that you have the right packages installed for this page's code: you will find identical blocks on every other course page.
 
@@ -29,13 +31,11 @@ packages <- lapply(packages, FUN = function(x) {
 })
 ```
 
-<!-- [my links](https://github.com/briatte/srqm/wiki/data) -->
-
 ## Getting data from within R
 
-A few years ago, the [Gapminder](http://factbased.blogspot.fr/2012/07/convenient-access-to-gapminder-datasets.html) initiative used elegant motion charts to call for the liberation of UN data. Such calls for open data have been met by limited but tangible initiatives to put data online, with specific attention to [open access][us-oa] formats and programming facilities (API).
+A few years ago, the [Gapminder][gapminder] initiative used elegant motion charts to call for the liberation of UN data. Such calls for open data have been met by limited but tangible initiatives to put data online, with specific attention to [open access][us-oa] formats and programming facilities (API).
 
-Today, there is a growing ecology of online data repositories and [data APIs for R][so-datR]: have a look, for instance, at [CKAN][ckan], at [Data Market][dm] and its [API][dm-api], or at [Quandl](http://www.quandl.com/) and its [R package][quandl-r], at [FAOSTAT](http://cran.r-project.org/web/packages/FAOSTAT/), at the [onlineData][ct-onlinedata] tag at [CRANtastic][ct]…
+Today, there is a growing ecology of online data repositories and [data APIs for R][so-datR]: have a look, for instance, at [CKAN][ckan], at [Data Market][dm] and its [API][dm-api], or at [Quandl][quandl] and its [R package][quandl-r], at [FAOSTAT][faostat], at the [onlineData][ct-onlinedata] tag at [CRANtastic][ct]…
 
 As a means of introduction, let's take a look at the [World Bank Indicators][wdi], using the [dedicated `WDI` package][gh-wdi]. The package comes with good documentation and the `WDIsearch()` function, which you can use to look for indicators straight from R. The example below will download [central government debt][wdi-cgd] in percent of gross domestic product for a few high income countries.
 

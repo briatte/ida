@@ -3,7 +3,9 @@
 
 # 9. Visualization in time: Time series
 
-Time series are made of observations that are repeated over time, such as the daily stock value of a company or the annual GDP growth rate of a country. It is a very common data format in demography, economics and social science in general. Large amounts of data are available as time series. Try services like [Quandl](http://www.quandl.com/) to find and plot series from many different sources.
+Time series are made of observations that are repeated over time, such as the daily stock value of a company or the annual GDP growth rate of a country. It is a very common data format in demography, economics and social science in general. Large amounts of data are available as time series. Try services like [Quandl][quandl] to find and plot series from many different sources.
+
+[quandl]: http://www.quandl.com/
 
 Let's start our session with some revision about opening and preparing data for analysis, today in time series format. The first example shows how to plot [party support in the United Kingdom since 1984](http://www.guardian.co.uk/news/datablog/2009/oct/21/icm-poll-data-labour-conservatives) using ICM polling data, as _The Guardian_ did a few years back. It uses a mix of old and new packages.
 
@@ -20,7 +22,10 @@ packages <- lapply(packages, FUN = function(x) {
 
 ## Data preparation
 
-The data source is imported [from *The Guardian Data Blog*](http://www.guardian.co.uk/news/datablog/2009/oct/21/icm-poll-data-labour-conservatives#data) as a CSV spreadsheet. The download and import technique below was previously introduced in [Session 4.1](041_dataio.html). The first step consists in assigning data targets: the one from which we import, and the one to which we save the data. 
+The data source is imported [from *The Guardian Data Blog*][guardian-icm] as a CSV spreadsheet. The download and import technique below was previously introduced in [Session 4.1][041]. The first step consists in assigning data targets: the one from which we import, and the one to which we save the data. 
+
+[guardian-icm]: http://www.guardian.co.uk/news/datablog/2009/oct/21/icm-poll-data-labour-conservatives#data
+[041]: 041_dataio.html
 
 ```{r icm-sources}
 # Target data link.
@@ -77,7 +82,9 @@ icm$Date <- dmy(icm$End.of.fieldwork..election.date)
 str(icm)
 ```
 
-This process works like the `as.Date()` base function shown in [Session 4.2](042_reshaping.html), and for which Teetor, ch. 7.9-7.11, is a good starting point. The `lubridate` package is a convenience tool that deals with date formats in a more flexible way. Extracting the year from the `Date` variable created above, for instance, can be done effortlessly, just as any other form of date extraction:
+This process works like the `as.Date()` base function shown in [Session 4.2][042], and for which Teetor, ch. 7.9-7.11, is a good starting point. The `lubridate` package is a convenience tool that deals with date formats in a more flexible way. Extracting the year from the `Date` variable created above, for instance, can be done effortlessly, just as any other form of date extraction:
+
+[042]: 042_reshaping.html
 
 ```{r icm-year}
 # List polling years.
@@ -85,7 +92,7 @@ table(year(icm$Date))
 # List general election years.
 table(year(icm$Date[icm$GE]))
 # List general election months.
-table(month(icm$Date[icm$GE], label = TRUE))
+table(month(icm$Date[icm$GE]))
 ```
 
 Our final step is to remove unused information from the data by selecting the `date`, `ge` and voting intentions columns to form the finalized `icm` dataset, which is them reshape to long format in order to write one row of data for each political party. A few missing values that correspond to undated information at the end of the series are removed from the data.

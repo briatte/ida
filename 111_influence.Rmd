@@ -27,7 +27,7 @@ For the sake of software consistency, we will run everything in R, knowing that 
 ```{r ggnet-load, message = FALSE}
 # Load ggnet function.
 code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-source_url(code, prompt = FALSE)
+downloader::source_url(code, prompt = FALSE)
 ```
 
 [gh-ggnet]: https://github.com/briatte/ggnet
@@ -57,8 +57,8 @@ ggnet.data = function(file) {
   return(data)
 }
 # Get French MPs on Twitter data.
-ids = ggnet.data("nodes.txt")
-df  = ggnet.data("network.txt")
+ids <- ggnet.data("nodes.txt")
+df  <- ggnet.data("network.txt")
 # Convert it to a network object.
 net = network(df)
 ```
@@ -92,10 +92,10 @@ The nodes of the network are MPs with Twitter accounts, and the network is forme
 
 [gh-ggnet-functions]: https://github.com/briatte/ggnet/blob/master/functions.R
 
-```{r ggnet-exploration, message = FALSE}
+```{r ggnet-exploration, eval = FALSE}
 # Load functions.
 code = "https://raw.github.com/briatte/ggnet/master/functions.R"
-source_url(code, prompt = FALSE)
+downloader::source_url(code, prompt = FALSE)
 # A few simple examples.
 x = who.follows(df, "nk_m")
 y = who.is.followed.by(df, "JacquesBompard")

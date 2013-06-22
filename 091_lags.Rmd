@@ -12,9 +12,20 @@ This observation is applicable in many different contexts with relatively slow-m
 
 This form of temporal dependence is called autocorrelation, or serial correlation, in the context of time series. They can be shown in specific plot arrangements, like correlograms, or expressed through notions like marginal change (which mathematically relies on derivatives), lagged values, or detrended series. We will sample a few of these methods below.
 
-## ...
+```{r packages, message=FALSE, warning=FALSE}
+# Load packages.
+packages <- c("downloader", "ggplot2", "reshape")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
 
-The same principle can be used to get data from [sources like Twitter][sw-ms]. An interesting time series can be created [from a Twitter account logging Beijing pollution data][bc-tap-1]: there was a [pollution peak][bc-tap-2] in January 2013, and the city [looked like][bj] *Blade Runner* with [more fog][ss]; staying in Beijing then amounted to [smoking 1.5 to 3 cigarettes a day][ss-smok].
+## A time series of air pollution in Beijing
+
+We used a [Twitter source][sw-ms] that [logs pollution data][bc-tap-1] in Beijing, where there was a [pollution peak][bc-tap-2] in January 2013 (the city [looked like][bj] *Blade Runner* with [more fog][ss], and staying in Beijing then amounted to [smoking 1.5 to 3 cigarettes a day][ss-smok]).
 
 [bc-tap-1]: http://brainchronicle.blogspot.co.uk/2012/07/twitter-analysis-of-air-pollution-in.html
 [bc-tap-2]: http://brainchronicle.blogspot.fr/2013/01/air-quality-analysis-from-beijing.html
@@ -27,22 +38,26 @@ Unfortunately, the Twitter API is now less open than it used to be, so we will n
 [beijing-scraper]: 9_twitter.R
 [aqi]: http://airnow.gov/index.cfm?action=aqibasics.aqi
 
-```{r twitter-pollution}
+```{r twitter-pollution-auto, fig.width = 12, fig.height = 9, message = FALSE, tidy = FALSE}
 # Target data source.
 link = "https://raw.github.com/briatte/ida/master/data/beijing.aqi.2013.txt"
 file = "data/beijing.aqi.2013.txt"
-if(!file.exists(file)) download("", file)
+if(!file.exists(file)) download(link, file)
 # Read CSV file.
 bp <- read.csv(file, stringsAsFactors = FALSE)
 # Check result.
 head(bp)
+# Convert date.
 bp$time <- strptime(bp$time, format = "%Y-%m-%d %T")
+# Plot air pollution.
 ggplot(data = bp, aes(x = time, y = PM)) +
   geom_line(color = "gray80") +
   geom_point(color = "blue", alpha = .5) +
   geom_smooth(fill = "lightblue") +
   labs(x = NULL, y = "Fine particles (PM2.5) 24hr avg")
 ```
+
+In this example, the main interest is the time series formed by the repeated measures of a single variable. Teetor, ch. 14, offers a quick introduction to the topic, using the dedicated `zoo` and `xts` packages. Our introduction will just show how to detrend and lag the series with base functions.
 
 There's plenty of other ways to look at the data. Make sure to plot a smoothed trend. I stopped coding at the one below.
 
@@ -59,59 +74,75 @@ fig <- fig + geom_smooth(method="rlm", formula = y ~ ns(x, 2), alpha = .25)
 fig + ylab("Homicide rate per 100,000 population") + xlab("Year")
 ```
 
-## Lagging a time series
+## Detrending a time series
 
-Let's examine a simple example where $t$ (time) varies from 2001 to 2005, and $x_t = {1, 2, ..., 5}$. This series can be turned into a time series object with many different packages. One of them is called `zoo`: it creates a single object made of core data, and a time index, both of which are accessible through dedicated functions.
+_Differencing_ a time series is to subtract $x_{t-1}$ to all its values $x_{t}$, that is, obtain the net difference between two values separated by one time period. This is equivalent to asking for the marginal change in $x$ at every point $t$ of the curve $x(t)$. The `diff` function offers a very convenient way to obtain lagged differences:
 
-```{r ts}
-# Create year data.
-df <- data.frame(t = 2001:2005, x = (1:5)^2)
-# Check result.
-str(df)
-# Create zoo object.
-df <- with(df, zoo(x, t))
-# Check result.
-str(df)
-# Extract core data.
-coredata(df)
-# Extract time index.
-index(df)
+```{r ts-diff, fig.width = 12, fig.height = 9, warning = FALSE, tidy = FALSE}
+# Plot a differenced time series.
+qplot(x = bp$time[-1], 
+      y = diff(bp$PM), 
+      geom = "line") + 
+  labs(x = "t")
 ```
 
-Teetor, ch. 14, offers a quick introduction to the topic of time series from that perspective, using the `zoo` and `xts` packages. The `lag()` function, for example, is convenient to effortlessly obtain the lagged values $x_{-k}, ..., x_{t-1}, x_{t+1}, x_{t+k}$ from $x_{t}$ in a time series object. In the examples below, we show the `x` sequence lagged at $k = (-2, -1, +1, +2)$:
+Similarly, if you lag the series by $k = 1, 2, ..., n$ and then divide it by its original values, you will get an indication of how frequent the pollution spikes are within the overall trend. This is particularly useful to detect seasonal patterns, like weekly spikes and drops.
 
-```{r ts-lag}
-# Original time series.
-df
-# Lagged at k = -2: shifts series right by two years.
-lag(df, -2, na = TRUE)
-# Lagged at k = -1: shifts series right by one year.
-lag(df, -1, na = TRUE)
-# Lagged at k = +1: shifts series left by one year.
-lag(df, 1, na = TRUE)
-# Lagged at k = +2: shifts series left by two years.
-lag(df, 2, na = TRUE)
+```{r ts-lags, fig.width = 12, fig.height = 9, warning = FALSE, tidy = FALSE}
+# Set vector of lagged values.
+d = 1:9
+# Create lags for one to eight days.
+lags = sapply(d, FUN = function(i) { c(bp$PM[-1:-i], rep(NA, i)) } )
+# Divide lagged values by series.
+lags = lags / bp$PM
+# Create lags dataset.
+lags = data.frame(bp$time, lags)
+# Fix variables names.
+names(lags) = c("t", d)
+# Melt data over days.
+lags = melt(lags, id = "t", variable = "lag")
+# Plot lagged dataset.
+qplot(data = lags,
+      x = t,
+      y = value,
+      colour = lag,
+      geom = "line") + 
+  labs(x = "t") + 
+  scale_colour_brewer() + 
+  theme(legend.position = "none")
 ```
 
-When your interest is in _differencing_ a time series, you want to subtract $x_{t-1}$ to all its values $x_{t}$, that is, obtain the net difference between two values separated by one time period. This is equivalent to asking for the marginal change in $x$ at every point $t$ of the curve $x(t)$. The `diff()` function offers a very convenient way to obtain lagged differences:
+Lagging a series is useful to control for autocorrelation, i.e. the series of correlation coefficients $\rho_k$ for $k = 1, 2, ..., k$ lags. This is done by regressing the data onto its time index, for which Teetor, ch. 14.13-14.21, provides a fuller treatment. We will content ourselves with autocorrelation function plots, drawn with `ggplot2`:
 
-```{r ts-diff}
-# Recall the time series and lagged values.
-t(cbind(df, lag(df, -1)))
-# Compute the successive differences.
-diff(df)
-# Show differences with both time series.
-t(cbind(df, lag(df, -1), diff(df)))
+```{r ts-gglag, tidy = FALSE}
+# Correlogram function.
+gglag <- function(x, method = "acf") {
+  data = do.call(method, list(x, plot = FALSE))
+  qplot(y = 0,
+        yend  = data$acf,
+        size  = data$acf,
+        color = data$acf,
+        x     = data$lag,
+        xend  = data$lag,
+        geom  = "segment") +
+  scale_y_continuous("", lim = c(ifelse(method == "acf", 0, -1), 1)) +
+  scale_size(toupper(method)) +
+  scale_color_gradient2("",
+                        low = "blue", 
+                        mid = "white", 
+                        high = "red", 
+                        midpoint = 0) +
+  labs(x = "Number of lags")
+}
 ```
 
-Note that the rate of change is mathematically equivalent to taking the ratio of the derivative by the function: the relative rate of change is $\frac{f'(x)}{f(x)}$, and the percentage rate of change is $100 \cdot \frac{f'(x)}{f(x)}$. What we now want to compute is the actual change, using the differences of each series divided by $x_{t-1}$.
+This function will draw the correlograms (plots of correlation coefficients) for the autocorrelation function (ACF) and partial autocorrelation function (PACF) of the time series. These indicate that a small amount of lags (probably just the first two) are relevant to detrend the series before analysis.
 
-## Detrending
-
-The previous plots show how a time series at $x_{t}$ can be lagged by taking $x_{t-1}$ into account. The final step is to take many lags into account to control for autocorrelation, i.e. the full series of correlations $\rho_k$ with $k = 1, 2, ..., k$ lags, in order to detrend the data. This is done by regressing the data onto its time index, for which an example follows.
-
-...
-
-Teetor, ch. 14.13-14.21, further explains how to model a time series from its past values, using plots and elements similar to those shown here. There is also a great book and R package by [Shumway and Stoffer](http://www.stat.pitt.edu/stoffer/tsa3/), which goes into greater length about linear time series (and the nonlinear book is forthcoming this year).
+```{r acf-plots, fig.width = 12, fig.height = 9, warning = FALSE}
+# Plot autocorrelation function.
+gglag(bp$PM, "acf")
+# Plot partial autocorrelation function.
+gglag(bp$PM, "pacf")
+```
 
 > __Next__: [Smoothing](092_smoothing.html).

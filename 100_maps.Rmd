@@ -91,7 +91,8 @@ You can bypass the function's colors by overriding its `ggplot2` fill scale. The
 
 ```{r qog-map-example-2-auto, fig.width = 12, fig.height = 6.6, tidy = FALSE, message = FALSE}
 # Get Crayola colors from a personal copy.
-source_url("https://raw.github.com/gist/5813759", prompt = FALSE)
+url = "https://raw.github.com/gist/5813759"
+source_url(url, prompt = FALSE)
 # Plot with Crayola color gradient.
 qog.map("wdi_the") + 
   labs(title = "Total health expenditure (% of GDP) in 2009") +
@@ -103,4 +104,4 @@ qog.map("wdi_the") +
                        na.value = crayola["Gray"])
 ```
 
-> __Next__: [Choropleth maps](101_choropleth.html).
+> __Next__: [Geocoding](101_geocoding.html).

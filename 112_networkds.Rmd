@@ -8,7 +8,7 @@ This section brings a bit of text mining into network analysis, as we will turn 
 [assange]: http://wikileaks.org/Transcript-of-Julian-Assange.html
 [ynada]: http://blog.ynada.com/303
 
-```{r packages, message=FALSE}
+```{r packages, message = FALSE, warning = FALSE}
 packages <- c("downloader", "ggplot2", "network", "tm")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
@@ -40,17 +40,17 @@ build.corpus <- function(x, skip = 0) {
   return(network(net))
 }
 # Example data.
-net = build.corpus("data/assange.txt")
+net <- build.corpus("data/assange.txt")
 ```
 
 The word network is plotted as a very sparse network, trimmed to associations of non-trivial words that appear at least three times in the speech. Trivial words are removed by matching them to the list of English stopwords found in the `tm` package. We again use the `ggnet` function, but [have a look][rdm-igraph] at the `igraph` package for an alternative.
 
 [rdm-igraph]: http://rdatamining.wordpress.com/2012/05/17/an-example-of-social-network-analysis-with-r-using-package-igraph/
 
-```{r plot-assange-auto, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE, cache = TRUE, warning = FALSE}
+```{r plot-assange-auto, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE, warning = FALSE}
 # Load ggnet function.
 code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-source_url(code, prompt = FALSE)
+downloader::source_url(code, prompt = FALSE)
 # Plot with ggnet.
 ggnet(net, weight = "degree", subset = 3,
       alpha = 1, segment.color = "grey", label = TRUE, vjust = - 2,
@@ -62,14 +62,17 @@ Since the corpus was created out of a simple function call, we can now find any 
 [gh-doctorow]: https://github.com/jwise/28c3-doctorow/blob/master/transcript.md
 [bo]: http://librarian.net/dnc/speeches/obama.txt
 
-```{r plot-obama-auto, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE, cache = TRUE, warning = FALSE}
+```{r plot-obama-auto, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE, warning = FALSE}
 # Target locations
 link = "https://raw.github.com/jwise/28c3-doctorow/master/transcript.md"
 file = "data/doctorow.txt"
 # Download speech.
 if(!file.exists(file)) download(link, file)
 # Build corpus.
-net = build.corpus(file, skip = 37)
+net <- build.corpus(file, skip = 37)
+# Load ggnet function.
+code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
+downloader::source_url(code, prompt = FALSE)
 # Plot with ggnet.
 ggnet(net, weight = "degree", subset = 3,
       alpha = 1, segment.color = "grey", label = TRUE, vjust = - 2,
