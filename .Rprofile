@@ -41,7 +41,7 @@ if("ggplot2" %in% installed.packages()[,1]) {
 ## ida.build(): knit the course from R Markdown to HTML
 ##
 
-ida.build <- function(start = 5, end = 44, backup = TRUE, html = TRUE) {
+ida.build <- function(start = 0, end = 0, backup = TRUE, html = TRUE) {
   require(knitr)
   
   # knitr setup
@@ -70,6 +70,7 @@ ida.build <- function(start = 5, end = 44, backup = TRUE, html = TRUE) {
   
   # get files
   all <- dir(pattern = "[index|0-9]+(.*).Rmd")
+  if(end == 0) end = length(all)
 
   # run course
   lapply(all[start:end], FUN = function(x) {
@@ -82,13 +83,19 @@ ida.build <- function(start = 5, end = 44, backup = TRUE, html = TRUE) {
 
   if(html) {
     # collect HTML
-    html <- dir(pattern="(index|[0-9]{3,}_\\w{1,}).html|style.css")
+    html <- dir(pattern = "(index|[0-9]{3,}_\\w{1,}).html|style.css")
     # collect code
-    code <- dir("code", pattern="([0-9]{1,}_\\w+).R$")
-    
+    code <- dir("code", pattern = "([0-9]{1,}_\\w+).R$")
+    # 
     # copy to website
     file.copy(html, path, overwrite = TRUE)
-    if(length(code)) file.copy(paste0("code/", code), path, overwrite = TRUE)
+    if(length(code)) {
+      code = paste0("code/", code)
+      # drop empty files
+      code = code[-which(file.info(code)$size == 1)]
+      # copy other scripts
+      file.copy(, path, overwrite = TRUE)
+    }
     
     # clean up
     file.remove(gsub("Rmd", "md", all))
