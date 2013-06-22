@@ -94,7 +94,7 @@ ida.build <- function(start = 0, end = 0, backup = TRUE, html = TRUE) {
       # drop empty files
       code = code[-which(file.info(code)$size == 1)]
       # copy other scripts
-      file.copy(, path, overwrite = TRUE)
+      file.copy(code, path, overwrite = TRUE)
     }
     
     # clean up
