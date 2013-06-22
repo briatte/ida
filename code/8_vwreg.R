@@ -1,19 +1,19 @@
-# Copyright 2012 Felix Schönbrodt [minor edits to ggplot2 syntax]
+# Copyright 2012 Felix Schönbrodt
 # All rights reserved.
-# 
+#
 # FreeBSD License
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-#       
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-#       
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER `AS IS'' AND ANY
 # EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -25,39 +25,47 @@
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# 
+#
 # The views and conclusions contained in the software and documentation
 # are those of the authors and should not be interpreted as representing
 # official policies, either expressed or implied, of the copyright
 # holder.
 
+# Version history:
+# 0.1: original code
+# 0.1.1: changed license to FreeBSD; re-established compability to ggplot2 (new version 0.9.2)
+
 ## Visually weighted regression / Watercolor plots
 ## Idea: Solomon Hsiang, with additional ideas from many blog commenters
 
-# Depends on following packages: ggplot2 (>= 0.9.2), RColorBrewer, plyr, reshape2.
 
 # B = number bootstrapped smoothers
 # shade: plot the shaded confidence region?
 # shade.alpha: should the CI shading fade out at the edges? (by reducing alpha; 0 = no alpha decrease, 0.1 = medium alpha decrease, 0.5 = strong alpha decrease)
 # spag: plot spaghetti lines?
+# spag.color: color of spaghetti lines
 # mweight: should the median smoother be visually weighted?
 # show.lm: should the linear regresison line be plotted?
 # show.CI: should the 95% CI limits be plotted?
 # show.median: should the median smoother be plotted?
 # median.col: color of the median smoother
+# shape: shape of points
 # method: the fitting function for the spaghettis; default: loess
 # bw = TRUE: define a default b&w-palette
 # slices: number of slices in x and y direction for the shaded region. Higher numbers make a smoother plot, but takes longer to draw. I wouldn'T go beyond 500
 # palette: provide a custom color palette for the watercolors
 # ylim: restrict range of the watercoloring
 # quantize: either "continuous", or "SD". In the latter case, we get three color regions for 1, 2, and 3 SD (an idea of John Mashey)
+# add: if add == FALSE, a new ggplot is returned. If add == TRUE, only the elements are returned, which can be added to an existing ggplot (with the '+' operator)
 # ...: further parameters passed to the fitting function, in the case of loess, for example, "span = .9", or "family = 'symmetric'"
-vwReg <- function(formula, data, title="", B=1000, shade=TRUE, shade.alpha=.1, spag=FALSE, mweight=TRUE, show.lm=FALSE, show.median = TRUE, median.col = "white", show.CI=FALSE, method=loess, bw=FALSE, slices=200, palette=colorRampPalette(c("#FFEDA0", "#DD0000"), bias=2)(20), ylim=NULL, quantize = "continuous",  ...) {
+vwReg <- function(formula, data, title="", B=1000, shade=TRUE, shade.alpha=.1, spag=FALSE, spag.color="darkblue", mweight=TRUE, show.lm=FALSE, show.median = TRUE, median.col = "white", shape = 21, show.CI=FALSE, method=loess, bw=FALSE, slices=200, palette=colorRampPalette(c("#FFEDA0", "#DD0000"), bias=2)(20), ylim=NULL, quantize = "continuous",  add=FALSE, ...) {
   IV <- all.vars(formula)[2]
   DV <- all.vars(formula)[1]
   data <- na.omit(data[order(data[, IV]), c(IV, DV)])
   
-  if (bw == TRUE) palette <- colorRampPalette(c("#EEEEEE", "#999999", "#333333"), bias=2)(20)
+  if (bw == TRUE) {
+    palette <- colorRampPalette(c("#EEEEEE", "#999999", "#333333"), bias=2)(20)
+  }
   
   print("Computing boostrapped smoothers ...")
   newx <- data.frame(seq(min(data[, IV]), max(data[, IV]), length=slices))
@@ -97,8 +105,14 @@ vwReg <- function(formula, data, title="", B=1000, shade=TRUE, shade.alpha=.1, s
   library(ggplot2)
   library(RColorBrewer)
   
-  p1 <- ggplot(data, aes_string(x=IV, y=DV)) + theme_bw()
+  # Construct ggplot
+  # All plot elements are constructed as a list, so they can be added to an existing ggplot
   
+  # if add == FALSE: provide the basic ggplot object
+  p0 <- ggplot(data, aes_string(x=IV, y=DV)) ##edit: + theme_bw()
+  
+  # initialize elements with NULL (if they are defined, they are overwritten with something meaningful)
+  gg.tiles <- gg.poly <- gg.spag <- gg.median <- gg.CI1 <- gg.CI2 <- gg.lm <- gg.points <- gg.title <- NULL
   
   if (shade == TRUE) {
     quantize <- match.arg(quantize, c("continuous", "SD"))
@@ -122,11 +136,11 @@ vwReg <- function(formula, data, title="", B=1000, shade=TRUE, shade.alpha=.1, s
       
       maxdens <- max(d2$dens)
       mindens <- min(d2$dens)
-      d2$dens.scaled <- (d2$dens - mindens)/maxdens	
+      d2$dens.scaled <- (d2$dens - mindens)/maxdens
       
       ## Tile approach
       d2$alpha.factor <- d2$dens.scaled^shade.alpha
-      p1 <- p1 + geom_tile(data=d2, aes(x=x, y=y, fill=dens.scaled, alpha=alpha.factor)) + scale_fill_gradientn("dens.scaled", colours=palette) + scale_alpha_continuous(range=c(0.001, 1))
+      gg.tiles <-  list(geom_tile(data=d2, aes(x=x, y=y, fill=dens.scaled, alpha=alpha.factor)), scale_fill_gradientn("dens.scaled", colours=palette), scale_alpha_continuous(range=c(0.001, 1)))
     }
     if (quantize == "SD") {
       ## Polygon approach
@@ -145,7 +159,7 @@ vwReg <- function(formula, data, title="", B=1000, shade=TRUE, shade.alpha=.1, s
         d3 <- rbind(d3, seg)
       }
       
-      p1 <- p1 + geom_polygon(data=d3, aes(x=x, y=value, color=NULL, fill=col, group=group)) + scale_fill_gradientn("dens.scaled", colours=palette, values=seq(-1, 3, 1))
+      gg.poly <-  list(geom_polygon(data=d3, aes(x=x, y=value, color=NULL, fill=col, group=group)), scale_fill_gradientn("dens.scaled", colours=palette, values=seq(-1, 3, 1)))
     }
   }
   
@@ -154,30 +168,38 @@ vwReg <- function(formula, data, title="", B=1000, shade=TRUE, shade.alpha=.1, s
   
   
   if (spag==TRUE) {
-    p1 <- p1 + geom_path(data=b2, aes(x=x, y=value, group=B), size=0.7, alpha=10/B, color="darkblue")
+    gg.spag <-  geom_path(data=b2, aes(x=x, y=value, group=B), size=0.7, alpha=10/B, color=spag.color)
   }
   
   if (show.median == TRUE) {
     if (mweight == TRUE) {
-      p1 <- p1 + geom_path(data=CI.boot, aes(x=x, y=M, alpha=w3^3), size=.6, linejoin="mitre", color=median.col)
+      gg.median <-  geom_path(data=CI.boot, aes(x=x, y=M, alpha=w3^3), size=.6, linejoin="mitre", color=median.col)
     } else {
-      p1 <- p1 + geom_path(data=CI.boot, aes(x=x, y=M), size = 0.6, linejoin="mitre", color=median.col)
+      gg.median <-  geom_path(data=CI.boot, aes(x=x, y=M), size = 0.6, linejoin="mitre", color=median.col)
     }
   }
   
   # Confidence limits
   if (show.CI == TRUE) {
-    p1 <- p1 + geom_path(data=CI.boot, aes(x=x, y=UL, group=B), size=1, color="red")
-    p1 <- p1 + geom_path(data=CI.boot, aes(x=x, y=LL, group=B), size=1, color="red")
+    gg.CI1 <- geom_path(data=CI.boot, aes(x=x, y=UL), size=1, color="red")
+    gg.CI2 <- geom_path(data=CI.boot, aes(x=x, y=LL), size=1, color="red")
   }
   
   # plain linear regression line
-  if (show.lm==TRUE) {p1 <- p1 + geom_smooth(method="lm", color="darkgreen", se=FALSE)}
+  if (show.lm==TRUE) {gg.lm <- geom_smooth(method="lm", color="darkgreen", se=FALSE)}
   
-  p1 <- p1 + geom_point(size=1, shape=21, fill="white", color="black")		
+  gg.points <- geom_point(data=data, aes_string(x=IV, y=DV), size=1, shape=shape, fill="white", color="black")
   
   if (title != "") {
-    p1 <- p1 + labs(title=title)
+    gg.title <- theme(title=title)
   }
-   p1  + theme(legend.position="none")
+  
+  
+  gg.elements <- list(gg.tiles, gg.poly, gg.spag, gg.median, gg.CI1, gg.CI2, gg.lm, gg.points, gg.title, theme(legend.position="none"))
+  
+  if (add == FALSE) {
+    return(p0 + gg.elements)
+  } else {
+    return(gg.elements)
+  }
 }
