@@ -3,48 +3,102 @@
 
 # 8.2. Ordinary least squares
 
-[kenworthy]: http://lanekenworthy.net/2008/02/03/bread-peace-and-the-2008-election/
-
-Linear relationships can be turned into models that provide an estimation of the marginal rate at which a given dependent variable $Y$ changes in function of one or more independent variables $X_1, X_2, ..., X_k$, called the predictors. 
-
-Likewise, the model explored below is unlikely to provide valid forecasts of the fertility rate, but is choice of predictors provides analytical leverage about the effect of literacy and family planning.
-
-<!--
-Some of the general ideas that emerge at that stage are:
-
-1. The logic of "ordinary least squares" makes visual as well as statistical sense. The visual idea of OLS is that we are trying to find a way to get a straight line that goes through the data points by coming as close to possible to all of them on average.
-2. The extended logic behind that is to make all data points on a scatterplot form a horizontal straight line by using a mathematical transformation of the *y*-axis into a function of the *x*-axis. That is basically what a model does from a visual perspective.
-3. Finally, the logic of minimizing the distance between the line and the data points implies that the true result of a model is never the model on its own, but the combination of the line and the data points.
-
-So you can see that a lot about statistical modelling can be translated into visual terms without deviating too much from canonical terminology. Let's take a look at R code to run linear regression models. -->
-
-## Visually weighted regression
-
-Multiple linear regression can be used to [model presidential approval][kenworthy] as a function of economic performance and military casualties. Douglas Hibb's model, which is better known as the "[Bread and Peace][hibbs]" model, performed well in previous elections but badly in the presidential election of 2012. Its explanatory value should not be affected by these considerations, so let's run the model.
-
-```{r hibbs-model, message=FALSE}
+```{r packages, message = FALSE, warning = FALSE}
 # Load packages.
-require(downloader)
-require(foreign)
-data = "data/hibbs.2012.txt"
+packages <- c("downloader", "foreign", "ggplot2", "RColorBrewer", "reshape")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
+[kenworthy]: http://lanekenworthy.net/2008/02/03/bread-peace-and-the-2008-election/
+[tmc-bartels]: http://themonkeycage.org/2013/01/08/obama-toes-the-line/
+
+Let's try out multiple linear regression by [modeling presidential approval][kenworthy] as a function of economic performance in the last quarters before the election. The model is based on data provided by Larry Bartels (thanks!), and we will start by replicating [his plot][tmc-bartels] of the main variables of interest.
+
+```{r bartels-data}
+# Target locations.
+link = "https://raw.github.com/briatte/ida/master/data/bartels.presvote.4812.txt"
+file = "data/bartels.presvote.4812.txt"
 # Download the data.
-if(!file.exists(data)) {
-  file = "data/hibbs.2012.dta"
-	url = "http://www.douglas-hibbs.com/HibbsArticles/HIBBS-OBAMA-FORECAST-27July2012-WEBPOST.dta"
-  if(!file.exists(file)) download(url, file, mode = "wb")
-  write.csv(read.dta(file), data)
-}
+if(!file.exists(file)) download(link, file, mode = "wb")
 # Load the data.
-hibbs <- read.csv(data, stringsAsFactors = FALSE)
-# Subset to election quarters.
-hibbs <- subset(hibbs, !is.na(presvote))
+bartels <- read.csv(file, stringsAsFactors = FALSE)
 ```
 
-```{r vwreg1, eval=FALSE, echo=FALSE, results='hide'}
-source("code/vwreg.r")
+Bartel's observation is that the vote margin of the incumbent's party is related to income growth, measured as the variation in disposable income per capita in the last quarters of a presidential term. The relationship is visually striking, and a simple linear regression model confirms that higher income growth predicts a higher vote margin to the incumbent.
+
+```{r bartels-model-1}
+# Scatterplot.
+ggplot(bartels, aes(inc1415, incm, label = year)) +
+  geom_smooth(method = "lm") +
+  geom_text()
+# Simple OLS.
+m1 = lm(incm ~ inc1415, data = bartels)
+# Results.
+summary(m1)
 ```
 
-```{r vwreg2, eval=FALSE, echo=FALSE, results='hide'}
+Bartel's next step is to introduce presidential tenure into the regression equation, in order to control income growth by the number of years spent by the incumbent in power. The regression equation takes the form \(\hat Y = \beta_1 X_1 + \beta_2 X_2 + \epsilon\), where the \(\beta\) coefficients are partial derivatives to \(y\), the dependent variable.
+
+```{r bartels-model-2}
+m2 = lm(incm ~ inc1415 + I(tenure), data = bartels)
+summary(m2)
+```
+
+The coefficient that this model produces for the tenure variable indicates that tenure is a penalizer of approximately `r round(coef(m2)[3], 2)` in the equation (as noted by Bartels). Adjusting to tenure produces more accurate prediction of the dependent variable, as is observable by looking at the distribution of the residuals in each model:
+
+```{r bartels-models-plot, fig.width = 12, fig.height = 9}
+# Extract model results.
+m = rbind.fill(lapply(list(m1, m2), function(x) {
+  model = as.character(x$call)[2]
+  data.frame(model, 
+             year = bartels$year,
+             residuals = residuals(x), 
+             yhat = fitted.values(x))
+  }))
+# Histogram of the residuals.
+qplot(data = m, x = residuals, color = model, geom = "density") +
+  scale_color_brewer("Models:", type = "qual", palette = "Set1") +
+  theme(legend.position = "top")
+```
+
+Another way to look at the same phenomenon is to send the regression equation parameters of the models against resampled data that randomly excludes a fraction of the data points. The code of the visually weighted regression function that we use to bootstrap the estimated coefficients is adapted from a function by [Felix Schönbrodt][fs-vwreg].
+
+[fs-vwreg]: http://www.nicebread.de/visually-weighted-watercolor-plots-new-variants-please-vote/
+
+```{r bartels-vwreg, results = 'hide', message = FALSE}
+# Get vwReg function.
+source("code/8_vwreg.r")
+# Get color palette.
+palette = brewer.pal(9, "RdYlGn")
+# Code plot builder.
+ggfit <- function(x) {
+  bartels$yhat = fitted.values(x)
+  g = vwReg(incm ~ yhat, bartels, method = lm, palette = palette) + 
+    geom_text(label = bartels$year)
+  g + labs(y = "Incumbent Party Margin")
+}
+# Bootstrapped fitted values.
+g1 = ggfit(m1)
+g2 = ggfit(m2)
+```
+
+The final plots use a color gradient to show what happens to the linear fit of the models when some data are retrenched from the sample: with larger standard errors, the confidence intervals of the trend grow to shown large margins of uncertainty. The robust segment of the model is shown in green tint.
+
+```{r bartels-vwreg-auto, fig.width = 12, fig.height = 9}
+# Plot incumbent margin v. income growth.
+g1 + labs(x = "Income Growth")
+# Plot incumbent margin v. income growth, with tenure adjustment.
+g2 + labs(x = "Income Growth, tenure-adjusted")
+```
+
+This type of visualization is useful to find ways to predict nonlinear relationships. The exame below shows how to plot the worldwide fertility rate against average female education, while controlling for a quadratic effect in their relationship. The ANOVA test serves to compare the error terms of the models.
+
+```{r qog-vwreg, results = 'hide', cache = TRUE}
 # Download Quality of Government Standard dataset.
 link = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
 file = "data/qog.cs.dta"
@@ -55,10 +109,37 @@ if(!file.exists(data)) {
 }
 # Read local copy.
 qog <- read.csv(data, stringsAsFactors = FALSE)
+qog = na.omit(with(qog, data.frame(ccodealp, wdi_fr, bl_asy25f)))
+# Regression models.
+m1 = lm(wdi_fr ~ bl_asy25f, qog)
+m2 = lm(wdi_fr ~ bl_asy25f + I(bl_asy25f^2), qog)
+# ANOVA fit test.
+anova(m1, m2)
+```
 
-p1 <- vwReg(wdi_fr ~ bl_asyf25 + I(bl_asyf25^2), qog, method=lm)
+The plot is, again, produced by the `vwreg` function.
 
-p1 + ylab("Fertility rate") + xlab("Average education years among 25+ year-old females")
+```{r qog-vwreg-ggfit, results = 'hide'}
+# Code plot builder.
+ggfit = function(x, ...) {
+  vwReg(formula(x), data = qog, method = lm, spag = TRUE, shade = FALSE,
+        slices = 50, ...)
+  }
+# Visually weighted regression of linear model, without and with quadratic term.
+p1 = ggfit(m1, spag.color = palette[1])
+p2 = ggfit(m2, spag.color = palette[9], add = TRUE)
+```
+
+The final plot shows the amount of correction produced by the quadratic term.
+
+```{r qog-vwreg-plot-auto, fig.width = 12, fig.height = 9}
+# Construct plot for the regression results.
+p1 + p2 + geom_point() +
+  labs(y = "Fertility rate (number of births per woman)",
+       x = "Average education years among 25+ year-old females")
+# View model results
+summary(m1)
+summary(m2)
 ```
 
 > __Next__: [Practice](083_practice.html)
