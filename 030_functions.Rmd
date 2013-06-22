@@ -102,4 +102,4 @@ And finally an example of several embedded functions: the plot first generates a
 qplot(rnorm(1000), stat = "ecdf", geom = "step")
 ```
 
-> __Next__: [Conditionals](031_conditionals.html).
+> __Next__: [Control flow](031_control.html).

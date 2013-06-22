@@ -1,0 +1,105 @@
+<style>@import url(style.css);</style>
+[Introduction to Data Analysis](index.html "Course index")
+
+# 3.1. Control flow
+
+Let's take a look at control flow in R. Control flow is the code that structures the way that we execute our functions. Simple control flow declarations are found everywhere in the code that we run throughout the course. One of them is the `ifelse` function, which tests a logical condition to assign a value:
+
+```{r ifelse-rng}
+# Nine random numbers.
+x = runif(9)
+# Play heads or tails.
+ifelse(x > .5, "Heads", "Tails")
+```
+
+The next code block, which shows the method used throughout the course to install and load packages, also tests a logical condition. In this example, the condition tries to run the `require` command and proceeds to install and load the package if it fails do so. The condition is applied to each element of a list of package names:
+
+```{r packages, message = FALSE, warning = FALSE}
+# Load packages.
+packages <- c("downloader", "ggplot2", "plyr", "reshape", "xlsx")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+```
+
+Here's another example of a conditional statement, which shows a code block that executes only when a file is missing from the `data` folder. Running this block will download the [recession data][fed-data] used in a [series of plots][cr-plots] that recently circulated in the economic blogosphere. The data are converted from Excel to CSV format (more on that next week).
+
+[fed-data]: http://www.minneapolisfed.org/publications_papers/studies/recession_perspective/
+[cr-plots]: http://www.calculatedriskblog.com/2013/05/april-employment-report-165000-jobs-75.html
+
+```{r fed-data}
+# Set file locations.
+link = "http://www.minneapolisfed.org/publications_papers/studies/recession_perspective/data/historical_recessions_recoveries_data_05_03_2013.xls"
+file = "data/us.recessions.4807.xls"
+data = "data/us.recessions.4807.txt"
+# Download the data.
+if(!file.exists(data)) {
+  if(!file.exists(file)) download(link, file, mode = "wb")
+  file <- read.xlsx(file, 1, startRow = 8, endRow = 80, colIndex = 1:12)
+  # Fix variable names.
+  year = c(1948, 1953, 1957, 1960, 1969, 1973, 1980, 1981, 1990, 2001, 2007)
+  names(file) = c("t", year)
+  write.csv(file, data, row.names = FALSE)
+}
+# Load the data.
+data <- read.csv(data, stringsAsFactors = FALSE)
+# Fix variable names.
+names(data)[-1] <- gsub("X", "", names(data)[-1])
+# Inspect the data.
+str(data)
+```
+
+If we want to [recreate the recession plots][aw-fed], we need to restructure the data. We also return to that topic next week: for now, simply take a quick look at the syntax of the next code block. The functions require that you define more complex statements than repetitive "if... then..." declarations, and rely instead on a syntax of the form "do ... by...":
+
+[aw-fed]: https://andrewpwheeler.wordpress.com/2013/03/18/the-junk-charts-challenge-remaking-a-great-line-chart-in-spss/
+
+```{r fed-reshape}
+# Reshape data to long format, by year.
+data = melt(data, id = "t", variable = "recession.year")
+head(data)
+# Extract last value, by melted series.
+text = ddply(na.omit(data), .(recession.year), summarise, 
+             x = max(t) + 1,
+             y = tail(value)[6])
+head(text)
+```
+
+And finally, here's one last way to control R code, by defining objects and piling them up into a plot. This is often used to write up graphs in `ggplot2` syntax, which is shown below as a series of `gg` objects. The plot is produced only at the very end of the code, when all elements are passed together. Note how some elements manipulate data objects:
+
+```{r fed-ggplot2-auto, warning = FALSE, tidy = FALSE, fig.width = 12, fig.height = 9}
+# Plot recession lines.
+gg.base = qplot(data = data, 
+                x = t, 
+                y = value, 
+                group = recession.year, 
+                geom = "line")
+# Plot 2007 recession in red.
+gg.2007 = geom_line(data = subset(data, recession.year == 2007), 
+                    color = "red", 
+                    size = 1)
+# Plot recession year labels.
+gg.text = geom_text(data = text, 
+                    aes(x = x, y = y, label = recession.year), 
+                    hjust = 0,
+                    color = ifelse(text$recession.year == 2007, "red", "black"))
+# Plot zero-line.
+gg.line = geom_hline(y = 0, linetype = "dashed")
+# Define y-axis.
+gg.axis = scale_x_continuous("Months after peak", lim = c(0, 75))
+# Define y-label.
+gg.ylab = labs(y = "Cumulative decline from NBER peak")
+# Build plot.
+gg.base + 
+  gg.2007 + 
+  gg.text + 
+  gg.line + 
+  gg.axis + 
+  gg.ylab  
+```
+
+This example shows the different kinds of coding structuresthat we will have to review throughout the course: basic control flow with conditions, iteration and vectorization, and transformations to data objects stacked into `ggplot2` objects for visualization purposes. Each aspect of the code is reviewed as we gradually introduce new empirical examples.
+
+> __Next__: [Iteration](032_iteration.html).

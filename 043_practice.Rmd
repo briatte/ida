@@ -80,7 +80,7 @@ sapply(levels(data$party), function(x) {
 
 Aggregating by groups also works visually, as we will see several times during the course from next week onwards, as we look into `ggplot2` syntax for plots where we want to visually discriminate some groups. The exercise ends on an example of that principle to stack the distributions of Congressional ideology by party. Distributions are important statistical functions studied later in the course.
 
-```{r bshor-distributions, fig.width = 9, fig.height = 6, include = FALSE}
+```{r bshor-distributions, fig.width = 12, fig.height = 9, include = FALSE}
 # RColorBrewer codes for blue, red, gray.
 party.colors = brewer.pal(9, "Set1")[c(2, 1, 9)]
 # Stacked distributions, colored by party.

@@ -51,12 +51,12 @@ __Readings:__ Kabacoff, ch. 5, and Teetor, ch. 8.
 
 <!-- Matloff, ch. 8. -->
 
-- [Conditionals][031]
+- [Control flow][031]
 - [Iteration][032]
 - [Practice][033]
 
 [030]: 030_functions.html
-[031]: 031_conditionals.html
+[031]: 031_control.html
 [032]: 032_iteration.html
 [033]: 033_practice.html
 
