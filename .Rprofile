@@ -85,8 +85,7 @@ ida.build <- function(start = 0, end = 0, backup = TRUE, html = TRUE) {
     # collect HTML
     html <- dir(pattern = "(index|[0-9]{3,}_\\w{1,}).html|style.css")
     # collect code
-    code <- dir("code", pattern = "([0-9]{1,}_\\w+).R$")
-    # 
+    code <- dir("code", pattern = "([0-9]{1,2}_\\w+).R$")
     # copy to website
     file.copy(html, path, overwrite = TRUE)
     if(length(code)) {
