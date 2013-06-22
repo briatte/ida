@@ -7,7 +7,6 @@
 -1 edges / twitter networks / diseasome
 -2 words
 
-http://is-r.tumblr.com/post/37901909845/everything-is-a-network-featuring-the-sna-package
 
 Networks are a common aspect of your daily life, and since you have been logging your network of friends and colleagues on services like Facebook or [LinkedIn](http://inmaps.linkedinlabs.com/), there are tons of data available. There is also a large amount of research on networks with [tough questions](http://masi.cscs.lsa.umich.edu/~crshalizi/weblog/773.html), such as the analytical difference between homophily (connecting to those like us) and contagion (becoming like our connections). We will stick to description and simple measures of influence.
 
@@ -15,61 +14,89 @@ There are several software options for network analysis, like [Gephi](https://ge
 
 ## A random network
 
-```{r setup-networks, echo=FALSE, message=FALSE}
-require(igraph)
+```{r packages, echo = FALSE, message = FALSE}
+# Load packages.
+packages <- c("downloader", "network", "sna")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
 ```
 
 We'll start with [simulating a random network](http://www.econometricsbysimulation.com/2012/10/simulating-social-network-data.html) of $n = 30$ individuals (`ego`), for which we simulate a bidirectional friendship relationship: if individual 'Ego' is a friend of individual 'Alter', then the reciprocal is true. Each individual has the possibility to associate with any other individual in the network, resulting in a network matrix of $30^2 = 900$ rows, with one extra row per individual that connects it to itself ($n-n$) and that will be ignored when generating relationships. The result is the `rnet` dataset.
 
-```{r smart-random-network-1, echo=FALSE}
+```{r smart-random-network-1}
 # Set network size.
-n <- 30
+n = 30
 # Create n series of n.
-ego <- rep(1:n,each=n)
+ego = rep(1:n, each = n)
 # Create n sequences of n.
-alter <- rep(1:n,times=n)
+alter = rep(1:n, times = n)
 # Default to no friendship between ego and alter.
-friendship <- 0
+friendship = 0
 # Assemble dataset.
-rnet <- data.frame(ego, alter, friendship)
-```
-
-```{r smart-random-network-2}
+rnet = data.frame(ego, alter, friendship)
+# First rows.
 head(rnet)
 ```
 
 To generate random relationships, we draw from a binomial distribution where the probability of a friendship is artificially set to $Pr(friendship) = .15$. The result is a network that displays approximately 15% of all possible `friendship` ties in the `rnet` dataset.
 
-```{r smart-random-network-3, echo=FALSE}
+```{r smart-random-network-2}
+# Probability of friendship tie.
 conDen <- .15
+# Assign ties to random nodes.
 for (i in 1:n)
   for (ii in (i+1):n)
-    if ((rbinom(1,1,conDen)==1)&(i!=ii)) {
-      # print(paste(i,ii))
-      rnet$friendship[(rnet$ego==i & rnet$alter==ii)] <- 1
-      rnet$friendship[(rnet$ego==ii & rnet$alter==i)] <- 1
+    if ((rbinom(1, 1, conDen) == 1) & (i != ii)) {
+      rnet$friendship[(rnet$ego ==i  & rnet$alter == ii)] = 1
+      rnet$friendship[(rnet$ego ==ii & rnet$alter == i )] = 1
       }
-```
-
-```{r smart-random-network-4}
+# Inspect random network ties.
 summary(rnet)
 ```
 
-The network is drawn with the `igraph` library. The plot function processes the subset of the `rnet` data frame for which the `friendship` variable indiciates that there is a relationship to draw. The ties are undirected: there are no arrows between the nodes because the friendship ties are strictly reciprocal.
+The network is drawn with the [`ggnet` function][gh-ggnet]. The plot function processes the subset of the `rnet` data frame for which the `friendship` variable indiciates that there is a relationship to draw. The ties are undirected: there are no arrows between the nodes because the friendship ties are strictly reciprocal.
 
-```{r smart-randomnetwork-5}
-plot(graph.data.frame(rnet[rnet$friendship==1,], directed=F), main="Purely Random Connections")
+[gh-ggnet]: https://github.com/briatte/ggnet
+
+```{r smart-randomnetwork-3-auto, message = FALSE, warning = FALSE, tidy = FALSE}
+# Form network object.
+net = network(rnet[rnet$friendship == 1, ], directed = FALSE)
+net
+# Load ggnet function.
+code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
+source_url(code, prompt = FALSE)
+# Plot random network.
+ggnet(net,
+      label = TRUE,
+      color = "white")
 ```
 
-## A fictional network
+This function is used in the next pages to plot a few social networks. You can train yourself by plotting fictional networks, like the one below using [the _Grey's Anatomy_ network by Gary Weissman][gw-grey], or turn to Solomon Messing's analysis of [U.S. student affiliations][sm-student] for a real-world example of network data.
 
-http://www.r-bloggers.com/grey%E2%80%99s-anatomy-network-of-sexual-relations/
+[sm-student]: https://solomonmessing.wordpress.com/2012/09/30/working-with-bipartiteaffiliation-network-data-in-r/
+[gw-grey]: http://www.r-bloggers.com/grey%E2%80%99s-anatomy-network-of-sexual-relations/
 
-## A real-world network
+```{r greys-anatomy-auto, message = FALSE, warning = FALSE, tidy = FALSE, cache = TRUE}
+# Locate data.
+link = "http://www.babelgraph.org/data/ga_edgelist.csv"
+file = "data/ga.network.txt"
+# Download data.
+if(!file.exists(file)) download(link, file, mode = "wb")
+# Create network.
+net = network(read.csv(file), directed = FALSE)
+# Plot network.
+ggnet(net, 
+      label = TRUE, 
+      color = "white", 
+      top8 = TRUE, 
+      size = 18,
+      legend.position = "none")
+```
 
-Finally, for a real-world example of network data, turn to Solomon Messing's analysis of [U.S. student affiliations](https://solomonmessing.wordpress.com/2012/09/30/working-with-bipartiteaffiliation-network-data-in-r/). The next pages show other examples to illustrate [measures of influence][111] and [word associations as networks][112].
-
-[111]: 111_influence.html
-[112]: 112_networkds.html
+The next pages make more use of the `ggnet` function with Twitter data and word associations plotted as network ties.
 
 > __Next__: [Influence](111_influence.html).
