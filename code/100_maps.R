@@ -66,7 +66,8 @@ qog.map("ciri_empinx_new") +
 
 
 # Get Crayola colors from a personal copy.
-source_url("https://raw.github.com/gist/5813759", prompt = FALSE)
+url = "https://raw.github.com/gist/5813759"
+source_url(url, prompt = FALSE)
 # Plot with Crayola color gradient.
 qog.map("wdi_the") + 
   labs(title = "Total health expenditure (% of GDP) in 2009") +

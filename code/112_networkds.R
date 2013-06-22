@@ -26,13 +26,13 @@ build.corpus <- function(x, skip = 0) {
   return(network(net))
 }
 # Example data.
-net = build.corpus("data/assange.txt")
+net <- build.corpus("data/assange.txt")
 
 
 
 # Load ggnet function.
 code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-source_url(code, prompt = FALSE)
+downloader::source_url(code, prompt = FALSE)
 # Plot with ggnet.
 ggnet(net, weight = "degree", subset = 3,
       alpha = 1, segment.color = "grey", label = TRUE, vjust = - 2,
@@ -46,7 +46,10 @@ file = "data/doctorow.txt"
 # Download speech.
 if(!file.exists(file)) download(link, file)
 # Build corpus.
-net = build.corpus(file, skip = 37)
+net <- build.corpus(file, skip = 37)
+# Load ggnet function.
+code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
+downloader::source_url(code, prompt = FALSE)
 # Plot with ggnet.
 ggnet(net, weight = "degree", subset = 3,
       alpha = 1, segment.color = "grey", label = TRUE, vjust = - 2,

@@ -33,7 +33,7 @@ if(!file.exists(file)) {
   # Normalize.
   data[-1] <- data[-1] / 100
   # Format dates.
-  data$Date <- paste("01", data[, 1])
+  data[, 1] <- paste("01", data[, 1])
   # Check result.
   head(data)
   # Save.
@@ -45,7 +45,7 @@ if(!file.exists(file)) {
 # Load from CSV.
 data <- read.csv(file)
 # Convert dates.
-data$Date <- strptime(data$Date, "%d %B %Y")
+data$Period <- strptime(data$Period, "%d %B %Y")
 # Check result.
 head(data)
 
@@ -54,14 +54,14 @@ head(data)
 # Normalized Herfindhal-Hirschman Index.
 HHI <- (rowSums(data[2:6]^2) - 1 / ncol(data[2:6])) / (1 - 1/ncol(data[2:6]))
 # Form a dataset by adding the dates.
-HHI <- data.frame(HHI, Date = data$Date)
+HHI <- data.frame(HHI, Period = data$Period)
 
 
 
 # Reshape.
-melt <- melt(data, id = "Date", variable = "Browser")
+melt <- melt(data, id = "Period", variable = "Browser")
 # Plot the HHI through time.
-ggplot(melt, aes(x = Date)) + labs(y = NULL, x = NULL) +
+ggplot(melt, aes(x = Period)) + labs(y = NULL, x = NULL) +
   geom_area(aes(y = value, fill = Browser), 
             color = "white", position = "stack") + 
   geom_smooth(data = HHI, aes(y = HHI, linetype = "HHI"), 

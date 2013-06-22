@@ -1,14 +1,27 @@
 
 
+# Load packages.
+packages <- c("downloader", "ggplot2", "reshape")
+packages <- lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
+
+
+
 # Target data source.
 link = "https://raw.github.com/briatte/ida/master/data/beijing.aqi.2013.txt"
 file = "data/beijing.aqi.2013.txt"
-if(!file.exists(file)) download("", file)
+if(!file.exists(file)) download(link, file)
 # Read CSV file.
 bp <- read.csv(file, stringsAsFactors = FALSE)
 # Check result.
 head(bp)
+# Convert date.
 bp$time <- strptime(bp$time, format = "%Y-%m-%d %T")
+# Plot air pollution.
 ggplot(data = bp, aes(x = time, y = PM)) +
   geom_line(color = "gray80") +
   geom_point(color = "blue", alpha = .5) +
@@ -30,39 +43,63 @@ fig + ylab("Homicide rate per 100,000 population") + xlab("Year")
 
 
 
-# Create year data.
-df <- data.frame(t = 2001:2005, x = (1:5)^2)
-# Check result.
-str(df)
-# Create zoo object.
-df <- with(df, zoo(x, t))
-# Check result.
-str(df)
-# Extract core data.
-coredata(df)
-# Extract time index.
-index(df)
+# Plot a differenced time series.
+qplot(x = bp$time[-1], 
+      y = diff(bp$PM), 
+      geom = "line") + 
+  labs(x = "t")
 
 
 
-# Original time series.
-df
-# Lagged at k = -2: shifts series right by two years.
-lag(df, -2, na = TRUE)
-# Lagged at k = -1: shifts series right by one year.
-lag(df, -1, na = TRUE)
-# Lagged at k = +1: shifts series left by one year.
-lag(df, 1, na = TRUE)
-# Lagged at k = +2: shifts series left by two years.
-lag(df, 2, na = TRUE)
+# Set vector of lagged values.
+d = 1:9
+# Create lags for one to eight days.
+lags = sapply(d, FUN = function(i) { c(bp$PM[-1:-i], rep(NA, i)) } )
+# Divide lagged values by series.
+lags = lags / bp$PM
+# Create lags dataset.
+lags = data.frame(bp$time, lags)
+# Fix variables names.
+names(lags) = c("t", d)
+# Melt data over days.
+lags = melt(lags, id = "t", variable = "lag")
+# Plot lagged dataset.
+qplot(data = lags,
+      x = t,
+      y = value,
+      colour = lag,
+      geom = "line") + 
+  labs(x = "t") + 
+  scale_colour_brewer() + 
+  theme(legend.position = "none")
 
 
 
-# Recall the time series and lagged values.
-t(cbind(df, lag(df, -1)))
-# Compute the successive differences.
-diff(df)
-# Show differences with both time series.
-t(cbind(df, lag(df, -1), diff(df)))
+# Correlogram function.
+gglag <- function(x, method = "acf") {
+  data = do.call(method, list(x, plot = FALSE))
+  qplot(y = 0,
+        yend  = data$acf,
+        size  = data$acf,
+        color = data$acf,
+        x     = data$lag,
+        xend  = data$lag,
+        geom  = "segment") +
+  scale_y_continuous("", lim = c(ifelse(method == "acf", 0, -1), 1)) +
+  scale_size(toupper(method)) +
+  scale_color_gradient2("",
+                        low = "blue", 
+                        mid = "white", 
+                        high = "red", 
+                        midpoint = 0) +
+  labs(x = "Number of lags")
+}
+
+
+
+# Plot autocorrelation function.
+gglag(bp$PM, "acf")
+# Plot partial autocorrelation function.
+gglag(bp$PM, "pacf")
 
 

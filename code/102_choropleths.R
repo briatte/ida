@@ -122,25 +122,29 @@ states.data$Obama12 <- by(dw$Obama_VS_12, states.list, mean)[states.data$region]
 
 
 
-# Prepare quintile function.
-quantize <- function(x, q = 5) {
-  return(cut(x, breaks = quantile(round(x), probs = 0:q/q, na.rm = TRUE), 
-      include.lowest = TRUE))
+# Choropleth map function.
+ggchoro <- function(x, q = 5, title = NULL) {
+  x = states.data[, x]
+  states.data$q = cut(x, breaks = quantile(round(x), 
+                                           probs = 0:q/q, 
+                                           na.rm = TRUE),
+                      include.lowest = TRUE)
+  ggplot(states.data, 
+         aes(x = long, 
+             y = lat, 
+             group = group, 
+             fill = q)) +
+    geom_polygon(colour = "white") + 
+    coord_map(project = "conic", lat0 = 30) +
+    scale_fill_brewer("", palette = "RdYlBu") +
+    labs(y = NULL, x = NULL, title = title) +
+    theme(panel.border = element_rect(color = "white"), 
+          axis.text = element_blank(),
+          axis.ticks = element_blank()) 
 }
-# Common map elements.
-g <- ggplot(states.data, aes(x = long, y = lat, group = group)) +
-  geom_polygon(colour = "white") + coord_map(project = "conic", lat0 = 30) +
-  scale_fill_brewer("", palette = "RdYlBu") +
-  labs(y = NULL, x = NULL) +
-  theme(panel.border = element_rect(color = "white"), 
-        axis.text = element_blank(),
-        axis.ticks = element_blank())
-
-
-
 # Choropleth maps.
-g + aes(fill = quantize(SwingBO)) + ggtitle("Swing in the Obama vote share")
-g + aes(fill = quantize(Obama08)) + ggtitle("Obama vote share, 2008")
-g + aes(fill = quantize(Obama12)) + ggtitle("Obama vote share, 2012")
+ggchoro("SwingBO", title = "Swing in the Obama vote share")
+ggchoro("Obama08", title = "Obama vote share, 2008")
+ggchoro("Obama12", title = "Obama vote share, 2012")
 
 

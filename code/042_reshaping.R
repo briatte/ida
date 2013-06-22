@@ -70,7 +70,7 @@ if(!file.exists(zip)) {
   download(url, zip, mode = "wb")
 }
 # Identify ZIP folder.
-"data/htus8008"
+dir = "data/htus8008"
 # Unzip archive.
 if(!file.exists(dir)) unzip(zip, exdir = dir)
 

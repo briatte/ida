@@ -28,12 +28,14 @@ file = "data/piketty.saez.2011.share.txt"
 if(!file.exists(file)) {
   # Import from XLS format.
   ps.share <- read.xlsx(xls, sheetName = "Table A1",
-                        rowIndex = c(4, 6:104), colIndex = 1:7)
+                        startRow = 4, endRow = 104, colIndex = 1:7)
+  # Remove empty line.
+  ps.share = ps.share[-1, ]
   # Save local copy.
   write.csv(ps.share, file, row.names = FALSE)
 }
 # Read CSV file.
-ps.share = read.csv(file)
+ps.share = read.csv(file, stringsAsFactors = FALSE)
 # Check result.
 str(ps.share)
 
@@ -47,7 +49,6 @@ ps.share <- melt(ps.share, id = "Year", variable_name = "Fractile")
 ps.share <- na.omit(ps.share)
 # Check result.
 head(ps.share)
-# Clean up 
 
 
 
@@ -65,7 +66,9 @@ file = "data/piketty.saez.2011.income.txt"
 if(!file.exists(file)) {
   # Import from XLS format.
   ps.income <- read.xlsx(xls, sheetName = "Table_Incomegrowth", 
-                         rowIndex = c(2, 5:103), colIndex = c(10, 5, 3))
+                         startRow = 1, endRow = 103, colIndex = c(10, 5, 3))
+  # Remove empty line.
+  ps.income = ps.income[-1, ]
   # Add years manually.
   ps.income <- cbind(1913:2011, ps.income)
   # Save local copy.

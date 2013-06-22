@@ -59,7 +59,7 @@ table(year(icm$Date))
 # List general election years.
 table(year(icm$Date[icm$GE]))
 # List general election months.
-table(month(icm$Date[icm$GE], label = TRUE))
+table(month(icm$Date[icm$GE]))
 
 
 

@@ -13,7 +13,7 @@ packages <- lapply(packages, FUN = function(x) {
 
 # Load ggnet function.
 code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-source_url(code, prompt = FALSE)
+downloader::source_url(code, prompt = FALSE)
 
 
 
@@ -27,8 +27,8 @@ ggnet.data = function(file) {
   return(data)
 }
 # Get French MPs on Twitter data.
-ids = ggnet.data("nodes.txt")
-df  = ggnet.data("network.txt")
+ids <- ggnet.data("nodes.txt")
+df  <- ggnet.data("network.txt")
 # Convert it to a network object.
 net = network(df)
 
@@ -51,7 +51,7 @@ ggnet(net,
 
 # Load functions.
 code = "https://raw.github.com/briatte/ggnet/master/functions.R"
-source_url(code, prompt = FALSE)
+downloader::source_url(code, prompt = FALSE)
 # A few simple examples.
 x = who.follows(df, "nk_m")
 y = who.is.followed.by(df, "JacquesBompard")

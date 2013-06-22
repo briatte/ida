@@ -1,5 +1,7 @@
+
 ## IDA Session 7
 ## -------------
+
 
 # Package loading
 # ---------------
@@ -550,6 +552,7 @@ t.test(births ~ gdpc.2)
 t.test(births ~ gexp.2) # etc.
 
 detach(qog)
+
 
 # That's all for now! Enjoy your day.
 # 2013-02-18

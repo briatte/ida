@@ -41,11 +41,15 @@ if(!file.exists(data)) {
   # on data import/export. Unfortunately, it seems to work only on some setups.
   imf <- read.xlsx(file,
                    sheetIndex = 2, 
-                   rowIndex = c(4:52)[-34], 
+                   startRow = 4,
+                   endRow = 52, 
                    colIndex = c(1:11, 14:15, 17:20),
                    stringsAsFactors = FALSE,
                    colClasses = c("character", rep("numeric", 15)),
                    header = FALSE)
+  
+  # Remove empty line.
+  imf = imf[-34, ]
   
   # Fix variable names, drawing largely on the names used by Chris Hanretty's own
   # replication code. We include many more variables than those used afterwards.

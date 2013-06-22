@@ -30,34 +30,21 @@ for(i in 1:3) print(i^2)
 
 
 
-# Solver for the birthday problem between two random dates.
-birthday <- function(n) { 
-  1 - exp( - n^2 / (2 * 365) )
-}
-# Solver for the birthday problem applied to a single date.
-myBirthday <- function(n) {
-	1 - ( (365 - 1) / 365 ) ^ n
-}
+# Number of possible conflicts in a pool of two roommates (single combination).
+prod(1:2) / prod(1:2)
+# With three roommates, there are three potential combinations (AB, BC and AC).
+prod(1:3) / (prod(1:2)*prod(1:1))
+# With three roommates, there are six potential combinations (AB, BC, CD, ...).
+prod(1:4) / (prod(1:2)*prod(1:2))
 
 
 
-# Similar birthdays likelihood function for x = 1 2 3 4.
-birthday(1:4)
-# Single birthday likelihood function for x = 1 2 3 4.
-myBirthday(1:4)
-
-
-
-require(reshape)
-# Set x values.
-n = 200
-# Create values data frame.
-df = data.frame(n = 1:n, AnyTwoSame = birthday(1:n), SameAsMine = myBirthday(1:n))
-# Collapse the data on x values.
-df = melt(df, id = "n")
-# Plot both functions.
-qplot(data = df, x = n, y = value, colour = variable, geom = "line") + 
-  scale_colour_brewer("", palette = "Set1") +
-  labs(x = "Number of people in group", y = "Probability of each function")
+# Vector of x values.
+x = 2:20
+# Vector of y values.
+y = sapply(x, FUN = function(i) prod(1:i) / (prod(1:2)*prod(1:max(i-2, 1))))
+# Plot y against x.
+qplot(x, y, geom = c("line", "point")) +
+  labs(y = "Number of potential conflicts", x = "Number of roommates")
 
 

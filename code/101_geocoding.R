@@ -36,7 +36,10 @@ ggmap(map) +
              aes(x = Longitude, y = Latitude, color = Country, size = Total.Amt),
              alpha = .3) + 
   scale_size_area(max_size = 8) + 
-  theme(legend.position = "none")
+  labs(y = NULL, x = NULL) +
+  theme(axis.text = element_blank(), 
+        axis.ticks = element_blank(),
+        legend.position = "none")
 
 
 

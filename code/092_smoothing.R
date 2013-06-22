@@ -1,46 +1,13 @@
 
 
 # Load packages.
-packages <- c("changepoint", "downloader", "ggplot2", "lubridate", "plyr", "reshape", "XML")
+packages <- c("changepoint", "downloader", "ggplot2", "MASS", "reshape", "splines", "XML")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
     library(x, character.only = TRUE)
   }
 })
-
-
-
-# 
-link = "http://www.quandl.com/api/v1/datasets/STATCHINA/E0403.csv?&trim_start=1952-12-31&trim_end=2011-12-31&sort_order=desc"
-file = "data/china.sectors.5211.txt"
-# Download
-if(!file.exists(file)) download(link, file, mode = "wb")
-# Read data, skipping row numbers.
-data <- read.csv(file, stringsAsFactors = FALSE)
-# Fix names.
-names(data) <- c("Year", "Active", "Employed", "Primary", "Secondary", "Tertiary",
-                 "P1", "P2", "P3")
-# Reshape.
-data <- melt(data, id = "Year", variable = "Industry")
-# Turn years to proper dates.
-data$Year <- ymd(data$Year)
-
-
-
-# Working population, millions
-qplot(data = subset(data, Industry %in% c("Primary", "Secondary", "Tertiary")),
-      y = value / 10^2, x = year(Year), colour = Industry, fill = Industry,
-      position = "stack", geom = "area") +
-  labs(y = "Million Employees")
-
-
-
-#
-qplot(data = subset(data, Population %in% c("Primary", "Secondary", "Tertiary")),
-      y = value / 10^3, x = Year, colour = Population, fill = Population,
-      position = "stack", geom = "area") + 
-    scale_y_continuous(labels = comma) + labs(y = "Million")
 
 
 
@@ -80,7 +47,7 @@ data$season <- factor(data$season)
 
 
 
-g <- qplot(data = data, x = X, y = mu, colour = season, geom = "point") + 
+g = qplot(data = data, x = X, y = mu, colour = season, geom = "point") + 
   geom_linerange(aes(ymin = mu - 1.96*se, ymax = mu + 1.96*se), alpha = .5) +
   geom_linerange(aes(ymin = mu - 2.58*se, ymax = mu + 2.58*se), alpha = .5) +
   scale_colour_brewer("Season", palette = "Set1") +
@@ -102,28 +69,53 @@ g + geom_segment(data = means,
 
 
 
+# Compute changepoints with PELT algorithm.
 cpt <- cpt.mean(data$mu, method = 'PELT')
+# Extract results.
 seg <- data.frame(cpt = attr(cpt, "param.est"))
 seg$xmax <- attr(cpt, "cpts")
 seg$xmin <- c(0, seg$xmax[-length(seg$xmax)])
-
-g + geom_segment(data = seg, aes(x = xmin, xend = xmax, y = mean, yend = mean), color = "black")
-
-
-
-# Load MASS package (provides "rlm" function).
-library(MASS)
-# Load splines package (provides "ns" function).
-library(splines)
+# Plot.
+g + geom_segment(data = seg, 
+                 aes(x = xmin, xend = xmax, y = mean, yend = mean), 
+                 color = "black")
 
 
 
-g <- qplot(data = data, x = X, y = mu, alpha = I(0.5), geom = "line") + 
-  geom_hline(y = mean(data$mu), linetype = "dashed") +
+# General plot function.
+g = qplot(data = data,
+          x = X,
+          y = mu,
+          alpha = I(0.5),
+          geom = "line") + 
   scale_x_continuous(breaks = seq(1, 156, 22)) +
   labs(y = "Mean rating", x = "Episode")
 
-g + geom_smooth(fill = "steelblue", se = FALSE) + aes(colour = season, y = c(0, diff(mu)))
-g + geom_smooth(method="rlm", formula = y ~ ns(x, 8))
+
+
+# LOESS smoother for each season.
+g + 
+  geom_smooth(se = FALSE) + 
+  geom_hline(y = mean(data$mu), linetype = "dashed") +
+  aes(colour = season)
+# LOESS smoother for the detrended values.
+g + 
+  geom_smooth(se = FALSE) + 
+  geom_hline(aes(y = mean(diff(mu))), linetype = "dashed") +
+  aes(colour = season, y = c(0, diff(mu)))
+# Cubic splines for the full series.
+g + 
+  geom_smooth(method = "rlm", se = FALSE, formula = y ~ ns(x, 8)) +
+  geom_hline(y = mean(data$mu), linetype = "dashed")
+
+
+
+# Cubic splines and changepoints.
+g + 
+  geom_smooth(method = "rlm", se = FALSE, formula = y ~ ns(x, 8)) +
+  geom_hline(y = mean(data$mu), linetype = "dashed") + 
+  geom_segment(data = seg, 
+               aes(x = xmin, xend = xmax, y = mean, yend = mean), 
+               color = "black")
 
 
