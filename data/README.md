@@ -34,6 +34,6 @@ The `data` folder hosts a few of the course datasets. The data are generally dow
 | `assange.txt` (*)           | Speech by Julian Assange in 2012                                   | 11.2 |
 | `doctorow.txt`              | Speech by Corey Doctorow in 2011                                   | 11.2 |
 
-Also: little things are scraped from Wikipedia but are not saved, and some exercise datasets like Rheinart and Rogoff are not listed.
+Also: little things are scraped from Wikipedia but are not saved, and some exercise datasets like the Rheinart and Rogoff replication data are not listed.
 
 (*) Files marked with an asterisk required heavy preprocessing or authentification to download, and are self-contained to the course. All other files were first downloaded in their native format and then saved as plain text comma-separated values. The data preparation code appears in the course pages.

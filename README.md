@@ -46,7 +46,7 @@ If you share the spirit of all this, you should consider joining the [Foundation
 
 ## HISTORY
 
-__Jun-2013__: final release.
+__Jun-2013__: first draft. Everythingn kind of works, Sessions 5--7 are unlisted, the `code` folder contains a few more exercises. That's it for now!
 
 __May-2013__: added more course content and better resolution (100dpi) for all plots.
 
@@ -59,4 +59,4 @@ __Feb-2013:__ more efficient `.Rprofile` functions and improved `knitr` routine,
 __Jan-2013:__ first release.
 
 > First release: January 2013.  
-> Last revised: May 2013.
+> Last revised: June 2013.
