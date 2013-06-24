@@ -66,8 +66,9 @@ qplot(data = m, x = residuals, color = model, geom = "density") +
   theme(legend.position = "top")
 ```
 
-Another way to look at the same phenomenon is to send the regression equation parameters of the models against resampled data that randomly excludes a fraction of the data points. The code of the visually weighted regression function that we use to bootstrap the estimated coefficients is adapted from a function by [Felix Schönbrodt][fs-vwreg].
+Another way to look at the same phenomenon is to [bootstrap][ac-bs] the estimated coefficients, which will show which parts of the model are most and least robust. The code of the visually weighted regression function that we use to bootstrap the estimated coefficients is adapted from a function by [Felix Schönbrodt][fs-vwreg].
 
+[ac-bs]: http://freakonometrics.hypotheses.org/5501
 [fs-vwreg]: http://www.nicebread.de/visually-weighted-watercolor-plots-new-variants-please-vote/
 
 ```{r bartels-vwreg, results = 'hide', message = FALSE}
