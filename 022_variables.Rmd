@@ -8,12 +8,8 @@ In R, everything is an object. The list of objects in memory `ls()` is an object
 ```{r clear-workspace, eval=FALSE}
 # List workspace objects.
 ls()
-# Remove entire workspace.
+# Erase entire workspace.
 rm(list = ls())
-```
-
-```{r}
-rownames(installed.packages())
 ```
 
 Let's use some real, anonymized data from Autumn 2012. These are the grades from my three mathematics classes in first year. I have removed any student identification, so you have to trust me that these are the real grades (and yes, some grades range above 20/20!).  The `downloader` package provides a handy command to download the data from the course repository, so we install and load it first.

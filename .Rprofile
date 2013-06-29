@@ -12,6 +12,7 @@ require(grid, quietly = TRUE)
 cat("\nWelcome to Introduction to Data Analysis!\n")
 cat(ida.site <- "http://f.briatte.org/teaching/ida/", "\n\n")
 
+if(!file.exists("backup")) dir.create("backup")
 if(!file.exists("code")) dir.create("code")
 if(!file.exists("data")) dir.create("data")
 
@@ -59,28 +60,29 @@ ida.pages <- function(x = NULL) {
 ##
 
 ida.build <- function(
-  pages  = 0:12,
-  repo   = "/Users/fr/Documents/Teaching/IDA",
-  path   = "/Users/fr/Documents/Code/Websites/briatte.github.com/teaching/ida",
-  backup = "admin/backup/ida", 
-  html = TRUE) {
+  x      = 0:12,
+  repo   = getwd(),
+  path   = "html",
+  backup = "backup") {
   require(knitr)
   
   # knitr setup
-  opts_chunk$set(fig.path = "plots/", 
-                 comment = NA, 
+  opts_chunk$set(comment = NA, 
                  dpi = 100, 
                  fig.width = 7, 
                  fig.height = 5.3)
   
   # set course directory
-  stopifnot(file.exists(path))
   stopifnot(file.exists(repo))
   setwd(repo)
   
+  if(repo == "/Users/fr/Documents/Teaching/IDA")
+    path = "/Users/fr/Documents/Code/Websites/briatte.github.com/teaching/ida"
+
   # backup code
   if(length(backup) > 1) {
-    backup = paste(backup, Sys.Date(), "zip", sep = ".")
+    stopifnot(file.exists(backup))
+    backup = paste(paste0(backup, "/ida"), Sys.Date(), "zip", sep = ".")
     zip(backup, dir(pattern = ".Rmd"))
   }
 
@@ -88,7 +90,8 @@ ida.build <- function(
   file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.html$"))
   file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.md$"))
   
-  all = ida.pages(pages)
+  # get pages
+  all = ida.pages(x)
   
   # run course
   lapply(all, FUN = function(x) {
@@ -99,7 +102,9 @@ ida.build <- function(
     knit2html(x)
   })
 
-  if(html) {
+  if(length(path) > 1) {
+    # check folder
+    stopifnot(file.exists(path))
     # collect HTML
     html <- dir(pattern = "(index|[0-9]{3,}_\\w{1,}).html|style.css")
     # collect code
@@ -127,7 +132,7 @@ ida.build <- function(
 ##
 
 ida.links <- function(x = NULL, detail = FALSE) {
-  if(is.null(x)) x = dir(pattern = "*.Rmd")
+  x = ida.pages(x)
   # parse
   links <- sapply(x, FUN = function(x) {
     conn <- file(x)
@@ -143,7 +148,7 @@ ida.links <- function(x = NULL, detail = FALSE) {
 }
 
 ##
-## ida.scan(): find all packages called in a list of scripts
+## ida.scan(): find all packages called by library() or require() in the scripts
 ##
 
 ida.scan <- function(x = NULL, detail = FALSE) {
@@ -166,68 +171,28 @@ ida.scan <- function(x = NULL, detail = FALSE) {
 }
 
 ##
-## ida.load(): load a package, installing it if needed (for R 3.0.0)
+## ida.load(): load a package, installing it quietly if needed (for R 3.0.0)
 ##
 
-ida.load <- function(x, load = TRUE, silent = FALSE) {
-  # install
-  if(!suppressMessages(suppressWarnings(require(x, character.only = TRUE)))) {
-    dl <- try(install.packages(x, quiet = TRUE))
-    if(class(dl) == "try-error")
-      stop("The package ", x, "could not be downloaded.")
-  }
-  # load
-  if(load) {
-    suppressPackageStartupMessages(library(x, character.only = TRUE))
-    if(!silent) message("Loaded package: ", x)
-  }
+ida.load <- function(..., load = TRUE, silent = TRUE) {
+  run = sapply(c(...), FUN = function(x) {
+    # install
+    if(!suppressMessages(suppressWarnings(require(x, character.only = TRUE)))) {
+      dl <- try(install.packages(x, quiet = TRUE))
+      if(class(dl) == "try-error")
+        stop("The package ", x, "could not be downloaded.")
+    }
+    # load
+    if(load) {
+      suppressPackageStartupMessages(library(x, character.only = TRUE))
+      if(!silent) message("Loaded package: ", x)
+    }
+  })
 }
 
-##
-## ida.prep(): prepare for a course session by getting and scanning the scripts
-##
-
-ida.prep <- function(x, index = ida.site, replace = TRUE, scan = TRUE) {
-  if(!x %in% 0:12) stop("Please type a session number between 0 and 12.")
-  message("Downloading course files for session ", x, "...")
-  conn <- url(index)
-  text <- readLines(conn, warn = FALSE)
-  close(conn)
-  text <- text[grepl("[0-9]+_(.*).html", text)]
-  prep <- gsub("(.*)\\\"([0-9]+)(_.*).html(.*)", "\\2\\3", text)
-  prep <- prep[grepl(paste0("^(", paste0(x, 0:3, collapse = "|"), ")_"), prep)]
-  # download
-  for(i in 1:length(prep)) {
-    file <- paste0(prep[i], ".R")
-    path <- paste("code", file, sep = "/")
-    if(!file.exists(path) | replace) {
-      dl <- try(suppressWarnings(download.file(paste0(index, file), 
-                                               destfile = path, quiet = TRUE)), 
-                silent = TRUE)
-      if(class(dl) == "try-error") {
-        message("Failed to download file: ", file)
-        prep[i] <- NA
-      }
-      else {
-        message("Successfully downloaded: ", file)
-        prep[i] <- path
-      }
-    }
-    else {
-        message("Skipped existing file: ", file)
-      prep[i] <- path
-    }
-  }
-  message("\nThe files are in your code folder.")
-  # scan
-  libs <- ida.scan(na.omit(prep))
-  if(length(libs) & scan) {
-    message("\nSome packages are required to run them:\n", paste(libs, collapse = ", "), "\n")
-    x <- lapply(libs, ida.load)
-  }
-  # bye
-  message("\nHappy coding!\n")
-}
+## If running the course on machines equipped with R 3.0.0, you can replace all
+## package install code at the top of each page by a shorter call to ida.load():
+## ida.load("downloader", "ggplot2")
 
 cat("Course functions ready.\nEnjoy your day.\n\n")
 
