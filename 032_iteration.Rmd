@@ -5,13 +5,13 @@
 
 [042]: 042_reshaping.html
 [112]: 112_networkds.html
-[wiki-for]: https://en.wikipedia.org/wiki/For_loop
-[wiki-while]: https://en.wikipedia.org/wiki/While_loop
-[wiki-inf-loop]: https://en.wikipedia.org/wiki/Infinite_loop
-[wiki-brute-force]: https://en.wikipedia.org/wiki/Brute_force_(disambiguation)
-[qt-vectorization]: http://quanttrader.info/public/FasterRCode.pdf
-[xb-usingfor]: https://xianblog.wordpress.com/2013/02/22/le-monde-puzzle-809/
-[cran-foreach]: http://cran.r-project.org/web/packages/foreach/index.html
+[wiki-for]: https://en.wikipedia.org/wiki/For_loop "For loop (Wikipedia)"
+[wiki-while]: https://en.wikipedia.org/wiki/While_loop "While loop (Wikipedia)"
+[wiki-inf-loop]: https://en.wikipedia.org/wiki/Infinite_loop "Infinite loop (Wikipedia)"
+[wiki-brute-force]: https://en.wikipedia.org/wiki/Brute-force_search "Brute-force search (Wikipedia)"
+[qt-vectorization]: http://quanttrader.info/public/FasterRCode.pdf "Fast(er) R Code (Paul Teetor)"
+[xb-usingfor]: https://xianblog.wordpress.com/2013/02/22/le-monde-puzzle-809/ "Le Monde Puzzle #809 (Xi'An's Og)"
+[cran-foreach]: http://cran.r-project.org/web/packages/foreach/index.html "foreach (CRAN)"
 
 ## Loops
 

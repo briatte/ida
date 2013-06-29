@@ -193,7 +193,7 @@ qplot(data = icm[icm$GE, ], y = value, x = Date,
   colors + titles
 ```
 
-[cb]: http://colorbrewer2.org/
+[cb]: http://colorbrewer2.org/ "ColorBrewer 2.0 (Cynthia Brewer)"
 [ggplot2-area]: http://docs.ggplot2.org/current/geom_area.html
 [ggplot2-line]: http://docs.ggplot2.org/current/geom_line.html
 [ggplot2-scm]: http://docs.ggplot2.org/current/scale_manual.html

@@ -187,8 +187,8 @@ qplot(data = iris,
       alpha = I(0.7))
 ```
 
-[wiki-raster]: https://en.wikipedia.org/wiki/Raster_graphics
-[wiki-vector]: https://en.wikipedia.org/wiki/Vector_graphics
+[wiki-raster]: https://en.wikipedia.org/wiki/Raster_graphics "Raster graphics (Wikipedia)"
+[wiki-vector]: https://en.wikipedia.org/wiki/Vector_graphics "Vector graphics (Wikipedia)"
 
 This plot can be saved to PNG (a [bitmap][wiki-raster] format) or PDF (a [vector][wiki-vector] format) from the Export menu. You will want to use PNG if you are saving the plot for screen viewing, e.g. posting on a Web page. Otherwise, you will prefer to export the plot as PDF, as shown below.
 

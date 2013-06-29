@@ -1,0 +1,23 @@
+<style>@import url(style.css);</style>
+[Introduction to Data Analysis](index.html "Course index")
+
+# Sources
+
+Here's a selection of links cited in the course material. The list is not yet complete, so this page does not show up in the course listings.
+
+```{r links, echo = FALSE, results='asis'}
+x = lapply(1:12, FUN = function(x) {
+  l = ida.links(x)
+  # links with titles and bracket author
+  l = gsub("(\\[[a-z-]+\\]): http(.*) \"(.*)\\((.*)\\)\"", "[\\3](http\\2) (\\4)", l)
+  # links with titles 
+  l = gsub("(\\[[a-z-]+\\]): http(.*) \"(.*)\"", "[\\3](http\\2)", l)
+  # links without titles
+  l = l[-which(grepl("(\\[[a-z-]+\\]): http(.*)", l))] ## "\\1(http\\2)"
+  # print
+  if(length(l) > 0) {
+    cat("\n\n## Session ", x, "\n")
+    cat(paste("*", l), sep = "\n")
+    }
+  })
+```

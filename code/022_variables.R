@@ -2,12 +2,8 @@
 
 # List workspace objects.
 ls()
-# Remove entire workspace.
+# Erase entire workspace.
 rm(list = ls())
-
-
-
-rownames(installed.packages())
 
 
 
@@ -58,7 +54,7 @@ str(grades)
 
 
 # Install and load reshape package.
-if(!"reshape" %in% installed.packages()[ ,1])
+if(!"reshape" %in% installed.packages()[, 1])
   install.packages("reshape")
 # Load package.
 require(reshape)
@@ -70,7 +66,7 @@ head(grades[order(grades$names), ])
 
 
 # Install and load ggplot2 package.
-if(!"ggplot2" %in% installed.packages()[,1])
+if(!"ggplot2" %in% installed.packages()[, 1])
   install.packages("ggplot2")
 # Load package.
 require(ggplot2)

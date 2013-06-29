@@ -102,7 +102,7 @@ ida.build <- function(
     knit2html(x)
   })
 
-  if(length(path) > 1) {
+  if(is.character(path)) {
     # check folder
     stopifnot(file.exists(path))
     # collect HTML
@@ -115,15 +115,15 @@ ida.build <- function(
       code = paste0("code/", code)
       # drop empty files
       zero = which(file.info(code)$size == 1)
-      message("These empty scripts are not uploaded:", paste0("\n", code[zero]))
+      file.remove(code[zero])
       code = code[-zero]
       # copy other scripts
       file.copy(code, path, overwrite = TRUE)
     }
     
     # clean up
-    file.remove(gsub("Rmd", "md", all))
-    file.remove(gsub("Rmd", "html", all))
+    clean = file.remove(gsub("Rmd", "html", all))
+    clean = file.remove(gsub("Rmd", "md", all))
   }
 }
 

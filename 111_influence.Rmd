@@ -30,15 +30,15 @@ code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
 downloader::source_url(code, prompt = FALSE)
 ```
 
-[gh-ggnet]: https://github.com/briatte/ggnet
+[gh-ggnet]: https://github.com/briatte/ggnet "ggnet: GitHub repository"
 [pb-ggnet]: http://politbistro.hypotheses.org/1752
-[wiki-bc]: https://en.wikipedia.org/wiki/B%C3%A9zier_curve
-[ds-bezier]: http://is-r.tumblr.com/post/38459242505/beautiful-network-diagrams-with-ggplot2
+[wiki-bc]: https://en.wikipedia.org/wiki/B%C3%A9zier_curve "Bézier curve (Wikipedia)"
+[ds-bezier]: http://is-r.tumblr.com/post/38459242505/beautiful-network-diagrams-with-ggplot2 "Beautiful network diagrams with ggplot2 (David Sparks)"
 
 As for the data, it used to be pretty straightforward to mine Twitter data with R and the `twitteR` library, and there are nice examples of such exercises on Gaston Sanchez's "[Mining Twitter][gs-mt]" and on the Oxford Internet Institute's "[Network Visualization][oii-nv]". [Both][gs-gh] of [them][oii-gh] are on GitHub) if you want to take a look at the code.
 
-[gs-mt]: https://sites.google.com/site/miningtwitter/
-[gs-gh]: https://github.com/gastonstat/Mining_Twitter
+[gs-mt]: https://sites.google.com/site/miningtwitter/ "Mining Twitter (Gaston Sanchez)"
+[gs-gh]: https://github.com/gastonstat/Mining_Twitter "Mining Twitter: GitHub repository (Gaston Sanchez)"
 [oii-nv]: http://oxfordinternetinstitute.github.io/InteractiveVis/network/
 [oii-gh]: https://github.com/oxfordinternetinstitute/InteractiveVis
 
@@ -84,7 +84,7 @@ ggnet(net,
 
 The method used here to position the data points into a [force-directed graph][wiki-fdg] is the Fruchterman-Reingold algorithm. The algorithm contains a random component at its initial stage and therefore generates a different result on each run. Run the following function several times to view the same network under similar layouts with different random parameters.
 
-[wiki-fdg]: https://en.wikipedia.org/wiki/Force-based_algorithms
+[wiki-fdg]: https://en.wikipedia.org/wiki/Force-based_algorithms "Force-based algorithms (Wikipedia)"
 
 ## Network centrality
 
@@ -105,9 +105,9 @@ lapply(levels(ids$Groupe), top.group.outlinks, net = df)
 
 In this network, the indegree is the number of followers, i.e. the sum of nodes that link to a node, and the outdegree is the number of outgoing connexions from this same node. The total [degree][wiki-degree] of a node (the sum of its indegree and outdegree) is a possible measure of [network centrality][wiki-centrality], as is [betweenness][wiki-betweenness]:
 
-[wiki-degree]: https://en.wikipedia.org/wiki/Degree_(graph_theory)
-[wiki-centrality]: https://en.wikipedia.org/wiki/Centrality
-[wiki-betweenness]: https://en.wikipedia.org/wiki/Betweenness_centrality
+[wiki-degree]: https://en.wikipedia.org/wiki/Degree_(graph_theory) "Degree in graph theory (Wikipedia)"
+[wiki-centrality]: https://en.wikipedia.org/wiki/Centrality "Centrality (Wikipedia)"
+[wiki-betweenness]: https://en.wikipedia.org/wiki/Betweenness_centrality "Betweenness centrality (Wikipedia)"
 
 ```{r betweenness}
 # Calculate network betweenness.

@@ -3,9 +3,9 @@
 
 # 3.3. Practice
 
-[ds-hhi]: http://is-r.tumblr.com/post/38140710276/the-inverse-herfindahl-hirschman-index-as-an-effective
-[wiki-hhi]: https://en.wikipedia.org/wiki/Herfindahl_index
-[wiki-browsers]: http://en.wikipedia.org/wiki/Usage_share_of_web_browsers
+[ds-hhi]: http://is-r.tumblr.com/post/38140710276/the-inverse-herfindahl-hirschman-index-as-an-effective "The Inverse Herfindahl–Hirschman Index as an “Effective Number of Parties (David Sparks)"
+[wiki-hhi]: https://en.wikipedia.org/wiki/Herfindahl_index "Herfindahl index (Wikipedia)"
+[wiki-browsers]: http://en.wikipedia.org/wiki/Usage_share_of_web_browsers "Usage share of web browsers (Wikipedia)"
 [sc-browsers]: http://gs.statcounter.com/#browser-ww-monthly-200807-201301
 [mb-browsers]: http://mezzoblue.com/archives/2011/11/01/a_new_number/
 [so-juba]: http://stackoverflow.com/questions/14871249/can-i-use-gsub-on-each-element-of-a-data-frame

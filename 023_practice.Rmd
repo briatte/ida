@@ -58,7 +58,9 @@ bmi.quetelet(60, 1.75)
 
 ## Course reminders
 
-Remember that a lot of what we cover here, especially with regards to the basic functioning of R, is also covered in many other tutorials. If you enjoy video tutorials, those by Anthony Damico are short and efficient: try his [2-minute approach to arithmetic in R](http://www.screenr.com/hyT8).
+Remember that a lot of what we cover here, especially with regards to the basic functioning of R, is also covered in many other tutorials. If you enjoy video tutorials, those by Anthony Damico are short and efficient: try his [2-minute approach to arithmetic in R][ajd-math].
+
+[ajd-math]: http://www.screenr.com/hyT8 "How to do simple arithmetic in R (Anthony J. Damico)"
 
 Most importantly, do not forget the textbook readings. Next week, we continue manipulating objects and delve a bit deeper into programming full-fledged functions: reading from textbooks will train you in performing these operations.
 

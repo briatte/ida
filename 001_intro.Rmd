@@ -59,9 +59,11 @@ Within that general perspective, we pursue the following teaching goals:
 2. __The secondary aim of the course__ is to show you how a healthy dose of programming can help taking into account large amounts of evidence about the economy, politics and society.
 3. __Third and last__, this course intends to provide you with a practical skill that will make you a strong applicant at universities that require quantitative methods training.
 
-The skills outlined above will enhance your substantive expertise in the social sciences with computer and quantitative skills. This diagram by [Drew Conway](http://www.drewconway.com/zia/?p=2378) shows how all these skills collide around data analysis, or "data science":
+The skills outlined above will enhance your substantive expertise in the social sciences with computer and quantitative skills. This diagram by [Drew Conway][dc-vd] shows how all these skills collide around data analysis, or "data science":
 
-[![The Data Science Venn Diagram](images/Conway-Data_Science_VD.png)](http://www.drewconway.com/zia/?p=2378)
+[![Drew Conway's Data Science Venn Diagram (Conway-Data_Science_VD)](images/data-science-conway.png)][dc-vd]
+
+[dc-vd]: http://www.drewconway.com/zia/?p=2378
 
 __You will find the course challenging__ because you will learn a lot of things at the same time, including some computer programming, a topic that is probably new to you. We assume *zero* previous knowledge and will proceed slowly, in a step-by-step fashion.
 

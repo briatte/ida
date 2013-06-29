@@ -15,7 +15,7 @@ The course pages are formatted in R Markdown syntax and were converted to HTML w
 	install.packages("knitr")
 	citation("knitr")
 
-The knitting routine is in the [`.Rprofile`](ida/blob/master/.Rprofile). To compile the whole course, set the `IDA` folder as your working directory and then type `ida.build()`.
+The knitting routine is in the [`.Rprofile`](ida/blob/master/.Rprofile). To compile the whole course, set the `IDA` folder as your working directory and then type `ida.build()` (takes a bit more than five minutes on optic fiber).
 
 Other files are called from the `code/` and `data/` folders. Most datasets are downloaded on the fly, so you will need to be online to run the code properly.
 

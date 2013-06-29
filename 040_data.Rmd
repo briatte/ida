@@ -4,19 +4,19 @@
 # 4. Basic data operators
 
 [gapminder]: http://factbased.blogspot.fr/2012/07/convenient-access-to-gapminder-datasets.html
-[ckan]: http://ckan.org/
-[cb]: http://colorbrewer2.org/
-[ct]: http://crantastic.org/
-[ct-onlinedata]: http://crantastic.org/tags/onlineData
-[dm]: http://datamarket.com/
+[ckan]: http://ckan.org/ "CKAN"
+[cb]: http://colorbrewer2.org/ "ColorBrewer 2.0 (Cynthia Brewer)"
+[ct]: http://crantastic.org/ "CRANtastic"
+[ct-onlinedata]: http://crantastic.org/tags/onlineData "CRANtastic: onlineData"
+[dm]: http://datamarket.com/ "DataMarket"
 [dm-api]: https://github.com/DataMarket/rdatamarket#readme
 [ggplot2]: http://docs.ggplot2.org/current/
 [ggplot2-scale]: http://docs.ggplot2.org/current/scale_continuous.html
 [ggplot2-theme]: http://docs.ggplot2.org/current/theme.html
-[quandl]: http://www.quandl.com/
-[quandl-r]: http://www.quandl.com/help/packages/r
+[quandl]: http://www.quandl.com/ "Quandl"
+[quandl-r]: http://www.quandl.com/help/packages/r "Quandl: R package"
 [us-oa]: http://blogstats.wordpress.com/2013/05/10/managing-government-information-as-an-asset/
-[faostat]: http://cran.r-project.org/web/packages/FAOSTAT/
+[faostat]: http://cran.r-project.org/web/packages/FAOSTAT/ "FAOSTAT (CRAN)"
 
 Today's session will show how to open a variety of datasets from different online sources, and to make sure that you know how to convert and import data to prepare it for analysis. The next code block introduces a standard way to check that you have the right packages installed for this page's code: you will find identical blocks on every other course page.
 

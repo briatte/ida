@@ -78,7 +78,7 @@ Last, let's be entirely honest here: even trained people can find R [difficult][
 
 [jdc-r]: http://www.johndcook.com/R_language_for_programmers.html
 [pb-hell]: http://www.burns-stat.com/pages/Tutor/R_inferno.pdf
-[ajd-tt]: http://www.twotorials.com/
+[tt]: http://www.twotorials.com/ "R Twotorials (Anthony J. Damico)"
 
 The course itself is documented in more detail on its [wiki][ida-wiki]. You might also turn to the `README` files that were written for the course [code][ida-code] and [datasets][ida-data] if you need additional details on the contents and examples of each session, which will give you an overview of the material that we will survey in our time together.
 

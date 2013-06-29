@@ -14,9 +14,9 @@
 
 Some people *really* like R. This very enthusiastic user is [Anthony Damico][ajd], a [prolific][ajd-gh] and [proficient][ajd-asdfree] analyst of U.S. survey data working at the Kaiser Family Foundation. This short video is a good introduction to the spirit of R and also mentions other programming and statistical languages:
 
-[ajd]: http://www.ajdamico.com/
-[ajd-asdfree]: http://www.asdfree.com/
-[ajd-gh]: https://github.com/ajdamico
+[ajd-website]: http://www.ajdamico.com/ "Anthony J. Damico's website"
+[adj-asdfree]: http://www.asdfree.com/ "Analyze Survey Data for Free (Anthony J. Damico)"
+[gh]: https://github.com/ajdamico "Anthony J. Damico's GitHub repository"
 
 <iframe src="http://player.vimeo.com/video/52999628?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
@@ -34,12 +34,12 @@ R itself is [free and open software][r-lic], as most of its extensions. It is as
 
 Now, download and install the latest version of R. You will need admin privileges on your computer (i.e. the user login and password) to do so. The software costs nothing, is available for all common platforms, and does not take a lot of memory to install. The exact download link depends on your operating system and geographic location:
 
-[cran-us-mac]: http://cran.us.r-project.org/bin/macosx/
-[cran-us-win]: http://cran.us.r-project.org/bin/windows/base/
+[cran-us-mac]: http://cran.us.r-project.org/bin/macosx/ "R for Mac OS X (CRAN)"
+[cran-us-win]: http://cran.us.r-project.org/bin/windows/base/ "R for Windows (CRAN)"
 [gd-install-mac]: https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21
 [rp-install-mac]: https://www.youtube.com/watch?v=Icawuhf0Yqo
 [rp-install-win]: https://www.youtube.com/watch?v=mfGFv-iB724
-[ajd-install-win]: http://www.screenr.com/kzT8
+[install-win]: http://www.screenr.com/kzT8 "How to download and install R for Windows (Anthony J. Damico)"
 [r-win]: https://www.youtube.com/watch?v=Lc2sgDTzrV8
 
 - __For Mac OS X__, [download from this link][cran-us-mac], double-click it and press "OK" on all installation steps. For help, see [this video tutorial][rp-install] by Roger Peng, or [this other one][gd-install-mac] by Gordon Davis, which also covers RStudio.
