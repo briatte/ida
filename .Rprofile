@@ -88,10 +88,12 @@ ida.build <- function(
   file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.html$"))
   file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.md$"))
   
+  all = ida.pages(pages)
+  
   # run course
-  lapply(ida.pages(pages), FUN = function(x) {
+  lapply(all, FUN = function(x) {
     # do not script the first pages or the index
-    if(!substr(x, 1, 2) %in% c("00", "in"))
+    if(!substr(x, 1, 2) %in% c("00", "12", "in"))
       purl(x, documentation = 0, output = paste0("code/", gsub("Rmd", "R", x)))
     # htmlify
     knit2html(x)
@@ -107,7 +109,9 @@ ida.build <- function(
     if(length(code)) {
       code = paste0("code/", code)
       # drop empty files
-      code = code[-which(file.info(code)$size == 1)]
+      zero = which(file.info(code)$size == 1)
+      message("These empty scripts are not uploaded:", paste0("\n", code[zero]))
+      code = code[-zero]
       # copy other scripts
       file.copy(code, path, overwrite = TRUE)
     }
