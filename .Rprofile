@@ -44,9 +44,9 @@ if("ggplot2" %in% installed.packages()[,1]) {
 
 ida.files <- function(x = NULL) {
   # numbered files
-  d = dir(pattern = "[index|0-9]+(.*).Rmd")
+  d = dir(pattern = "[index|ex|0-9]+(.*).Rmd")
   # session number
-  names(d) = suppressWarnings(as.numeric(substr(d, 1, 2)))
+  names(d) = suppressWarnings(as.numeric(substr(gsub("^ex", "0", d), 1, 2)))
   # fix index to 0
   names(d)[which(is.na(names(d)))] = 0
   # ordered vector
