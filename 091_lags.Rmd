@@ -14,7 +14,7 @@ This form of temporal dependence is called autocorrelation, or serial correlatio
 
 ```{r packages, message=FALSE, warning=FALSE}
 # Load packages.
-packages <- c("downloader", "ggplot2", "reshape")
+packages <- c("downloader", "ggplot2", "MASS", "reshape", "splines")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -59,19 +59,15 @@ ggplot(data = bp, aes(x = time, y = PM)) +
 
 In this example, the main interest is the time series formed by the repeated measures of a single variable. Teetor, ch. 14, offers a quick introduction to the topic, using the dedicated `zoo` and `xts` packages. Our introduction will just show how to detrend and lag the series with base functions.
 
-There's plenty of other ways to look at the data. Make sure to plot a smoothed trend. I stopped coding at the one below.
+There's plenty of other ways to look at the data. Here's one way with cubic splines.
 
 ```{r unodc-spline, warning=FALSE}
-# Load MASS package (provides "rlm" function).
-library(MASS)
-# Load splines package (provides "ns" function).
-library(splines)
-# Plot canvas.
-fig <- ggplot(unodc, aes(y = rate, x = year, group = country, color = country, fill = country))
-# Spline, 2-length knots.
-fig <- fig + geom_smooth(method="rlm", formula = y ~ ns(x, 2), alpha = .25)
-# Check result.
-fig + ylab("Homicide rate per 100,000 population") + xlab("Year")
+# Plot cubic spline with 2-length knots.
+ggplot(data = bp, aes(x = time, y = PM)) +
+  geom_line(color = "gray80") +
+  geom_point(color = "blue", alpha = .5) +
+  geom_smooth(method ="rlm", formula = y ~ ns(x, 12), alpha = .25, fill = "lightblue") +
+  labs(x = NULL, y = "Fine particles (PM2.5) 24hr avg")
 ```
 
 ## Detrending a time series
