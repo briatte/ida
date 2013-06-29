@@ -1,7 +1,7 @@
 
 
 # Load packages.
-packages <- c("downloader", "ggplot2", "reshape")
+packages <- c("downloader", "ggplot2", "MASS", "reshape", "splines")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -30,16 +30,12 @@ ggplot(data = bp, aes(x = time, y = PM)) +
 
 
 
-# Load MASS package (provides "rlm" function).
-library(MASS)
-# Load splines package (provides "ns" function).
-library(splines)
-# Plot canvas.
-fig <- ggplot(unodc, aes(y = rate, x = year, group = country, color = country, fill = country))
-# Spline, 2-length knots.
-fig <- fig + geom_smooth(method="rlm", formula = y ~ ns(x, 2), alpha = .25)
-# Check result.
-fig + ylab("Homicide rate per 100,000 population") + xlab("Year")
+# Plot cubic spline with 2-length knots.
+ggplot(data = bp, aes(x = time, y = PM)) +
+  geom_line(color = "gray80") +
+  geom_point(color = "blue", alpha = .5) +
+  geom_smooth(method ="rlm", formula = y ~ ns(x, 12), alpha = .25, fill = "lightblue") +
+  labs(x = NULL, y = "Fine particles (PM2.5) 24hr avg")
 
 
 
