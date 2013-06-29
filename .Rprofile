@@ -38,10 +38,32 @@ if("ggplot2" %in% installed.packages()[,1]) {
 }
 
 ##
+## ida.pages(): list all or selected course page filenames
+##
+
+ida.pages <- function(x = NULL) {
+  # numbered files
+  d = dir(pattern = "[index|0-9]+(.*).Rmd")
+  # session number
+  names(d) = suppressWarnings(as.numeric(substr(d, 1, 2)))
+  # fix index to 0
+  names(d)[which(is.na(names(d)))] = 0
+  # ordered vector
+  d = d[order(as.numeric(names(d)))]
+  # selected pages
+  if(is.null(x)) d else d[names(d) %in% x]
+}
+
+##
 ## ida.build(): knit the course from R Markdown to HTML
 ##
 
-ida.build <- function(start = 0, end = 0, backup = TRUE, html = TRUE) {
+ida.build <- function(
+  pages  = 0:12,
+  repo   = "/Users/fr/Documents/Teaching/IDA",
+  path   = "/Users/fr/Documents/Code/Websites/briatte.github.com/teaching/ida",
+  backup = "admin/backup/ida", 
+  html = TRUE) {
   require(knitr)
   
   # knitr setup
@@ -51,31 +73,25 @@ ida.build <- function(start = 0, end = 0, backup = TRUE, html = TRUE) {
                  fig.width = 7, 
                  fig.height = 5.3)
   
-  # set paths
-  repo <- "/Users/fr/Documents/Teaching/IDA"
-  path <- "/Users/fr/Documents/Code/Websites/briatte.github.com/teaching/ida"
-  bkup <- paste("admin/backup/ida", Sys.Date(), "zip", sep = ".")
-  
   # set course directory
-  setwd(path)
+  stopifnot(file.exists(path))
+  stopifnot(file.exists(repo))
   setwd(repo)
-  stopifnot(getwd() == repo)
   
   # backup code
-  if(backup) zip(bkup, dir(pattern = ".Rmd"))
-  
+  if(length(backup) > 1) {
+    backup = paste(backup, Sys.Date(), "zip", sep = ".")
+    zip(backup, dir(pattern = ".Rmd"))
+  }
+
   # clean up
   file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.html$"))
   file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.md$"))
   
-  # get files
-  all <- dir(pattern = "[index|0-9]+(.*).Rmd")
-  if(end == 0) end = length(all)
-
   # run course
-  lapply(all[start:end], FUN = function(x) {
+  lapply(ida.pages(pages), FUN = function(x) {
     # do not script the first pages or the index
-    if(!substr(x, 0, 2) %in% c("00", "in"))
+    if(!substr(x, 1, 2) %in% c("00", "in"))
       purl(x, documentation = 0, output = paste0("code/", gsub("Rmd", "R", x)))
     # htmlify
     knit2html(x)
@@ -152,7 +168,7 @@ ida.scan <- function(x = NULL, detail = FALSE) {
 ida.load <- function(x, load = TRUE, silent = FALSE) {
   # install
   if(!suppressMessages(suppressWarnings(require(x, character.only = TRUE)))) {
-    dl <- try(install.packages(x), quiet = TRUE)
+    dl <- try(install.packages(x, quiet = TRUE))
     if(class(dl) == "try-error")
       stop("The package ", x, "could not be downloaded.")
   }
