@@ -3,10 +3,11 @@
 
 # Sources
 
-Here's a selection of links cited in the course material. The list is not yet complete, so this page does not show up in the course listings.
+Here's a selection of links cited in the course material. The list is not yet complete, so this page is not mentioned in the course listings.
 
 ```{r links, echo = FALSE, results='asis'}
-x = lapply(1:12, FUN = function(x) {
+ida.sources = function(x) {
+  x = lapply(x, FUN = function(x) {
   l = ida.links(x)
   # links with titles and bracket author
   l = gsub("(\\[[a-z-]+\\]): http(.*) \"(.*)\\((.*)\\)\"", "[\\3](http\\2) (\\4)", l)
@@ -20,4 +21,6 @@ x = lapply(1:12, FUN = function(x) {
     cat(paste("*", l), sep = "\n")
     }
   })
+}
+ida.sources(1:12)
 ```

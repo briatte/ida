@@ -5,30 +5,30 @@
 
 [R][r] is an [increasingly popular][bm-pop] software that uses a specific language to manipulate statistical objects. The R user base goes well beyond academia, and many [R User Groups][rb-ug] exist on a [worldwide scale][ra-ug]. R users form a [large online community][pb-rsoc] and many [collaborative tools][nr-coll] exist to help analysts share their R work.
 
-[r]: http://www.r-project.org/
-[bm-pop]: http://r4stats.com/articles/popularity/
-[rb-ug]: http://www.r-bloggers.com/RUG/
-[ra-ug]: http://blog.revolutionanalytics.com/local-r-groups.html
-[nr-coll]: http://www.noamross.net/blog/2013/1/7/collaborating-with-r.html
-[pb-rsoc]: http://www.burns-stat.com/r-and-social-media/
+[r]: http://www.r-project.org/ "The R Project"
+[bm-pop]: http://r4stats.com/articles/popularity/ "The Popularity of Data Analysis Software (Robert A. Muenchen)"
+[rb-ug]: http://www.r-bloggers.com/RUG/ "R User Groups"
+[ra-ug]: http://blog.revolutionanalytics.com/local-r-groups.html "Local R groups (Revolution Analytics)"
+[nr-coll]: http://www.noamross.net/blog/2013/1/7/collaborating-with-r.html "Don't R alone! A guide to tools for collaboration with R (Noam Ross)"
+[pb-rsoc]: http://www.burns-stat.com/r-and-social-media/ "R and social media (Patrick Burns)"
 
 Some people *really* like R. This very enthusiastic user is [Anthony Damico][ajd], a [prolific][ajd-gh] and [proficient][ajd-asdfree] analyst of U.S. survey data working at the Kaiser Family Foundation. This short video is a good introduction to the spirit of R and also mentions other programming and statistical languages:
 
 [ajd-website]: http://www.ajdamico.com/ "Anthony J. Damico's website"
-[adj-asdfree]: http://www.asdfree.com/ "Analyze Survey Data for Free (Anthony J. Damico)"
-[gh]: https://github.com/ajdamico "Anthony J. Damico's GitHub repository"
+[ajd-asdfree]: http://www.asdfree.com/ "Analyze Survey Data for Free (Anthony J. Damico)"
+[ajd-gh]: https://github.com/ajdamico "Anthony J. Damico's GitHub repository"
 
 <iframe src="http://player.vimeo.com/video/52999628?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
 The R language has its [roots][pb-r] in the S language developed by AT&T, which also developed the C language. It is not the only domain-specific language available for statistical analysis: there are [many others][boc-comp], and you might have also heard about software like SAS, SPSS or Stata, or even applications of statistics with mathematical software and scripting languages like Java or Python.
 
-[pb-r]: http://www.burns-stat.com/pages/Present/infernoishR_annotated.pdf
-[boc-comp]: http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/
+[pb-r]: http://www.burns-stat.com/pages/Present/infernoishR_annotated.pdf "Inferno-ish R (Patrick Burns)"
+[boc-comp]: http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/ "Comparison of data analysis packages: R, Matlab, SciPy, Excel, SAS, SPSS, Stata (Brendan O'Connor)"
 
 R itself is [free and open software][r-lic], as most of its extensions. It is as free as it is powerful, but it comes with [some drawbacks][bh-drawbacks]. Its major disadvantage is that its learning curve is pretty steep. Do not worry: we will review as many examples as we need to make it work, and we will give you code to help creating your own.
 
-[r-lic]: http://www.r-project.org/Licenses/
-[bh-drawbacks]: http://badhessian.org/seven-reasons-to-use-r-for-social-network-analysis-and-three-reasons-against/
+[r-lic]: http://www.r-project.org/Licenses/ "R Licences"
+[bh-drawbacks]: http://badhessian.org/seven-reasons-to-use-r-for-social-network-analysis-and-three-reasons-against/ "Seven Reasons to Use R for Social Network Analysis (and Three Reasons Against) (Benjamin Lind, Bad Hessian)"
 
 ## Installation
 
@@ -36,11 +36,11 @@ Now, download and install the latest version of R. You will need admin privilege
 
 [cran-us-mac]: http://cran.us.r-project.org/bin/macosx/ "R for Mac OS X (CRAN)"
 [cran-us-win]: http://cran.us.r-project.org/bin/windows/base/ "R for Windows (CRAN)"
-[gd-install-mac]: https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21
-[rp-install-mac]: https://www.youtube.com/watch?v=Icawuhf0Yqo
-[rp-install-win]: https://www.youtube.com/watch?v=mfGFv-iB724
+[gd-install-mac]: https://www.youtube.com/watch?v=WJDrYUqNrHg&list=PL8BE0E317807A9A21 "R Programming Tutorial Lesson 1: Downloading and Installing (Gordon Anthony Davis)"
+[rp-install-mac]: https://www.youtube.com/watch?v=Icawuhf0Yqo "Install R on Mac (Roger Peng)"
+[rp-install-win]: https://www.youtube.com/watch?v=mfGFv-iB724 "Install R on Windows (Roger Peng)"
 [install-win]: http://www.screenr.com/kzT8 "How to download and install R for Windows (Anthony J. Damico)"
-[r-win]: https://www.youtube.com/watch?v=Lc2sgDTzrV8
+[r-win]: https://www.youtube.com/watch?v=Lc2sgDTzrV8 "Install R on Windows: Custom options (Roger Peng)"
 
 - __For Mac OS X__, [download from this link][cran-us-mac], double-click it and press "OK" on all installation steps. For help, see [this video tutorial][rp-install] by Roger Peng, or [this other one][gd-install-mac] by Gordon Davis, which also covers RStudio.
 - __For Windows__, [download from this link][cran-us-win], which also comes with a few help pages. [This video tutorial][rp-install-win] by Roger Peng and [another one][ajd-install-win] by Anthony Damico can help with the installation, and you might also want to [use a few custom options][r-win].
@@ -51,7 +51,7 @@ Do not worry if you do not manage to install R (or RStudio, the next software th
 
 Open R and locate the blinking cursor preceded by a `>` at the bottom of the R Console window. This is where you will type commands and read their results. You might be already familiar with that process if you have ever used a Command Line Interface (CLI) before. The logic of entering commands is vaguely similar to asking elaborate queries in a versatile search engine like [DuckDuckGo][ddg].
 
-[ddg]: https://duckduckgo.com/goodies
+[ddg]: https://duckduckgo.com/goodies "DuckDuckGo (a smart search engine with privacy rights)"
 
 Let's try running a few commands in the R console by typing the following lines in R and pressing Enter at the end of each line to execute, or "run", their commands. You should skip the lines that start with a `#` (hash) symbol and show in a different color than the rest of the code: these lines are comments, which R will ignore if you try to run them.
 
@@ -115,9 +115,9 @@ x <- "Hello"
 y <- "World"
 ```
 
-These examples show you how to assign a value to an object in R. The basic operator `<-` assigns the values `"Hello"` and `"World"` to the objects `x` and `y` respectively. If you are uncomfortable with using the `<-` symbol, you can type `=` instead: the two symbols are (almost) equivalent in R, although `<-` [always means assignment][jm-assign] and is therefore used more or less consistently.
+These examples show you how to assign a value to an object in R. The basic operator `<-` assigns the values `"Hello"` and `"World"` to the objects `x` and `y` respectively. If you are uncomfortable with using the `<-` symbol, you can type `=` instead: the two symbols are (almost) equivalent in R, although `<-` [always means assignment][jm-assign] and is therefore the strictest standard.
 
-[jm-assign]: http://www.win-vector.com/blog/2013/04/prefer-for-assignment-in-r/
+[jm-assign]: http://www.win-vector.com/blog/2013/04/prefer-for-assignment-in-r/ "Prefer = for assignment in R (John Mount)"
 
 We will now bind these objects together into the object `z` with the `c()` function:
 
@@ -145,6 +145,6 @@ You can quit R like any other application or by typing `q()` from the command li
 
 R can do a lot of things, including [waiting for you to make coffee][r-coffee]. A big drawback of R, however, is its barebones interface. We will fix that by installing the RStudio software to "pilot" R through better menus and windows. Turn to the next page for instructions to do so and for a quick guide to two of R's main strengths, user-contributed packages and elegant plotting facilities.
 
-[r-coffee]: http://vimeo.com/43305640
+[r-coffee]: http://vimeo.com/43305640 "How to make perfect pour-over coffee and time your French press steeping with R (Anthony Damico)"
 
 > __Next__: [Installing RStudio](012_rstudio.html).

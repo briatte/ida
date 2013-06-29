@@ -3,20 +3,20 @@
 
 # 4.3. Practice
 
-[bshor-data]: http://research.bshor.com/2012/10/31/individual-2012-congressional-candidate-scores/
-[bshor-iep]: http://research.bshor.com/2012/10/31/generating-the-2012-congressional-candidate-scores/
-[bshor-detail]: http://research.bshor.com/2012/10/31/scoring-the-2012-congressional-candidates/
+[bshor-data]: http://research.bshor.com/2012/10/31/individual-2012-congressional-candidate-scores/ "Individual 2012 Congressional Candidate Scores (Boris Shor)"
+[bshor-iep]: http://research.bshor.com/2012/10/31/generating-the-2012-congressional-candidate-scores/ "Generating the 2012 Congressional Candidate Scores (Boris Shor)"
+[bshor-detail]: http://research.bshor.com/2012/10/31/scoring-the-2012-congressional-candidates/ "Graphs of the 2012 Congressional Candidates (Boris Shor)"
 [cb]: http://colorbrewer2.org/ "ColorBrewer 2.0 (Cynthia Brewer)"
-[cs-split-apply-combine]: http://www.stat.cmu.edu/~cshalizi/statcomp/lectures/12/lecture-12.pdf
+[cs-split-apply-combine]: http://www.stat.cmu.edu/~cshalizi/statcomp/lectures/12/lecture-12.pdf "Lecture 12: Split/Apply/Combine with plyr (Cosma Shalizi)"
 [ds-reshape]: http://is-r.tumblr.com/post/34556058683/ggtutorial-day-1-using-reshape "GGtutorial: Day 1 - using reshape() (David Sparks)"
 [ds-mutate]: http://is-r.tumblr.com/post/34288940225/congressional-ideology-by-state "Congressional ideology by state (David Sparks)"
 [ds-plyr]: http://is-r.tumblr.com/post/33765462561/the-distribution-of-ideology-in-the-u-s-house-with "The distribution of ideology in the U.S. House (with plyr) (David Sparks)"
 [dw-source]: http://voteview.org/dwnominate.asp
 [gs-aggr]: https://gastonsanchez.wordpress.com/2012/06/28/5-ways-to-do-some-calculation-by-groups/ "5 ways to do calculations by group (Gaston Sanchez)"
-[hw-plyr]: http://www.jstatsoft.org/v40/i01/paper
-[jb-summarize]: http://www.slideshare.net/jeffreybreen/grouping-summarizing-data-in-r
-[ns-apply]: http://nsaunders.wordpress.com/2010/08/20/a-brief-introduction-to-apply-in-r/
-[so-apply]: http://stackoverflow.com/a/7141669/635806
+[hw-plyr]: http://www.jstatsoft.org/v40/i01/paper "The Split-Apply-Combine Strategy for Data Analysis (Hadley Wickham)"
+[jb-summarize]: http://www.slideshare.net/jeffreybreen/grouping-summarizing-data-in-r "Grouping & Summarizing Data in R (Jeffrey Breen)"
+[ns-apply]: http://nsaunders.wordpress.com/2010/08/20/a-brief-introduction-to-apply-in-r/ "A brief introduction to “apply” in R (Neil Saunders)"
+[so-apply]: http://stackoverflow.com/a/7141669/635806 "R Grouping functions: sapply vs. lapply vs. apply. vs. tapply vs. by vs. aggregate vs… (StackOverflow)"
 
 <p class="info"><strong>Instructions:</strong> this week's exercise is called <code><a href="4_congress.R">4_congress.R</a></code>. Download or copy-paste that file into a new R script, then open it and run it with the working directory set as the <code>IDA</code> folder. If you download the script, make sure that your browser preserved its <code>.R</code> file extension.</p>
 
@@ -138,4 +138,6 @@ The following plot derives from the combination of this strategy to a `ggplot` s
 p
 ```
 
-> __Next week__: [Clusters](050_clusters.html).
+> __Next week__: [Clusters](/).
+
+<!-- 050_clusters.html -->

@@ -57,7 +57,7 @@ If you like video tutorials, we will link to a few of them, and in particular:
 
 In addition to R tutorials, there are [R blogs](http://www.r-bloggers.com/) and online communities like [Stack Overflow](http://stackoverflow.com/questions/tagged/r) where R users can share questions and answers about the software. Check also a few data and stats communities like [Cross Validated](http://stats.stackexchange.com/questions/tagged/r) or the [/r/datasets][reddit-datasets] channel at Reddit.
 
-[reddit-datasets]: [reddit-datasets]: http://www.reddit.com/r/datasets
+[reddit-datasets]: http://www.reddit.com/r/datasets "Reddit datasets"
 
 The visualization component of the course can be explored through [Alberto Cairo's selection of resources](http://www.thefunctionalart.com/2012/10/recommended-readings-for-infographics.html) in that area, which branches with infographics. The most passionate are referred to John P. Boyd's teaching notes on [Scientific Visualization and Information Architecture](http://www-personal.umich.edu/~jpboyd/ENG503.html).
 

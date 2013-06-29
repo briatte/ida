@@ -1,5 +1,5 @@
 ##
-## IDA STARTUP FILE 0.5 (2013-05-28)
+## IDA STARTUP FILE 0.6 (2013-05-28)
 ##
 
 require(utils, quietly = TRUE)
@@ -39,10 +39,10 @@ if("ggplot2" %in% installed.packages()[,1]) {
 }
 
 ##
-## ida.pages(): list all or selected course page filenames
+## ida.files(): list all or selected course page filenames
 ##
 
-ida.pages <- function(x = NULL) {
+ida.files <- function(x = NULL) {
   # numbered files
   d = dir(pattern = "[index|0-9]+(.*).Rmd")
   # session number
@@ -91,7 +91,7 @@ ida.build <- function(
   file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.md$"))
   
   # get pages
-  all = ida.pages(x)
+  all = ida.files(x)
   
   # run course
   lapply(all, FUN = function(x) {
@@ -132,7 +132,7 @@ ida.build <- function(
 ##
 
 ida.links <- function(x = NULL, detail = FALSE) {
-  x = ida.pages(x)
+  x = ida.files(x)
   # parse
   links <- sapply(x, FUN = function(x) {
     conn <- file(x)
@@ -151,9 +151,10 @@ ida.links <- function(x = NULL, detail = FALSE) {
 ## ida.scan(): find all packages called by library() or require() in the scripts
 ##
 
-ida.scan <- function(x = NULL, detail = FALSE) {
+qscan <- function(..., detail = FALSE) {
+  x = c(...)
   # paths
-  if(!is.character(x))
+  if(length(x) < 1)
     x <- paste("code", dir(path = "code", pattern="[0-9]+(.*)\\.R"), sep = "/")
   # parse
   libs <- sapply(x, FUN = function(x) {
@@ -171,10 +172,10 @@ ida.scan <- function(x = NULL, detail = FALSE) {
 }
 
 ##
-## ida.load(): load a package, installing it quietly if needed (for R 3.0.0)
+## qload(): quickly load a package, installing it quietly if needed (for R 3.0.0)
 ##
 
-ida.load <- function(..., load = TRUE, silent = TRUE) {
+qload <- function(..., load = TRUE, silent = TRUE) {
   run = sapply(c(...), FUN = function(x) {
     # install
     if(!suppressMessages(suppressWarnings(require(x, character.only = TRUE)))) {
@@ -192,7 +193,7 @@ ida.load <- function(..., load = TRUE, silent = TRUE) {
 
 ## If running the course on machines equipped with R 3.0.0, you can replace all
 ## package install code at the top of each page by a shorter call to ida.load():
-## ida.load("downloader", "ggplot2")
+## qload("downloader", "ggplot2")
 
 cat("Course functions ready.\nEnjoy your day.\n\n")
 

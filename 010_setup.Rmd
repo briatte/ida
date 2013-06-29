@@ -3,7 +3,10 @@
 
 # 1. Setup
 
-As mentioned in the introductory pages, this course uses [R](http://www.r-project.org/), a free and open source software used by data analysts in many different contexts. In the next pages, we explain how to set up R and its companion software [RStudio](http://www.rstudio.com/) for the course.
+As mentioned in the introductory pages, this course uses [R][r], a free and open source software used by data analysts in many different contexts. In the next pages, we explain how to set up R and its companion software [RStudio][rstudio] for the course.
+
+[r]: http://www.r-project.org/ "The R Project"
+[rstudio]: http://www.rstudio.com/ "RStudio"
 
 ## Computer equipment
 
@@ -11,7 +14,12 @@ Before we start installing and setting up anything, let's review the other tools
 
 - __You will need to bring a fairly recent laptop to class.__ It should be running Mac OS X, Windows or a standard Linux distribution. The software that we use also requires that your computer is equipped with a 64-bit processor, but we also offer support for older 32-bit machines.
 - __Make sure that you have decent disk space and memory.__ We recommend something like 4GB of free space on your hard drive, and at least 2GB of live memory (RAM). Check your computer specifications, especially if you are running a 'mini' laptop.
-- __Use a modern and secure browser__. Anything but Microsoft Internet Explorer should do. Try [Apple Safari](https://www.apple.com/safari/), [Google Chrome](http://www.google.com/chrome) or [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/). Use bookmarks to keep track of the different pages that will be referred to in class: start by bookmarking the [course index](index.html).
+- __Use a modern and secure browser__. Anything but Microsoft Internet Explorer should do. Try [Apple Safari][safari], [Google Chrome][chrome] or [Mozilla Firefox][firefox]. Use bookmarks to keep track of the different pages that will be referred to in class: start by bookmarking the [course index][index].
+
+[index]: index.html
+[safari]: https://www.apple.com/safari/ "Apple Safari"
+[chrome]: http://www.google.com/chrome "Google Chrome"
+[mozilla]: https://www.mozilla.org/en-US/firefox/new/ "Mozilla Firefox"
 
 If your laptop is less than three years old, it probably matches everything in the list above. Tablets and other gadgets won't do. Finally, __do not forget to bring your battery charger__, as well as a USB stick in case the local wifi network fails us.
 

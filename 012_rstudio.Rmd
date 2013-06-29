@@ -9,12 +9,12 @@ Working with R is easier when you run it through [RStudio](http://rstudio.org/),
 
 Use [this link][rs-dl] to download RStudio. Installation should then be pretty straightforward. You will be installing the Desktop version -- the other one is for running RStudio on a server, while you will be running it as a desktop program.
 
-[rs-dl]: http://www.rstudio.com/ide/download/desktop
+[rs-dl]: http://www.rstudio.com/ide/download/desktop "RStudio Desktop"
 
 RStudio comes with [excellent documentation][rs-docs] available through the Help menu. The same menu will also show you [keyboard shortcuts][rs-kb], which will quickly come in handy. The sections below cover only the essentials, which should be enough to get you started.
 
-[rs-docs]: http://www.rstudio.com/ide/docs/
-[rs-kb]: http://www.rstudio.com/ide/docs/using/keyboard_shortcuts
+[rs-docs]: http://www.rstudio.com/ide/docs/ "RStudio documentation"
+[rs-kb]: http://www.rstudio.com/ide/docs/using/keyboard_shortcuts "RStudio keyboard shortcuts"
 
 A few more things about the RStudio software:
 
@@ -23,8 +23,8 @@ A few more things about the RStudio software:
 - __RStudio can crash from time to time.__ It might sometimes have to "abort your R session", which means crashing R without crashing RStudio itself. Please let us know when that happens. You will generally be able to quickly restart a new R session.
 - __RStudio is very quickly developing__ into a powerhouse for R, with [more features][rs-ide] than we will be able to show. One of the most recent developments allows to [build web applications][rs-shiny] on top of R code, directly from RStudio.
 
-[rs-ide]: http://www.rstudio.com/ide/
-[rs-shiny]: http://www.rstudio.com/shiny/
+[rs-ide]: http://www.rstudio.com/ide/ "RStudio features"
+[rs-shiny]: http://www.rstudio.com/shiny/ "RStudio: Shiny"
 
 ## Interface
 
@@ -99,7 +99,7 @@ To get the auto-completion window to open, just type in a few letters like `ins`
 
 R is extremely modular: it comes with a set of "base" functions that can be supplemented with user-contributed ones, most often installed through the [CRAN][cran] online central repository from which you previously downloaded R itself. This is a core feature of R, as its open source nature has encouraged the development of thousands of user-contributed packages.
 
-[cran]: http://cran.r-project.org/
+[cran]: http://cran.r-project.org/ "CRAN"
 
 Let's first take a look at which packages come with R by default and where packages are installed:
 
@@ -128,7 +128,7 @@ Note that the last two lines form a logical statement and should be run together
 
 Once installed, the additional packages can be loaded (initialized) with the `library()` or `require()` functions. Each package brings its own functionalities: `ggplot2` package is used for [plotting neat graphics][ggplot2], `downloader` is used to download data from online sources. You will have to initialize the packages every time that you use their functions in R, as shown here:
 
-[ggplot2]: http://ggplot2.org/
+[ggplot2]: http://ggplot2.org/ "ggplot2"
 
 ```{r load-packages, results='hide'}
 # Load ggplot2 package.
@@ -143,7 +143,10 @@ A possibility is that you get _no result at all_, and this is behaviour is gener
 
 ## Drawing and saving plots
 
-One last functionality that we want to show as part of the RStudio interface has to do with plots. Let's take inspiration from a [quick introduction to `ggplot2`](http://blog.echen.me/2012/01/17/quick-introduction-to-ggplot2/), a graphics package that you should have [previously](11_r.html) installed when trying out package installation in R.
+One last functionality that we want to show as part of the RStudio interface has to do with plots. Let's take inspiration from a [quick introduction to `ggplot2`][ec-ggplot2], a graphics package that you should have [previously][011] installed when trying out package installation in R.
+
+[ec-ggplot2]: http://blog.echen.me/2012/01/17/quick-introduction-to-ggplot2/ "Quick Introduction to ggplot2 (Edwin Chen)"
+[011]: 011_r.html
 
 ```{r ggplot2-load-package}
 # In case you have not yet installed ggplot2, this will.
@@ -155,7 +158,7 @@ if(!require(ggplot2)) {
 }
 ```
 
-[iris]: http://stat.ethz.ch/R-manual/R-patched/library/datasets/html/iris.html
+[iris]: http://stat.ethz.ch/R-manual/R-patched/library/datasets/html/iris.html "Edgar Anderson's Iris Data (R Documentation)"
 
 We'll be looking at some example data included in the R software. The data describes [Edgar Anderson's set of fifty flowers][iris], studied by famous statistician Ronald Fisher in an article published in 1936. The data itself were collected by Edgar Anderson and published a year before. The `head()` function shows you the top rows of the data:
 
@@ -164,7 +167,7 @@ We'll be looking at some example data included in the R software. The data descr
 head(iris)
 ```
 
-[qplot]: http://docs.ggplot2.org/current/qplot.html
+[qplot]: http://docs.ggplot2.org/current/qplot.html qplot (ggplot2)
 
 Let's now use the 'quick plot' functionality of the `ggplot2` package. The [`qplot()` function][qplot] requires three arguments here: the data to use, one variable to plot on the horizontal x-axis, and another to plot on the vertical y-axis. The order of the arguments is, as usual, irrelevant, as long as you identify `x` and `y` properly in the function call.
 
@@ -173,7 +176,7 @@ Let's now use the 'quick plot' functionality of the `ggplot2` package. The [`qpl
 qplot(data = iris, x = Sepal.Length, y = Petal.Length)
 ```
 
-[ggplot2-tutorial]: http://inundata.org/2013/04/10/a-quick-introduction-to-ggplot2/
+[ggplot2-tutorial]: http://inundata.org/2013/04/10/a-quick-introduction-to-ggplot2/ "A quick introduction to ggplot2 (Karthik Ram)"
 
 We will come back to how `ggplot2` works in due time (here's [another quick introduction][ggplot2-tutorial] showing more plots if you want a preview). For the moment, let's simply improve the plot by adding a bunch of options that will add some color, sizing and transparency effects to the plot that opened in the bottom-right pane. The next code block is just one long declaration to do that:
 
@@ -215,9 +218,9 @@ R documentation pages contain precise instructions on the syntax of each functio
 
 Reading technical documentation is a skill in itself, and not everything can be answered from there, so looking for help elsewhere is frequent practice. Note, however, that this is also a skill in itself and that there is an etiquette to getting help online: if you plan to use R-help or Stack Overflow to ask questions, turn first to [Roger Peng][rp-help], [Jeromy Anglim][ja-qa] or [Eric Raymond][er-qa].  
 
-[rp-help]: https://www.youtube.com/watch?v=ZFaWxxzouCY
-[er-qa]: http://catb.org/~esr/faqs/smart-questions.html
-[ja-qa]: http://jeromyanglim.blogspot.com.au/2011/03/how-to-ask-me-statistics-question.html
+[rp-help]: https://www.youtube.com/watch?v=ZFaWxxzouCY "How to Get [R] Help (Roger Peng)"
+[er-qa]: http://catb.org/~esr/faqs/smart-questions.html "How To Ask Questions The Smart Way (Eric Steven Raymond)"
+[ja-qa]: http://jeromyanglim.blogspot.com.au/2011/03/how-to-ask-me-statistics-question.html "How to Ask Me a Statistics Question (Jeromy Anglim)"
 
 Note, finally, that typing the name of a function without its brackets will also show some form of help, which is generally useful only if you know a bit more about low-level programming in R. Here's a simple example showing how the `median()` function works internally, from which you can learn that it allows an option called `na.rm` and belongs to the base `stats` package preinstalled in R:
 
