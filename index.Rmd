@@ -2,8 +2,11 @@
 
 # Introduction to Data Analysis
 
-This course is an introduction to analyzing data with the [R](http://www.r-project.org/) software. 
-It features some mathematics and statistics as well as some statistical computing and data visualization. You will need a laptop with an Internet connection to follow the class.
+[François Briatte](http://f.briatte.org/) and [Ivaylo Petev](http://ipetev.org/)  
+[Sciences Po](http://www.sciences-po.fr/), [Euro-American Campus](http://college.sciences-po.fr/sitereims/)  
+Fall 2013
+
+This course is an introduction to analyzing data with the [R](http://www.r-project.org/) software. It features some mathematics and statistics as well as some statistical computing and data visualization. You will need a laptop with an Internet connection to follow the class.
 
 - [Syllabus][syllabus]
 - [Introduction][001]
