@@ -61,7 +61,7 @@ In this example, the main interest is the time series formed by the repeated mea
 
 There's plenty of other ways to look at the data. Here's one way with cubic splines.
 
-```{r unodc-spline, warning=FALSE}
+```{r twitter-spline-auto, , fig.width = 12, fig.height = 9, message = FALSE, tidy = FALSE}
 # Plot cubic spline with 2-length knots.
 ggplot(data = bp, aes(x = time, y = PM)) +
   geom_line(color = "gray80") +
