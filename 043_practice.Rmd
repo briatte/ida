@@ -57,7 +57,7 @@ for(i in levels(data$party)) {
 
 This loop first determines the vector of party names `r levels(data$party)` (Democrat, Republican, Independent) and then painfully extracts the number of observations and mean ideological score for each party. This type of looping is easily avoided by using the vector of party names to split the data, apply a mean function to the splitted parts and combine it back to shape:
 
-[![Split-Apply-Combine](images/split-apply-combine-shalizi.png)][cs-split-apply-combine]
+[![Split-Apply-Combine, by Cosma Shalizi "http://www.stat.cmu.edu/~cshalizi/statcomp/lectures/12/lecture-12.pdf"](images/split-apply-combine-shalizi.png)][cs-split-apply-combine]
 
 The exercise shows how to use the `tapply()` function, which returns one mean value (third argument) based on ideological score (first argument) for each group of observations formed by party membership (second argument). The `tapply()` syntax is pretty straightforward, but it can also follow two alternative syntaxes using `aggregate` or `by()` with data frames:
 
@@ -123,7 +123,7 @@ dw.aggregated <- ddply(.data = dw,
 
 What happens here is a three-dimensional split of the data, first by Congressional session, then by political party. This operation is one of seven possible transformations in such settings. Hadley Wickham's `plyr` package is a set of commands like `ddply()` to implement these transformations, which he calls "[The Split-Apply-Combine Strategy for Data Analysis][hw-plyr]" and illustrates as goes:
 
-![Split-Apply-Combine, by Hadley Wickham](images/split-apply-combine-wickham.png)
+![Split-Apply-Combine, by Hadley Wickham "http://www.jstatsoft.org/v40/i01/paper"](images/split-apply-combine-wickham.png)
 
 The cube slices show the different split-ups that can be accomplished when you combine three variables (dimensions). In our example, the result is a dataset that contains a single observation by party (Democrat, Republican, Independent) and by Congress (1-111th), with its value being the median DW-NOMINATE score of that group. The results below are the results for the most recent Congress:
 

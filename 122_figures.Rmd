@@ -1,0 +1,50 @@
+<style>@import url(style.css);</style>
+[Introduction to Data Analysis](index.html "Course index")
+
+# Figures
+
+The list of figures included in the course content.
+
+```{r figs, echo = FALSE, results='asis'}
+##
+## ida.links(): list all Markdown links in a list of pages
+##
+ida.pics <- function(x = 0:12, detail = FALSE) {
+  x = ida.files(x)
+  # parse
+  pics <- sapply(x, FUN = function(x) {
+    conn <- file(x)
+    text <- readLines(conn, warn = FALSE)
+    text <- text[grepl("!(\\[(.*)\\])\\((.*)\\)", text)]
+    close(conn)
+    text
+    })
+  # format
+  if(!detail)
+    pics <- unique(unlist(pics))
+  return(pics)
+  }
+##
+## ida.sources(): return Markdown links extracted from the course pages
+##
+ida.captions = function(x) {
+  x = lapply(x, FUN = function(x) {
+    l = ida.pics(x)
+    # images to links
+    l = gsub("(!\\[{1,2})(.*)(\\]\\()(.*)\\)(.*)", "[\\2](\\4)", l)
+    l = gsub("(\\[{1,2})(.*)(\")(.*)(\"\\]\\()(.*)(\\))(.*)", "[\\2](\\6) ([source](\\4))", l)
+    l = gsub("\\[\\[", "[", l)  ## couldn't fix that
+     l = gsub("(\\)\\]\\()(.*)", ")", l) ## or that
+    l = gsub("(\\s|auto|\\.)+\\]", "]", l) ## remove css argument
+    # print
+    if(length(l) > 0) {
+      cat("\n\n## Session ", x, "\n")
+      cat(paste("*", l), sep = "\n")
+      }
+    })
+  }
+##
+## show all sessions
+##
+ida.captions(1:12)
+```

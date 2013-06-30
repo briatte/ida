@@ -6,6 +6,27 @@
 Here's a selection of links cited in the course material. The list is not yet complete, so this page is not mentioned in the course listings.
 
 ```{r links, echo = FALSE, results='asis'}
+##
+## ida.links(): list all Markdown links in a list of pages
+##
+ida.links <- function(x = 0:12, detail = FALSE) {
+  x = ida.files(x)
+  # parse
+  links <- sapply(x, FUN = function(x) {
+    conn <- file(x)
+    text <- readLines(conn, warn = FALSE)
+    text <- text[grepl("(\\[[a-z-]+\\]): http(.*)", text)]
+    close(conn)
+    text
+  })
+  # format
+  if(!detail)
+    links <- unique(unlist(links))
+  return(links)
+}
+##
+## ida.sources(): return Markdown links extracted from the course pages
+##
 ida.sources = function(x) {
   x = lapply(x, FUN = function(x) {
   l = ida.links(x)
@@ -22,5 +43,8 @@ ida.sources = function(x) {
     }
   })
 }
+##
+## show all sessions
+##
 ida.sources(1:12)
 ```

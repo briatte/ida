@@ -42,7 +42,7 @@ if("ggplot2" %in% installed.packages()[,1]) {
 ## ida.files(): list all or selected course page filenames
 ##
 
-ida.files <- function(x = NULL) {
+ida.files <- function(x = 0:12) {
   # numbered files
   d = dir(pattern = "[index|ex|0-9]+(.*).Rmd")
   # session number
@@ -128,30 +128,10 @@ ida.build <- function(
 }
 
 ##
-## ida.links(): list all Markdown links in a list of pages
+## qscan(): find all packages called by library() or require() in the scripts
 ##
 
-ida.links <- function(x = NULL, detail = FALSE) {
-  x = ida.files(x)
-  # parse
-  links <- sapply(x, FUN = function(x) {
-    conn <- file(x)
-    text <- readLines(conn, warn = FALSE)
-    text <- text[grepl("(\\[[a-z-]+\\]): http(.*)", text)]
-    close(conn)
-    text
-  })
-  # format
-  if(!detail)
-    links <- unique(unlist(links))
-  return(links)
-}
-
-##
-## ida.scan(): find all packages called by library() or require() in the scripts
-##
-
-qscan <- function(..., detail = FALSE) {
+qscan <- function(..., load = TRUE, detail = TRUE) {
   x = c(...)
   # paths
   if(length(x) < 1)
@@ -165,9 +145,12 @@ qscan <- function(..., detail = FALSE) {
     close(conn)
     unique(pkgs)
   })
+  # load
+  list = unique(unlist(libs))
+  if(load) qload(list)
   # format
   if(!detail)
-    libs <- unique(unlist(libs))
+    libs <- list
   return(libs)
 }
 

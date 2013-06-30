@@ -188,7 +188,7 @@ ggchoro("Obama12", title = "Obama vote share, 2012")
 
 David Sparks has also posted code for [simpler maps][ds-simplemaps] with less data wrangling, and [chloropleth maps][ds-choropleth] with more precise data. In the future, there's a chance that he will also post his code for [isarithmic map][ds-isarithmic] that look like this:
 
-[![Isarithmic map, by David Sparks (cces-2008-family-income-black)](images/isarithmic-map-sparks.png)][ds-isarithmic]
+[![Isarithmic map, by David Sparks "http://dsparks.wordpress.com/2011/10/24/isarithmic-maps-of-public-opinion-data/"](images/isarithmic-map-sparks.png)][ds-isarithmic]
 
 [ds-simplemaps]: http://is-r.tumblr.com/post/37708137014/us-state-maps-using-map-data "U.S. state maps using map data (David Sparks)"
 [ds-choropleth]: https://dsparks.wordpress.com/2011/02/21/choropleth-tutorial-and-regression-coefficient-plots/ "Choropleth tutorial and regression coefficient plots (David Sparks)"

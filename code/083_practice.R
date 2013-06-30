@@ -4,7 +4,10 @@ source("code/8_imf.R")
 
 
 
-imf.plot
+imf.plot + 
+  geom_smooth(method = "lm", fill = "steelblue", alpha = .2) +
+  geom_rug() + 
+  theme_bw()
 
 
 
@@ -12,23 +15,31 @@ summary(imf.lm)
 
 
 
-imf.plot + geom_smooth(method = "lm", fill = "steelblue", alpha = .2) +
+imf.plot + 
+  geom_smooth(method = "lm", fill = "steelblue", alpha = .2) +
   geom_segment(x = imf$D_struct_bal, xend = imf$D_struct_bal, 
                y = imf$D_growth, yend = fitted.values(imf.lm),
-               linetype = "dashed", color = "red")
+               linetype = "dashed", color = "orangered") +
+  geom_rug() +
+  theme_bw()
 
 
 
-imf.rvfplot + geom_point(aes(color = rdist), size = 18, alpha = .3) + 
+imf.rvfplot + 
+  geom_point(aes(color = rdist), size = 18, alpha = .3) + 
   scale_colour_gradient2(name = "Residual\ndistance", 
                          low = "green", mid = "orange", high = "red",
-                         midpoint = mean(imf.rvf$rdist))
+                         midpoint = mean(imf.rvf$rdist)) +
+  geom_rug() +
+  theme_bw()
 
 
 
 imf.rvfplot + aes(y = rsta) + labs(y = "Standardized residuals") +
   geom_hline(y = c(-2, 2), linetype = "dotted") + 
   geom_point(data = subset(imf.rvf, outlier1 == TRUE), 
-             color = "red", size = 18, alpha = .4)
+             color = "red", size = 18, alpha = .4) +
+  geom_rug() +
+  theme_bw()
 
 

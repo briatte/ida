@@ -33,7 +33,7 @@ The actual formula for the Herfindhal-Hirschman Index is $HHI =\sum_{i=1}^N s_i^
 
 We can expand on that example by using historical data from [StatCounter][sc-browsers], a company that tracks browser usage worldwide. Here's what this market has looked like in recent years:
 
-[![auto](https://farm7.staticflickr.com/6213/6302832047_4bd4ee3bd9_b.jpg)][mb-browsers]
+[![Browser trends for 2012, by Dave Shea auto "http://mezzoblue.com/archives/2011/11/01/a_new_number/"](https://farm7.staticflickr.com/6213/6302832047_4bd4ee3bd9_b.jpg)][mb-browsers]
 
 Data from 2008 to 2013 can be collected from [Wikipedia][wiki-browsers] with a little help from the `XML` package to read the HTML-formatted data from Wikipedia. The following packages are required:
 
