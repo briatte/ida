@@ -7,7 +7,6 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -16,35 +15,77 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1 class="header">IDA</h1>
-        <p class="header">An introduction to data analysis, using R. Experimental.</p>
+        <h1>IDA</h1>
+        <p>An introduction to data analysis, using R. Experimental.</p>
+
+        <p class="view"><a href="https://github.com/briatte/ida">View the Project on GitHub <small>briatte/ida</small></a></p>
+
 
         <ul>
-          <li class="download"><a class="buttons" href="https://github.com/briatte/ida/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/briatte/ida/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/briatte/ida">View On GitHub</a></li>
+          <li><a href="https://github.com/briatte/ida/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/briatte/ida/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/briatte/ida">View On <strong>GitHub</strong></a></li>
         </ul>
-
-        <p class="authors">Taught at <a href="http://sciences-po.fr/">Sciences Po</a> in Reims by <a href="http://f.briatte.org/">François Briatte</a> and <a href="http://ipetev.org/">Ivaylo Petev</a>.</p>
-
-
       </header>
       <section>
-        <h3>What is this?</h3>
+        <h1>
+<a name="readme" class="anchor" href="#readme"><span class="octicon octicon-link"></span></a>README</h1>
 
-<p>This page contains teaching material for the <a href="http://f.briatte.org/teaching/ida/">Introduction to Data Analysis</a> course. The course handbooks are not included due to copyright restrictions.</p>
+<p><a href="http://ipetev.org/">Ivaylo Petev</a> and <a href="http://f.briatte.org/">myself</a> use this repository to teach an undergraduate introduction to data analysis. The course is <a href="http://f.briatte.org/teaching/ida/">online</a>.</p>
 
-<h3>Who is this for?</h3>
+<p>If you are reading the course on its <a href="http://f.briatte.org/teaching/ida/">online pages</a>, just replace the <code>.html</code> extension of a page by <code>.R</code> to download the underlying code. </p>
 
-<p>Anyone who might want access to the whole course in R Markdown format. More details as soon as the course is over. Feel free to <a href="https://github.com/briatte/srqm/issues">report issues</a> or <a href="mailto:f.briatte@ed.ac.uk">email</a> in the meantime!</p>
+<h2>
+<a name="howto" class="anchor" href="#howto"><span class="octicon octicon-link"></span></a>HOWTO</h2>
 
-<p>Enjoy.</p>
+<p>The course pages are formatted in R Markdown syntax and were converted to HTML with <a href="http://yihui.name/knitr/">knitr</a> 1.2:</p>
+
+<pre><code>install.packages("knitr")
+citation("knitr")
+</code></pre>
+
+<p>The knitting routine is in the <a href="ida/blob/master/.Rprofile"><code>.Rprofile</code></a>. To compile the whole course, set the <code>IDA</code> folder as your working directory and then type <code>ida.build()</code> (takes a bit more than five minutes on optic fiber).</p>
+
+<p>Other files are called from the <code>code/</code> and <code>data/</code> folders. Most datasets are downloaded on the fly if they are missing from the <code>data/</code> folder, so make sure that you are online while running the scripts.</p>
+
+<h2>
+<a name="docs" class="anchor" href="#docs"><span class="octicon octicon-link"></span></a>DOCS</h2>
+
+<ul>
+<li>Check the <a href="ida/raw/master/syllabus.pdf">syllabus</a> for a quick overview.</li>
+<li>Check the <a href="https://github.com/briatte/ida/wiki/">wiki</a> for additional content.</li>
+</ul><p>The whole course was coded and taught with <a href="http://www.rstudio.com/">RStudio</a>. The code was ran on R 2.15.2, 2.15.3, 3.0.0 and 3.0.1, on a MacBook Air running OS X 10.8. Most plots use <a href="http://docs.ggplot2.org/current/">ggplot2</a> version 0.9.3.1 (just in case compatibility breaks at some point).</p>
+
+<p>Bits and pieces of the code were posted to <a href="https://gist.github.com/briatte">Gist</a>, <a href="http://rpubs.com/briatte">RPubs</a> and <a href="http://stackoverflow.com/">Stack Overflow</a> during development. Thanks to the great R developer and user communities that live online, and which we are now proud to count ourselves in.</p>
+
+<p>If you share the spirit of all this, you should consider joining the <a href="http://www.foastat.org/">Foundation for Open Access Statistics</a> and check out places like <a href="https://public.opencpu.org/">OpenCPU</a>, the <a href="http://okfn.org/">Open Knowledge Foundation</a> and other initiatives in open access, open data, open source and open science.</p>
+
+<h2>
+<a name="history" class="anchor" href="#history"><span class="octicon octicon-link"></span></a>HISTORY</h2>
+
+<p><strong>Jun-2013</strong>: first draft. Everything kind of works, Sessions 5--7 are unlisted, the <code>code/</code> folder contains a few more exercises. That's it for now!</p>
+
+<p><strong>May-2013</strong>: added more course content and better resolution (100dpi) for all plots.</p>
+
+<p><strong>Apr-2013:</strong> added a lot of course content and cleaner plots. Also adding the <a href="R-2013-Lyon">R-2013-Lyon</a> folder for a conference presentation on the course.</p>
+
+<p><strong>Mar-2013:</strong> reviewed course structure: less files, more code, tons of new examples and exercises.</p>
+
+<p><strong>Feb-2013:</strong> more efficient <code>.Rprofile</code> functions and improved <code>knitr</code> routine, tidier code on the early sessions.</p>
+
+<p><strong>Jan-2013:</strong> first release.</p>
+
+<blockquote>
+<p>First release: January 2013.<br>
+Last revised: June 2013.</p>
+</blockquote>
       </section>
       <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+        <p>This project is maintained by <a href="https://github.com/briatte">briatte</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>
