@@ -28,7 +28,9 @@ The whole course was coded and taught with [RStudio][rs]. The code was ran on R 
 
 ## CREDITS
 
-Thanks to the Sciences Po Reims staff, who offered invaluable support, and to the small group of students who enrolled in (and survived to) the course. The [R-2013-Lyon](R-2013-Lyon) slides have a bit more detail on the practicals.
+Thanks to the [Sciences Po Reims][spr] staff, who offered invaluable support, and to the small group of students who enrolled in (and survived to) the course. The [R-2013-Lyon](R-2013-Lyon) slides have a bit more detail on the practicals.
+
+[spr]: http://college.sciences-po.fr/sitereims/
 
 Bits and pieces of the code were posted to [Gist][gist], [RPubs][rpubs] and [Stack Overflow][so] during development. Thanks to the great R developer and user communities that live online, and which we are now proud to count ourselves in.
 

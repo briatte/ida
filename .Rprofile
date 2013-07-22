@@ -1,5 +1,5 @@
 ##
-## IDA STARTUP FILE 0.6 (2013-05-28)
+## IDA STARTUP FILE 0.7 (2013-07-22)
 ##
 
 require(utils, quietly = TRUE)
