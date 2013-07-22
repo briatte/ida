@@ -10,27 +10,25 @@ If you are reading the course on its [online pages][ida], just replace the `.htm
 
 ## HOWTO
 
-The course pages are formatted in R Markdown syntax and were converted to HTML with [knitr](http://yihui.name/knitr/) 1.2:
+The course pages are formatted in R Markdown syntax and were converted to HTML with [knitr][knitr] 1.2:
+
+[knitr]: http://yihui.name/knitr/
 
 	install.packages("knitr")
 	citation("knitr")
 
-The knitting routine is in the [`.Rprofile`](ida/blob/master/.Rprofile). To compile the whole course, set the `IDA` folder as your working directory and then type `ida.build()` (takes a bit more than five minutes on optic fiber).
+The knitting routine is in the [`.Rprofile`](.Rprofile). To compile the whole course, set the `IDA` folder as your working directory and then type `ida.build()` (takes a bit more than five minutes on optic fiber).
 
 Other files are called from the `code/` and `data/` folders. Most datasets are downloaded on the fly if they are missing from the `data/` folder, so make sure that you are online while running the scripts.
-
-## DOCS
-
-* Check the [syllabus][syll] for a quick overview.
-* Check the [wiki][wiki] for additional content.
-
-[syll]: ida/raw/master/syllabus.pdf
-[wiki]: https://github.com/briatte/ida/wiki/
 
 The whole course was coded and taught with [RStudio][rs]. The code was ran on R 2.15.2, 2.15.3, 3.0.0 and 3.0.1, on a MacBook Air running OS X 10.8. Most plots use [ggplot2][gg] version 0.9.3.1 (just in case compatibility breaks at some point).
 
 [rs]: http://www.rstudio.com/
 [gg]: http://docs.ggplot2.org/current/
+
+## CREDITS
+
+Thanks to the Sciences Po Reims staff, who offered invaluable support, and to the small group of students who enrolled in (and survived to) the course. The [R-2013-Lyon](R-2013-Lyon) slides have a bit more detail on the practicals.
 
 Bits and pieces of the code were posted to [Gist][gist], [RPubs][rpubs] and [Stack Overflow][so] during development. Thanks to the great R developer and user communities that live online, and which we are now proud to count ourselves in.
 
@@ -45,6 +43,8 @@ If you share the spirit of all this, you should consider joining the [Foundation
 [okfn]: http://okfn.org/
 
 ## HISTORY
+
+__Jul 2013__: typos and broken links. Removed some functions in `.Rprofile` that are now [part of](https://github.com/juba/questionr/blob/master/R/utils.r) the `questionr` package.
 
 __Jun-2013__: first draft. Everything kind of works, Sessions 5--7 are unlisted, the `code/` folder contains a few more exercises. That's it for now!
 

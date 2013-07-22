@@ -127,57 +127,6 @@ ida.build <- function(
   }
 }
 
-##
-## qscan(): find all packages called by library() or require() in the scripts
-##
-
-qscan <- function(..., load = TRUE, detail = TRUE) {
-  x = c(...)
-  # paths
-  if(length(x) < 1)
-    x <- paste("code", dir(path = "code", pattern="[0-9]+(.*)\\.R"), sep = "/")
-  # parse
-  libs <- sapply(x, FUN = function(x) {
-    conn <- file(x)
-    text <- readLines(conn, warn = FALSE)
-    text <- text[grepl("(library|require)\\(([a-zA-Z0-9]*)\\)", text)]
-    pkgs <- gsub(".*(library|require)\\(([a-zA-Z0-9]*)\\).*", "\\2", text)
-    close(conn)
-    unique(pkgs)
-  })
-  # load
-  list = unique(unlist(libs))
-  if(load) qload(list)
-  # format
-  if(!detail)
-    libs <- list
-  return(libs)
-}
-
-##
-## qload(): quickly load a package, installing it quietly if needed (for R 3.0.0)
-##
-
-qload <- function(..., load = TRUE, silent = TRUE) {
-  run = sapply(c(...), FUN = function(x) {
-    # install
-    if(!suppressMessages(suppressWarnings(require(x, character.only = TRUE)))) {
-      dl <- try(install.packages(x, quiet = TRUE))
-      if(class(dl) == "try-error")
-        stop("The package ", x, "could not be downloaded.")
-    }
-    # load
-    if(load) {
-      suppressPackageStartupMessages(library(x, character.only = TRUE))
-      if(!silent) message("Loaded package: ", x)
-    }
-  })
-}
-
-## If running the course on machines equipped with R 3.0.0, you can replace all
-## package install code at the top of each page by a shorter call to ida.load():
-## qload("downloader", "ggplot2")
-
 cat("Course functions ready.\nEnjoy your day.\n\n")
 
 ## kthxbye
