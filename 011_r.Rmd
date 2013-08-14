@@ -12,11 +12,11 @@
 [nr-coll]: http://www.noamross.net/blog/2013/1/7/collaborating-with-r.html "Don't R alone! A guide to tools for collaboration with R (Noam Ross)"
 [pb-rsoc]: http://www.burns-stat.com/r-and-social-media/ "R and social media (Patrick Burns)"
 
-Some people *really* like R. This very enthusiastic user is [Anthony Damico][ajd], a [prolific][ajd-gh] and [proficient][ajd-asdfree] analyst of U.S. survey data working at the Kaiser Family Foundation. This short video is a good introduction to the spirit of R and also mentions other programming and statistical languages:
+Some people *really* like R. The very enthusiastic R user below is [Anthony Damico][ajd-website], a [prolific][ajd-github] and [proficient][ajd-asdfree] analyst of U.S. survey data. His short video is a good introduction to the spirit of R; it also mentions other programming and statistical languages:
 
 [ajd-website]: http://www.ajdamico.com/ "Anthony J. Damico's website"
 [ajd-asdfree]: http://www.asdfree.com/ "Analyze Survey Data for Free (Anthony J. Damico)"
-[ajd-gh]: https://github.com/ajdamico "Anthony J. Damico's GitHub repository"
+[ajd-github]: https://github.com/ajdamico "Anthony J. Damico's GitHub repository"
 
 <iframe src="http://player.vimeo.com/video/52999628?badge=0" width="800" height="600" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
@@ -25,10 +25,11 @@ The R language has its [roots][pb-r] in the S language developed by AT&T, which 
 [pb-r]: http://www.burns-stat.com/pages/Present/infernoishR_annotated.pdf "Inferno-ish R (Patrick Burns)"
 [boc-comp]: http://brenocon.com/blog/2009/02/comparison-of-data-analysis-packages-r-matlab-scipy-excel-sas-spss-stata/ "Comparison of data analysis packages: R, Matlab, SciPy, Excel, SAS, SPSS, Stata (Brendan O'Connor)"
 
-R itself is [free and open software][r-lic], as most of its extensions. It is as free as it is powerful, but it comes with [some drawbacks][bh-drawbacks]. Its major disadvantage is that its learning curve is pretty steep. Do not worry: we will review as many examples as we need to make it work, and we will give you code to help creating your own.
+R itself is [free and open software][r-lic], as most of its extensions. It is as free as it is powerful (which currently makes it a “[hot][r-hot]” piece of software), but it comes with [some drawbacks][bh-drawbacks]. Its major disadvantage is that its learning curve is pretty steep. Do not worry: we will review as many examples as we need to make it work, and we will give you code to help creating your own.
 
-[r-lic]: http://www.r-project.org/Licenses/ "R Licences"
+[r-lic]: http://www.r-project.org/Licenses/ "R Licences (R Project)"
 [bh-drawbacks]: http://badhessian.org/seven-reasons-to-use-r-for-social-network-analysis-and-three-reasons-against/ "Seven Reasons to Use R for Social Network Analysis (and Three Reasons Against) (Benjamin Lind, Bad Hessian)"
+[r-hot]: http://www.revolutionanalytics.com/why-revolution-r/whitepapers/r-is-hot.php "Why R is Hot (David Smith, Revolution Analytics)"
 
 ## Installation
 
@@ -45,11 +46,13 @@ Now, download and install the latest version of R. You will need admin privilege
 - __For Mac OS X__, [download from this link][cran-us-mac], double-click it and press "OK" on all installation steps. For help, see [this video tutorial][rp-install] by Roger Peng, or [this other one][gd-install-mac] by Gordon Davis, which also covers RStudio.
 - __For Windows__, [download from this link][cran-us-win], which also comes with a few help pages. [This video tutorial][rp-install-win] by Roger Peng and [another one][ajd-install-win] by Anthony Damico can help with the installation, and you might also want to [use a few custom options][r-win].
 
-Do not worry if you do not manage to install R (or RStudio, the next software that you will have to install) on your own. Just download the program to your hard drive, and we will quickly guide you through installation in class. Note in passing that this course never really sanctions you for failing at doing something, only for not trying seriously enough in the first place.
+Do not worry if you do not manage to install R (or RStudio, the next software that you will have to install) on your own. Just download the program to your hard drive, and we will quickly guide you through installation in class. [Note in passing that this course never really sanctions you for failing at doing something, only for not trying seriously enough in the first place.][index-course-mechanics]
+
+[index-course-mechanics]: #index-course-mechanics
 
 ## Commands
 
-Open R and locate the blinking cursor preceded by a `>` at the bottom of the R Console window. This is where you will type commands and read their results. You might be already familiar with that process if you have ever used a Command Line Interface (CLI) before. The logic of entering commands is vaguely similar to asking elaborate queries in a versatile search engine like [DuckDuckGo][ddg].
+Open R and locate the blinking cursor preceded by a `>` at the bottom of the R Console window. This is where you will type commands and read their results. You might be already familiar with that process: the logic of using a used a Command Line Interface (CLI) is vaguely similar to asking elaborate queries in a versatile search engine like [DuckDuckGo][ddg].
 
 [ddg]: https://duckduckgo.com/goodies "DuckDuckGo (a smart search engine with privacy rights)"
 
@@ -80,9 +83,9 @@ You might have run into errors in the example above if you typed anything else t
 
 You might have run into these errors in particular:
 
-- __Forgetting quotes around text.__ R requires that you enclose text into single or double quotes, as to specify that it is text that you are typing, and not the name of an object. Try typing `hello` without quotes to see what an error message looks like in R.
-- __Double equal signs in logical expressions.__ One of the commands in the example above is a logical statement and therefore requires that you type _two_ equal signs instead of just one as you would in common mathematics. R uses the single equal sign for assignment.
-- __Typing UPPERCASE instead of lowercase.__ Note, finally, that R is case sensitive: lowercase and UPPERCASE letters are interpreted differently, and therefore cannot be used interchangeably. Lowercase is the common default, but UPPERCASE is also used from time to time.
+- __Forgetting quotes around text.__ you need to enclose text into single or double quotes to specify that it is text that you are typing, and not the name of an object: `"hello"` is a piece of text (a string of characters), whereas `hello` is the symbol that calls the object stored in memory under that name. Type `aloha` without quotes to see a common R error message.
+- __Double equal signs in logical expressions.__ One of the examples above uses a logical statement of the form "is _x_ equal to _y_" ($\frac{1}{2+3} = 0.2$). To pass logical statements to R, you need to type _two_ equal signs instead of just one as you would write in mathematical notation. R uses the single equal sign for assignment (more on that very soon).
+- __Typing UPPERCASE instead of lowercase.__ Note, finally, that R syntax is case sensitive: lowercase and UPPERCASE letters are interpreted differently, and therefore cannot be used interchangeably. Lowercase is the common default, but UPPERCASE is also used from time to time (the R software ecology maintains creativity through anarchy and has therefore very few strict conventions, naming not being one of them).
 
 Try the example below to see how changing the case can affect a given input:
 
@@ -93,13 +96,30 @@ letters[1:5]
 LETTERS[1:5]
 ```
 
-One last element of R syntax that you will have to get familiar with is the use of punctuation. Brackets and commas, in particular, are put to intensive use in R. The examples below show some of their common usage in R. In the `seq()` function, the arguments `from`, `to` and `by` are arguments, all assigned with the equal sign `=` and separated by commas. Some arguments can be optional.
+One last element of R syntax that you will have to get familiar with is the use of punctuation. Brackets and commas, in particular, are put to intensive use in R. The examples below show some of their common usage in R. In the `seq()` function, the arguments `from`, `to` and `by` are arguments, all assigned with the equal sign `=` and separated by commas. Some arguments are optional.
 
-```{r}
+```{r seq-order-sort}
+# A sequence of integers.
+1:3
+# The same result.
+seq(1, 3)
 # A sequence of floating point numbers.
 seq(from = 1, to = 3, by = .5)
 # A function with an optional logical argument.
 order(1:3, decreasing = TRUE)
+# The same result.
+rev(1:3)
+# The order function in its default behaviour.
+i <- sample(5)
+j <- order(i)
+list(i, j)
+# Using hard brackets for vector notation.
+i[order(i)]
+# The sort function for character strings.
+p <- "we come in peace"
+p <- strsplit(p, " ")
+p <- unlist(p)
+sort(p)
 ```
 
 Whitespace is technically ignored by R, so leaving space after a comma, for example, is not important for successful execution. Forgetting a comma or a closing bracket, however, will end up in a syntax error, and you will inevitably spend some time "debugging" your code by removing typos and other inadequacies.
@@ -141,9 +161,9 @@ All in all, R syntax is very much like German or Latin syntax: a bit counter-int
 
 ## Exit
 
-You can quit R like any other application or by typing `q()` from the command line interface. You might be asked whether you want to save the R work session that you started by creating the `x`, `y` and `z` objects in your environment. You do not need to do so here, and nothing dramatic will happen if you do, in which R will simply save a small invisible file on your hard drive.
+You can quit R like any other application or by typing `q()` from the command line interface. You might be asked whether you want to save the R work session that you started by creating the `x`, `y` and `z` objects in your environment. You do not need to do so here, and nothing dramatic will happen if you do (R will just save your work as a small invisible file on your hard drive).
 
-R can do a lot of things, including [waiting for you to make coffee][r-coffee]. A big drawback of R, however, is its barebones interface. We will fix that by installing the RStudio software to "pilot" R through better menus and windows. Turn to the next page for instructions to do so and for a quick guide to two of R's main strengths, user-contributed packages and elegant plotting facilities.
+R can do a lot of things, including [waiting for you to make coffee][r-coffee]. A big drawback of R, however, is its barebones interface. We will fix that by installing the RStudio software to "pilot" R through better menus and windows. Turn to the next section for instructions and for a quick guide to two of R's main strengths: user-contributed packages and elegant plotting facilities.
 
 [r-coffee]: http://vimeo.com/43305640 "How to make perfect pour-over coffee and time your French press steeping with R (Anthony Damico)"
 

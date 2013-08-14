@@ -53,6 +53,8 @@ If you like video tutorials, we will link to a few of them, and in particular:
 - [Gordon Davis](https://www.youtube.com/playlist?list=PL8BE0E317807A9A21) (covers data operations well)
 - [User Tutorlol](https://www.youtube.com/playlist?list=PL69A9CCD816A5F3A5) (covers a bit of everything)
 
+The [R video tutorials by Google developers](https://www.youtube.com/playlist?list=PLOU2XLYxmsIK9qQfztXeybpHvru-TrqAP) are also worth a look.
+
 ## Blogs
 
 In addition to R tutorials, there are [R blogs](http://www.r-bloggers.com/) and online communities like [Stack Overflow](http://stackoverflow.com/questions/tagged/r) where R users can share questions and answers about the software. Check also a few data and stats communities like [Cross Validated](http://stats.stackexchange.com/questions/tagged/r) or the [/r/datasets][reddit-datasets] channel at Reddit.

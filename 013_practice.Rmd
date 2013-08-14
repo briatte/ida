@@ -64,7 +64,7 @@ if(clean) {
 }
 ```
 
-If you ever plan to run R code without full understanding of what the code might accomplish, first consider whether you really want to do that, and give a second look at the code and its source. Then consider using a "sandboxed" environment like [the one at Rapporter.net][hackme] to check the code without any possible effect on your system.
+If you ever plan to run R code without full understanding of what the code might accomplish, first consider whether you really want to do that, and give a second look at the code and its source. Consider using a "sandboxed" environment like [the one at Rapporter.net][hackme] to check the code without any possible effect on your system.
 
 [hackme]: http://hackme.rapporter.net/ "R sandbox demo (Rapporter)"
 
