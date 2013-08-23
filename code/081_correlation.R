@@ -14,10 +14,10 @@ packages <- lapply(packages, FUN = function(x) {
 # Target source.
 url = "https://raw.github.com/jeromyanglim/oecd_life_analysis/master/oecd-life.csv"
 # Target file.
-file = "data/oecd.bli.2011.csv"
-# Download the dataset.
+file = "data/oecd.bli.2011.tsv"
+# Download dataset.
 if(!file.exists(file)) download(url, file, mode = "wb")
-# Import the CSV file.
+# Import TSV file.
 oecd <- read.csv(file, sep = "\t", stringsAsFactors = FALSE)[1:36, ]
 
 

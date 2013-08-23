@@ -48,21 +48,22 @@ qplot(data = dkos, y = Obama.2012, x = Obama.2008,
 # Target locations.
 link = "http://www.qogdata.pol.gu.se/data/Codebook_QoG_Std15May13.pdf"
 file = "data/qog.codebook.pdf"
-# Download Quality of Government Basic codebook.
+# Download Quality of Government Standard codebook.
 if(!file.exists(file)) download(link, file, mode = "wb")
 
 
 
-# Download Quality of Government Standard dataset.
-link = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
-file = "data/qog.cs.dta"
-data = "data/qog.cs.csv"
-if(!file.exists(data)) {
-  if(!file.exists(file)) download(link, file, mode = "wb")
-  write.csv(read.dta(file), data)
+# Extract Quality of Government Standard cross-sectional data from a ZIP archive.
+zip = "data/qog.cs.zip"
+qog = "data/qog.cs.csv"
+if(!file.exists(zip)) {
+  dta = "data/qog.cs.dta"
+  download("http://www.qogdata.pol.gu.se/data/qog_std_cs.dta", dta, mode = "wb")
+  write.csv(read.dta(dta, warn.missing.labels = FALSE), qog)
+  zip(zip, file = c(dta, qog))
+  file.remove(dta, qog)
 }
-# Read local copy.
-qog <- read.csv(data, stringsAsFactors = FALSE)
+qog = read.csv(unz(zip, qog), stringsAsFactors = FALSE)
 
 
 
@@ -90,7 +91,7 @@ i <- seq(0, 1400, 100)
 
 
 # Scraper function.
-fide <- lapply(i, FUN = function(x) {
+fide <- sapply(i, FUN = function(x) {
   # Define filename.
   file = paste0(files, "/fide.table.", x, ".csv")
   # Scrape if needed.
@@ -112,6 +113,8 @@ fide <- lapply(i, FUN = function(x) {
 # Zip archive.
 zip("data/fide.zip", fide)
 # Delete workfiles.
+message(fide)
+message(files)
 file.remove(fide, files)
 
 

@@ -11,31 +11,51 @@ packages <- lapply(packages, FUN = function(x) {
 
 
 
-# Target data link.
-url = "http://elsa.berkeley.edu/~saez/TabFig2011prel.xls"
-# Target data file.
-xls = "data/piketty.saez.2011.xls"
-# Download dataset.
-if (!file.exists(xls)) {
-  message("Dowloading the data...")
-  # Download spreadsheet.
-  download(url, xls, mode = "wb")
-}
+# Set name of first data extract.
+ps.share = "data/piketty.saez.2011.share.csv"
+# Set name of second data extract.
+ps.income = "data/piketty.saez.2011.income.csv"
+# Set name of source dataset.
+zip = "data/piketty.saez.2011.zip"
 
+# Create ZIP archive.
+if (!file.exists(zip)) {
+  # Target data link.
+  url = "http://elsa.berkeley.edu/~saez/TabFig2011prel.xls"
+  # Target filename.
+  xls = "data/piketty.saez.2011.xls"
+  # Download source dataset.
+  if (!file.exists(xls))
+    download(url, xls, mode = "wb")
 
-
-file = "data/piketty.saez.2011.share.csv"
-if(!file.exists(file)) {
-  # Import from XLS format.
-  ps.share <- read.xlsx(xls, sheetName = "Table A1",
-                        startRow = 4, endRow = 104, colIndex = 1:7)
+  # Import first data extract (income shares) from XLS source.
+  data = read.xlsx(xls, sheetName = "Table A1",
+                   startRow = 4, endRow = 104, colIndex = 1:7)
   # Remove empty line.
-  ps.share = ps.share[-1, ]
+  data = data[-1, ] 
   # Save local copy.
-  write.csv(ps.share, file, row.names = FALSE)
+  write.csv(data, ps.share, row.names = FALSE)
+
+  # Import second example sheet from XLS source.
+  data = read.xlsx(xls, sheetName = "Table_Incomegrowth", 
+                   startRow = 1, endRow = 103, colIndex = c(10, 5, 3))
+  # Remove empty line.
+  data = data[-1, ]
+  # Add years manually (little data bug).
+  data = cbind(1913:2011, data)
+  # Save local copy.
+  write.csv(data, ps.income, row.names = FALSE)
+
+  # Create ZIP with source and data extracts.
+  zip(zip, files = c(xls, ps.share, ps.income))
+  # Remove files (we will read from the ZIP).
+  file.remove(xls, ps.share, ps.income)
 }
+
+
+
 # Read CSV file.
-ps.share = read.csv(file, stringsAsFactors = FALSE)
+ps.share = read.csv(unz(zip, ps.share), stringsAsFactors = FALSE)
 # Check result.
 str(ps.share)
 
@@ -62,20 +82,8 @@ qplot(data = ps.share, x = Year, y = value / 100, color = Fractile, geom = "line
 
 
 
-file = "data/piketty.saez.2011.income.csv"
-if(!file.exists(file)) {
-  # Import from XLS format.
-  ps.income <- read.xlsx(xls, sheetName = "Table_Incomegrowth", 
-                         startRow = 1, endRow = 103, colIndex = c(10, 5, 3))
-  # Remove empty line.
-  ps.income = ps.income[-1, ]
-  # Add years manually.
-  ps.income <- cbind(1913:2011, ps.income)
-  # Save local copy.
-  write.csv(ps.income, file, row.names = FALSE)
-}
 # Read CSV file.
-ps.income = read.csv(file)
+ps.income = read.csv(unz(zip, ps.income))
 # Check result.
 str(ps.income)
 

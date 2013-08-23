@@ -77,15 +77,17 @@ g2 + labs(x = "Income Growth, tenure-adjusted")
 
 
 # Download Quality of Government Standard dataset.
-link = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
-file = "data/qog.cs.dta"
-data = "data/qog.cs.csv"
-if(!file.exists(data)) {
-  if(!file.exists(file)) download(link, file, mode = "wb")
-  write.csv(read.dta(file), data)
+zip = "data/qog.cs.zip"
+qog = "data/qog.cs.csv"
+if(!file.exists(zip)) {
+  dta = "data/qog.cs.dta"
+  download("http://www.qogdata.pol.gu.se/data/qog_std_cs.dta", dta, mode = "wb")
+  write.csv(read.dta(dta, warn.missing.labels = FALSE), qog)
+  zip(zip, file = c(dta, qog))
+  file.remove(dta, qog)
 }
-# Read local copy.
-qog <- read.csv(data, stringsAsFactors = FALSE)
+qog = read.csv(unz(zip, qog), stringsAsFactors = FALSE)
+# Remove missing values.
 qog = na.omit(with(qog, data.frame(ccodealp, wdi_fr, bl_asy25f)))
 # Regression models.
 m1 = lm(wdi_fr ~ bl_asy25f, qog)

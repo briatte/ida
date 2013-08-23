@@ -12,7 +12,6 @@ require(grid, quietly = TRUE)
 cat("\nWelcome to Introduction to Data Analysis!\n")
 cat(ida.site <- "http://f.briatte.org/teaching/ida/", "\n\n")
 
-if(!file.exists("backup")) dir.create("backup")
 if(!file.exists("code")) dir.create("code")
 if(!file.exists("data")) dir.create("data")
 
@@ -59,18 +58,11 @@ ida.files <- function(x = 0:12) {
 ## ida.build(): knit the course from R Markdown to HTML
 ##
 
-ida.build <- function(
-  x      = 0:12,
-  repo   = getwd(),
-  path   = "html",
-  backup = "backup") {
+ida.build <- function(x = 0:12, repo = getwd(), path = "html", clean = FALSE) {
   require(knitr)
   
   # knitr setup
-  opts_chunk$set(comment = NA, 
-                 dpi = 100, 
-                 fig.width = 7, 
-                 fig.height = 5.3)
+  opts_chunk$set(comment = NA, dpi = 100, fig.width = 7, fig.height = 5.3)
   
   # set course directory
   stopifnot(file.exists(repo))
@@ -78,13 +70,6 @@ ida.build <- function(
   
   if(repo == "/Users/fr/Documents/Teaching/IDA")
     path = "/Users/fr/Documents/Code/Websites/briatte.github.com/teaching/ida"
-
-  # backup code
-  if(length(backup) > 1) {
-    stopifnot(file.exists(backup))
-    backup = paste(paste0(backup, "/ida"), Sys.Date(), "zip", sep = ".")
-    zip(backup, dir(pattern = ".Rmd"))
-  }
 
   # clean up
   file.remove(dir(pattern="[0-9]{3,}_\\w{1,}\\.html$"))
@@ -125,6 +110,7 @@ ida.build <- function(
     clean = file.remove(gsub("Rmd", "html", all))
     clean = file.remove(gsub("Rmd", "md", all))
   }
+  if(clean) rm(list = ls())
 }
 
 cat("Course functions ready.\nEnjoy your day.\n\n")
