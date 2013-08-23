@@ -38,23 +38,22 @@
 <h2>
 <a name="howto" class="anchor" href="#howto"><span class="octicon octicon-link"></span></a>HOWTO</h2>
 
-<p>The course pages are formatted in R Markdown syntax and were converted to HTML with <a href="http://yihui.name/knitr/">knitr</a> 1.2:</p>
+<p>The course pages are formatted in R Markdown syntax and were converted to HTML with <a href="http://yihui.name/knitr/">knitr</a> 1.4:</p>
 
 <pre><code>install.packages("knitr")
 citation("knitr")
 </code></pre>
 
-<p>The knitting routine is in the <a href="ida/blob/master/.Rprofile"><code>.Rprofile</code></a>. To compile the whole course, set the <code>IDA</code> folder as your working directory and then type <code>ida.build()</code> (takes a bit more than five minutes on optic fiber).</p>
+<p>The knitting routine is in the <a href=".Rprofile"><code>.Rprofile</code></a>. To compile the whole course, set the <code>IDA</code> folder as your working directory and then type <code>ida.build()</code> (takes a bit more than five minutes on optic fiber).</p>
 
-<p>Other files are called from the <code>code/</code> and <code>data/</code> folders. Most datasets are downloaded on the fly if they are missing from the <code>data/</code> folder, so make sure that you are online while running the scripts.</p>
+<p>Other files are called from the <a href="https://github.com/briatte/ida/blob/master/code/README.md"><code>code/</code></a> and <a href="https://github.com/briatte/ida/blob/master/data/README.md"><code>data/</code></a> folders. Most datasets are downloaded on the fly if they are missing from the <code>data/</code> folder, so make sure that you are online while running the scripts.</p>
+
+<p>The whole course was coded and taught with <a href="http://www.rstudio.com/">RStudio</a>. The code was ran on R 2.15.2, 2.15.3, 3.0.0 and 3.0.1, on a MacBook Air running OS X 10.8 and Mac OS X 10.9. Most plots use <a href="http://docs.ggplot2.org/current/">ggplot2</a> version 0.9.3.1 (just in case compatibility breaks at some point).</p>
 
 <h2>
-<a name="docs" class="anchor" href="#docs"><span class="octicon octicon-link"></span></a>DOCS</h2>
+<a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>CREDITS</h2>
 
-<ul>
-<li>Check the <a href="ida/raw/master/syllabus.pdf">syllabus</a> for a quick overview.</li>
-<li>Check the <a href="https://github.com/briatte/ida/wiki/">wiki</a> for additional content.</li>
-</ul><p>The whole course was coded and taught with <a href="http://www.rstudio.com/">RStudio</a>. The code was ran on R 2.15.2, 2.15.3, 3.0.0 and 3.0.1, on a MacBook Air running OS X 10.8. Most plots use <a href="http://docs.ggplot2.org/current/">ggplot2</a> version 0.9.3.1 (just in case compatibility breaks at some point).</p>
+<p>Thanks to the <a href="http://college.sciences-po.fr/sitereims/">Sciences Po Reims</a> staff, who offered invaluable support, and to the small group of students who enrolled in (and survived to) the course. The <a href="R-2013-Lyon">R-2013-Lyon</a> slides have a bit more detail on the practicals.</p>
 
 <p>Bits and pieces of the code were posted to <a href="https://gist.github.com/briatte">Gist</a>, <a href="http://rpubs.com/briatte">RPubs</a> and <a href="http://stackoverflow.com/">Stack Overflow</a> during development. Thanks to the great R developer and user communities that live online, and which we are now proud to count ourselves in.</p>
 
@@ -63,25 +62,29 @@ citation("knitr")
 <h2>
 <a name="history" class="anchor" href="#history"><span class="octicon octicon-link"></span></a>HISTORY</h2>
 
+<p><strong>Aug 2013</strong>: better data management, with large or multiple-file datasets read from ZIP archives. Switched datasets to <code>.csv</code> <a href="https://github.com/blog/1601-see-your-csvs">thanks to GitHub</a>.</p>
+
+<p><strong>Jul 2013</strong>: typos and broken links. Removed some functions in <code>.Rprofile</code> that are now <a href="https://github.com/juba/questionr/blob/master/R/utils.r">part of</a> the <code>questionr</code> package.</p>
+
 <p><strong>Jun-2013</strong>: first draft. Everything kind of works, Sessions 5--7 are unlisted, the <code>code/</code> folder contains a few more exercises. That's it for now!</p>
 
 <p><strong>May-2013</strong>: added more course content and better resolution (100dpi) for all plots.</p>
 
-<p><strong>Apr-2013:</strong> added a lot of course content and cleaner plots. Also adding the <a href="R-2013-Lyon">R-2013-Lyon</a> folder for a conference presentation on the course.</p>
+<p><strong>Apr-2013</strong>: added a lot of course content and cleaner plots. Also adding the <a href="R-2013-Lyon">R-2013-Lyon</a> folder for a conference presentation on the course.</p>
 
-<p><strong>Mar-2013:</strong> reviewed course structure: less files, more code, tons of new examples and exercises.</p>
+<p><strong>Mar-2013</strong>: reviewed course structure: less files, more code, tons of new examples and exercises.</p>
 
-<p><strong>Feb-2013:</strong> more efficient <code>.Rprofile</code> functions and improved <code>knitr</code> routine, tidier code on the early sessions.</p>
+<p><strong>Feb-2013</strong>: more efficient <code>.Rprofile</code> functions and improved <code>knitr</code> routine, tidier code on the early sessions.</p>
 
-<p><strong>Jan-2013:</strong> first release.</p>
+<p><strong>Jan-2013</strong>: first release.</p>
 
 <blockquote>
 <p>First release: January 2013.<br>
-Last revised: June 2013.</p>
+Last revised: August 2013.</p>
 </blockquote>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/briatte">François</a></p>
+        <p>This project is maintained by <a href="https://github.com/briatte">briatte</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
