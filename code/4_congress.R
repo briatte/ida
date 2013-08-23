@@ -79,10 +79,12 @@ g
 # ------------------------------------------------------------
 
 # Target dataset.
-file = "data/dwnominate.csv"
+csv = "data/dwnominate.csv"
+# Target archive.
+zip = "data/dwnominate.zip"
 
 # Download and convert.
-if(!file.exists(file)) {
+if(!file.exists(zip)) {
   # Target file name.
   dta = "data/dwnominate.dta"
   # Target file URL.
@@ -92,11 +94,15 @@ if(!file.exists(file)) {
   # Read DTA format.
   dw = read.dta(dta)
   # Save CSV format.
-  write.csv(dw, file, row.names = FALSE)
+  write.csv(dw, csv, row.names = FALSE)
+  # Save ZIP archive of both formats.
+  zip(zip, files = c(dta, csv))
+  # Delete source files.
+  file.remove(dta, csv)
 }
 
-# Read data.
-dw = read.csv(file)
+# Read CSV file from ZIP.
+dw = read.csv(unz(zip, csv))
 
 # Check result.
 head(dw[, 1:9])

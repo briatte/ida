@@ -60,7 +60,7 @@ g2
 
 
 
-# Identify ZIP data.
+# Identify ZIP folder.
 zip = "data/htus8008.zip"
 # Download ZIP archive.
 if(!file.exists(zip)) {
@@ -69,15 +69,13 @@ if(!file.exists(zip)) {
   # Download ZIP archive.
   download(url, zip, mode = "wb")
 }
-# Identify ZIP folder.
-dir = "data/htus8008"
-# Unzip archive.
-if(!file.exists(dir)) unzip(zip, exdir = dir)
+# Inspect ZIP contents.
+head(unzip(zip, list = TRUE))
+# Read CSV file.
+bjs <- read.csv(unz(zip, "htus8008f42.csv"), skip = 11, nrows = 29)
 
 
 
-# Read some data as CSV.
-bjs <- read.csv("data/htus8008/htus8008f42.csv", skip = 11, nrows = 29)
 # Inspect the data.
 str(bjs)
 # Remove last column.

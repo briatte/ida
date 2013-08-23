@@ -17,20 +17,22 @@ downloader::source_url(code, prompt = FALSE)
 
 
 
-# Data download-and-load function.
-ggnet.data = function(file) {
-  link = paste0("https://raw.github.com/briatte/ggnet/master/", file)
-  data = paste0("data/frmps.", file)
-  if(!file.exists(data)) download(link, data, mode = "wb")
-  data = read.csv(data, sep = "\t")
-  print(head(data))
-  return(data)
+# Locate and save the network data.
+net = "data/network.tsv"
+ids = "data/nodes.tsv"
+zip = "data/twitter.an.zip"
+if(!file.exists(zip)) {
+  download("https://raw.github.com/briatte/ggnet/master/network.tsv", net)
+  download("https://raw.github.com/briatte/ggnet/master/nodes.tsv", ids)
+  zip(zip, file = c(net, ids))
+  file.remove(net, ids)
 }
-# Get French MPs on Twitter data.
-ids <- ggnet.data("nodes.txt")
-df  <- ggnet.data("network.txt")
+# Get data on current French MPs.
+ids = read.csv(unz(zip, ids), sep = "\t")
+# Get data on their Twitter accounts.
+net = read.csv(unz(zip, net), sep = "\t")
 # Convert it to a network object.
-net = network(df)
+net = network(net)
 
 
 

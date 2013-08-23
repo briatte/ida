@@ -28,7 +28,7 @@ csv = "data/AllWorldBank_IBRDIDA.csv"
 if(!file.exists(zip)) download(url, zip, mode = "wb")
 if(!file.exists(csv)) unzip(zip, exdir = "data")
 # Subset to Africa.
-wb = read.csv(csv)
+wb = read.csv(unz("data/wb.projects.zip", "AllWorldBank_IBRDIDA.csv"))
 wb = subset(wb, Region == "AFRICA")
 # Plain filename.
 txt = "data/wb.projects.csv"

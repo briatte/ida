@@ -84,27 +84,28 @@ This sections shows how to download the [Quality of Government (QOG)][qog] datas
 
 The first code block will start by downloading the QOG codebook if it is not found in the `data` folder. Install the `downloader` package prior to running the code (by now, you should know how to install a package). Note that we first store the target locations for the data, that is, the link to its online location, and its desired download location on disk.
 
-```{r qog-codebook, results='hide'}
+```{r qog-codebook, eval = FALSE, results = 'hide'}
 # Target locations.
 link = "http://www.qogdata.pol.gu.se/data/Codebook_QoG_Std15May13.pdf"
 file = "data/qog.codebook.pdf"
-# Download Quality of Government Basic codebook.
+# Download Quality of Government Standard codebook.
 if(!file.exists(file)) download(link, file, mode = "wb")
 ```
 
 The next code block checks whether you have the comma-separated values version of the data. If not, it downloads the QOG Standard cross-sectional dataset in Stata format, opens it using the `read.dta()` function from the `foreign` library, and converts it from that source. The Stata format has the advantage of holding variable and value labels; we will keep it as a backup.
 
 ```{r qog-data-cs}
-# Download Quality of Government Standard dataset.
-link = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
-file = "data/qog.cs.dta"
-data = "data/qog.cs.csv"
-if(!file.exists(data)) {
-  if(!file.exists(file)) download(link, file, mode = "wb")
-  write.csv(read.dta(file), data)
+# Extract Quality of Government Standard cross-sectional data from a ZIP archive.
+zip = "data/qog.cs.zip"
+qog = "data/qog.cs.csv"
+if(!file.exists(zip)) {
+  dta = "data/qog.cs.dta"
+  download("http://www.qogdata.pol.gu.se/data/qog_std_cs.dta", dta, mode = "wb")
+  write.csv(read.dta(dta, warn.missing.labels = FALSE), qog)
+  zip(zip, file = c(dta, qog))
+  file.remove(dta, qog)
 }
-# Read local copy.
-qog <- read.csv(data, stringsAsFactors = FALSE)
+qog = read.csv(unz(zip, qog), stringsAsFactors = FALSE)
 ```
 
 'Cross-sectional' means that the data has only one observation per unit of analysis, which are countries in this case. 'Cross-sectional time series' would hold the same data, but for repeated observations over time, such as the fertility rate of each country in 1970, 1971, and so on. Consult the QOG codebook for more details the data.
@@ -166,7 +167,8 @@ We are now going to scrape that table from the HTML code of the web pages. The n
 _Note that the next code block can take a little while to run, depending on your processor speed and bandwidth capacity. Our own tests on modern equipment took a maximum of one minute._
 
 ```{r fide-scrape, message = FALSE}
-fide <- lapply(i, FUN = function(x) {
+# Scraper function.
+fide <- sapply(i, FUN = function(x) {
   # Define filename.
   file = paste0(files, "/fide.table.", x, ".csv")
   # Scrape if needed.
@@ -183,16 +185,23 @@ fide <- lapply(i, FUN = function(x) {
   } else {
     message("Skipping table #", x)
   }
+  return(file)
 })
-# Zip a backup copy.
-zip("data/fide.zip", files)
+# Zip archive.
+zip("data/fide.zip", fide)
+# Delete workfiles.
+message(fide)
+message(files)
+file.remove(fide, files)
 ```
 
-The code above is verbose and economical: it will skip existing files, and it will tell you what it needs to download. If you already have all data tables in the `fide` folder of your `data` folder, try deleting one file from it and run the code again to see how it works. When you are done running the code, you will need to assemble all tables together, which is what we do below.
+The code above is verbose: it will tell you when it skips existing files, and it will tell you when it starts downloading one. If you already have all data tables in the `fide` folder of your `data` folder, try deleting one file from it and run the code again to see how it works. When you are done running the code, you will need to assemble all tables together, which is what we do below by reading them from the ZIP archive.
 
 ```{r fide-data}
 # Import tables into a list.
-fide <- lapply(paste0(files, "/", dir(files)), read.csv)
+fide <- lapply(fide, function(x) {
+  read.csv(unz("data/fide.zip", x))
+})
 # Convert list to data frame.
 fide <- rbind.fill(fide)
 # Remove rows with no player.

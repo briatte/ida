@@ -89,6 +89,7 @@ i <- seq(0, 1400, 100)
 
 
 
+# Scraper function.
 fide <- lapply(i, FUN = function(x) {
   # Define filename.
   file = paste0(files, "/fide.table.", x, ".csv")
@@ -106,12 +107,19 @@ fide <- lapply(i, FUN = function(x) {
   } else {
     message("Skipping table #", x)
   }
+  return(file)
 })
+# Zip archive.
+zip("data/fide.zip", fide)
+# Delete workfiles.
+file.remove(fide, files)
 
 
 
 # Import tables into a list.
-fide <- lapply(paste0(files, "/", dir(files)), read.csv)
+fide <- lapply(fide, function(x) {
+  read.csv(unz("data/fide.zip", x))
+})
 # Convert list to data frame.
 fide <- rbind.fill(fide)
 # Remove rows with no player.
