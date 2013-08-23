@@ -12,8 +12,8 @@ packages <- lapply(packages, FUN = function(x) {
 
 
 # Target data source.
-link = "https://raw.github.com/briatte/ida/master/data/beijing.aqi.2013.txt"
-file = "data/beijing.aqi.2013.txt"
+link = "https://raw.github.com/briatte/ida/master/data/beijing.aqi.2013.csv"
+file = "data/beijing.aqi.2013.csv"
 if(!file.exists(file)) download(link, file)
 # Read CSV file.
 bp <- read.csv(file, stringsAsFactors = FALSE)

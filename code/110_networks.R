@@ -55,7 +55,7 @@ ggnet(net,
 
 # Locate data.
 link = "http://www.babelgraph.org/data/ga_edgelist.csv"
-file = "data/ga.network.txt"
+file = "data/ga.network.csv"
 # Download data.
 if(!file.exists(file)) download(link, file, mode = "wb")
 # Create network.

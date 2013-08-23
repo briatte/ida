@@ -23,7 +23,7 @@ This example is based on online ratings of TV shows. It was first coded at [Diff
 [tww-geos]: http://www.geos.tv/index.php/list?sid=179&collection=all
 
 ```{r tww-data}
-file = "data/geos.tww.txt"
+file = "data/geos.tww.csv"
 if(!file.exists(file)) {
   # Parse HTML content.
   html <- htmlParse("http://www.geos.tv/index.php/list?sid=179&collection=all")

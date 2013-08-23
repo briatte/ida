@@ -13,7 +13,7 @@ packages <- lapply(packages, FUN = function(x) {
 # David Wasserman's data.
 link = "https://docs.google.com/spreadsheet/pub?key=0AjYj9mXElO_QdHpla01oWE1jOFZRbnhJZkZpVFNKeVE&gid=0&output=csv"
 # Download the spreadsheet.
-if(!file.exists(file <- "data/wasserman.votes.0812.txt")) download(link, file, mode = "wb")
+if(!file.exists(file <- "data/wasserman.votes.0812.csv")) download(link, file, mode = "wb")
 # Import selected rows.
 dw <- read.csv(file, stringsAsFactors = FALSE, skip = 4)[-c(1:6, 19:20, 28), -c(4, 7:8)]
 # Check result.

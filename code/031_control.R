@@ -21,7 +21,7 @@ packages <- lapply(packages, FUN = function(x) {
 # Set file locations.
 link = "http://www.minneapolisfed.org/publications_papers/studies/recession_perspective/data/historical_recessions_recoveries_data_05_03_2013.xls"
 file = "data/us.recessions.4807.xls"
-data = "data/us.recessions.4807.txt"
+data = "data/us.recessions.4807.csv"
 # Download the data.
 if(!file.exists(data)) {
   if(!file.exists(file)) download(link, file, mode = "wb")

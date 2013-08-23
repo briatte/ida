@@ -81,7 +81,7 @@ To replicate these figures, you will need to save its data into a data table. Th
 
 ```{r wdi-csv-1}
 # Target file location.
-file = "data/wdi.govdebt.0511.txt"
+file = "data/wdi.govdebt.0511.csv"
 # Export CSV file.
 write.csv(wdi, file, row.names = FALSE)
 # Read CSV file again.

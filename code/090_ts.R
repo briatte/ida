@@ -14,7 +14,7 @@ packages <- lapply(packages, FUN = function(x) {
 # Target data link.
 link = "https://docs.google.com/spreadsheet/pub?key=0AonYZs4MzlZbcGhOdG0zTG1EWkVPOEY3OXRmOEIwZmc&output=csv"
 # Target data file.
-file = "data/icm.polls.8413.txt"
+file = "data/icm.polls.8413.csv"
 
 
 

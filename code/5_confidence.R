@@ -31,7 +31,7 @@ require(ggbiplot)
 # -------------------
 
 # downloaded during last session:
-qog.data <- read.csv("data/qog.cs.txt", stringsAsFactors = FALSE)
+qog.data <- read.csv("data/qog.cs.csv", stringsAsFactors = FALSE)
 
 # drop duplicate observation:
 qog.data = subset(qog.data, cname != "Congo, Democratic Republic")

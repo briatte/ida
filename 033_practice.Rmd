@@ -48,7 +48,7 @@ The next code block anticipates on next week's session: it downloads and convert
 
 ```{r browsers-data}
 # Target file.
-file <- "data/browsers.0813.txt"
+file <- "data/browsers.0813.csv"
 # Load the data.
 if(!file.exists(file)) {
   # Target a page with data.

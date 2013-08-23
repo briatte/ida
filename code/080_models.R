@@ -12,9 +12,9 @@ packages <- lapply(packages, FUN = function(x) {
 
 
 # Identify the data file.
-file = "data/olympics.2012.txt"
+file = "data/olympics.2012.csv"
 # Identify the data source.
-link = "https://raw.github.com/briatte/ida/master/data/olympics.2012.txt"
+link = "https://raw.github.com/briatte/ida/master/data/olympics.2012.csv"
 # Download the data if needed.
 if(!file.exists(file)) download(link, file, mode = "wb")
 # Read the data.

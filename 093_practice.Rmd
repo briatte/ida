@@ -42,7 +42,7 @@ The first segment of data that we want to use is the income share of the top 1% 
 [carl-xlsx]: http://www.r-bloggers.com/writing-from-r-to-excel-with-xlsx/
 
 ```{r ps-shares-data}
-file = "data/piketty.saez.2011.share.txt"
+file = "data/piketty.saez.2011.share.csv"
 if(!file.exists(file)) {
   # Import from XLS format.
   ps.share <- read.xlsx(xls, sheetName = "Table A1",
@@ -86,7 +86,7 @@ qplot(data = ps.share, x = Year, y = value / 100, color = Fractile, geom = "line
 The rate of increase in income shares over the recent years is different for each income fractile: some top incomes have grown their shares quicker than others. To visualize the event, we extract a different spreadsheet holding real income levels (including capital gains) for the lowest 90%, top 10% and top 1% income fractiles. The years are added manually due to an import error with the Excel format.
 
 ```{r ps-incomes-data}
-file = "data/piketty.saez.2011.income.txt"
+file = "data/piketty.saez.2011.income.csv"
 if(!file.exists(file)) {
   # Import from XLS format.
   ps.income <- read.xlsx(xls, sheetName = "Table_Incomegrowth", 

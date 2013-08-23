@@ -78,7 +78,7 @@ This function is used in the next pages to plot a few social networks. You can t
 ```{r greys-anatomy-auto, message = FALSE, warning = FALSE, tidy = FALSE, cache = TRUE}
 # Locate data.
 link = "http://www.babelgraph.org/data/ga_edgelist.csv"
-file = "data/ga.network.txt"
+file = "data/ga.network.csv"
 # Download data.
 if(!file.exists(file)) download(link, file, mode = "wb")
 # Create network.

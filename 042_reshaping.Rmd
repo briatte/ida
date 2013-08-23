@@ -28,12 +28,12 @@ Here's an [example based on the recent housing bubble][dsn-bubble]. It shows cha
 
 ```{r csi-data, eval = FALSE, include = FALSE}
 dat <- read.csv("data/CSHomePrice_History.csv")
-write.csv(dat, "data/schiller.8712.txt", row.names = FALSE)
+write.csv(dat, "data/schiller.8712.csv", row.names = FALSE)
 ```
 
 ```{r csi-load, results='hide'}
 # Open the data.
-csi <- read.csv("data/schiller.8712.txt")
+csi <- read.csv("data/schiller.8712.csv")
 # Inspect the top data structure.
 str(csi[, 1:5])
 # Inspect the first data rows/columns.
@@ -92,7 +92,7 @@ In this segment, we show how to draw smooth trends of assault deaths in the Unit
 [bjs]: http://bjs.ojp.usdoj.gov/
 [reddit-datasets]: http://www.reddit.com/r/datasets
 
-The first code block below will downlod the data and save it for you if you do not already have the data at hand: it looks for the `htus8008` ZIP archive in your `data` folder (`htus8008` stands for "Homicide Trends in the United States, 1980-2008"), and downloads the original data source if necessary. It then unzips the file if the `htus8008` folder does not exist.
+The first code block below will download the data and save it for you if you do not already have the data at hand: it looks for the `htus8008` ZIP archive in your `data` folder (`htus8008` stands for "Homicide Trends in the United States, 1980-2008"), and downloads the original data source if necessary. It then unzips the file if the `htus8008` folder does not exist.
 
 ```{r bjs-zip}
 # Identify ZIP data.

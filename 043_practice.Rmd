@@ -8,8 +8,6 @@
 [bshor-detail]: http://research.bshor.com/2012/10/31/scoring-the-2012-congressional-candidates/ "Graphs of the 2012 Congressional Candidates (Boris Shor)"
 [cb]: http://colorbrewer2.org/ "ColorBrewer 2.0 (Cynthia Brewer)"
 [cs-split-apply-combine]: http://www.stat.cmu.edu/~cshalizi/statcomp/lectures/12/lecture-12.pdf "Lecture 12: Split/Apply/Combine with plyr (Cosma Shalizi)"
-[ds-reshape]: http://is-r.tumblr.com/post/34556058683/ggtutorial-day-1-using-reshape "GGtutorial: Day 1 - using reshape() (David Sparks)"
-[ds-mutate]: http://is-r.tumblr.com/post/34288940225/congressional-ideology-by-state "Congressional ideology by state (David Sparks)"
 [ds-plyr]: http://is-r.tumblr.com/post/33765462561/the-distribution-of-ideology-in-the-u-s-house-with "The distribution of ideology in the U.S. House (with plyr) (David Sparks)"
 [dw-source]: http://voteview.org/dwnominate.asp
 [gs-aggr]: https://gastonsanchez.wordpress.com/2012/06/28/5-ways-to-do-some-calculation-by-groups/ "5 ways to do calculations by group (Gaston Sanchez)"
@@ -133,6 +131,9 @@ dw.aggregated[dw.aggregated$cong == 111, ]
 ```
 
 The following plot derives from the combination of this strategy to a `ggplot` setting, where filling and colouring elements to reflect membership to a certain grouping in the data is straightforward. For more plots of Congressional ideology, check what David Sparks has done with reshaping to [cast, melt][ds-reshape] and [mutate][ds-mutate] a dataset containing identical data.
+
+[ds-reshape]: http://is-r.tumblr.com/post/34556058683/ggtutorial-day-1-using-reshape "GGtutorial: Day 1 - using reshape() (David Sparks)"
+[ds-mutate]: http://is-r.tumblr.com/post/34288940225/congressional-ideology-by-state "Congressional ideology by state (David Sparks)"
 
 ```{r dwnominate-plot-auto, fig.width = 9, fig.height = 6, echo = FALSE, cache = TRUE}
 p

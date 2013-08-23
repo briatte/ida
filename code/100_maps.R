@@ -25,7 +25,7 @@ w <- subset(w, !region %in% c("Antarctica", "Greenland"))
 # Download Quality of Government Standard dataset.
 link = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
 file = "data/qog.cs.dta"
-data = "data/qog.cs.txt"
+data = "data/qog.cs.csv"
 if(!file.exists(data)) {
   if(!file.exists(file)) download(link, file, mode = "wb")
   write.csv(read.dta(file), data)

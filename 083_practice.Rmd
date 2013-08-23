@@ -9,7 +9,7 @@
 [ft-fm]: http://ftalphaville.ft.com/2012/10/09/1199151/its-austerity-multiplier-failure/
 [hanretty]: https://gist.github.com/chrishanretty/3885712
 [imf-weo]: http://www.imf.org/external/pubs/ft/weo/2012/02/pdf/text.pdf
-[imf-data]: https://raw.github.com/briatte/ida/master/data/imf.weo.2012.txt
+[imf-data]: https://raw.github.com/briatte/ida/master/data/imf.weo.2012.csv
 
 <p class="info"><strong>Instructions:</strong> this week's exercise is called <code><a href="8_imf.R">8_imf.R</a></code>. Download or copy-paste that file into a new R script, then open it and run it with the working directory set as the <code>IDA</code> folder. If you download the script, make sure that your browser preserved its <code>.R</code> file extension.</p>
 
@@ -29,7 +29,7 @@ In a later post, "[The IMF and multipliers, again][ft-giles-3]" (January 7, 2013
 
 ## Step 1: Preparation
 
-Start by reading all references cited above, then create the `imf` dataset by downloading the [`8_imf.R`](8_imf.R) script: install any missing packages and run the first segment of the code (alternately, just download the [`imf.weo.2012.txt`][imf-data] dataset). The segment ends with a scatterplot called `imf.plot` that replicates the base structure of the IMF graph:
+Start by reading all references cited above, then create the `imf` dataset by downloading the [`8_imf.R`](8_imf.R) script: install any missing packages and run the first segment of the code (alternately, just download the [`imf.weo.2012.csv`][imf-data] dataset). The segment ends with a scatterplot called `imf.plot` that replicates the base structure of the IMF graph:
 
 ```{r imf-plot-auto, fig.width = 8, fig.height = 6, echo = FALSE}
 imf.plot + 

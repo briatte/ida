@@ -27,7 +27,7 @@ require(xlsx)
 
 link = "http://interactive.ftdata.co.uk/ft/ftdata/IMFmultipliers.xls"
 file = "data/imf.weo.2012.xls"
-data = "data/imf.weo.2012.txt"
+data = "data/imf.weo.2012.csv"
 
 # Create the dataset if it does not exist in the data folder. The next block of
 # code is likely to fail for several reasons, so use the provided file instead!

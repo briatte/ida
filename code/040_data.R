@@ -39,7 +39,7 @@ g + geom_text(data = subset(wdi, year == 2011),
 
 
 # Target file location.
-file = "data/wdi.govdebt.0511.txt"
+file = "data/wdi.govdebt.0511.csv"
 # Export CSV file.
 write.csv(wdi, file, row.names = FALSE)
 # Read CSV file again.

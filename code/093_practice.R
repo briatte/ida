@@ -24,7 +24,7 @@ if (!file.exists(xls)) {
 
 
 
-file = "data/piketty.saez.2011.share.txt"
+file = "data/piketty.saez.2011.share.csv"
 if(!file.exists(file)) {
   # Import from XLS format.
   ps.share <- read.xlsx(xls, sheetName = "Table A1",
@@ -62,7 +62,7 @@ qplot(data = ps.share, x = Year, y = value / 100, color = Fractile, geom = "line
 
 
 
-file = "data/piketty.saez.2011.income.txt"
+file = "data/piketty.saez.2011.income.csv"
 if(!file.exists(file)) {
   # Import from XLS format.
   ps.income <- read.xlsx(xls, sheetName = "Table_Incomegrowth", 

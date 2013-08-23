@@ -12,7 +12,7 @@ packages <- lapply(packages, FUN = function(x) {
 
 
 # Create a filename for the dataset.
-file = "data/dailykos.votes.0812.txt"
+file = "data/dailykos.votes.0812.csv"
 # Store the address of the spreadsheet.
 link = "https://docs.google.com/spreadsheet/pub?key=0Av8O-dN2giY6dEFCOFZ4ZnlKS0x3M3Y0WHd5aWFDWkE&output=csv"
 
@@ -56,7 +56,7 @@ if(!file.exists(file)) download(link, file, mode = "wb")
 # Download Quality of Government Standard dataset.
 link = "http://www.qogdata.pol.gu.se/data/qog_std_cs.dta"
 file = "data/qog.cs.dta"
-data = "data/qog.cs.txt"
+data = "data/qog.cs.csv"
 if(!file.exists(data)) {
   if(!file.exists(file)) download(link, file, mode = "wb")
   write.csv(read.dta(file), data)
@@ -91,7 +91,7 @@ i <- seq(0, 1400, 100)
 
 fide <- lapply(i, FUN = function(x) {
   # Define filename.
-  file = paste0(files, "/fide.table.", x, ".txt")
+  file = paste0(files, "/fide.table.", x, ".csv")
   # Scrape if needed.
   if(!file.exists(file)) {
     message("Downloading data to ", file)

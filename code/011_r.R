@@ -22,10 +22,27 @@ LETTERS[1:5]
 
 
 
+# A sequence of integers.
+1:3
+# The same result.
+seq(1, 3)
 # A sequence of floating point numbers.
 seq(from = 1, to = 3, by = .5)
 # A function with an optional logical argument.
 order(1:3, decreasing = TRUE)
+# The same result.
+rev(1:3)
+# The order function in its default behaviour.
+i <- sample(5)
+j <- order(i)
+list(i, j)
+# Using hard brackets for vector notation.
+i[order(i)]
+# The sort function for character strings.
+p <- "we come in peace"
+p <- strsplit(p, " ")
+p <- unlist(p)
+sort(p)
 
 
 

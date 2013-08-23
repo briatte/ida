@@ -24,9 +24,9 @@ Models are commonly used for all sorts of purposes that revolve around several d
 
 ```{r olympics-data, message=FALSE}
 # Identify the data file.
-file = "data/olympics.2012.txt"
+file = "data/olympics.2012.csv"
 # Identify the data source.
-link = "https://raw.github.com/briatte/ida/master/data/olympics.2012.txt"
+link = "https://raw.github.com/briatte/ida/master/data/olympics.2012.csv"
 # Download the data if needed.
 if(!file.exists(file)) download(link, file, mode = "wb")
 # Read the data.

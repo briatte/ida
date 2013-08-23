@@ -13,20 +13,20 @@
 # Packages
 # --------
 
-require(downloader)
-require(foreign)
-require(ggplot2)
-require(Hmisc)
-require(RColorBrewer)
-require(reshape)
-require(xlsx)
+packages = c("downloader", "foreign", "ggplot2", "Hmisc", "RColorBrewer", "reshape", "xlsx")
+packages = lapply(packages, FUN = function(x) {
+  if(!require(x, character.only = TRUE)) {
+    install.packages(x)
+    library(x, character.only = TRUE)
+  }
+})
 
 
 # Data preparation: Shor's cross-sectional scores (2012)
 # ------------------------------------------------------
 
 # Target dataset.
-file = "data/bshor.congress.2012.txt"
+file = "data/bshor.congress.2012.csv"
 
 # Download and convert.
 if(!file.exists(file)) {
@@ -79,7 +79,7 @@ g
 # ------------------------------------------------------------
 
 # Target dataset.
-file = "data/dwnominate.txt"
+file = "data/dwnominate.csv"
 
 # Download and convert.
 if(!file.exists(file)) {
@@ -88,8 +88,8 @@ if(!file.exists(file)) {
   # Target file URL.
   url = "ftp://voteview.com/junkord/HL01111E21_PRES.DTA"
   # Download source.
-  if(!file.exists(xlsx)) download(url, dta)
-  # Read XLSX format.
+  if(!file.exists(dta)) download(url, dta)
+  # Read DTA format.
   dw = read.dta(dta)
   # Save CSV format.
   write.csv(dw, file, row.names = FALSE)
@@ -150,20 +150,17 @@ dw.aggregated[dw.aggregated$cong == 111, ]
 # Passing aggregates as graphical options
 # ---------------------------------------
 
-# David Sparks' neat, simple, clean plot of ideological distributions.
+# David Spark's plot of Congressional ideology, using 90% CIs and IQR around point estimates.
 p = ggplot(dw.aggregated,
               aes(x = cong, y = Median, ymin = q05, ymax = q95,
-                  colour = majorParty, alpha = N))
-
-p = p +
-  # Plot the 90% CI, inheritting x, y, colour and alpha.
+                  colour = majorParty, alpha = N)) + 
   geom_linerange(aes(ymin = q25, ymax = q75), size = 1) +
-  # Plot the IQR.
-  geom_pointrange(size = 1/2) +
-  # Add colors.
-  scale_colour_brewer(palette = "Set1") +
-  # Add titles.
-  labs(title = "Congressional ideological distribution", x = NULL)
+  geom_pointrange(size = 1/2)
+
+# Add colors.
+p = p + scale_colour_brewer(palette = "Set1")
+# Add titles.
+p = p + labs(title = "Congressional ideological distribution", x = NULL)
 
 # View result.
 p

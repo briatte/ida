@@ -17,7 +17,7 @@ require(XML)
 
 
 # Target file.
-file <- "data/browsers.0813.txt"
+file <- "data/browsers.0813.csv"
 # Load the data.
 if(!file.exists(file)) {
   # Target a page with data.

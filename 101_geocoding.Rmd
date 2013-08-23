@@ -24,15 +24,15 @@ Let's plot [World Bank projects in Africa][wb-aid].
 # Get the data.
 url = "http://aiddata.org/weceem_uploads/_ROOT/File/geocoding/AllWorldBank_IBRDIDA.zip"
 zip = "data/wb.projects.zip"
-txt = "data/wb.projects.txt"
 csv = "data/AllWorldBank_IBRDIDA.csv"
 if(!file.exists(zip)) download(url, zip, mode = "wb")
 if(!file.exists(csv)) unzip(zip, exdir = "data")
 # Subset to Africa.
 wb = read.csv(csv)
 wb = subset(wb, Region == "AFRICA")
-# Plain text copy.
-if(!file.exists(txt)) write.csv(wb, txt)
+# Plain filename.
+txt = "data/wb.projects.csv"
+if(file.exists(csv)) file.rename(csv, txt)
 # Inspect variables.
 v = c("Project.ID", "Latitude", "Longitude", "Country", "Total.Amt")
 head(wb)[v]

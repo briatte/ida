@@ -13,11 +13,11 @@ if(!"downloader" %in% installed.packages()[, 1])
 # Load package.
 require(downloader)
 # Target file.
-file = "data/grades.2012.txt"
+file = "data/grades.2012.csv"
 # Download the data if needed.
 if (!file.exists(file)) {
   # Locate the data.
-  url = "https://raw.github.com/briatte/ida/master/data/grades.txt"
+  url = "https://raw.github.com/briatte/ida/master/data/grades.csv"
   # Download the data.
   download(url, file, mode = "wb")
 }
@@ -82,11 +82,11 @@ qplot(data = grades, x = value,
 
 
 
-file = "data/nhis.2005.txt"
+file = "data/nhis.2005.csv"
 # Download the data if needed.
 if (!file.exists(file)) {
   # Locate the data.
-  url = "https://raw.github.com/briatte/ida/master/data/nhis.2005.txt"
+  url = "https://raw.github.com/briatte/ida/master/data/nhis.2005.csv"
   # Download the data.
   download(url, file, mode = "wb")
 }

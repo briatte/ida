@@ -12,12 +12,12 @@ packages <- lapply(packages, FUN = function(x) {
 
 
 dat <- read.csv("data/CSHomePrice_History.csv")
-write.csv(dat, "data/schiller.8712.txt", row.names = FALSE)
+write.csv(dat, "data/schiller.8712.csv", row.names = FALSE)
 
 
 
 # Open the data.
-csi <- read.csv("data/schiller.8712.txt")
+csi <- read.csv("data/schiller.8712.csv")
 # Inspect the top data structure.
 str(csi[, 1:5])
 # Inspect the first data rows/columns.

@@ -3,7 +3,7 @@
 ## http://brainchronicle.blogspot.co.uk/2012/07/twitter-analysis-of-air-pollution-in.html
 
 ## The code was adapted for the Twitter 1.1 API, which now requires ROAuth.
-## You will first need to include individual consumer keys at '###' to run it.
+## You will first need to include individual consumer keys at '--------' to run it.
 
 require(twitteR)
 require(ROAuth)
@@ -11,8 +11,8 @@ require(ggplot2)
 require(grid)
 
 ## ROAuth.
-cred <- OAuthFactory$new(consumerKey= "###",
-	consumerSecret= "###",
+cred <- OAuthFactory$new(consumerKey= "--------",
+	consumerSecret= "--------",
 	requestURL="https://api.twitter.com/oauth/request_token",
 	accessURL="https://api.twitter.com/oauth/access_token",
 	authURL="https://api.twitter.com/oauth/authorize")
@@ -63,8 +63,13 @@ labs(x = "Time", y = "Fine particles (PM2.5) 24hr avg", size = expression(log[10
 	opts(title="Air pollution in Beijing\nTwitter @BeijingAir",
 	 panel.background=theme_rect(colour="white"))
  
-## saving image
-save.image("data/tweet.pollution.Rda")
-write.csv(data, "data/beijing.pollution.txt", row.names = FALSE)
+## saving image of full workspace for reference
+save.image("data/beijing.aqi.2013.rda")
+
+## use this file to show the teaching examples:
+write.csv(data, "data/beijing.aqi.2013.csv", row.names = FALSE)
 
 head(data)
+
+## data produced in May 2013
+## have a nice day

@@ -40,8 +40,8 @@ Unfortunately, the Twitter API is now less open than it used to be, so we will n
 
 ```{r twitter-pollution-auto, fig.width = 12, fig.height = 9, message = FALSE, tidy = FALSE}
 # Target data source.
-link = "https://raw.github.com/briatte/ida/master/data/beijing.aqi.2013.txt"
-file = "data/beijing.aqi.2013.txt"
+link = "https://raw.github.com/briatte/ida/master/data/beijing.aqi.2013.csv"
+file = "data/beijing.aqi.2013.csv"
 if(!file.exists(file)) download(link, file)
 # Read CSV file.
 bp <- read.csv(file, stringsAsFactors = FALSE)

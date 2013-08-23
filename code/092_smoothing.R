@@ -11,7 +11,7 @@ packages <- lapply(packages, FUN = function(x) {
 
 
 
-file = "data/geos.tww.txt"
+file = "data/geos.tww.csv"
 if(!file.exists(file)) {
   # Parse HTML content.
   html <- htmlParse("http://www.geos.tv/index.php/list?sid=179&collection=all")
