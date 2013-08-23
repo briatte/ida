@@ -57,8 +57,8 @@ ggnet.data = function(file) {
   return(data)
 }
 # Get French MPs on Twitter data.
-ids <- ggnet.data("nodes.txt")
-df  <- ggnet.data("network.txt")
+ids <- ggnet.data("nodes.tsv")
+df  <- ggnet.data("network.tsv")
 # Convert it to a network object.
 net = network(df)
 ```

@@ -184,6 +184,8 @@ fide <- lapply(i, FUN = function(x) {
     message("Skipping table #", x)
   }
 })
+# Zip a backup copy.
+zip("data/fide.zip", files)
 ```
 
 The code above is verbose and economical: it will skip existing files, and it will tell you what it needs to download. If you already have all data tables in the `fide` folder of your `data` folder, try deleting one file from it and run the code again to see how it works. When you are done running the code, you will need to assemble all tables together, which is what we do below.
