@@ -12,10 +12,11 @@
 [qt-vectorization]: http://quanttrader.info/public/FasterRCode.pdf "Fast(er) R Code (Paul Teetor)"
 [xb-usingfor]: https://xianblog.wordpress.com/2013/02/22/le-monde-puzzle-809/ "Le Monde Puzzle #809 (Xi'An's Og)"
 [cran-foreach]: http://cran.r-project.org/web/packages/foreach/index.html "foreach (CRAN)"
+[brusers-loops]: http://brusers.tumblr.com/post/58780227448/the-apply-family-of-functions-kevin "Loops and apply functions (Kevin Keenan, Belfast R Users)"
 
 ## Loops
 
-R understands `for()` and `while()` loops like many other programming languages. The idea is the same for both operators: allow to repeat an operation a certain number of times. The first example is as trivial as it gets: the loop creates one line of output [for each][wiki-for] value of $n = (1, 2, 3)$ passed through `i`. The final element of the string concatenation, `\n`, is a line break.
+R understands [loops][brusers-loops] like many other programming languages. The idea is the same for both operators: allow to repeat an operation a certain number of times. The first example is as trivial as it gets: the loop creates one line of output [for each][wiki-for] value of $n = (1, 2, 3)$ passed through `i`. The final element of the string concatenation, `\n`, is a line break.
 
 ```{r for}
 # Set the counter.
@@ -46,11 +47,11 @@ while(i > 0) {
 
 A more common situation of uncertainty is when you are looking for the solution of a "find-a-number" game, which you might be able to solve by trying out all possible numbers through a loop. This is the '[brute-force][wiki-brute-force]' approach, which might be less entertaining than trying to [solve the game][xb-usingfor] in the first place.
 
-Because loops proceed by sequential exhaustion ("do that to $x$", "do it again to $x+1$", "do it again…"), they can become computationally intensive when they iterate through large arrays of values. At that stage, your code needs to be optimized and you might need to use several computer processors to [parallelize the execution][cran-foreach] of the loop.
+Loops proceed by sequential exhaustion ("do that to $x$", "do it again to $x+1$", "do it again…") and can become computationally intensive when they iterate through large arrays of values. At that stage, your code might require optimization, and you might need to use several computer processors to [parallelize the execution][cran-foreach] of the loop.
 
 ## Vectorization
 
-Vectorization is a way to replace (most) loops with a more efficient way to handle the data. R contains a lot of vectorized functions that will run [significantly quicker][qt-vectorization] than memory-intensive loops of code. The basic idea is to apply a function to a group of observations rather than telling R to apply that function to $i = { 1, 2, ... n}$, as here:
+Vectorization is a way to replace (most) loops with a more efficient way to handle the data. R contains a lot of vectorized functions that will run [significantly quicker][qt-vectorization] than memory-intensive loops of code. The basic idea, as outlined above, is to apply a function to a vector of observations, rather than telling R to separately apply the function to each item:
 
 ```{r for-vs-vectorization}
 # The iterative way: square i, square i + 1, square i + 2, square i + 3.
@@ -59,7 +60,7 @@ for(i in 1:3) print(i^2)
 (1:3)^2
 ```
 
-The group of observations is the vector `r 1:3`. This is made possible by the support for vector arguments in the square function. Many functions accept vectors as arguments, which makes it possible to compute things efficiently, as in this example of an [explosive roommate combinations][fs-expl] function, coded by Francis Smart:
+The group of observations in this example is the vector `r 1:3`. The square function works on vectors, which is why you get a vector of results in return. Many functions accept vectors as arguments, which makes it possible to compute things efficiently, as in this example of an [explosive roommate combinations][fs-expl] function, coded by Francis Smart:
 
 [fs-expl]: http://www.econometricsbysimulation.com/2012/10/explosive-roommate-combinations.html
 
@@ -67,20 +68,22 @@ The group of observations is the vector `r 1:3`. This is made possible by the su
 # Number of possible conflicts in a pool of two roommates (single combination).
 prod(1:2) / prod(1:2)
 # With three roommates, there are three potential combinations (AB, BC and AC).
-prod(1:3) / (prod(1:2)*prod(1:1))
+prod(1:3) / (prod(1:2) * prod(1:1))
 # With three roommates, there are six potential combinations (AB, BC, CD, ...).
-prod(1:4) / (prod(1:2)*prod(1:2))
+prod(1:4) / (prod(1:2) * prod(1:2))
 ```
 
-This function looks at the number of potential conflicts that might arise when "each roommate pair has the possibility of severely bothering another roommate". The code calculates that value from the combination equation, $\frac{n!}{k!(n-k)!}$, where $n$ is the number of roommates and $k = 1$ the number of conflicts.
+This function looks at the number of potential conflicts that might arise when "each roommate pair has the possibility of severely bothering another roommate". The code calculates that value from the combination equation, $\frac{n!}{k!(n-k)!}$, where $n$ is the number of roommates and $k = 1$ the number of conflicts. The function can be calculated for an increasing number of roommates.
 
-This function can be calculated for an increasing number of roommates. To plot that part of the function, you then need to create a vector of values and apply the explosive roommates combination to it. This is done below by writing up the function into a `sapply` command that goes through the vector of values `x` and returns a vector of results `y`:
+To plot part of the function, we can create a vector of values and apply the explosive roommates combination to it. This is done below by writing up the function into a `sapply()` function, the vectorized equivalent of a `for` loop. The `sapply()` function goes through the vector of values `x` and returns a vector of results `y` after applying the `explosive_roommates` function:
 
 ```{r fx-expl-plot-auto, fig.width = 12, fig.height = 9, tidy = FALSE}
+# Explosive roommates function.
+explosive_roommates = function(n) prod(1:n) / (prod(1:2) * prod(1:max(n - 2, 1)))
 # Vector of x values.
 x = 2:20
 # Vector of y values.
-y = sapply(x, FUN = function(i) prod(1:i) / (prod(1:2)*prod(1:max(i-2, 1))))
+y = sapply(x, explosive_roommates)
 # Plot y against x.
 qplot(x, y, geom = c("line", "point")) +
   labs(y = "Number of potential conflicts", x = "Number of roommates")

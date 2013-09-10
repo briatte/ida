@@ -4,9 +4,11 @@
 
 [François Briatte](http://f.briatte.org/) and [Ivaylo Petev](http://ipetev.org/)  
 [Sciences Po](http://www.sciences-po.fr/), [Euro-American Campus](http://college.sciences-po.fr/sitereims/)  
-Fall 2013
+Spring 2013
 
 This course is an introduction to analyzing data with the [R](http://www.r-project.org/) software. It features some mathematics and statistics as well as some statistical computing and data visualization. You will need a laptop with an Internet connection to follow the class.
+
+To get started, [download the entire course](https://github.com/briatte/ida/archive/master.zip). To take a look at what the course material is made of, [view it on GitHub first](https://github.com/briatte/ida). It's not a large download.
 
 - [Syllabus][syllabus]
 - [Introduction][001]
