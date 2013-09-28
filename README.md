@@ -14,8 +14,8 @@ The course pages are formatted in R Markdown syntax and were converted to HTML w
 
 [knitr]: http://yihui.name/knitr/
 
-	install.packages("knitr")
-	citation("knitr")
+    install.packages("knitr")
+    citation("knitr")
 
 The knitting routine is in the [`.Rprofile`](.Rprofile). To compile the whole course, set the `IDA` folder as your working directory and then type `ida.build()` (takes a bit more than five minutes on optic fiber).
 

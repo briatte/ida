@@ -99,7 +99,7 @@ Let's also replicate Simon Jackman's second plot, showing the swing from 2008 to
 # Electoral college votes, 2012.
 url = "http://en.wikipedia.org/wiki/Electoral_College_(United_States)"
 # Extract fifth table.
-college <- readHTMLTable(url, which = 5, stringsAsFactors = FALSE)
+college <- readHTMLTable(url, which = 4, stringsAsFactors = FALSE)
 # Keep first and last columns, removing total electors.
 college <- data.frame(State = college[, 1], 
                       College = as.numeric(college[, 35]))
@@ -108,9 +108,9 @@ dw <- merge(dw, college, by = "State")
 # U.S. states codes.
 url = "http://en.wikipedia.org/wiki/List_of_U.S._states"
 # Extract fifth table.
-uscodes <- readHTMLTable(url, which = 2, stringsAsFactors = FALSE)
+uscodes <- readHTMLTable(url, which = 1, stringsAsFactors = FALSE)
 # Keep first and last columns, removing total electors.
-uscodes <- data.frame(State = uscodes[, 1],
+uscodes <- data.frame(State = gsub("\\[[A-Z]+\\]", "", uscodes[, 1]),
                       Abbreviation = uscodes[, 4])
 # Merge to main dataset.
 dw <- merge(dw, uscodes, by = "State")

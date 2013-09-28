@@ -163,7 +163,7 @@ __Reading:__ Teetor, ch. 14. Focus on detrending and read ARIMA only if you plan
 
 ## 10. [Visualization in space: Maps][100]
 
-**Special guest**: [Joël Gombin][jg] on reproducible science.
+**Special guest:** [Joël Gombin][jg] on reproducible science.
 
 [jg]: http://www.joelgombin.fr
 
@@ -185,7 +185,7 @@ __Reading:__ Teetor, ch. 14. Focus on detrending and read ARIMA only if you plan
 
 <!-- __Reading:__ David Siegel, "[Social Networks in Comparative Perspective](http://opensiuc.lib.siu.edu/cgi/viewcontent.cgi?article=1045&context=pn_wp)", 2011. -->
 
-**Special guest**: [Alexandre Léchenet][al] on data-driven journalism.
+**Special guest:** [Alexandre Léchenet][al] on data-driven journalism.
 
 [al]: http://alphoenix.net
 
@@ -203,7 +203,7 @@ __Reading:__ Teetor, ch. 14. Focus on detrending and read ARIMA only if you plan
 
 ## 12. [Data-driven advances][120]
 
-__Special guest:__: [Samuel Goëta][sg] will speak in the [Distinguished Lecture Series][dls-talk] on open data and open government.
+__Special guest:__ [Samuel Goëta][sg] will speak in the [Distinguished Lecture Series][dls-talk] on open data and open government.
 
 [120]: 120_data.html
 
@@ -218,6 +218,6 @@ __Thanks to__ [Baptiste Coulmont](http://coulmont.com/), [Joël Gombin ](http://
 
 Special thanks to the Sciences Po Reims staff and students for indefectible support.
 
-__Inspired by__ [Christopher Adolph](http://faculty.washington.edu/cadolph/index.php?page=22), [Dave Armstrong](http://quantoid.net/ICPSRR.html), [Christopher Gangrud](https://github.com/christophergandrud/Introduction_to_Statistics_and_Data_Analysis_Yonsei/), [Andrew Gelman](http://andrewgelman.com/2012/12/textbook-for-data-visualization/), [Rebecca Nugent](http://www.stat.cmu.edu/~rnugent/teaching/introR/), [Gaston Sanchez](https://gastonsanchez.wordpress.com/), [David Sparks](http://is-r.tumblr.com/), [Hadley Wickham](http://had.co.nz/ggplot2/).
+__Inspired by__ [Christopher Adolph](http://faculty.washington.edu/cadolph/index.php?page=22), [Dave Armstrong](http://quantoid.net/ICPSRR.html), [Christopher Gangrud](https://github.com/christophergandrud/Introduction_to_Statistics_and_Data_Analysis_Yonsei/), [Andrew Gelman](http://andrewgelman.com/2012/12/textbook-for-data-visualization/), [Rebecca Nugent](http://www.stat.cmu.edu/~rnugent/teaching/introR/), [Gaston Sanchez](https://gastonsanchez.wordpress.com/), [Cosma Shalizi](http://www.stat.cmu.edu/~cshalizi/), [David Sparks](http://is-r.tumblr.com/) and [Hadley Wickham](http://had.co.nz/ggplot2/).
 
 This course has its own [GitHub repository](https://github.com/briatte/ida); fork at will. This HTML version was compiled from source on `r format(Sys.time(), "%A %B %d, %Y")`.

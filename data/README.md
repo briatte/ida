@@ -26,8 +26,8 @@ The data are downloaded and immediately saved to comma-separated values (`.csv`)
 | `icm.polls.8413`        | Guardian/ICM polls, 1984-2013                                      | 9.0 |
 | `beijing.pollution` `•` | Beijing pollution information by the U.S. Embassy on Twitter, 2013 | 9.1 |
 | `geos.tww`              | GEOS episode ratings for Aaron Sorkin's _The West Wing_            | 9.2 |
-| `piketty.saez.2011.zip` | Piketty & Saez data on U.S. income inequality, 1913-2012        | 9.3 (practice) |
-| `wb.projects.zip`          | World Bank geocoded aid projects in Africa (**1.9MB**)          | 10.1 |
+| `piketty.saez.2011.zip` | Piketty & Saez data on U.S. income inequality, 1913-2012           | 9.3 (practice) |
+| `wb.projects.zip`       | World Bank geocoded aid projects in Africa (**1.9MB**)             | 10.1 |
 | `wasserman.votes.0812`  | U.S. state-level 2008-2012 vote shares, from David Wasserman       | 10.2 |
 | `ga.network`            | Network of characters in _Grey's Anatomy_, by Gary Weissman        | 11.0 |
 | `twitter.an.zip`        | French MPs and their Twitter network data in 2013                  | 11.1 |

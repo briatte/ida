@@ -31,7 +31,7 @@ Finally, these books go further than what we will explore, but serve as good exa
 
 - Norman Matloff, *[The Art of R Programming](http://nostarch.com/artofr.htm)* (No Starch Press 2011)
 - Edward Tufte, *[The Visual Display of Quantitative Information](http://www.edwardtufte.com/tufte/books_vdqi)* (Graphics Press 2001)
-- Hadley Wickham, [ggplot2. Elegant Graphics for Data Analysis](http://ggplot2.org/book/) (Springer 2009)
+- Hadley Wickham, *[ggplot2. Elegant Graphics for Data Analysis](http://ggplot2.org/book/)* (Springer 2009)
 
 ## Tutorials
 
@@ -49,9 +49,9 @@ You can see from the links above that R is being taught a bit everywhere in the 
 If you like video tutorials, we will link to a few of them, and in particular:
 
 - [Anthony Damico](http://www.twotorials.com/) (the "fast and furious" approach)
-- [GM-RAM staff](http://www.wekaleamstudios.co.uk/supplementary-material/) (covers base graphics well)
 - [Gordon Davis](https://www.youtube.com/playlist?list=PL8BE0E317807A9A21) (covers data operations well)
 - [User Tutorlol](https://www.youtube.com/playlist?list=PL69A9CCD816A5F3A5) (covers a bit of everything)
+- [Google Developers](https://www.youtube.com/playlist?list=PLOU2XLYxmsIK9qQfztXeybpHvru-TrqAP) (more programmer-oriented)
 
 The [R video tutorials by Google developers](https://www.youtube.com/playlist?list=PLOU2XLYxmsIK9qQfztXeybpHvru-TrqAP) are also worth a look.
 

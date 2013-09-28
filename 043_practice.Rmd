@@ -55,7 +55,7 @@ for(i in levels(data$party)) {
 
 This loop first determines the vector of party names `r levels(data$party)` (Democrat, Republican, Independent) and then painfully extracts the number of observations and mean ideological score for each party. This type of looping is easily avoided by using the vector of party names to split the data, apply a mean function to the splitted parts and combine it back to shape:
 
-[![Split-Apply-Combine, by Cosma Shalizi "http://www.stat.cmu.edu/~cshalizi/statcomp/lectures/12/lecture-12.pdf"](images/split-apply-combine-shalizi.png)][cs-split-apply-combine]
+[![Split-Apply-Combine, by Cosma Shalizi "http://www.stat.cmu.edu/~cshalizi/statcomp/12/lectures/12/lecture-12.pdf"](images/split-apply-combine-shalizi.png)][cs-split-apply-combine]
 
 The exercise shows how to use the `tapply()` function, which returns one mean value (third argument) based on ideological score (first argument) for each group of observations formed by party membership (second argument). The `tapply()` syntax is pretty straightforward, but it can also follow two alternative syntaxes using `aggregate` or `by()` with data frames:
 
