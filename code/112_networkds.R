@@ -1,6 +1,6 @@
 
 
-packages <- c("downloader", "ggplot2", "network", "tm")
+packages <- c("intergraph", "GGally", "ggplot2", "network", "RColorBrewer", "sna", "tm")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -14,7 +14,9 @@ build.corpus <- function(x, skip = 0) {
   # Read the text source.
   src = scan(x, what = "char", sep = "\n", encoding = "UTF-8", skip = skip)
   # Extract all words.
-  txt = unlist(strsplit(gsub("[[:punct:]]", " ", tolower(src)), "[[:space:]]+"))
+  txt = unlist(strsplit(gsub("[[:punct:]|[:digit:]]", " ", tolower(src)), "[[:space:]]+"))
+  # Remove single letters.
+  txt = txt[nchar(txt) > 1]
   # Function to create word nodes.
   associate <- function(x) {
     y = c(txt[x], txt[x + 1])
@@ -30,9 +32,6 @@ net <- build.corpus("data/assange.txt")
 
 
 
-# Load ggnet function.
-code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-downloader::source_url(code, prompt = FALSE)
 # Plot with ggnet.
 ggnet(net, weight = "degree", subset = 3,
       alpha = 1, segment.color = "grey", label = TRUE, vjust = - 2,
@@ -44,14 +43,11 @@ ggnet(net, weight = "degree", subset = 3,
 link = "https://raw.github.com/jwise/28c3-doctorow/master/transcript.md"
 file = "data/doctorow.txt"
 # Download speech.
-if(!file.exists(file)) download(link, file)
+if(!file.exists(file)) download(link, file, mode = "wb")
 # Build corpus.
 net <- build.corpus(file, skip = 37)
-# Load ggnet function.
-code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-downloader::source_url(code, prompt = FALSE)
 # Plot with ggnet.
-ggnet(net, weight = "degree", subset = 3,
+ggnet(net, weight = "indegree", subset = 5,
       alpha = 1, segment.color = "grey", label = TRUE, vjust = - 2,
       legend = "none")
 

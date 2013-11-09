@@ -3,9 +3,17 @@
 
 # 11.1. Influence
 
+This session is inspired by the Tony Hirst's [exploration of Twitter networks][th-twitter] and content. [His method][th-openrefine] is not based on R: he uses [Open Refine][openrefine] to process the data and then uses [Gephi][gephi] to visualize it as network plots and [run some basic network analysis][th-gephi]. For consistency, we will run everything in R, knowing that there are alternative workflows like Hirst's.
+
+[th-twitter]: http://blog.ouseful.info/tag/twitter/
+[th-openrefine]: http://blog.ouseful.info/2012/10/02/grabbing-twitter-search-results-into-google-refine-and-exporting-conversations-into-gephi/
+[openrefine]: http://openrefine.org/
+[th-gephi]: http://blog.ouseful.info/2012/11/09/drug-deal-network-analysis-with-gephi-tutorial/
+[gephi]: http://gephi.org/
+
 ```{r packages, message = FALSE, warning = FALSE}
 # Load packages.
-packages <- c("downloader", "ggplot2", "network", "RColorBrewer")
+packages <- c("downloader", "intergraph", "GGally", "ggplot2", "network", "RColorBrewer", "sna")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -14,28 +22,15 @@ packages <- lapply(packages, FUN = function(x) {
 })
 ```
 
-This session is inspired by the Tony Hirst's [exploration of Twitter networks][th-twitter] and content. [His method][th-openrefine] is not based on R: he uses [Open Refine][openrefine] to process the data and then uses [Gephi][gephi] to visualize it as network plots and [run some basic network analysis][th-gephi].
+We will use our very own [`ggnet` function][gh-ggnet] to produce the plots with `ggplot2`: see [this blog post][pb-ggnet] (in French) and [these slides][fb-raddicts] (in English/French) for some construction notes, and see David Spark's [networks][ds-bezier] with [Bézier curves][wiki-bc] for an elegant variation of network plots drawn with `ggplot2`. 
 
-[th-twitter]: http://blog.ouseful.info/tag/twitter/
-[th-openrefine]: http://blog.ouseful.info/2012/10/02/grabbing-twitter-search-results-into-google-refine-and-exporting-conversations-into-gephi/
-[openrefine]: http://openrefine.org/
-[th-gephi]: http://blog.ouseful.info/2012/11/09/drug-deal-network-analysis-with-gephi-tutorial/
-[gephi]: http://gephi.org/
-
-For the sake of software consistency, we will run everything in R, knowing that there are alternative workflows like the one described above. We will use our very own [`ggnet` function][gh-ggnet] to produce the plots with `ggplot2` (see [this blog post][pb-ggnet]; see also David Spark's [`ggplot2` networks][ds-bezier] with [Bézier curves][wiki-bc]).
-
-```{r ggnet-load, message = FALSE}
-# Load ggnet function.
-code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-downloader::source_url(code, prompt = FALSE)
-```
-
-[gh-ggnet]: https://github.com/briatte/ggnet "ggnet: GitHub repository"
-[pb-ggnet]: http://politbistro.hypotheses.org/1752
+[fb-raddicts]: http://goo.gl/VHnwsg "Collaboration Networks Among French Members of Parliament (François Briatte, R Addicts 2013)"
+[gh-ggnet]: https://github.com/briatte/ggnet "ggnet (GitHub)"
+[pb-ggnet]: http://politbistro.hypotheses.org/1752 "339 députés sur Twitter (Polit'bistro)"
 [wiki-bc]: https://en.wikipedia.org/wiki/B%C3%A9zier_curve "Bézier curve (Wikipedia)"
 [ds-bezier]: http://is-r.tumblr.com/post/38459242505/beautiful-network-diagrams-with-ggplot2 "Beautiful network diagrams with ggplot2 (David Sparks)"
 
-As for the data, it used to be pretty straightforward to mine Twitter data with R and the `twitteR` library, and there are nice examples of such exercises on Gaston Sanchez's "[Mining Twitter][gs-mt]" and on the Oxford Internet Institute's "[Network Visualization][oii-nv]". [Both][gs-gh] of [them][oii-gh] are on GitHub) if you want to take a look at the code.
+Regarding the data, it used to be pretty straightforward to mine Twitter data with R and the `twitteR` library, and there are nice examples of such exercises on Gaston Sanchez's "[Mining Twitter][gs-mt]" and on the Oxford Internet Institute's "[Network Visualization][oii-nv]". [Both][gs-gh] of [them][oii-gh] are on GitHub) if you want to take a look at the code.
 
 [gs-mt]: https://sites.google.com/site/miningtwitter/ "Mining Twitter (Gaston Sanchez)"
 [gs-gh]: https://github.com/gastonstat/Mining_Twitter "Mining Twitter: GitHub repository (Gaston Sanchez)"
@@ -61,6 +56,8 @@ if(!file.exists(zip)) {
 ids = read.csv(unz(zip, ids), sep = "\t")
 # Get data on their Twitter accounts.
 net = read.csv(unz(zip, net), sep = "\t")
+# Copy network data for later use.
+ndf = net
 # Convert it to a network object.
 net = network(net)
 ```
@@ -95,14 +92,16 @@ The nodes of the network are MPs with Twitter accounts, and the network is forme
 [gh-ggnet-functions]: https://github.com/briatte/ggnet/blob/master/functions.R
 
 ```{r ggnet-exploration, eval = FALSE}
-# Load functions.
+# Recall network data structure.
+head(ndf)
+# Load network functions.
 code = "https://raw.github.com/briatte/ggnet/master/functions.R"
 downloader::source_url(code, prompt = FALSE)
 # A few simple examples.
-x = who.follows(df, "nk_m")
-y = who.is.followed.by(df, "JacquesBompard")
+x = who.follows(ndf, "nk_m")
+y = who.is.followed.by(ndf, "JacquesBompard")
 # A more subtle measure.
-lapply(levels(ids$Groupe), top.group.outlinks, net = df)
+lapply(levels(ids$Groupe), top.group.outlinks, net = ndf)
 ```
 
 In this network, the indegree is the number of followers, i.e. the sum of nodes that link to a node, and the outdegree is the number of outgoing connexions from this same node. The total [degree][wiki-degree] of a node (the sum of its indegree and outdegree) is a possible measure of [network centrality][wiki-centrality], as is [betweenness][wiki-betweenness]:
@@ -120,7 +119,7 @@ top.mps = cbind(top.mps, network.vertex.names(net)[top.mps])
 head(top.mps)
 ```
 
-Centrality is useful to detect influent or important network members, as clearly illustrated by Claude Bartolone's central position among all French MPs on Twitter (Bartolone chairs the lower house). For a fun exploration of network centrality, see Kieran Healey's [brilliant take][kjh-revere] on the issue, [using R][kjh-revere-gh] in the 18th century.
+Centrality is useful to detect influent or important network members, as clearly illustrated by Claude Bartolone's central position among all French MPs on Twitter (Bartolone currently chairs the lower house of the French parliament). For a fun exploration of network centrality, see Kieran Healey's [brilliant take][kjh-revere] on the issue, [using R][kjh-revere-gh] in the 18th century.
 
 [kjh-revere]: http://kieranhealy.org/blog/archives/2013/06/09/using-metadata-to-find-paul-revere/
 [kjh-revere-gh]: https://github.com/kjhealy/revere

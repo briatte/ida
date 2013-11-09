@@ -3,15 +3,24 @@
 
 # 11. Networks
 
-Networks are a common aspect of your daily life, and since you have been logging your network of friends and colleagues on services like Facebook or [LinkedIn](http://inmaps.linkedinlabs.com/), there are tons of data available. There is also a large amount of research on networks with [tough questions](http://masi.cscs.lsa.umich.edu/~crshalizi/weblog/773.html), such as the analytical difference between homophily (connecting to those like us) and contagion (becoming like our connections). We will stick to description and simple measures of influence.
+Networks are a common aspect of your daily life, and since you have been logging your network of friends and colleagues on services like Facebook or [LinkedIn][li-inmaps], there are tons of data available. There is also a large amount of research on networks with [tough questions][cs-contagion], such as the analytical difference between homophily (connecting to those like us) and contagion (becoming like our connections). We will stick to description and simple measures of influence.
 
-There are several software options for network analysis, like [Gephi](https://gephi.org/), [Pajek](http://quanti.hypotheses.org/512/) or [VOSON](http://voson.anu.edu.au/) (for hyperlink networks). We will stay in R and use the `sna` and `igraph` libraries, which use [different but compatible formats](http://groupefmr.hypotheses.org/363) to store network data. Some examples will be taken from [Baptiste Coulmont's graphs](http://coulmont.com/index.php?s=igraph) of small cliques.
+[li-inmaps]: http://inmaps.linkedinlabs.com/ "LinkedIn Maps ('Your professional world. Visualized.')"
+[cs-contagion]: http://vserver1.cscs.lsa.umich.edu/~crshalizi/weblog/773.html "Knights, Muddy Boots, and Contagion; or, Social Influence Gets Medieval (Cosma Shalizi)"
+
+There are several software options for network analysis, like [Gephi][gephi], [Pajek][pm-pajek] or [VOSON][voson] (for hyperlink networks). We will stay in R and use the `sna` and `igraph` libraries, which use [different but compatible formats][lb-intergraph] to store network data. Some examples will be taken from [Baptiste Coulmont's graphs][bc-igraph] of small cliques.
+
+[bc-igraph]: http://coulmont.com/index.php?s=igraph "Examples of igraph plots (Baptiste Coulmont)"
+[lb-intergraph]: http://groupefmr.hypotheses.org/363 "Jongler avec les objets R, le package intergraph (Laurent Beauguitte)"
+[gephi]: https://gephi.org/ "Gephi software"
+[voson]: http://voson.anu.edu.au/ "VOSON software (Virtual Observatory for the Study of Online Networks)"
+[pm-pajek]: http://quanti.hypotheses.org/512/ "Analyse des réseaux : une introduction à Pajek (Pierre Mercklé)"
 
 ## A random network
 
 ```{r packages, echo = FALSE, message = FALSE}
 # Load packages.
-packages <- c("downloader", "network", "sna")
+packages <- c("intergraph", "GGally", "ggplot2", "network", "RColorBrewer", "sna")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -20,7 +29,9 @@ packages <- lapply(packages, FUN = function(x) {
 })
 ```
 
-We'll start with [simulating a random network](http://www.econometricsbysimulation.com/2012/10/simulating-social-network-data.html) of $n = 30$ individuals (`ego`), for which we simulate a bidirectional friendship relationship: if individual 'Ego' is a friend of individual 'Alter', then the reciprocal is true. Each individual has the possibility to associate with any other individual in the network, resulting in a network matrix of $30^2 = 900$ rows, with one extra row per individual that connects it to itself ($n-n$) and that will be ignored when generating relationships. The result is the `rnet` dataset.
+We'll start with [simulating a random network][fs-sim] of $n = 30$ individuals (`ego`), for which we simulate a bidirectional friendship relationship: if individual 'Ego' is a friend of individual 'Alter', then the reciprocal is true. Each individual has the possibility to associate with any other individual in the network, resulting in a network matrix of $30^2 = 900$ rows, with one extra row per individual that connects it to itself ($n-n$) and that will be ignored when generating relationships. The result is the `rnet` dataset.
+
+[fs-sim]: http://www.econometricsbysimulation.com/2012/10/simulating-social-network-data.html "Simulating Social Network Data (Francis Smart)"
 
 ```{r smart-random-network-1}
 # Set network size.
@@ -61,9 +72,6 @@ The network is drawn with the [`ggnet` function][gh-ggnet]. The plot function pr
 # Form network object.
 net = network(rnet[rnet$friendship == 1, ], directed = FALSE)
 net
-# Load ggnet function.
-code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-downloader::source_url(code, prompt = FALSE)
 # Plot random network.
 ggnet(net,
       label = TRUE,
@@ -83,9 +91,6 @@ file = "data/ga.network.csv"
 if(!file.exists(file)) download(link, file, mode = "wb")
 # Create network.
 net = network(read.csv(file), directed = FALSE)
-# Load ggnet function.
-code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-downloader::source_url(code, prompt = FALSE)
 # Plot network.
 ggnet(net, 
       label = TRUE, 

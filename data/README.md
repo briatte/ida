@@ -30,8 +30,7 @@ The data are downloaded and immediately saved to comma-separated values (`.csv`)
 | `wb.projects.zip`       | World Bank geocoded aid projects in Africa (**1.9MB**)             | 10.1 |
 | `wasserman.votes.0812`  | U.S. state-level 2008-2012 vote shares, from David Wasserman       | 10.2 |
 | `ga.network`            | Network of characters in _Grey's Anatomy_, by Gary Weissman        | 11.0 |
-| `twitter.an.zip`        | French MPs and their Twitter network data in 2013                  | 11.1 |
+| `twitter.an.zip`        | Twitter network data for French MPs in (early) 2013                | 11.1 |
 | `assange.txt` `•`       | Speech by Julian Assange in 2012                                   | 11.2 |
 | `doctorow.txt`          | Speech by Corey Doctorow in 2011                                   | 11.2 |
-
 

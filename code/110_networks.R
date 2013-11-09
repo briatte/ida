@@ -1,7 +1,7 @@
 
 
 # Load packages.
-packages <- c("downloader", "network", "sna")
+packages <- c("intergraph", "GGally", "ggplot2", "network", "RColorBrewer", "sna")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -43,9 +43,6 @@ summary(rnet)
 # Form network object.
 net = network(rnet[rnet$friendship == 1, ], directed = FALSE)
 net
-# Load ggnet function.
-code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-downloader::source_url(code, prompt = FALSE)
 # Plot random network.
 ggnet(net,
       label = TRUE,
@@ -60,9 +57,6 @@ file = "data/ga.network.csv"
 if(!file.exists(file)) download(link, file, mode = "wb")
 # Create network.
 net = network(read.csv(file), directed = FALSE)
-# Load ggnet function.
-code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-downloader::source_url(code, prompt = FALSE)
 # Plot network.
 ggnet(net, 
       label = TRUE, 

@@ -136,6 +136,8 @@ tail(fide)
 fide$cohort <- cut(fide$B.Year, 
               breaks = seq(1919, 1999, 10), 
               labels = seq(1920, 1999, 10))
+# Extract numeric rating substring.
+fide$Rtg <- as.numeric(substr(fide$Rtg, 0, 4))
 # Plot ratings over age and sex.
 qplot(data = subset(fide, !is.na(cohort)), 
       x = cohort, y = Rtg, fill = S, alpha = I(.5),

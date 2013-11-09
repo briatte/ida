@@ -3,9 +3,10 @@
 
 # 10. Visualization in space: Maps
 
-Let's [stick some data on a map][ds-map].
+Let's stick some data on a map, using a [simple plotting method][ds-map] that can easily match country-level data to world map coordinates. We will come to [using raw geodata][okfn-maps] in a minute, but for now we will just concentrate on showing how to map a simple cross-sectional data structure like the ones that we have been using in previous sessions.
 
 [ds-map]: http://is-r.tumblr.com/post/35200999886/make-your-own-electoral-map "Make your own electoral map (David Sparks)"
+[okfn-maps]: http://schoolofdata.org/2013/11/09/web-mapping/ "So you want to make a map… (Noah Veltman, School of Data)"
 
 ```{r packages, message = FALSE, warning = FALSE}
 # Load packages.
@@ -18,7 +19,7 @@ packages <- lapply(packages, FUN = function(x) {
 })
 ```
 
-We will use [Quality of Government][qog] data, for which the country codes are standardized, and a rather old map of the world where a few countries need to be renamed to be matched to QOG country names. 
+We will use [Quality of Government][qog] data, for which the country codes are standardized, and a rather old map of the world where a few countries need to be renamed to be matched to QOG country names. The most ambiguous case is that we will be using USSR borders as approximate frontiers for Russia, thereby losing the opportunity to observe post-Soviet states on the final map.
 
 [qog]: http://www.qog.pol.gu.se/
 
@@ -47,7 +48,7 @@ if(!file.exists(zip)) {
 qog = read.csv(unz(zip, qog), stringsAsFactors = FALSE)
 ```
 
-Here's a quick function to plot Quality of Government data. The first part extracts a variabl based on the argument passed to the function, along with (cleaned up) country names. The second part matches this data to the map, based on the `region` identifier of the world map data. The ast part plots the data by longitude and latitude, using a 'whitened' `ggplot2` theme.
+Here's a quick function to plot Quality of Government data. The first part extracts a variable based on the argument passed to the function, along with (cleaned up) country names. The second part matches this data to the map, based on the `region` identifier of the world map data. The ast part plots the data by longitude and latitude, using a 'whitened' `ggplot2` theme.
 
 ```{r qog-map, tidy = FALSE}
 qog.map <- function(x) {
@@ -84,7 +85,7 @@ qog.map("ciri_empinx_new") +
   labs(title = "CIRI Empowerment Rights Index (0-14) in 2009")
 ```
 
-You can bypass the function's colors by overriding its `ggplot2` fill scale. The example below uses a color gradient of [Crayola colors][sss-crayola] that were coded for R by Matt Blackwell (check out Harvard's Social Science Statistics blog for other goodies, like this [elementary Google Maps][sss-googlemap] function by Andy Eggers).
+You can bypass the function's colors by overriding its `ggplot2` fill scale. The example below uses a color gradient of [Crayola colors][sss-crayola] that were coded for R by Matt Blackwell (check out Harvard's Social Science Statistics blog for other goodies, like this [elementary Google Maps][sss-googlemap] function by Andy Eggers). The example variable will show a clear outlier in its worldwide distribution.
 
 [ggplot2-gradient]: http://docs.ggplot2.org/current/scale_gradient.html
 [sss-crayola]: http://blogs.iq.harvard.edu/sss/archives/2011/02/crayola_colors.shtml
@@ -92,8 +93,12 @@ You can bypass the function's colors by overriding its `ggplot2` fill scale. The
 
 ```{r qog-map-example-2-auto, fig.width = 12, fig.height = 6.6, tidy = FALSE, message = FALSE}
 # Get Crayola colors from a personal copy.
-url = "https://raw.github.com/gist/5813759"
+url = "https://gist.github.com/briatte/5813759/raw/53edb4d59e1c54a2abc6c4c034ef4925625bc8cb/crayola.R"
 source_url(url, prompt = FALSE)
+# Get a variable's mean.
+the_mean = mean(qog$wdi_the, na.rm = TRUE)
+# Get a variable's quantiles.
+the_quantiles = as.vector(round(quantile(qog$wdi_the, na.rm = TRUE)))
 # Plot with Crayola color gradient.
 qog.map("wdi_the") + 
   labs(title = "Total health expenditure (% of GDP) in 2009") +
@@ -101,7 +106,9 @@ qog.map("wdi_the") +
                        low = crayola["Blue Green"], 
                        high = crayola["Sunset Orange"], 
                        mid = crayola["Yellow"], 
-                       midpoint = mean(qog$wdi_the, na.rm = TRUE), 
+                       midpoint = the_mean, 
+                       limits = range(the_quantiles),
+                       breaks = the_quantiles,
                        na.value = crayola["Gray"])
 ```
 

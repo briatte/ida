@@ -67,8 +67,12 @@ qog.map("ciri_empinx_new") +
 
 
 # Get Crayola colors from a personal copy.
-url = "https://raw.github.com/gist/5813759"
+url = "https://gist.github.com/briatte/5813759/raw/53edb4d59e1c54a2abc6c4c034ef4925625bc8cb/crayola.R"
 source_url(url, prompt = FALSE)
+# Get a variable's mean.
+the_mean = mean(qog$wdi_the, na.rm = TRUE)
+# Get a variable's quantiles.
+the_quantiles = as.vector(round(quantile(qog$wdi_the, na.rm = TRUE)))
 # Plot with Crayola color gradient.
 qog.map("wdi_the") + 
   labs(title = "Total health expenditure (% of GDP) in 2009") +
@@ -76,7 +80,9 @@ qog.map("wdi_the") +
                        low = crayola["Blue Green"], 
                        high = crayola["Sunset Orange"], 
                        mid = crayola["Yellow"], 
-                       midpoint = mean(qog$wdi_the, na.rm = TRUE), 
+                       midpoint = the_mean, 
+                       limits = range(the_quantiles),
+                       breaks = the_quantiles,
                        na.value = crayola["Gray"])
 
 

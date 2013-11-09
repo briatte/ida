@@ -9,7 +9,7 @@ This section brings a bit of text mining into network analysis, as we will turn 
 [ynada]: http://blog.ynada.com/303
 
 ```{r packages, message = FALSE, warning = FALSE}
-packages <- c("downloader", "ggplot2", "network", "tm")
+packages <- c("intergraph", "GGally", "ggplot2", "network", "RColorBrewer", "sna", "tm")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
@@ -28,7 +28,9 @@ build.corpus <- function(x, skip = 0) {
   # Read the text source.
   src = scan(x, what = "char", sep = "\n", encoding = "UTF-8", skip = skip)
   # Extract all words.
-  txt = unlist(strsplit(gsub("[[:punct:]]", " ", tolower(src)), "[[:space:]]+"))
+  txt = unlist(strsplit(gsub("[[:punct:]|[:digit:]]", " ", tolower(src)), "[[:space:]]+"))
+  # Remove single letters.
+  txt = txt[nchar(txt) > 1]
   # Function to create word nodes.
   associate <- function(x) {
     y = c(txt[x], txt[x + 1])
@@ -48,33 +50,27 @@ The word network is plotted as a very sparse network, trimmed to associations of
 [rdm-igraph]: http://rdatamining.wordpress.com/2012/05/17/an-example-of-social-network-analysis-with-r-using-package-igraph/
 
 ```{r plot-assange-auto, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE, warning = FALSE}
-# Load ggnet function.
-code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-downloader::source_url(code, prompt = FALSE)
 # Plot with ggnet.
 ggnet(net, weight = "degree", subset = 3,
       alpha = 1, segment.color = "grey", label = TRUE, vjust = - 2,
       legend = "none")
 ```
 
-Since the corpus was created out of a simple function call, we can now find any corpus, prepare it and plot it in just a few lines. The next example is a plot of word associations in [Corey Doctorow's][gh-doctorow] speech to the Chaos Communication Congress in December 2011. Try running the same graph on any plain text speech file (here's one by [Barack Obama][bo]).
+Since the corpus was created out of a simple function call, we can now find any corpus, prepare it and plot it in just a few lines. The next example is a plot of word associations in [Cory Doctorow's][gh-doctorow] speech to the Chaos Communication Congress in December 2011. Try running the same graph on any plain text speech file (here's one by [Barack Obama][bo]).
 
 [gh-doctorow]: https://github.com/jwise/28c3-doctorow/blob/master/transcript.md
 [bo]: http://librarian.net/dnc/speeches/obama.txt
 
-```{r plot-obama-auto, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE, warning = FALSE}
+```{r plot-doctorow-auto, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE, warning = FALSE}
 # Target locations
 link = "https://raw.github.com/jwise/28c3-doctorow/master/transcript.md"
 file = "data/doctorow.txt"
 # Download speech.
-if(!file.exists(file)) download(link, file)
+if(!file.exists(file)) download(link, file, mode = "wb")
 # Build corpus.
 net <- build.corpus(file, skip = 37)
-# Load ggnet function.
-code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-downloader::source_url(code, prompt = FALSE)
 # Plot with ggnet.
-ggnet(net, weight = "degree", subset = 3,
+ggnet(net, weight = "indegree", subset = 5,
       alpha = 1, segment.color = "grey", label = TRUE, vjust = - 2,
       legend = "none")
 ```

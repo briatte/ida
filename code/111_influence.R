@@ -1,19 +1,13 @@
 
 
 # Load packages.
-packages <- c("downloader", "ggplot2", "network", "RColorBrewer")
+packages <- c("downloader", "intergraph", "GGally", "ggplot2", "network", "RColorBrewer", "sna")
 packages <- lapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     install.packages(x)
     library(x, character.only = TRUE)
   }
 })
-
-
-
-# Load ggnet function.
-code = "https://raw.github.com/briatte/ggnet/master/ggnet.R"
-downloader::source_url(code, prompt = FALSE)
 
 
 
@@ -31,6 +25,8 @@ if(!file.exists(zip)) {
 ids = read.csv(unz(zip, ids), sep = "\t")
 # Get data on their Twitter accounts.
 net = read.csv(unz(zip, net), sep = "\t")
+# Copy network data for later use.
+ndf = net
 # Convert it to a network object.
 net = network(net)
 
@@ -51,14 +47,16 @@ ggnet(net,
 
 
 
-# Load functions.
+# Recall network data structure.
+head(ndf)
+# Load network functions.
 code = "https://raw.github.com/briatte/ggnet/master/functions.R"
 downloader::source_url(code, prompt = FALSE)
 # A few simple examples.
-x = who.follows(df, "nk_m")
-y = who.is.followed.by(df, "JacquesBompard")
+x = who.follows(ndf, "nk_m")
+y = who.is.followed.by(ndf, "JacquesBompard")
 # A more subtle measure.
-lapply(levels(ids$Groupe), top.group.outlinks, net = df)
+lapply(levels(ids$Groupe), top.group.outlinks, net = ndf)
 
 
 
