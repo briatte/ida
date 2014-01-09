@@ -34,7 +34,7 @@ for(i in 1:3) print(i^2)
 prod(1:2) / prod(1:2)
 # With three roommates, there are three potential combinations (AB, BC and AC).
 prod(1:3) / (prod(1:2) * prod(1:1))
-# With three roommates, there are six potential combinations (AB, BC, CD, ...).
+# With four roommates, there are six potential combinations (AB, BC, CD, ...).
 prod(1:4) / (prod(1:2) * prod(1:2))
 
 

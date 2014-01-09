@@ -7,11 +7,14 @@ ifelse(x > .5, "Heads", "Tails")
 
 
 
+# List packages.
+pkgs = c("downloader", "ggplot2", "plyr", "reshape", "xlsx")
 # Load packages.
-packages <- c("downloader", "ggplot2", "plyr", "reshape", "xlsx")
-packages <- lapply(packages, FUN = function(x) {
+pkgs = sapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
-    install.packages(x)
+    # requires Internet access
+    install.packages(x, quiet = TRUE)
+    # load after installation
     library(x, character.only = TRUE)
   }
 })
