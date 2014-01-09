@@ -11,9 +11,9 @@ packages <- lapply(packages, FUN = function(x) {
 
 
 # Get the data.
-url = "http://aiddata.org/weceem_uploads/_ROOT/File/geocoding/AllWorldBank_IBRDIDA.zip"
+# url = "http://aiddata.org/weceem_uploads/_ROOT/File/geocoding/AllWorldBank_IBRDIDA.zip"
 zip = "data/wb.projects.zip"
-if(!file.exists(zip)) download(url, zip, mode = "wb")
+# if(!file.exists(zip)) download(url, zip, mode = "wb")
 # Read from the ZIP file.
 wb = read.csv(unz(zip, "AllWorldBank_IBRDIDA.csv"))
 # Subset to Africa.
@@ -25,7 +25,7 @@ head(wb)[v]
 
 
 # Get OpenStreetMap data.
-map =  get_map(location = 'Africa', zoom = 4, source = "osm")
+map =  get_map(location = 'Africa', zoom = 4)
 # Plot World Bank projects.
 ggmap(map) + 
   geom_point(data = wb, 

@@ -10,7 +10,7 @@ ifelse(x > .5, "Heads", "Tails")
 # List packages.
 pkgs = c("downloader", "ggplot2", "plyr", "reshape", "xlsx")
 # Load packages.
-pkgs = sapply(packages, FUN = function(x) {
+pkgs = sapply(pkgs, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     # requires Internet access
     install.packages(x, quiet = TRUE)

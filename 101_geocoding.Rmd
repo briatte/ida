@@ -18,13 +18,13 @@ packages <- lapply(packages, FUN = function(x) {
 })
 ```
 
-Let's plot [World Bank projects in Africa][wb-aid].
+Let's plot [World Bank projects in Africa][wb-aid]. (<ins>Update:</ins> the link went dead, so I'm bundling the data with the course.)
  
 ```{r africa-data}
 # Get the data.
-url = "http://aiddata.org/weceem_uploads/_ROOT/File/geocoding/AllWorldBank_IBRDIDA.zip"
+# url = "http://aiddata.org/weceem_uploads/_ROOT/File/geocoding/AllWorldBank_IBRDIDA.zip"
 zip = "data/wb.projects.zip"
-if(!file.exists(zip)) download(url, zip, mode = "wb")
+# if(!file.exists(zip)) download(url, zip, mode = "wb")
 # Read from the ZIP file.
 wb = read.csv(unz(zip, "AllWorldBank_IBRDIDA.csv"))
 # Subset to Africa.
@@ -38,7 +38,7 @@ The next step involves injecting some information from an online map bank into R
 
 ```{r africa-osm-auto, warning = FALSE, message = FALSE, fig.width = 12, fig.height = 9, tidy = FALSE}
 # Get OpenStreetMap data.
-map =  get_map(location = 'Africa', zoom = 4, source = "osm")
+map =  get_map(location = 'Africa', zoom = 4)
 # Plot World Bank projects.
 ggmap(map) + 
   geom_point(data = wb, 
