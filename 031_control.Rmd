@@ -12,14 +12,17 @@ x = runif(9)
 ifelse(x > .5, "Heads", "Tails")
 ```
 
-The next code block, which shows the method used throughout the course to install and load packages, also tests a logical condition. In this example, the condition tries to run the `require` command and proceeds to install and load the package if it fails do so. The condition is applied to each element of a list of package names:
+The next code block, which shows the method used throughout the course to install and load packages, also tests a logical condition. In this example, the condition tries to run the `require` command and proceeds to install and load the package if it fails do so. The condition is applied to each element of a vector of package names, using the `sapply` function to go through the `pkgs` vector (which is not iteration strictly speaking; more on that later):
 
 ```{r packages, message = FALSE, warning = FALSE}
+# List packages.
+pkgs = c("downloader", "ggplot2", "plyr", "reshape", "xlsx")
 # Load packages.
-packages <- c("downloader", "ggplot2", "plyr", "reshape", "xlsx")
-packages <- lapply(packages, FUN = function(x) {
+pkgs = sapply(packages, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
-    install.packages(x)
+    # requires Internet access
+    install.packages(x, quiet = TRUE)
+    # load after installation
     library(x, character.only = TRUE)
   }
 })

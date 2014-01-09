@@ -3,8 +3,12 @@
 
 # 3.2. Iteration
 
+This section briefly reviews iteration, which is very important from a programming perspective as an element of control flow, and also important from the viewpoint of data analysis because it fuels some useful procedures for data crunching, such as [parallel computing][iter] for intensive computing jobs on very large datasets, or [bootstrapping][cs-bs] a statistical procedure.
+
 [042]: 042_reshaping.html
 [112]: 112_networkds.html
+[iter]: http://www.exegetic.biz/blog/2013/11/iterators-in-r/ "Iterators in R (Exegetic Analytics)"
+[cs-bs]: http://www.stat.cmu.edu/~cshalizi/uADA/13/lectures/ch06.pdf "The Bootstrap (Cosma Shalizi)"
 [wiki-for]: https://en.wikipedia.org/wiki/For_loop "For loop (Wikipedia)"
 [wiki-while]: https://en.wikipedia.org/wiki/While_loop "While loop (Wikipedia)"
 [wiki-inf-loop]: https://en.wikipedia.org/wiki/Infinite_loop "Infinite loop (Wikipedia)"
