@@ -18,7 +18,7 @@ The next code block, which shows the method used throughout the course to instal
 # List packages.
 pkgs = c("downloader", "ggplot2", "plyr", "reshape", "xlsx")
 # Load packages.
-pkgs = sapply(packages, FUN = function(x) {
+pkgs = sapply(pkgs, FUN = function(x) {
   if(!require(x, character.only = TRUE)) {
     # requires Internet access
     install.packages(x, quiet = TRUE)
