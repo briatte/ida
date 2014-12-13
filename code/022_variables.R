@@ -17,7 +17,7 @@ file = "data/grades.2012.csv"
 # Download the data if needed.
 if (!file.exists(file)) {
   # Locate the data.
-  url = "https://raw.github.com/briatte/ida/master/data/grades.csv"
+  url = "https://raw.github.com/briatte/ida/master/data/grades.2012.csv"
   # Download the data.
   download(url, file, mode = "wb")
 }
