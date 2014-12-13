@@ -51,7 +51,7 @@ The code block below illustrates what is meant here: it will move any `.R` scrip
 
 ```{r tidy-files, tidy = FALSE}
 # Match filenames ending in .R in the working directory.
-regex <- list.files(".", ".R$")
+scripts <- list.files(".", ".R$")
 # This variable will be 0 (FALSE) if nothing is matched.
 clean <- length(regex)
 # Move .R scripts to code/ subfolder.
