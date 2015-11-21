@@ -102,4 +102,43 @@ And finally an example of several embedded functions: the plot first generates a
 qplot(rnorm(1000), stat = "ecdf", geom = "step")
 ```
 
+Some common functions: 
+
+  max(x);
+  
+  min(x);
+  
+  range(x);
+  
+  sum(x);
+  
+  cumsum(x);
+  
+  mean(x);
+  
+  median(x);
+  
+  mode(x);
+  
+  mode(z);
+  
+  var(x); # divisor is n-1 and not n
+  
+  sd(x);
+  
+  sort(x); #increasing order of magnitude
+  
+  diff(x); # (range of data can be found as diff(range(x))
+  
+  summary(x); # six number summary based on the quantiles.
+  
+  quantile (x, k); # kth percentile
+  
+  fivenum(x); # five number summary based on quartiles
+  
+  cov(x,y); # covariance
+  
+  cor(x,y); #correlation
+
+
 > __Next__: [Control flow](031_control.html).
