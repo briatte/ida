@@ -115,7 +115,7 @@ paste0("Hello World! Today is ", date(), ".")
 
 The syntax of each command requires a bit of memorization, and lots of practice. Nobody types functional code in R without going through cycles of trial-and-error with it. Programming requires some discipline, some logic and a lot of patience.
 
-A final thing: it is good practice to write code in a certain style. For example, R is insensitive to extra blank space, but it is good practice to use blank space only when it helps to align elements. The [Google R Style Guide](https://google-styleguide.googlecode.com/svn/trunk/google-r-style.html) is a good starting point to learn a few common conventions.
+A final thing: it is good practice to write code in a certain style. For example, R is insensitive to extra blank space, but it is good practice to use blank space only when it helps to align elements. The [Google R Style Guide](https://google.github.io/styleguide/Rguide.xml) is a good starting point to learn a few common conventions.
 
 Let's now turn to manipulating simple things in R.
 
